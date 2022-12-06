@@ -17,7 +17,9 @@ const EpochOverview = ({ epoch }: Props) => {
         <div>
             <p className='uppercase text-white text-center'>epoch {epoch}</p>
             <div className='grid grid-cols-8 w-fit mx-auto gap-2 rounded-xl bg-[#FFF0A1] p-4 '>
-                {Array(32).fill(<Epochs />)}
+                {Array(...Array(32)).map(i => (
+                    <Epochs key={i} />
+                ))}
             </div>
         </div>
     );
