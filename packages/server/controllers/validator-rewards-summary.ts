@@ -18,15 +18,25 @@ export const getEpochsStatistics = async (req: Request, res: Response) => {
             pool.query(`
                 SELECT avg(f_reward) as reward_average, avg(f_max_reward) max_reward_average, f_epoch
                 FROM t_validator_rewards_summary
+                WHERE f_proposer_slot = -1
                 GROUP BY f_epoch
                 ORDER BY f_epoch DESC
                 LIMIT 10
             `)
         ]);
+
+        let arrayEpochs = [];
+
+        epochsStats.rows.forEach((epoch: any) => { 
+            const aux = rewardsStats.rows.find((reward: any) => reward.f_epoch === epoch.f_epoch);
+            arrayEpochs.push({  
+                ...epoch, 
+                ...aux 
+            });
+        });    
         
         res.json({
-            epochsStats: epochsStats.rows,
-            rewardsStats: rewardsStats.rows,
+            epochsStats: arrayEpochs
         });
 
 

@@ -10,7 +10,7 @@ import {
 
 const router = Router();
 
-router.get('/validator-rewards-summary', [
+router.get('/', [
     checkFields
 ], getEpochsStatistics);
 

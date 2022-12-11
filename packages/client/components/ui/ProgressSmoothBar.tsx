@@ -18,7 +18,7 @@ const ProgressSmoothBar = ({ title, percent, color, bg }: Props) => {
                     &nbsp;
                 </div>
             </div>
-            <p>{percent * 100}%</p>
+            <p>{Number(percent * 100).toFixed(2)}%</p>
         </div>
     );
 };
