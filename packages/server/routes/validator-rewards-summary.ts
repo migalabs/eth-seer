@@ -1,17 +1,14 @@
 import { Router } from 'express';
 
 import {
-    getEpochsStatistics
+    getEpochsStatistics,
+    getBlocks
 } from '../controllers/validator-rewards-summary';
-
-import {
-    checkFields
-} from '../middlewares/check-fields';
 
 const router = Router();
 
-router.get('/', [
-    checkFields
-], getEpochsStatistics);
+router.get('/', getEpochsStatistics);
+
+router.get('/blocks', getBlocks);
 
 export default router;

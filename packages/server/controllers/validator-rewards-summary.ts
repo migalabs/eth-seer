@@ -5,6 +5,10 @@ export const getEpochsStatistics = async (req: Request, res: Response) => {
 
     try {
 
+        const { page = 0, limit = 10 } = req.params;
+
+        const skip = Number(page) * Number(limit);
+
         const [ epochsStats, rewardsStats ] =
          await Promise.all([
             pool.query(`
@@ -13,7 +17,8 @@ export const getEpochsStatistics = async (req: Request, res: Response) => {
                 f_missing_source, f_missing_target, f_missing_head
                 FROM t_epoch_metrics_summary
                 ORDER BY f_epoch DESC
-                LIMIT 10             
+                OFFSET ${skip}
+                LIMIT ${limit}
             `),
             pool.query(`
                 SELECT avg(f_reward) as reward_average, avg(f_max_reward) max_reward_average, f_epoch
@@ -21,7 +26,8 @@ export const getEpochsStatistics = async (req: Request, res: Response) => {
                 WHERE f_proposer_slot = -1
                 GROUP BY f_epoch
                 ORDER BY f_epoch DESC
-                LIMIT 10
+                OFFSET ${skip}
+                LIMIT ${limit}
             `)
         ]);
 
@@ -47,3 +53,35 @@ export const getEpochsStatistics = async (req: Request, res: Response) => {
         });
     }
 };
+
+export const getBlocks = async (req: Request, res: Response) => {
+
+    try {
+
+        const { page = 0, limit = 128 } = req.params;
+
+        const skip = Number(page) * Number(limit);
+
+        const blocks = await pool.query(`
+            SELECT t_proposer_duties.f_val_idx, f_proposer_slot, f_pool_name, f_proposed, f_proposer_slot/32 AS epoch
+            FROM t_proposer_duties
+            INNER JOIN eth2_pubkeys ON t_proposer_duties.f_val_idx = eth2_pubkeys.f_val_idx
+            ORDER BY f_proposer_slot desc
+            OFFSET ${skip}
+            LIMIT ${limit}
+        `);
+
+        res.json({
+            blocks: blocks.rows
+        });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            msg: 'An error occurred on the server'
+        });
+    }
+};
+
+
+            
