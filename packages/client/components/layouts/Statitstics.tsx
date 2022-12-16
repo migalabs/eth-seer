@@ -31,12 +31,16 @@ type Epoch = {
 };
 
 const Statitstics = (props: Props) => {
+    // States
     const [epochs, setEpochs] = useState([]);
+    const [desktopView, setDesktopView] = useState(true);
 
     useEffect(() => {
         if (epochs.length === 0) {
             getEpochs();
         }
+
+        setDesktopView(window !== undefined && window.innerWidth > 768);
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -227,7 +231,7 @@ const Statitstics = (props: Props) => {
         <div className='text-center text-white'>
             <h1 className='text-3xl md:text-5xl uppercase'>Epoch Statistics</h1>
 
-            {typeof window !== 'undefined' && window.innerWidth > 768 ? getDesktopView() : getPhoneView()}
+            {desktopView ? getDesktopView() : getPhoneView()}
         </div>
     );
 };
