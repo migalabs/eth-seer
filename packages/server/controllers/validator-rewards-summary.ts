@@ -58,7 +58,7 @@ export const getBlocks = async (req: Request, res: Response) => {
 
     try {
 
-        const { page = 0, limit = 128 } = req.params;
+        const { page = 0, limit = 128 } = req.query;
 
         const skip = Number(page) * Number(limit);
 
