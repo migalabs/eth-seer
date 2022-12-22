@@ -9,6 +9,15 @@ export const getEpochsStatistics = async (req: Request, res: Response) => {
 
         const skip = Number(page) * Number(limit);
 
+        const lastEpochResponse: any = await pool.query(`
+            SELECT f_epoch
+            FROM t_block_metrics
+            ORDER BY f_epoch DESC
+            LIMIT 1
+        `);
+
+        const lastEpoch = lastEpochResponse.rows[0].f_epoch;
+
         const [ epochsStats, rewardsStats, blocksStats ] =
          await Promise.all([
             pool.query(`
@@ -21,18 +30,18 @@ export const getEpochsStatistics = async (req: Request, res: Response) => {
                 LIMIT ${limit}
             `),
             pool.query(`
-                SELECT avg(t_validator_rewards_summary.f_reward) as reward_average, avg(t_validator_rewards_summary.f_max_reward) max_reward_average,
-                t_validator_rewards_summary.f_epoch
+                SELECT avg(f_reward) AS reward_average, avg(f_max_reward) AS max_reward_average, f_epoch
+                FROM (select f_val_idx, f_reward, f_max_reward, f_epoch
                 FROM t_validator_rewards_summary
-                INNER JOIN t_proposer_duties ON t_validator_rewards_summary.f_val_idx = t_proposer_duties.f_val_idx
-                WHERE t_proposer_duties.f_proposed = false
-                GROUP BY f_epoch
-                ORDER BY f_epoch DESC
-                OFFSET ${skip}
-                LIMIT ${limit}
+                WHERE f_epoch > ${lastEpoch-10-skip}
+                ORDER BY f_epoch desc) t1
+                LEFT JOIN t_proposer_duties on t1.f_val_idx = t_proposer_duties.f_val_idx and t1.f_epoch = t_proposer_duties.f_proposer_slot/32
+                WHERE t_proposer_duties.f_val_idx IS null
+                GROUP BY t1.f_epoch
+                ORDER BY f_epoch desc
             `),
             pool.query(`
-                SELECT f_proposer_slot/32 AS epoch, count(*) as proposed_blocks
+                SELECT f_proposer_slot/32 AS epoch, count(*) AS proposed_blocks
                 FROM t_proposer_duties
                 WHERE f_proposed = true
                 GROUP BY epoch
