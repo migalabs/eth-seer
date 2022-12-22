@@ -5,7 +5,7 @@ export const getEpochsStatistics = async (req: Request, res: Response) => {
 
     try {
 
-        const { page = 0, limit = 10 } = req.params;
+        const { page = 0, limit = 10 } = req.query;
 
         const skip = Number(page) * Number(limit);
 

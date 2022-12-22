@@ -9,7 +9,7 @@ type Block = {
     f_val_idx: number;
     f_proposer_slot: number;
     f_pool_name: string;
-    f_proposed: number;
+    f_proposed: boolean;
     epoch: number;
 };
 
@@ -66,9 +66,8 @@ const ChainOverview = (props: Props) => {
     const handleLeft = () => {
         if (epochs && Object.entries(epochs).length - 2 - count === 1) {
             getBlocks(currentPage + 1);
-
-            // setArrowLeftHidden(true);
         }
+
         if (count !== 1) {
             setArrowRightHidden(false);
         }
