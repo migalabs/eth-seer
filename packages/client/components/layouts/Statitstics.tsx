@@ -59,12 +59,10 @@ const Statitstics = () => {
         try {
             const response = await axiosClient.get('/api/validator-rewards-summary/', {
                 params: {
-                    limit: 10,
+                    limit: 4,
                     page,
                 },
             });
-
-            console.log(response.data);
 
             if (response.data.epochsStats.length === 0) {
                 setLastPageFetched(true);
