@@ -65,7 +65,7 @@ export const getBlocks = async (req: Request, res: Response) => {
         const blocks = await pool.query(`
             SELECT t_proposer_duties.f_val_idx, f_proposer_slot, f_pool_name, f_proposed, f_proposer_slot/32 AS epoch
             FROM t_proposer_duties
-            INNER JOIN eth2_pubkeys ON t_proposer_duties.f_val_idx = eth2_pubkeys.f_val_idx
+            LEFT OUTER JOIN t_eth2_pubkeys ON t_proposer_duties.f_val_idx = t_eth2_pubkeys.f_val_idx
             ORDER BY f_proposer_slot desc
             OFFSET ${skip}
             LIMIT ${limit}

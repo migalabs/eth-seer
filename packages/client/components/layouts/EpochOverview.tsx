@@ -25,7 +25,7 @@ const EpochOverview = ({ epoch, blocks }: Props) => {
             <div className='grid grid-cols-4 md:grid-cols-8 w-fit max-h-64 md:max-h-full overflow-scroll md:overflow-hidden mx-auto gap-2 rounded-xl bg-[#FFF0A1] p-4'>
                 {blocks.map(block => (
                     <div key={block.f_proposer_slot}>
-                        {POOLS.includes(block.f_pool_name.toUpperCase()) ? (
+                        {block.f_pool_name && POOLS.includes(block.f_pool_name.toUpperCase()) ? (
                             <Image
                                 src={`/static/images/block_${block.f_pool_name.toLowerCase()}.svg`}
                                 alt='Logo'
