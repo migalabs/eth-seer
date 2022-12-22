@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
+import { useInView } from 'react-intersection-observer';
 
 // Axios
 import axiosClient from '../../config/axios';
@@ -13,8 +14,6 @@ import ProgressSmoothBar from '../ui/ProgressSmoothBar';
 const Card = styled.div`
     box-shadow: inset -5px -5px 4px rgba(227, 203, 75, 0.5), inset 5px 5px 4px rgba(227, 203, 75, 0.5);
 `;
-
-type Props = {};
 
 type Epoch = {
     f_epoch: number;
@@ -30,26 +29,47 @@ type Epoch = {
     max_reward_average: string;
 };
 
-const Statitstics = (props: Props) => {
+const Statitstics = () => {
+    // Intersection Observer
+    const { ref, inView } = useInView();
+
     // States
-    const [epochs, setEpochs] = useState([]);
+    const [epochs, setEpochs] = useState<Epoch[]>([]);
     const [desktopView, setDesktopView] = useState(true);
+    const [currentPage, setCurrentPage] = useState(0);
+    const [lastPageFetched, setLastPageFetched] = useState(false);
 
     useEffect(() => {
         if (epochs.length === 0) {
-            getEpochs();
+            getEpochs(0);
         }
 
         setDesktopView(window !== undefined && window.innerWidth > 768);
 
+        if (inView && !lastPageFetched) {
+            getEpochs(currentPage + 1);
+        }
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [inView]);
 
     // get epochs
-    const getEpochs = async () => {
+    const getEpochs = async (page: number) => {
         try {
-            const response = await axiosClient.get('/api/validator-rewards-summary/');
-            setEpochs(response.data.epochsStats);
+            const response = await axiosClient.get('/api/validator-rewards-summary/', {
+                params: {
+                    limit: 2,
+                    page,
+                },
+            });
+
+            if (response.data.epochsStats.length === 0) {
+                setLastPageFetched(true);
+            } else {
+                const aux = [...epochs, ...response.data.epochsStats];
+                setEpochs(aux);
+                setCurrentPage(page);
+            }
         } catch (error) {
             console.log(error);
         }
@@ -77,9 +97,10 @@ const Statitstics = (props: Props) => {
             </div>
 
             <div className='flex flex-col gap-y-4'>
-                {epochs.map((epoch: Epoch) => (
+                {epochs.map((epoch: Epoch, idx: number) => (
                     <Card
                         key={epoch.f_epoch}
+                        ref={idx === epochs.length - 1 ? ref : undefined}
                         className='flex gap-x-1 justify-around items-center text-lg text-black bg-[#FFF0A2] rounded-lg py-3'
                     >
                         <p className='w-1/12'>{epoch.f_epoch}</p>
