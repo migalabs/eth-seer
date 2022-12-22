@@ -27,6 +27,7 @@ type Epoch = {
     f_missing_head: number;
     reward_average: string;
     max_reward_average: string;
+    proposed_blocks: string;
 };
 
 const Statitstics = () => {
@@ -58,10 +59,12 @@ const Statitstics = () => {
         try {
             const response = await axiosClient.get('/api/validator-rewards-summary/', {
                 params: {
-                    limit: 2,
+                    limit: 10,
                     page,
                 },
             });
+
+            console.log(response.data);
 
             if (response.data.epochsStats.length === 0) {
                 setLastPageFetched(true);
@@ -106,7 +109,7 @@ const Statitstics = () => {
                         <p className='w-1/12'>{epoch.f_epoch}</p>
                         <p className='w-1/12'>{epoch.f_slot}</p>
                         <div className='w-2/12 pt-4'>
-                            <ProgressTileBar tilesFilled={32} totalTiles={32} />
+                            <ProgressTileBar tilesFilled={Number(epoch.proposed_blocks)} totalTiles={32} />
                         </div>
 
                         <div className='flex flex-col w-4/12 mt-7'>
