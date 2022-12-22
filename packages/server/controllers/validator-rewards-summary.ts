@@ -9,7 +9,7 @@ export const getEpochsStatistics = async (req: Request, res: Response) => {
 
         const skip = Number(page) * Number(limit);
 
-        const [ epochsStats, rewardsStats ] =
+        const [ epochsStats, rewardsStats, blocksStats ] =
          await Promise.all([
             pool.query(`
                 SELECT f_epoch, f_slot, f_num_att_vals, f_num_vals, 
@@ -21,11 +21,22 @@ export const getEpochsStatistics = async (req: Request, res: Response) => {
                 LIMIT ${limit}
             `),
             pool.query(`
-                SELECT avg(f_reward) as reward_average, avg(f_max_reward) max_reward_average, f_epoch
+                SELECT avg(t_validator_rewards_summary.f_reward) as reward_average, avg(t_validator_rewards_summary.f_max_reward) max_reward_average,
+                t_validator_rewards_summary.f_epoch
                 FROM t_validator_rewards_summary
-                WHERE f_proposer_slot = -1
+                INNER JOIN t_proposer_duties ON t_validator_rewards_summary.f_val_idx = t_proposer_duties.f_val_idx
+                WHERE t_proposer_duties.f_proposed = false
                 GROUP BY f_epoch
                 ORDER BY f_epoch DESC
+                OFFSET ${skip}
+                LIMIT ${limit}
+            `),
+            pool.query(`
+                SELECT f_proposer_slot/32 AS epoch, count(*) as proposed_blocks
+                FROM t_proposer_duties
+                WHERE f_proposed = true
+                GROUP BY epoch
+                ORDER BY epoch DESC
                 OFFSET ${skip}
                 LIMIT ${limit}
             `)
@@ -35,9 +46,11 @@ export const getEpochsStatistics = async (req: Request, res: Response) => {
 
         epochsStats.rows.forEach((epoch: any) => { 
             const aux = rewardsStats.rows.find((reward: any) => reward.f_epoch === epoch.f_epoch);
+            const aux2 = blocksStats.rows.find((blocks: any) => blocks.epoch === epoch.f_epoch);
             arrayEpochs.push({  
                 ...epoch, 
-                ...aux 
+                ...aux, 
+                ...aux2
             });
         });    
         
