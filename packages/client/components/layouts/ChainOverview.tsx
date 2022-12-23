@@ -6,11 +6,10 @@ import EpochOverview from './EpochOverview';
 import axiosClient from '../../config/axios';
 
 type Block = {
-    f_val_idx: number;
-    f_proposer_slot: number;
+    f_slot: number;
     f_pool_name: string;
     f_proposed: boolean;
-    epoch: number;
+    f_epoch: number;
 };
 
 type Props = {};
@@ -28,15 +27,26 @@ const ChainOverview = (props: Props) => {
             getBlocks(0);
         }
 
+        const eventSource = new EventSource(
+            'http://localhost:4000/api/validator-rewards-summary/new-block-notification'
+        );
+        eventSource.onmessage = e => {
+            getBlocks(0, 32);
+        };
+
+        return () => {
+            eventSource.close();
+        };
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     // Get blocks
-    const getBlocks = async (page: number) => {
+    const getBlocks = async (page: number, limit: number = 320) => {
         try {
             const response = await axiosClient.get(`/api/validator-rewards-summary/blocks`, {
                 params: {
-                    limit: 96,
+                    limit,
                     page,
                 },
             });
@@ -48,16 +58,38 @@ const ChainOverview = (props: Props) => {
             }
 
             let aux: Record<number, Block[]> = epochs || {};
+            let lastEpoch = -1;
 
             blocks.forEach(block => {
-                if (aux[block.epoch]) {
-                    aux[block.epoch].push(block);
+                if (aux[block.f_epoch]) {
+                    if (!aux[block.f_epoch].some(b => b.f_slot === block.f_slot)) {
+                        aux[block.f_epoch] = [block, ...aux[block.f_epoch]];
+                    }
                 } else {
-                    aux[block.epoch] = [block];
+                    aux[block.f_epoch] = [block];
+                }
+
+                if (block.f_epoch > lastEpoch) {
+                    lastEpoch = block.f_epoch;
                 }
             });
-            setEpochs(aux);
-            setCurrentPage(page);
+
+            setEpochs(prevState => {
+                console.log(prevState);
+
+                if (prevState) {
+                    return {
+                        ...prevState,
+                        [lastEpoch]: aux[lastEpoch],
+                    };
+                } else {
+                    return aux;
+                }
+            });
+
+            if (page > 0) {
+                setCurrentPage(page);
+            }
         } catch (error) {
             console.log(error);
         }
