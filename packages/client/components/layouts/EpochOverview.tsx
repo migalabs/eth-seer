@@ -9,7 +9,7 @@ type Block = {
     f_val_idx: number;
     f_proposer_slot: number;
     f_pool_name: string;
-    f_proposed: number;
+    f_proposed: boolean;
     epoch: number;
 };
 
@@ -19,22 +19,33 @@ type Props = {
 };
 
 const EpochOverview = ({ epoch, blocks }: Props) => {
+    const getBlockImage = (block: Block) => {
+        if (!block.f_proposed) {
+            return <Image src={`/static/images/block_missed.svg`} alt='Logo' width={50} height={50} />;
+        } else if (block.f_pool_name && POOLS.includes(block.f_pool_name.toUpperCase())) {
+            return (
+                <Image
+                    src={`/static/images/block_${block.f_pool_name.toLowerCase()}.svg`}
+                    alt='Logo'
+                    width={50}
+                    height={50}
+                />
+            );
+        } else if (block.f_pool_name && block.f_pool_name.includes('lido')) {
+            return <Image src={`/static/images/block_lido.svg`} alt='Logo' width={50} height={50} />;
+        } else {
+            return <Image src={`/static/images/block_others.svg`} alt='Logo' width={50} height={50} />;
+        }
+    };
+
     return (
         <div>
             <p className='uppercase text-white text-center'>Epoch {epoch}</p>
             <div className='grid grid-cols-4 md:grid-cols-8 w-fit max-h-64 md:max-h-full overflow-scroll md:overflow-hidden mx-auto gap-2 rounded-xl bg-[#FFF0A1] p-4'>
                 {blocks.map(block => (
-                    <div key={block.f_proposer_slot}>
-                        {POOLS.includes(block.f_pool_name.toUpperCase()) ? (
-                            <Image
-                                src={`/static/images/block_${block.f_pool_name.toLowerCase()}.svg`}
-                                alt='Logo'
-                                width={50}
-                                height={50}
-                            />
-                        ) : (
-                            <Image src={`/static/images/block_others.svg`} alt='Logo' width={50} height={50} />
-                        )}
+                    <div key={block.f_proposer_slot} className='group'>
+                        <p className='absolute top-4 right-4 hidden group-hover:flex text-white'>{block.f_pool_name}</p>
+                        {getBlockImage(block)}
                     </div>
                 ))}
             </div>
