@@ -2,7 +2,8 @@ import { Router } from 'express';
 
 import {
     getEpochsStatistics,
-    getBlocks
+    getBlocks,
+    listenBlockNotification,
 } from '../controllers/validator-rewards-summary';
 
 const router = Router();
@@ -10,5 +11,7 @@ const router = Router();
 router.get('/', getEpochsStatistics);
 
 router.get('/blocks', getBlocks);
+
+router.get('/new-block-notification', listenBlockNotification);
 
 export default router;
