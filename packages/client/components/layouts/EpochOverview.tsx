@@ -2,7 +2,30 @@ import React from 'react';
 import Image from 'next/image';
 
 // Constants
-const POOLS = ['AVADO', 'BINANCE', 'COINBASE', 'HUOBI', 'KUCOIN', 'LIDO', 'PIEDAO'];
+const POOLS = [
+    'AVADO',
+    'BINANCE',
+    'COINBASE',
+    'HUOBI',
+    'KUCOIN',
+    'LIDO',
+    'PIEDAO',
+    'KRAKEN',
+    'ANKR',
+    'BITCOINSUISSE',
+    'BITFINEX',
+    'BLOXSTAKING',
+    'CREAM',
+    'DAPPNODE',
+    'ERIGON',
+    'OKEX',
+    'POLONIEX',
+    'ROCKETPOOL',
+    'STAKEFISH',
+    'STAKEWISE',
+    'VITALIK',
+    'WEXEXCHANGE',
+];
 
 // Types
 type Block = {
@@ -32,6 +55,8 @@ const EpochOverview = ({ epoch, blocks }: Props) => {
             );
         } else if (block.f_pool_name && block.f_pool_name.includes('lido')) {
             return <Image src={`/static/images/block_lido.svg`} alt='Logo' width={50} height={50} />;
+        } else if (block.f_pool_name && block.f_pool_name.includes('whale')) {
+            return <Image src={`/static/images/block_whale.svg`} alt='Logo' width={50} height={50} />;
         } else {
             return <Image src={`/static/images/block_others.svg`} alt='Logo' width={50} height={50} />;
         }
