@@ -75,8 +75,6 @@ const ChainOverview = (props: Props) => {
             });
 
             setEpochs(prevState => {
-                console.log(prevState);
-
                 if (prevState) {
                     return {
                         ...prevState,
