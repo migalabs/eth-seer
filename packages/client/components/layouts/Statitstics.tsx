@@ -15,6 +15,9 @@ const Card = styled.div`
     box-shadow: inset -5px -5px 4px rgba(227, 203, 75, 0.5), inset 5px 5px 4px rgba(227, 203, 75, 0.5);
 `;
 
+// Constants
+const firstBlock: number = 1606824023000;
+
 type Epoch = {
     f_epoch: number;
     f_slot: number;
@@ -79,22 +82,12 @@ const Statitstics = () => {
     const getDesktopView = () => (
         <div className='flex flex-col px-5'>
             <div className='flex gap-x-1 justify-around py-3 items-center uppercase text-lg'>
+                <p className='w-1/12'>Time</p>
                 <p className='w-1/12'>Epoch</p>
-                <p className='w-1/12'>Slot</p>
-                <div className='w-2/12'>
-                    <Image
-                        className='mx-auto'
-                        src='/static/images/blocks_icon.svg'
-                        alt='Blocks'
-                        width={40}
-                        height={40}
-                    />
-                </div>
+                <p className='w-2/12'>Blocks</p>
                 <p className='w-4/12'>Attestation Accuracy</p>
                 <p className='w-2/12'>Balance</p>
-                <div className='w-1/12'>
-                    <Image className='mx-auto' src='/static/images/cup.svg' alt='Blocks' width={30} height={30} />
-                </div>
+                <p className='w-1/12'>Rewards</p>
             </div>
 
             <div className='flex flex-col gap-y-4'>
@@ -104,8 +97,11 @@ const Statitstics = () => {
                         ref={idx === epochs.length - 1 ? ref : undefined}
                         className='flex gap-x-1 justify-around items-center text-lg text-black bg-[#FFF0A2] rounded-lg py-3'
                     >
+                        <div className='flex flex-col w-1/12'>
+                            <p>{new Date(firstBlock + epoch.f_slot * 12000).toLocaleDateString()}</p>
+                            <p>{new Date(firstBlock + epoch.f_slot * 12000).toLocaleTimeString()}</p>
+                        </div>
                         <p className='w-1/12'>{epoch.f_epoch}</p>
-                        <p className='w-1/12'>{epoch.f_slot}</p>
                         <div className='w-2/12 pt-4'>
                             <ProgressTileBar tilesFilled={Number(epoch.proposed_blocks)} totalTiles={32} />
                         </div>
