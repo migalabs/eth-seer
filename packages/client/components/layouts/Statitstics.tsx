@@ -80,13 +80,13 @@ const Statitstics = () => {
     };
 
     const getDesktopView = () => (
-        <div className='flex flex-col px-5'>
-            <div className='flex gap-x-1 justify-around py-3 items-center uppercase text-lg'>
+        <div className='flex flex-col px-20'>
+            <div className='flex gap-x-1 justify-around px-5 py-3 items-center uppercase text-lg'>
                 <p className='w-1/12'>Time</p>
                 <p className='w-1/12'>Epoch</p>
                 <p className='w-2/12'>Blocks</p>
                 <p className='w-4/12'>Attestation Accuracy</p>
-                <p className='w-2/12'>Balance</p>
+                <p className='w-3/12'>Balance</p>
                 <p className='w-1/12'>Rewards</p>
             </div>
 
@@ -95,7 +95,7 @@ const Statitstics = () => {
                     <Card
                         key={epoch.f_epoch}
                         ref={idx === epochs.length - 1 ? ref : undefined}
-                        className='flex gap-x-1 justify-around items-center text-lg text-black bg-[#FFF0A2] rounded-lg py-3'
+                        className='flex gap-x-3 justify-around items-center text-lg text-black bg-[#FFF0A2] rounded-lg px-5 py-3'
                     >
                         <div className='flex flex-col w-1/12'>
                             <p>{new Date(firstBlock + epoch.f_slot * 12000).toLocaleDateString()}</p>
@@ -106,7 +106,7 @@ const Statitstics = () => {
                             <ProgressTileBar tilesFilled={Number(epoch.proposed_blocks)} totalTiles={32} />
                         </div>
 
-                        <div className='flex flex-col w-4/12 mt-7'>
+                        <div className='flex flex-col w-4/12'>
                             <div className='flex gap-x-1 justify-center '>
                                 <div className='flex-1'>
                                     <ProgressSmoothBar
@@ -139,7 +139,7 @@ const Statitstics = () => {
                             </p>
                         </div>
 
-                        <div className='flex flex-col w-2/12 mt-7'>
+                        <div className='flex flex-col w-3/12'>
                             <ProgressSmoothBar
                                 title='Attesting/total active'
                                 bg='#0016D8'
@@ -153,9 +153,9 @@ const Statitstics = () => {
 
                         <div className='w-1/12'>
                             <ProgressSmoothBar
-                                title='Reward'
-                                bg='#bc00d8'
-                                color='#ffbdd9'
+                                title=''
+                                bg='#FFB168'
+                                color='#FFF0A1'
                                 percent={Number(epoch.reward_average) / Number(epoch.max_reward_average)}
                             />
                         </div>
