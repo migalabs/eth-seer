@@ -42,9 +42,10 @@ type Block = {
 type Props = {
     epoch: number;
     blocks: Block[];
+    lastEpoch: boolean;
 };
 
-const EpochOverview = ({ epoch, blocks }: Props) => {
+const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
     const getBlockImage = (block: Block) => {
         if (!block.f_proposed) {
             return <Image src={`/static/images/block_missed.svg`} alt='Logo' width={50} height={50} />;
@@ -67,31 +68,38 @@ const EpochOverview = ({ epoch, blocks }: Props) => {
     };
 
     return (
-        <div>
+        <div className='flex flex-col'>
             <p className='uppercase text-white text-center'>Epoch {epoch}</p>
-            <div className='grid grid-cols-4 md:grid-cols-8 w-fit max-h-64 md:max-h-full overflow-scroll md:overflow-hidden mx-auto gap-2 rounded-xl bg-[#FFF0A1] p-4'>
-                {blocks.map(block => (
-                    <div key={block.f_slot} className='group'>
-                        <p className='absolute top-4 right-4 hidden group-hover:flex text-white'>{block.f_pool_name}</p>
-                        {getBlockImage(block)}
-                    </div>
-                ))}
+            <div className={`flex items-center p-2 h-full ${lastEpoch && 'border-[6px] border-[#F0C83A] rounded-3xl'}`}>
+                <div
+                    className='grid grid-cols-4 md:grid-cols-8 w-fit max-h-64 md:max-h-full overflow-scroll md:overflow-hidden mx-auto gap-2 rounded-2xl bg-[#FFF0A1] p-4'
+                    style={{ boxShadow: 'inset -7px -7px 8px #F0C83A, inset 7px 7px 8px #F0C83A' }}
+                >
+                    {blocks.map(block => (
+                        <div key={block.f_slot} className='group'>
+                            <p className='absolute top-4 right-4 hidden group-hover:flex text-white'>
+                                {block.f_pool_name}
+                            </p>
+                            {getBlockImage(block)}
+                        </div>
+                    ))}
 
-                {blocks.length < 32 && (
-                    <>
-                        <Image src={`/static/images/block_mining.svg`} alt='Mining block' width={50} height={50} />
+                    {blocks.length < 32 && (
+                        <>
+                            <Image src={`/static/images/block_mining.svg`} alt='Mining block' width={50} height={50} />
 
-                        {Array.from(Array(32 - blocks.length - 1)).map((_, idx) => (
-                            <Image
-                                key={idx}
-                                src={`/static/images/block_awaiting.svg`}
-                                alt='Awaiting block'
-                                width={50}
-                                height={50}
-                            />
-                        ))}
-                    </>
-                )}
+                            {Array.from(Array(32 - blocks.length - 1)).map((_, idx) => (
+                                <Image
+                                    key={idx}
+                                    src={`/static/images/block_awaiting.svg`}
+                                    alt='Awaiting block'
+                                    width={50}
+                                    height={50}
+                                />
+                            ))}
+                        </>
+                    )}
+                </div>
             </div>
         </div>
     );
