@@ -33,7 +33,7 @@ const ProgressTileBar = ({ tilesFilled, totalTiles, hasImage, statsInside }: Pro
                     </div>
 
                     {statsInside && (
-                        <p className='text-sm'>
+                        <p className='text-[9px]'>
                             {tilesFilled} / {totalTiles}
                         </p>
                     )}
@@ -41,7 +41,7 @@ const ProgressTileBar = ({ tilesFilled, totalTiles, hasImage, statsInside }: Pro
             </div>
 
             {!statsInside && (
-                <p className='text-sm'>
+                <p className='text-[9px]'>
                     {tilesFilled} / {totalTiles}
                 </p>
             )}
