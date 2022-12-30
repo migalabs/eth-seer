@@ -34,6 +34,8 @@ type Epoch = {
 };
 
 const Statitstics = () => {
+    // Constants
+    const ETH_WEI = 1;
     // Intersection Observer
     const { ref, inView } = useInView();
 
@@ -103,7 +105,14 @@ const Statitstics = () => {
                         </div>
                         <p className='w-1/12'>{epoch.f_epoch}</p>
                         <div className='w-2/12 pt-4'>
-                            <ProgressTileBar tilesFilled={Number(epoch.proposed_blocks)} totalTiles={32} />
+                            <ProgressTileBar
+                                tilesFilled={Number(epoch.proposed_blocks)}
+                                totalTiles={32}
+                                tooltipLines={[
+                                    `Proposed Blocks: ${epoch.proposed_blocks}`,
+                                    `Missed Blocks: ${32 - Number(epoch.proposed_blocks)}`,
+                                ]}
+                            />
                         </div>
 
                         <div className='flex flex-col w-4/12'>
@@ -114,6 +123,11 @@ const Statitstics = () => {
                                         bg='#D17E00'
                                         color='#FFC163'
                                         percent={1 - epoch.f_missing_target / epoch.f_num_vals}
+                                        tooltipLines={[
+                                            `Missing Target: ${epoch.f_missing_target}`,
+                                            `Attestations: ${epoch.f_num_vals}`,
+                                        ]}
+                                        tooltipColor='orange'
                                     />
                                 </div>
                                 <div className='flex-1'>
@@ -122,6 +136,11 @@ const Statitstics = () => {
                                         bg='#00C5D1'
                                         color='#94F9FF'
                                         percent={1 - epoch.f_missing_source / epoch.f_num_vals}
+                                        tooltipLines={[
+                                            `Missing Source: ${epoch.f_missing_source}`,
+                                            `Attestations: ${epoch.f_num_vals}`,
+                                        ]}
+                                        tooltipColor='blue'
                                     />
                                 </div>
                                 <div className='flex-1'>
@@ -130,6 +149,11 @@ const Statitstics = () => {
                                         bg='#8F76D6'
                                         color='#CAB8FF'
                                         percent={1 - epoch.f_missing_head / epoch.f_num_vals}
+                                        tooltipLines={[
+                                            `Missing Head: ${epoch.f_missing_head}`,
+                                            `Attestations: ${epoch.f_num_vals}`,
+                                        ]}
+                                        tooltipColor='purple'
                                     />
                                 </div>
                             </div>
@@ -145,6 +169,11 @@ const Statitstics = () => {
                                 bg='#0016D8'
                                 color='#BDC4FF'
                                 percent={epoch.f_num_att_vals / epoch.f_num_vals}
+                                tooltipLines={[
+                                    `R. Attestations: ${epoch.f_num_att_vals}`,
+                                    `Attestations: ${epoch.f_num_vals}`,
+                                ]}
+                                tooltipColor='bluedark'
                             />
                             <p>
                                 {epoch.f_att_effective_balance_eth} / {epoch.f_total_effective_balance_eth}
@@ -154,9 +183,14 @@ const Statitstics = () => {
                         <div className='w-1/12'>
                             <ProgressSmoothBar
                                 title=''
-                                bg='#FFB168'
-                                color='#FFF0A1'
+                                bg='#bc00d8'
+                                color='#ffbdd9'
                                 percent={Number(epoch.reward_average) / Number(epoch.max_reward_average)}
+                                tooltipLines={[
+                                    `Reward: ${(Number(epoch.reward_average) / ETH_WEI).toFixed(3)} WEI`,
+                                    `M. Reward: ${(Number(epoch.max_reward_average) / ETH_WEI).toFixed(3)} WEI`,
+                                ]}
+                                tooltipColor='pink'
                             />
                         </div>
                     </Card>
@@ -180,7 +214,17 @@ const Statitstics = () => {
                             <p>{epoch.f_slot}</p>
                         </div>
                         <div>
-                            <ProgressTileBar tilesFilled={32} totalTiles={32} hasImage statsInside />
+                            <ProgressTileBar
+                                tilesFilled={32}
+                                totalTiles={32}
+                                hasImage
+                                statsInside
+                                tooltipLines={[
+                                    `Proposed Blocks: ${epoch.proposed_blocks}`,
+                                    `Missed Blocks: ${32 - Number(epoch.proposed_blocks)}`,
+                                ]}
+                                mobile
+                            />
                         </div>
                     </div>
 
@@ -192,6 +236,11 @@ const Statitstics = () => {
                             bg='#D17E00'
                             color='#FFC163'
                             percent={1 - epoch.f_missing_target / epoch.f_num_vals}
+                            tooltipLines={[
+                                `Missing Target: ${epoch.f_missing_target}`,
+                                `Attestations: ${epoch.f_num_vals}`,
+                            ]}
+                            tooltipColor='orange'
                         />
 
                         <ProgressSmoothBar
@@ -199,6 +248,11 @@ const Statitstics = () => {
                             bg='#00C5D1'
                             color='#94F9FF'
                             percent={1 - epoch.f_missing_source / epoch.f_num_vals}
+                            tooltipLines={[
+                                `Missing Source: ${epoch.f_missing_source}`,
+                                `Attestations: ${epoch.f_num_vals}`,
+                            ]}
+                            tooltipColor='blue'
                         />
 
                         <ProgressSmoothBar
@@ -206,6 +260,11 @@ const Statitstics = () => {
                             bg='#8F76D6'
                             color='#CAB8FF'
                             percent={1 - epoch.f_missing_head / epoch.f_num_vals}
+                            tooltipLines={[
+                                `Missing Head: ${epoch.f_missing_head}`,
+                                `Attestations: ${epoch.f_num_vals}`,
+                            ]}
+                            tooltipColor='purple'
                         />
 
                         <p className='text-center'>
@@ -221,6 +280,11 @@ const Statitstics = () => {
                             bg='#0016D8'
                             color='#BDC4FF'
                             percent={epoch.f_num_att_vals / epoch.f_num_vals}
+                            tooltipLines={[
+                                `R. Attestations: ${epoch.f_num_att_vals}`,
+                                `Attestations: ${epoch.f_num_vals}`,
+                            ]}
+                            tooltipColor='bluedark'
                         />
 
                         <p>
@@ -237,6 +301,11 @@ const Statitstics = () => {
                                 bg='#bc00d8'
                                 color='#ffbdd9'
                                 percent={Number(epoch.reward_average) / Number(epoch.max_reward_average)}
+                                tooltipLines={[
+                                    `Reward: ${(Number(epoch.reward_average) / ETH_WEI).toFixed(3)} WEI`,
+                                    `M. Reward: ${(Number(epoch.max_reward_average) / ETH_WEI).toFixed(3)} WEI`,
+                                ]}
+                                tooltipColor='pink'
                             />
                         </div>
                     </div>
