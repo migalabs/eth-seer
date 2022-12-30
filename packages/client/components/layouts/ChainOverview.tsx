@@ -12,9 +12,7 @@ type Block = {
     f_epoch: number;
 };
 
-type Props = {};
-
-const ChainOverview = (props: Props) => {
+const ChainOverview = () => {
     // States
     const [epochs, setEpochs] = useState<Record<number, Block[]> | null>(null);
     const [lastEpoch, setLastEpoch] = useState(0);

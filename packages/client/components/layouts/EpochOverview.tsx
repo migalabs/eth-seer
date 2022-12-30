@@ -69,7 +69,7 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
 
     return (
         <div className='flex flex-col'>
-            <p className='uppercase text-white text-center'>Epoch {epoch}</p>
+            <p className='uppercase text-white text-center text-sm mb-2'>Epoch {epoch}</p>
             <div className={`flex items-center p-2 h-full ${lastEpoch && 'border-[6px] border-[#F0C83A] rounded-3xl'}`}>
                 <div
                     className='grid grid-cols-4 md:grid-cols-8 w-fit max-h-64 md:max-h-full overflow-scroll md:overflow-hidden mx-auto gap-2 rounded-2xl bg-[#FFF0A1] p-4'
@@ -77,7 +77,7 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
                 >
                     {blocks.map(block => (
                         <div key={block.f_slot} className='group'>
-                            <p className='absolute top-4 right-4 hidden group-hover:flex text-white'>
+                            <p className='absolute top-4 right-4 hidden group-hover:flex text-white text-sm'>
                                 {block.f_pool_name}
                             </p>
                             {getBlockImage(block)}

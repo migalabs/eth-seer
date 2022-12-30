@@ -15,7 +15,7 @@ const ProgressSmoothBar = ({ title, percent, color, bg }: Props) => {
             <p className='uppercase'>{title}</p>
             <div className={`rounded-xl p-1 w-100 h-6`} style={{ backgroundColor: bg }}>
                 <div className={`rounded-lg h-4`} style={{ backgroundColor: color, width: `${width}%` }}>
-                    <p className='text-xs font-bold' style={{ color: bg }}>
+                    <p className='text-[8px] font-bold pt-0.5' style={{ color: bg }}>
                         {Number(percent * 100).toFixed(2)}%
                     </p>
                 </div>

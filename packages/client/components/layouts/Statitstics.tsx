@@ -81,7 +81,7 @@ const Statitstics = () => {
 
     const getDesktopView = () => (
         <div className='flex flex-col px-20'>
-            <div className='flex gap-x-1 justify-around px-5 py-3 items-center uppercase text-lg'>
+            <div className='flex gap-x-1 justify-around px-5 py-3 items-center uppercase text-sm'>
                 <p className='w-1/12'>Time</p>
                 <p className='w-1/12'>Epoch</p>
                 <p className='w-2/12'>Blocks</p>
@@ -95,7 +95,7 @@ const Statitstics = () => {
                     <Card
                         key={epoch.f_epoch}
                         ref={idx === epochs.length - 1 ? ref : undefined}
-                        className='flex gap-x-3 justify-around items-center text-lg text-black bg-[#FFF0A1] rounded-[22px] px-5 py-3'
+                        className='flex gap-x-3 justify-around items-center text-[9px] text-black bg-[#FFF0A1] rounded-[22px] px-5 py-3'
                     >
                         <div className='flex flex-col w-1/12'>
                             <p>{new Date(firstBlock + epoch.f_slot * 12000).toLocaleDateString()}</p>
@@ -247,7 +247,7 @@ const Statitstics = () => {
 
     return (
         <div className='text-center text-white'>
-            <h1 className='text-3xl md:text-5xl uppercase'>Epoch Statistics</h1>
+            <h1 className='text-xl md:text-3xl uppercase'>Epoch Statistics</h1>
 
             {desktopView ? getDesktopView() : getPhoneView()}
         </div>

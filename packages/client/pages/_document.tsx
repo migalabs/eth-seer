@@ -7,6 +7,7 @@ export default function Document() {
             <Global
                 styles={css`
                     :root {
+                        --headingFont: 'Press Start 2P', cursive;
                     }
 
                     html {
@@ -36,6 +37,9 @@ export default function Document() {
 
             <Head>
                 <link rel='shortcut icon' href='/static/images/favicon.ico' />
+                <link rel='preconnect' href='https://fonts.googleapis.com' />
+                <link rel='preconnect' href='https://fonts.gstatic.com' />
+                <link href='https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap' rel='stylesheet' />
             </Head>
 
             <body>
