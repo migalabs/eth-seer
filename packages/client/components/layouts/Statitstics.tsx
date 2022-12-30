@@ -12,7 +12,7 @@ import ProgressSmoothBar from '../ui/ProgressSmoothBar';
 
 // Styled
 const Card = styled.div`
-    box-shadow: inset -5px -5px 4px rgba(227, 203, 75, 0.5), inset 5px 5px 4px rgba(227, 203, 75, 0.5);
+    box-shadow: inset -7px -7px 8px #f0c83a, inset 7px 7px 8px #f0c83a;
 `;
 
 // Constants
@@ -95,7 +95,7 @@ const Statitstics = () => {
                     <Card
                         key={epoch.f_epoch}
                         ref={idx === epochs.length - 1 ? ref : undefined}
-                        className='flex gap-x-3 justify-around items-center text-lg text-black bg-[#FFF0A2] rounded-lg px-5 py-3'
+                        className='flex gap-x-3 justify-around items-center text-lg text-black bg-[#FFF0A1] rounded-[22px] px-5 py-3'
                     >
                         <div className='flex flex-col w-1/12'>
                             <p>{new Date(firstBlock + epoch.f_slot * 12000).toLocaleDateString()}</p>

@@ -17,6 +17,7 @@ type Props = {};
 const ChainOverview = (props: Props) => {
     // States
     const [epochs, setEpochs] = useState<Record<number, Block[]> | null>(null);
+    const [lastEpoch, setLastEpoch] = useState(0);
     const [count, setCount] = useState(0);
     const [arrowRightHidden, setArrowRightHidden] = useState(true);
     const [arrowLeftHidden, setArrowLeftHidden] = useState(false);
@@ -58,7 +59,7 @@ const ChainOverview = (props: Props) => {
             }
 
             let aux: Record<number, Block[]> = epochs || {};
-            let lastEpoch = -1;
+            let lastEpochAux = -1;
 
             blocks.forEach(block => {
                 if (aux[block.f_epoch]) {
@@ -69,8 +70,8 @@ const ChainOverview = (props: Props) => {
                     aux[block.f_epoch] = [block];
                 }
 
-                if (block.f_epoch > lastEpoch) {
-                    lastEpoch = block.f_epoch;
+                if (block.f_epoch > lastEpochAux) {
+                    lastEpochAux = block.f_epoch;
                 }
             });
 
@@ -78,12 +79,14 @@ const ChainOverview = (props: Props) => {
                 if (prevState) {
                     return {
                         ...prevState,
-                        [lastEpoch]: aux[lastEpoch],
+                        [lastEpochAux]: aux[lastEpochAux],
                     };
                 } else {
                     return aux;
                 }
             });
+
+            setLastEpoch(lastEpochAux);
 
             if (page > 0) {
                 setCurrentPage(page);
@@ -118,29 +121,40 @@ const ChainOverview = (props: Props) => {
     };
 
     return (
-        <div className='flex flex-row justify-center space-x-4 md:space-x-10'>
-            <Image
-                src='/static/images/arrow.svg'
-                alt='Left arrow'
-                width={30}
-                height={30}
-                onClick={() => arrowLeftHidden || handleLeft()}
-                className={`${arrowLeftHidden ? 'opacity-0' : 'cursor-pointer'}`}
-            />
+        <div className='flex flex-row justify-center space-x-4 md:space-x-5'>
+            <div className='flex items-center mt-8'>
+                <Image
+                    src='/static/images/arrow.svg'
+                    alt='Left arrow'
+                    width={30}
+                    height={30}
+                    onClick={() => arrowLeftHidden || handleLeft()}
+                    className={`h-fit ${arrowLeftHidden ? 'opacity-0' : 'cursor-pointer'}`}
+                />
+            </div>
 
             {epochs &&
                 Object.entries(epochs)
                     .slice(Object.entries(epochs).length - 2 - count, Object.entries(epochs).length - count)
-                    .map(([epoch, blocks]) => <EpochOverview key={epoch} epoch={Number(epoch)} blocks={blocks} />)}
+                    .map(([epoch, blocks]) => (
+                        <EpochOverview
+                            key={epoch}
+                            epoch={Number(epoch)}
+                            blocks={blocks.sort((a, b) => a.f_slot - b.f_slot)}
+                            lastEpoch={epoch === lastEpoch.toString()}
+                        />
+                    ))}
 
-            <Image
-                src='/static/images/arrow.svg'
-                alt='Left arrow'
-                width={30}
-                height={30}
-                onClick={() => arrowRightHidden || handleRight()}
-                className={`rotate-180 ${arrowRightHidden ? 'opacity-0' : 'cursor-pointer'}`}
-            />
+            <div className='flex items-center mt-8'>
+                <Image
+                    src='/static/images/arrow.svg'
+                    alt='Left arrow'
+                    width={30}
+                    height={30}
+                    onClick={() => arrowRightHidden || handleRight()}
+                    className={`h-fit rotate-180 ${arrowRightHidden ? 'opacity-0' : 'cursor-pointer'}`}
+                />
+            </div>
         </div>
     );
 };
