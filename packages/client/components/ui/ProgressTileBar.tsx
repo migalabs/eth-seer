@@ -13,7 +13,7 @@ type Props = {
 
 const ProgressTileBar = ({ tilesFilled, totalTiles, hasImage, statsInside, tooltipLines, mobile }: Props) => {
     return (
-        <div>
+        <div className='flex flex-col gap-y-1'>
             <div className='flex gap-x-2 bg-[#E9C920] px-2 py-1.5 w-fit rounded-2xl border-2 border-[#F7AF45] mx-auto'>
                 <TooltipContainer>
                     {hasImage && (

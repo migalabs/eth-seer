@@ -83,27 +83,29 @@ const Statitstics = () => {
 
     const getDesktopView = () => (
         <div className='flex flex-col px-20'>
-            <div className='flex gap-x-1 justify-around px-5 py-3 items-center uppercase text-sm'>
+            <div className='flex gap-x-1 justify-around px-8 py-3 items-center uppercase text-sm'>
                 <p className='w-1/12'>Time</p>
                 <p className='w-1/12'>Epoch</p>
                 <p className='w-2/12'>Blocks</p>
-                <p className='w-4/12'>Attestation Accuracy</p>
+                <p className='w-3/12'>Attestation Accuracy</p>
                 <p className='w-3/12'>Balance</p>
                 <p className='w-1/12'>Rewards</p>
             </div>
 
-            <div className='flex flex-col gap-y-4'>
+            <div className='flex flex-col justify-center gap-y-4'>
                 {epochs.map((epoch: Epoch, idx: number) => (
                     <Card
                         key={epoch.f_epoch}
                         ref={idx === epochs.length - 1 ? ref : undefined}
-                        className='flex gap-x-3 justify-around items-center text-[9px] text-black bg-[#FFF0A1] rounded-[22px] px-5 py-3'
+                        className='flex gap-x-3 justify-around items-center text-[9px] text-black bg-[#FFF0A1] rounded-[22px] px-8 py-3'
                     >
                         <div className='flex flex-col w-1/12'>
                             <p>{new Date(firstBlock + epoch.f_slot * 12000).toLocaleDateString()}</p>
                             <p>{new Date(firstBlock + epoch.f_slot * 12000).toLocaleTimeString()}</p>
                         </div>
+
                         <p className='w-1/12'>{epoch.f_epoch}</p>
+
                         <div className='w-2/12 pt-4'>
                             <ProgressTileBar
                                 tilesFilled={Number(epoch.proposed_blocks)}
@@ -115,7 +117,7 @@ const Statitstics = () => {
                             />
                         </div>
 
-                        <div className='flex flex-col w-4/12'>
+                        <div className='flex flex-col gap-y-2 mt-2 w-3/12'>
                             <div className='flex gap-x-1 justify-center '>
                                 <div className='flex-1'>
                                     <ProgressSmoothBar
@@ -163,7 +165,7 @@ const Statitstics = () => {
                             </p>
                         </div>
 
-                        <div className='flex flex-col w-3/12'>
+                        <div className='flex flex-col gap-y-2 mt-2 w-3/12'>
                             <ProgressSmoothBar
                                 title='Attesting/total active'
                                 bg='#0016D8'
