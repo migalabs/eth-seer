@@ -27,11 +27,11 @@ const ChainOverview = () => {
         }
 
         const eventSource = new EventSource(
-            'http://localhost:4000/api/validator-rewards-summary/new-block-notification'
+            `${process.env.NEXT_PUBLIC_URL_API}/api/validator-rewards-summary/new-block-notification`
         );
-        eventSource.onmessage = e => {
+        eventSource.addEventListener('new_block', function (e) {
             getBlocks(0, 32);
-        };
+        });
 
         return () => {
             eventSource.close();

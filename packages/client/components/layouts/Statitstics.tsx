@@ -56,15 +56,26 @@ const Statitstics = () => {
             getEpochs(currentPage + 1);
         }
 
+        const eventSource = new EventSource(
+            `${process.env.NEXT_PUBLIC_URL_API}/api/validator-rewards-summary/new-epoch-notification`
+        );
+        eventSource.addEventListener('new_epoch', function (e) {
+            getEpochs(0, 2);
+        });
+
+        return () => {
+            eventSource.close();
+        };
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [inView]);
 
     // get epochs
-    const getEpochs = async (page: number) => {
+    const getEpochs = async (page: number, limit = 10) => {
         try {
             const response = await axiosClient.get('/api/validator-rewards-summary/', {
                 params: {
-                    limit: 4,
+                    limit,
                     page,
                 },
             });
@@ -72,8 +83,19 @@ const Statitstics = () => {
             if (response.data.epochsStats.length === 0) {
                 setLastPageFetched(true);
             } else {
-                const aux = [...epochs, ...response.data.epochsStats];
-                setEpochs(aux);
+                setEpochs(prevState => {
+                    if (prevState.length > 0) {
+                        return [
+                            ...prevState,
+                            ...response.data.epochsStats.filter(
+                                (item: any) => !prevState.some(item2 => item.f_epoch === item2.f_epoch)
+                            ),
+                        ].sort((a, b) => b.f_epoch - a.f_epoch);
+                    } else {
+                        return response.data.epochsStats;
+                    }
+                });
+
                 setCurrentPage(page);
             }
         } catch (error) {
