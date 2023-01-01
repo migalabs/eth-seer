@@ -11,7 +11,7 @@ const Layout = ({ children }: PropsWithChildren<{}>) => {
             <main>{children}</main>
 
             <footer className='text-center my-4'>
-                <p className='text-white'>
+                <p className='text-white hidden'>
                     Powered by&nbsp;
                     <a className='underline' href='https://migalabs.es/' target='_blank' rel='noreferrer'>
                         Miga Labs.
