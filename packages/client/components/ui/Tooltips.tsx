@@ -38,18 +38,20 @@ const TooltipContentContainer = styled.div`
         margin-bottom: 8px;
     }
 `;
+
 type Props = {
     tooltipColor: string;
     colorLetter: string;
     mobile?: boolean;
 };
+
 export const TooltipContentContainerStats = styled(TooltipContentContainer)<Props>`
     position: absolute;
     top: ${({ mobile }) => (mobile ? '80px' : '20px')};
     left: calc(50% - 100px);
     height: 100px;
-    width: 200px;
-    padding: 30px 1.4px 0px 2.4px;
+    width: 210px;
+    padding: 30px 5px 0px 5px;
     background-image: ${({ tooltipColor }) => `url('/static/images/tooltip_${tooltipColor}.svg')`};
     align-items: center;
 
