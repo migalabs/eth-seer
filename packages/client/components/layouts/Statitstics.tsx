@@ -12,8 +12,11 @@ import ProgressSmoothBar from '../ui/ProgressSmoothBar';
 
 // Styled
 const Card = styled.div`
-    box-shadow: inset -5px -5px 4px rgba(227, 203, 75, 0.5), inset 5px 5px 4px rgba(227, 203, 75, 0.5);
+    box-shadow: inset -7px -7px 8px #f0c83a, inset 7px 7px 8px #f0c83a;
 `;
+
+// Constants
+const firstBlock: number = 1606824023000;
 
 type Epoch = {
     f_epoch: number;
@@ -31,6 +34,8 @@ type Epoch = {
 };
 
 const Statitstics = () => {
+    // Constants
+    const ETH_WEI = 1;
     // Intersection Observer
     const { ref, inView } = useInView();
 
@@ -51,15 +56,26 @@ const Statitstics = () => {
             getEpochs(currentPage + 1);
         }
 
+        const eventSource = new EventSource(
+            `${process.env.NEXT_PUBLIC_URL_API}/api/validator-rewards-summary/new-epoch-notification`
+        );
+        eventSource.addEventListener('new_epoch', function (e) {
+            getEpochs(0, 2);
+        });
+
+        return () => {
+            eventSource.close();
+        };
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [inView]);
 
     // get epochs
-    const getEpochs = async (page: number) => {
+    const getEpochs = async (page: number, limit = 10) => {
         try {
             const response = await axiosClient.get('/api/validator-rewards-summary/', {
                 params: {
-                    limit: 4,
+                    limit,
                     page,
                 },
             });
@@ -67,8 +83,19 @@ const Statitstics = () => {
             if (response.data.epochsStats.length === 0) {
                 setLastPageFetched(true);
             } else {
-                const aux = [...epochs, ...response.data.epochsStats];
-                setEpochs(aux);
+                setEpochs(prevState => {
+                    if (prevState.length > 0) {
+                        return [
+                            ...prevState,
+                            ...response.data.epochsStats.filter(
+                                (item: any) => !prevState.some(item2 => item.f_epoch === item2.f_epoch)
+                            ),
+                        ].sort((a, b) => b.f_epoch - a.f_epoch);
+                    } else {
+                        return response.data.epochsStats;
+                    }
+                });
+
                 setCurrentPage(page);
             }
         } catch (error) {
@@ -77,40 +104,42 @@ const Statitstics = () => {
     };
 
     const getDesktopView = () => (
-        <div className='flex flex-col px-5'>
-            <div className='flex gap-x-1 justify-around py-3 items-center uppercase text-lg'>
+        <div className='flex flex-col px-20'>
+            <div className='flex gap-x-1 justify-around px-8 py-3 items-center uppercase text-sm'>
+                <p className='w-1/12'>Time</p>
                 <p className='w-1/12'>Epoch</p>
-                <p className='w-1/12'>Slot</p>
-                <div className='w-2/12'>
-                    <Image
-                        className='mx-auto'
-                        src='/static/images/blocks_icon.svg'
-                        alt='Blocks'
-                        width={40}
-                        height={40}
-                    />
-                </div>
-                <p className='w-4/12'>Attestation Accuracy</p>
-                <p className='w-2/12'>Balance</p>
-                <div className='w-1/12'>
-                    <Image className='mx-auto' src='/static/images/cup.svg' alt='Blocks' width={30} height={30} />
-                </div>
+                <p className='w-2/12'>Blocks</p>
+                <p className='w-3/12'>Attestation Accuracy</p>
+                <p className='w-3/12'>Balance</p>
+                <p className='w-1/12'>Rewards</p>
             </div>
 
-            <div className='flex flex-col gap-y-4'>
+            <div className='flex flex-col justify-center gap-y-4'>
                 {epochs.map((epoch: Epoch, idx: number) => (
                     <Card
                         key={epoch.f_epoch}
                         ref={idx === epochs.length - 1 ? ref : undefined}
-                        className='flex gap-x-1 justify-around items-center text-lg text-black bg-[#FFF0A2] rounded-lg py-3'
+                        className='flex gap-x-3 justify-around items-center text-[9px] text-black bg-[#FFF0A1] rounded-[22px] px-8 py-3'
                     >
-                        <p className='w-1/12'>{epoch.f_epoch}</p>
-                        <p className='w-1/12'>{epoch.f_slot}</p>
-                        <div className='w-2/12 pt-4'>
-                            <ProgressTileBar tilesFilled={Number(epoch.proposed_blocks)} totalTiles={32} />
+                        <div className='flex flex-col w-1/12'>
+                            <p>{new Date(firstBlock + epoch.f_slot * 12000).toLocaleDateString()}</p>
+                            <p>{new Date(firstBlock + epoch.f_slot * 12000).toLocaleTimeString()}</p>
                         </div>
 
-                        <div className='flex flex-col w-4/12 mt-7'>
+                        <p className='w-1/12'>{epoch.f_epoch}</p>
+
+                        <div className='w-2/12 pt-4'>
+                            <ProgressTileBar
+                                tilesFilled={Number(epoch.proposed_blocks)}
+                                totalTiles={32}
+                                tooltipLines={[
+                                    `Proposed Blocks: ${epoch.proposed_blocks}`,
+                                    `Missed Blocks: ${32 - Number(epoch.proposed_blocks)}`,
+                                ]}
+                            />
+                        </div>
+
+                        <div className='flex flex-col gap-y-2 mt-2 w-3/12'>
                             <div className='flex gap-x-1 justify-center '>
                                 <div className='flex-1'>
                                     <ProgressSmoothBar
@@ -118,6 +147,11 @@ const Statitstics = () => {
                                         bg='#D17E00'
                                         color='#FFC163'
                                         percent={1 - epoch.f_missing_target / epoch.f_num_vals}
+                                        tooltipLines={[
+                                            `Missing Target: ${epoch.f_missing_target}`,
+                                            `Attestations: ${epoch.f_num_vals}`,
+                                        ]}
+                                        tooltipColor='orange'
                                     />
                                 </div>
                                 <div className='flex-1'>
@@ -126,6 +160,11 @@ const Statitstics = () => {
                                         bg='#00C5D1'
                                         color='#94F9FF'
                                         percent={1 - epoch.f_missing_source / epoch.f_num_vals}
+                                        tooltipLines={[
+                                            `Missing Source: ${epoch.f_missing_source}`,
+                                            `Attestations: ${epoch.f_num_vals}`,
+                                        ]}
+                                        tooltipColor='blue'
                                     />
                                 </div>
                                 <div className='flex-1'>
@@ -134,6 +173,11 @@ const Statitstics = () => {
                                         bg='#8F76D6'
                                         color='#CAB8FF'
                                         percent={1 - epoch.f_missing_head / epoch.f_num_vals}
+                                        tooltipLines={[
+                                            `Missing Head: ${epoch.f_missing_head}`,
+                                            `Attestations: ${epoch.f_num_vals}`,
+                                        ]}
+                                        tooltipColor='purple'
                                     />
                                 </div>
                             </div>
@@ -143,12 +187,17 @@ const Statitstics = () => {
                             </p>
                         </div>
 
-                        <div className='flex flex-col w-2/12 mt-7'>
+                        <div className='flex flex-col gap-y-2 mt-2 w-3/12'>
                             <ProgressSmoothBar
                                 title='Attesting/total active'
                                 bg='#0016D8'
                                 color='#BDC4FF'
                                 percent={epoch.f_num_att_vals / epoch.f_num_vals}
+                                tooltipLines={[
+                                    `R. Attestations: ${epoch.f_num_att_vals}`,
+                                    `Attestations: ${epoch.f_num_vals}`,
+                                ]}
+                                tooltipColor='bluedark'
                             />
                             <p>
                                 {epoch.f_att_effective_balance_eth} / {epoch.f_total_effective_balance_eth}
@@ -157,10 +206,15 @@ const Statitstics = () => {
 
                         <div className='w-1/12'>
                             <ProgressSmoothBar
-                                title='Reward'
+                                title=''
                                 bg='#bc00d8'
                                 color='#ffbdd9'
                                 percent={Number(epoch.reward_average) / Number(epoch.max_reward_average)}
+                                tooltipLines={[
+                                    `Reward: ${(Number(epoch.reward_average) / ETH_WEI).toFixed(3)} WEI`,
+                                    `M. Reward: ${(Number(epoch.max_reward_average) / ETH_WEI).toFixed(3)} WEI`,
+                                ]}
+                                tooltipColor='pink'
                             />
                         </div>
                     </Card>
@@ -184,7 +238,17 @@ const Statitstics = () => {
                             <p>{epoch.f_slot}</p>
                         </div>
                         <div>
-                            <ProgressTileBar tilesFilled={32} totalTiles={32} hasImage statsInside />
+                            <ProgressTileBar
+                                tilesFilled={32}
+                                totalTiles={32}
+                                hasImage
+                                statsInside
+                                tooltipLines={[
+                                    `Proposed Blocks: ${epoch.proposed_blocks}`,
+                                    `Missed Blocks: ${32 - Number(epoch.proposed_blocks)}`,
+                                ]}
+                                mobile
+                            />
                         </div>
                     </div>
 
@@ -196,6 +260,11 @@ const Statitstics = () => {
                             bg='#D17E00'
                             color='#FFC163'
                             percent={1 - epoch.f_missing_target / epoch.f_num_vals}
+                            tooltipLines={[
+                                `Missing Target: ${epoch.f_missing_target}`,
+                                `Attestations: ${epoch.f_num_vals}`,
+                            ]}
+                            tooltipColor='orange'
                         />
 
                         <ProgressSmoothBar
@@ -203,6 +272,11 @@ const Statitstics = () => {
                             bg='#00C5D1'
                             color='#94F9FF'
                             percent={1 - epoch.f_missing_source / epoch.f_num_vals}
+                            tooltipLines={[
+                                `Missing Source: ${epoch.f_missing_source}`,
+                                `Attestations: ${epoch.f_num_vals}`,
+                            ]}
+                            tooltipColor='blue'
                         />
 
                         <ProgressSmoothBar
@@ -210,6 +284,11 @@ const Statitstics = () => {
                             bg='#8F76D6'
                             color='#CAB8FF'
                             percent={1 - epoch.f_missing_head / epoch.f_num_vals}
+                            tooltipLines={[
+                                `Missing Head: ${epoch.f_missing_head}`,
+                                `Attestations: ${epoch.f_num_vals}`,
+                            ]}
+                            tooltipColor='purple'
                         />
 
                         <p className='text-center'>
@@ -225,6 +304,11 @@ const Statitstics = () => {
                             bg='#0016D8'
                             color='#BDC4FF'
                             percent={epoch.f_num_att_vals / epoch.f_num_vals}
+                            tooltipLines={[
+                                `R. Attestations: ${epoch.f_num_att_vals}`,
+                                `Attestations: ${epoch.f_num_vals}`,
+                            ]}
+                            tooltipColor='bluedark'
                         />
 
                         <p>
@@ -241,6 +325,11 @@ const Statitstics = () => {
                                 bg='#bc00d8'
                                 color='#ffbdd9'
                                 percent={Number(epoch.reward_average) / Number(epoch.max_reward_average)}
+                                tooltipLines={[
+                                    `Reward: ${(Number(epoch.reward_average) / ETH_WEI).toFixed(3)} WEI`,
+                                    `M. Reward: ${(Number(epoch.max_reward_average) / ETH_WEI).toFixed(3)} WEI`,
+                                ]}
+                                tooltipColor='pink'
                             />
                         </div>
                     </div>
@@ -251,7 +340,7 @@ const Statitstics = () => {
 
     return (
         <div className='text-center text-white'>
-            <h1 className='text-3xl md:text-5xl uppercase'>Epoch Statistics</h1>
+            <h1 className='text-xl md:text-3xl uppercase'>Epoch Statistics</h1>
 
             {desktopView ? getDesktopView() : getPhoneView()}
         </div>

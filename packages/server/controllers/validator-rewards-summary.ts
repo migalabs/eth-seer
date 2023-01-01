@@ -118,9 +118,39 @@ export const listenBlockNotification = async (req: Request, res: Response) => {
         pgClient.query('LISTEN new_head');
 
         pgClient.on('notification', async (msg) => {
-            res.write('event: message\n');
-            res.write(`data: ${msg.payload}`);
-            res.write('\n\n');
+            if (msg.channel === 'new_head') {
+                res.write('event: new_block\n');
+                res.write(`data: ${msg.payload}`);
+                res.write('\n\n');
+            }
+        });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            msg: 'An error occurred on the server'
+        });
+    }
+};
+
+export const listenEpochNotification = async (req: Request, res: Response) => {
+
+    try {
+
+        res.writeHead(200, {
+            'Content-Type': 'text/event-stream',
+            'Cache-Control': 'no-cache',
+            'Connection': 'keep-alive'
+        });
+
+        pgClient.query('LISTEN new_epoch_finalized');
+
+        pgClient.on('notification', async (msg) => {
+            if (msg.channel === 'new_epoch_finalized') {
+                res.write('event: new_epoch\n');
+                res.write(`data: ${msg.payload}`);
+                res.write('\n\n');
+            }
         });
 
     } catch (error) {
