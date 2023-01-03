@@ -225,10 +225,11 @@ const Statitstics = () => {
 
     const getPhoneView = () => (
         <div className='flex flex-col gap-y-4 uppercase px-4 mt-3'>
-            {epochs.map((epoch: Epoch) => (
+            {epochs.map((epoch: Epoch, idx: number) => (
                 <Card
                     key={epoch.f_epoch}
-                    className='flex flex-col gap-y-4 justify-around items-center text-lg text-black bg-[#FFF0A2] rounded-lg p-3'
+                    ref={idx === epochs.length - 1 ? ref : undefined}
+                    className='flex flex-col gap-y-4 justify-around items-center text-xs text-black bg-[#FFF0A2] rounded-[22px] p-3'
                 >
                     <p className='font-bold'>Epoch {epoch.f_epoch}</p>
 
@@ -340,7 +341,7 @@ const Statitstics = () => {
 
     return (
         <div className='text-center text-white'>
-            <h1 className='text-xl md:text-3xl uppercase'>Epoch Statistics</h1>
+            <h1 className='text-lg md:text-3xl uppercase'>Epoch Statistics</h1>
 
             {desktopView ? getDesktopView() : getPhoneView()}
         </div>
