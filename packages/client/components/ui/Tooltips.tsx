@@ -43,12 +43,13 @@ type Props = {
     tooltipColor: string;
     colorLetter: string;
     mobile?: boolean;
+    blocks?: boolean;
 };
 
 export const TooltipContentContainerStats = styled(TooltipContentContainer)<Props>`
     position: absolute;
-    top: ${({ mobile }) => (mobile ? '80px' : '20px')};
-    left: calc(50% - 100px);
+    top: ${({ mobile, blocks }) => (mobile ? '80px' : blocks ? '50px' : '20px')};
+    left: ${({ blocks }) => (blocks ? 'calc(42.5% - 100px)' : 'calc(50% - 100px)')};
     height: 100px;
     width: 210px;
     padding: 30px 5px 0px 5px;
@@ -58,6 +59,6 @@ export const TooltipContentContainerStats = styled(TooltipContentContainer)<Prop
     span {
         color: ${({ colorLetter }) => `${colorLetter}`};
         font-size: 7px;
-        padding: 6.25px;
+        padding: ${({ blocks }) => (blocks ? '3px' : '6.25px')};
     }
 `;

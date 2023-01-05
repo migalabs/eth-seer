@@ -1,5 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
+import { TooltipContainer, TooltipContentContainerStats } from '../ui/Tooltips';
 
 // Constants
 const POOLS = [
@@ -37,6 +38,8 @@ type Block = {
     f_pool_name: string;
     f_proposed: boolean;
     f_epoch: number;
+    f_proposer_index: number;
+    f_graffiti: string;
 };
 
 type Props = {
@@ -46,6 +49,7 @@ type Props = {
 };
 
 const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
+    console.log(blocks);
     const getBlockImage = (block: Block) => {
         if (!block.f_proposed) {
             return <Image src={`/static/images/block_missed.svg`} alt='Logo' width={50} height={50} />;
@@ -72,7 +76,7 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
             <p className='uppercase text-white text-center text-sm mb-2'>Epoch {epoch}</p>
             <div className={`flex items-center p-2 h-full ${lastEpoch && 'border-[6px] border-[#F0C83A] rounded-3xl'}`}>
                 <div
-                    className='grid grid-cols-4 md:grid-cols-8 w-fit max-h-64 md:max-h-full overflow-scroll md:overflow-hidden mx-auto gap-2 rounded-2xl bg-[#FFF0A1] p-4'
+                    className='grid grid-cols-4 md:grid-cols-8 w-fit  md:max-h-full  mx-auto gap-2 rounded-2xl bg-[#FFF0A1] p-4'
                     style={{ boxShadow: 'inset -7px -7px 8px #F0C83A, inset 7px 7px 8px #F0C83A' }}
                 >
                     {blocks.map(block => (
@@ -80,7 +84,18 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
                             <p className='absolute top-4 right-4 hidden group-hover:flex text-white text-sm'>
                                 {block.f_pool_name}
                             </p>
-                            {getBlockImage(block)}
+                            <TooltipContainer>
+                                {getBlockImage(block)}
+                                <TooltipContentContainerStats tooltipColor={'white'} colorLetter={'#000000'} blocks>
+                                    {[
+                                        `Entity: ${block.f_pool_name ?? 'others'}`,
+                                        `Proposer: ${block.f_proposer_index}`,
+                                        `Slot: ${block.f_slot}`,
+                                    ].map((tooltip, idx) => (
+                                        <span key={idx}>{tooltip}</span>
+                                    ))}
+                                </TooltipContentContainerStats>
+                            </TooltipContainer>
                         </div>
                     ))}
 
