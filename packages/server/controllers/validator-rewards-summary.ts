@@ -85,7 +85,8 @@ export const getBlocks = async (req: Request, res: Response) => {
         const skip = Number(page) * Number(limit);
 
         const blocks = await pgClient.query(`
-            SELECT t_block_metrics.f_epoch, t_block_metrics.f_slot, t_eth2_pubkeys.f_pool_name, t_block_metrics.f_proposed
+            SELECT t_block_metrics.f_epoch, t_block_metrics.f_slot, t_eth2_pubkeys.f_pool_name, t_block_metrics.f_proposed, t_block_metrics.f_proposer_index,
+            t_block_metrics.f_graffiti
             FROM t_block_metrics
             LEFT OUTER JOIN t_eth2_pubkeys ON t_block_metrics.f_proposer_index = t_eth2_pubkeys.f_val_idx
             ORDER BY f_slot DESC

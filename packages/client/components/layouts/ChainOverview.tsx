@@ -10,6 +10,8 @@ type Block = {
     f_pool_name: string;
     f_proposed: boolean;
     f_epoch: number;
+    f_proposer_index: number;
+    f_graffiti: string;
 };
 
 const ChainOverview = () => {
@@ -55,6 +57,7 @@ const ChainOverview = () => {
                 },
             });
             const blocks: Block[] = response.data.blocks;
+            console.log(blocks);
 
             if (blocks.length === 0) {
                 setCount(epochs ? Object.entries(epochs).length - 2 : 0);
@@ -77,6 +80,8 @@ const ChainOverview = () => {
                     lastEpochAux = block.f_epoch;
                 }
             });
+
+            console.log(aux);
 
             setEpochs(prevState => {
                 if (prevState) {
