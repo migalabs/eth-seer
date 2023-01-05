@@ -57,7 +57,6 @@ const ChainOverview = () => {
                 },
             });
             const blocks: Block[] = response.data.blocks;
-            console.log(blocks);
 
             if (blocks.length === 0) {
                 setCount(epochs ? Object.entries(epochs).length - 2 : 0);
@@ -81,7 +80,6 @@ const ChainOverview = () => {
                 }
             });
 
-            console.log(aux);
 
             setEpochs(prevState => {
                 if (prevState) {

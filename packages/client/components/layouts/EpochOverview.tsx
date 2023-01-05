@@ -49,7 +49,7 @@ type Props = {
 };
 
 const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
-    console.log(blocks);
+    
     const getBlockImage = (block: Block) => {
         if (!block.f_proposed) {
             return <Image src={`/static/images/block_missed.svg`} alt='Logo' width={50} height={50} />;
