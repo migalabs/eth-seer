@@ -214,7 +214,7 @@ const Statitstics = () => {
 
                         <p className='w-1/12'>{epoch.f_epoch.toLocaleString()}</p>
 
-                        <div className='w-2/12 pt-4'>
+                        <div className='w-2/12 pt-4 mb-2'>
                             <ProgressTileBar
                                 tilesFilled={Number(epoch.proposed_blocks)}
                                 totalTiles={32}
@@ -227,7 +227,7 @@ const Statitstics = () => {
                             />
                         </div>
 
-                        <div className='flex flex-col gap-y-2 mt-2 w-4/12'>
+                        <div className='mb-2 w-4/12'>
                             <div className='flex gap-x-1 justify-center '>
                                 <div className='flex-1'>
                                     <ProgressSmoothBar
@@ -276,12 +276,10 @@ const Statitstics = () => {
                                 </div>
                             </div>
 
-                            <p className='text-center'>
-                                {epoch.f_num_att_vals.toLocaleString()} / {epoch.f_num_vals.toLocaleString()}
-                            </p>
+                           
                         </div>
 
-                        <div className='flex flex-col gap-y-2 mt-2 w-3/12'>
+                        <div className='mb-2  w-3/12'>
                             <ProgressSmoothBar
                                 title='Attesting/total active'
                                 bg='#0016D8'
@@ -295,10 +293,7 @@ const Statitstics = () => {
                                     </>
                                 }
                             />
-                            <p>
-                                {epoch.f_att_effective_balance_eth.toLocaleString()} /{' '}
-                                {epoch.f_total_effective_balance_eth.toLocaleString()}
-                            </p>
+                            
                         </div>
 
                         <div className='w-1/12'>
