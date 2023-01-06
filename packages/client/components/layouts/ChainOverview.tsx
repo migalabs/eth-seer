@@ -80,7 +80,6 @@ const ChainOverview = () => {
                 }
             });
 
-
             setEpochs(prevState => {
                 if (prevState) {
                     return {

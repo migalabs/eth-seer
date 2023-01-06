@@ -126,7 +126,7 @@ const Statitstics = () => {
                             <p>{new Date(firstBlock + epoch.f_slot * 12000).toLocaleTimeString()}</p>
                         </div>
 
-                        <p className='w-1/12'>{epoch.f_epoch}</p>
+                        <p className='w-1/12'>{epoch.f_epoch.toLocaleString()}</p>
 
                         <div className='w-2/12 pt-4'>
                             <ProgressTileBar
@@ -148,8 +148,8 @@ const Statitstics = () => {
                                         color='#FFC163'
                                         percent={1 - epoch.f_missing_target / epoch.f_num_vals}
                                         tooltipLines={[
-                                            `Missing Target: ${epoch.f_missing_target}`,
-                                            `Attestations: ${epoch.f_num_vals}`,
+                                            `Missing Target: ${epoch.f_missing_target.toLocaleString()}`,
+                                            `Attestations: ${epoch.f_num_vals.toLocaleString()}`,
                                         ]}
                                         tooltipColor='orange'
                                     />
@@ -161,8 +161,8 @@ const Statitstics = () => {
                                         color='#94F9FF'
                                         percent={1 - epoch.f_missing_source / epoch.f_num_vals}
                                         tooltipLines={[
-                                            `Missing Source: ${epoch.f_missing_source}`,
-                                            `Attestations: ${epoch.f_num_vals}`,
+                                            `Missing Source: ${epoch.f_missing_source.toLocaleString()}`,
+                                            `Attestations: ${epoch.f_num_vals.toLocaleString()}`,
                                         ]}
                                         tooltipColor='blue'
                                     />
@@ -174,8 +174,8 @@ const Statitstics = () => {
                                         color='#CAB8FF'
                                         percent={1 - epoch.f_missing_head / epoch.f_num_vals}
                                         tooltipLines={[
-                                            `Missing Head: ${epoch.f_missing_head}`,
-                                            `Attestations: ${epoch.f_num_vals}`,
+                                            `Missing Head: ${epoch.f_missing_head.toLocaleString()}`,
+                                            `Attestations: ${epoch.f_num_vals.toLocaleString()}`,
                                         ]}
                                         tooltipColor='purple'
                                     />
@@ -183,7 +183,7 @@ const Statitstics = () => {
                             </div>
 
                             <p className='text-center'>
-                                {epoch.f_num_att_vals} / {epoch.f_num_vals}
+                                {epoch.f_num_att_vals.toLocaleString()} / {epoch.f_num_vals.toLocaleString()}
                             </p>
                         </div>
 
@@ -194,13 +194,14 @@ const Statitstics = () => {
                                 color='#BDC4FF'
                                 percent={epoch.f_num_att_vals / epoch.f_num_vals}
                                 tooltipLines={[
-                                    `R. Attestations: ${epoch.f_num_att_vals}`,
-                                    `Attestations: ${epoch.f_num_vals}`,
+                                    `R. Attestations: ${epoch.f_num_att_vals.toLocaleString()}`,
+                                    `Attestations: ${epoch.f_num_vals.toLocaleString()}`,
                                 ]}
                                 tooltipColor='bluedark'
                             />
                             <p>
-                                {epoch.f_att_effective_balance_eth} / {epoch.f_total_effective_balance_eth}
+                                {epoch.f_att_effective_balance_eth.toLocaleString()} /{' '}
+                                {epoch.f_total_effective_balance_eth.toLocaleString()}
                             </p>
                         </div>
 
@@ -211,8 +212,12 @@ const Statitstics = () => {
                                 color='#ffbdd9'
                                 percent={Number(epoch.reward_average) / Number(epoch.max_reward_average)}
                                 tooltipLines={[
-                                    `Reward: ${(Number(epoch.reward_average) / ETH_WEI).toFixed(3)} WEI`,
-                                    `M. Reward: ${(Number(epoch.max_reward_average) / ETH_WEI).toFixed(3)} WEI`,
+                                    `Reward: ${Number(
+                                        (Number(epoch.reward_average) / ETH_WEI).toFixed(3)
+                                    ).toLocaleString()} WEI`,
+                                    `M. Reward: ${Number(
+                                        (Number(epoch.max_reward_average) / ETH_WEI).toFixed(3)
+                                    ).toLocaleString()} WEI`,
                                 ]}
                                 tooltipColor='pink'
                             />
@@ -231,7 +236,7 @@ const Statitstics = () => {
                     ref={idx === epochs.length - 1 ? ref : undefined}
                     className='flex flex-col gap-y-4 justify-around items-center text-xs text-black bg-[#FFF0A2] rounded-[22px] p-3'
                 >
-                    <p className='font-bold'>Epoch {epoch.f_epoch}</p>
+                    <p className='font-bold'>Epoch {epoch.f_epoch.toLocaleString()}</p>
 
                     <div className='flex gap-x-4 w-full'>
                         <div>
@@ -262,8 +267,8 @@ const Statitstics = () => {
                             color='#FFC163'
                             percent={1 - epoch.f_missing_target / epoch.f_num_vals}
                             tooltipLines={[
-                                `Missing Target: ${epoch.f_missing_target}`,
-                                `Attestations: ${epoch.f_num_vals}`,
+                                `Missing Target: ${epoch.f_missing_target.toLocaleString()}`,
+                                `Attestations: ${epoch.f_num_vals.toLocaleString()}`,
                             ]}
                             tooltipColor='orange'
                         />
@@ -274,8 +279,8 @@ const Statitstics = () => {
                             color='#94F9FF'
                             percent={1 - epoch.f_missing_source / epoch.f_num_vals}
                             tooltipLines={[
-                                `Missing Source: ${epoch.f_missing_source}`,
-                                `Attestations: ${epoch.f_num_vals}`,
+                                `Missing Source: ${epoch.f_missing_source.toLocaleString()}`,
+                                `Attestations: ${epoch.f_num_vals.toLocaleString()}`,
                             ]}
                             tooltipColor='blue'
                         />
@@ -286,14 +291,14 @@ const Statitstics = () => {
                             color='#CAB8FF'
                             percent={1 - epoch.f_missing_head / epoch.f_num_vals}
                             tooltipLines={[
-                                `Missing Head: ${epoch.f_missing_head}`,
-                                `Attestations: ${epoch.f_num_vals}`,
+                                `Missing Head: ${epoch.f_missing_head.toLocaleString()}`,
+                                `Attestations: ${epoch.f_num_vals.toLocaleString()}`,
                             ]}
                             tooltipColor='purple'
                         />
 
                         <p className='text-center'>
-                            {epoch.f_num_att_vals} / {epoch.f_num_vals}
+                            {epoch.f_num_att_vals.toLocaleString()} / {epoch.f_num_vals.toLocaleString()}
                         </p>
                     </div>
 
@@ -306,14 +311,15 @@ const Statitstics = () => {
                             color='#BDC4FF'
                             percent={epoch.f_num_att_vals / epoch.f_num_vals}
                             tooltipLines={[
-                                `R. Attestations: ${epoch.f_num_att_vals}`,
-                                `Attestations: ${epoch.f_num_vals}`,
+                                `R. Attestations: ${epoch.f_num_att_vals.toLocaleString()}`,
+                                `Attestations: ${epoch.f_num_vals.toLocaleString()}`,
                             ]}
                             tooltipColor='bluedark'
                         />
 
                         <p>
-                            {epoch.f_att_effective_balance_eth} / {epoch.f_total_effective_balance_eth}
+                            {epoch.f_att_effective_balance_eth.toLocaleString()} /{' '}
+                            {epoch.f_total_effective_balance_eth.toLocaleString()}
                         </p>
                     </div>
 
@@ -327,8 +333,12 @@ const Statitstics = () => {
                                 color='#ffbdd9'
                                 percent={Number(epoch.reward_average) / Number(epoch.max_reward_average)}
                                 tooltipLines={[
-                                    `Reward: ${(Number(epoch.reward_average) / ETH_WEI).toFixed(3)} WEI`,
-                                    `M. Reward: ${(Number(epoch.max_reward_average) / ETH_WEI).toFixed(3)} WEI`,
+                                    `Reward: ${Number(
+                                        (Number(epoch.reward_average) / ETH_WEI).toFixed(3)
+                                    ).toLocaleString()} WEI`,
+                                    `M. Reward: ${Number(
+                                        (Number(epoch.max_reward_average) / ETH_WEI).toFixed(3)
+                                    ).toLocaleString()} WEI`,
                                 ]}
                                 tooltipColor='pink'
                             />
