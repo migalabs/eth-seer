@@ -20,7 +20,7 @@ const ProgressSmoothBar = ({ title, percent, color, bg, tooltipColor, tooltipCon
             <div className={`rounded-xl p-1 w-100 h-6`} style={{ backgroundColor: bg }}>
                 <div className={`rounded-lg h-4`} style={{ backgroundColor: color, width: `${width}%` }}>
                     <TooltipContainer>
-                        <p className='font-bold pt-1' style={{ color: bg }}>
+                        <p className='font-bold pt-1' style={{ color: bg , cursor: 'default'}}>
                             {Number(Number(percent * 100).toFixed(2)).toLocaleString()}%
                         </p>
                         <TooltipContentContainerStats tooltipColor={tooltipColor} colorLetter={bg}>
