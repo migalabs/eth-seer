@@ -7,11 +7,11 @@ type Props = {
     totalTiles: number;
     hasImage?: boolean;
     statsInside?: boolean;
-    tooltipLines: string[];
     mobile?: boolean;
+    tooltipContent: any;
 };
 
-const ProgressTileBar = ({ tilesFilled, totalTiles, hasImage, statsInside, tooltipLines, mobile }: Props) => {
+const ProgressTileBar = ({ tilesFilled, totalTiles, hasImage, statsInside, mobile, tooltipContent }: Props) => {
     return (
         <div className='flex flex-col gap-y-1'>
             <div className='flex gap-x-2 bg-[#E9C920] px-2 py-1.5 w-fit rounded-2xl border-2 border-[#F7AF45] mx-auto'>
@@ -43,9 +43,7 @@ const ProgressTileBar = ({ tilesFilled, totalTiles, hasImage, statsInside, toolt
                         )}
                     </div>
                     <TooltipContentContainerStats tooltipColor='yellow' colorLetter='#D17E00' mobile={mobile}>
-                        {tooltipLines.map((tooltip, idx) => (
-                            <span key={idx}>{tooltip}</span>
-                        ))}
+                        {tooltipContent}
                     </TooltipContentContainerStats>
                 </TooltipContainer>
             </div>
