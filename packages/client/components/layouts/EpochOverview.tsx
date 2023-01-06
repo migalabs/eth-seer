@@ -49,7 +49,6 @@ type Props = {
 };
 
 const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
-    
     const getBlockImage = (block: Block) => {
         if (!block.f_proposed) {
             return <Image src={`/static/images/block_missed.svg`} alt='Logo' width={50} height={50} />;
@@ -73,7 +72,7 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
 
     return (
         <div className='flex flex-col'>
-            <p className='uppercase text-white text-center text-sm mb-2'>Epoch {epoch}</p>
+            <h3 className='uppercase text-white text-center text-sm mb-2'>Epoch {epoch.toLocaleString()}</h3>
             <div className={`flex items-center p-2 h-full ${lastEpoch && 'border-[6px] border-[#F0C83A] rounded-3xl'}`}>
                 <div
                     className='grid grid-cols-4 md:grid-cols-8 w-fit  md:max-h-full  mx-auto gap-2 rounded-2xl bg-[#FFF0A1] p-4'
@@ -81,19 +80,12 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
                 >
                     {blocks.map(block => (
                         <div key={block.f_slot} className='group'>
-                            <p className='absolute top-4 right-4 hidden group-hover:flex text-white text-sm'>
-                                {block.f_pool_name}
-                            </p>
                             <TooltipContainer>
                                 {getBlockImage(block)}
                                 <TooltipContentContainerStats tooltipColor={'white'} colorLetter={'#000000'} blocks>
-                                    {[
-                                        `Entity: ${block.f_pool_name ?? 'others'}`,
-                                        `Proposer: ${block.f_proposer_index}`,
-                                        `Slot: ${block.f_slot}`,
-                                    ].map((tooltip, idx) => (
-                                        <span key={idx}>{tooltip}</span>
-                                    ))}
+                                    <span>Entity: {block.f_pool_name || 'others'}</span>
+                                    <span>Proposer: {Number(block.f_proposer_index).toLocaleString()}</span>
+                                    <span>Slot: {Number(block.f_slot).toLocaleString()}</span>
                                 </TooltipContentContainerStats>
                             </TooltipContainer>
                         </div>
