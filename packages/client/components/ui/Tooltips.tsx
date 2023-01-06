@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import { url } from 'inspector';
 
 export const TooltipContainer = styled.div`
     position: relative;
@@ -26,8 +25,6 @@ const TooltipContentContainer = styled.div`
         font-style: normal;
         font-weight: 700;
         font-size: 10px;
-        line-height: 12px;
-        letter-spacing: 1px;
         text-transform: uppercase;
         white-space: nowrap;
     }
@@ -48,17 +45,17 @@ type Props = {
 
 export const TooltipContentContainerStats = styled(TooltipContentContainer)<Props>`
     position: absolute;
-    top: ${({ mobile, blocks }) => (mobile ? '80px' : blocks ? '50px' : '20px')};
-    left: ${({ blocks }) => (blocks ? 'calc(42.5% - 100px)' : 'calc(50% - 100px)')};
-    height: 100px;
-    width: 210px;
-    padding: 30px 5px 0px 5px;
+    top: ${({ mobile, blocks }) => (mobile ? '80px' : blocks ? '45px' : '20px')};
+    left: ${({ blocks }) => (blocks ? 'calc(42.5% - 105px)' : 'calc(50% - 110px)')};
+    height: 110px;
+    width: 220px;
+    padding: 35px 5px 0px 5px;
     background-image: ${({ tooltipColor }) => `url('/static/images/tooltip_${tooltipColor}.svg')`};
     align-items: center;
 
     span {
-        color: ${({ colorLetter }) => `${colorLetter}`};
-        font-size: 7px;
+        color: ${({ colorLetter }) => colorLetter};
+        font-size: 8px;
         padding: ${({ blocks }) => (blocks ? '3px' : '6.25px')};
     }
 `;
