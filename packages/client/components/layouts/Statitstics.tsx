@@ -9,6 +9,7 @@ import axiosClient from '../../config/axios';
 // Components
 import ProgressTileBar from '../ui/ProgressTileBar';
 import ProgressSmoothBar from '../ui/ProgressSmoothBar';
+import { TooltipContainer, TooltipContentContainerStats } from '../ui/Tooltips';
 
 // Styled
 const Card = styled.div`
@@ -105,13 +106,98 @@ const Statitstics = () => {
 
     const getDesktopView = () => (
         <div className='flex flex-col px-20'>
-            <div className='flex gap-x-1 justify-around px-8 py-3 items-center uppercase text-sm'>
-                <p className='w-1/12'>Time</p>
-                <p className='w-1/12'>Epoch</p>
-                <p className='w-2/12'>Blocks</p>
-                <p className='w-3/12'>Attestation Accuracy</p>
-                <p className='w-3/12'>Balance</p>
-                <p className='w-1/12'>Rewards</p>
+            <div className='flex gap-x-1 justify-around px-8 py-3  uppercase text-sm'>
+                <div className='flex w-1/12 mx-auto justify-center'>
+                    <p className=' ml-5 mt-0.5'>Time</p>
+                    <TooltipContainer>
+                        <Image
+                            className='ml-1'
+                            src='/static/images/information.svg'
+                            alt='Blocks'
+                            width={30}
+                            height={30}
+                        />
+                        <TooltipContentContainerStats tooltipColor={'white'} colorLetter={'#000000'}>
+                            <span>Time</span>
+                        </TooltipContentContainerStats>
+                    </TooltipContainer>
+                </div>
+
+                <div className='flex w-1/12 mx-auto justify-center'>
+                    <p className=' ml-10 mt-0.5'>Epoch</p>
+                    <TooltipContainer>
+                        <Image
+                            className=' ml-1'
+                            src='/static/images/information.svg'
+                            alt='Blocks'
+                            width={30}
+                            height={30}
+                        />
+                        <TooltipContentContainerStats tooltipColor={'white'} colorLetter={'#000000'}>
+                            <span>Epoch</span>
+                        </TooltipContentContainerStats>
+                    </TooltipContainer>
+                </div>
+                <div className='flex w-2/12 mx-auto justify-center'>
+                    <p className='ml-5 mt-0.5'>Blocks</p>
+                    <TooltipContainer>
+                        <Image
+                            className='ml-1'
+                            src='/static/images/information.svg'
+                            alt='Blocks'
+                            width={30}
+                            height={30}
+                        />
+                        <TooltipContentContainerStats tooltipColor={'white'} colorLetter={'#000000'}>
+                            <span>Blocks</span>
+                        </TooltipContentContainerStats>
+                    </TooltipContainer>
+                </div>
+                <div className='flex w-4/12 mx-auto justify-center'>
+                    <p className=' mt-0.5'>Attestation Accuracy</p>
+                    <TooltipContainer>
+                        <Image
+                            className='ml-1'
+                            src='/static/images/information.svg'
+                            alt='Blocks'
+                            width={30}
+                            height={30}
+                        />
+                        <TooltipContentContainerStats tooltipColor={'white'} colorLetter={'#000000'}>
+                            <span>Attestation Accuracy</span>
+                        </TooltipContentContainerStats>
+                    </TooltipContainer>
+                </div>
+                <div className='flex w-3/12 mx-auto justify-center'>
+                    <p className='mt-0.5'>Balance</p>
+                    <TooltipContainer>
+                        <Image
+                            className='ml-1'
+                            src='/static/images/information.svg'
+                            alt='Blocks'
+                            width={30}
+                            height={30}
+                        />
+                        <TooltipContentContainerStats tooltipColor={'white'} colorLetter={'#000000'}>
+                            <span>Balance</span>
+                        </TooltipContentContainerStats>
+                    </TooltipContainer>
+                </div>
+                <div className='flex w-1/12'>
+                    <p className='mt-0.5'>Rewards</p>
+                    <TooltipContainer>
+                        <Image
+                            className='ml-1'
+                            src='/static/images/information.svg'
+                            alt='Blocks'
+                            width={30}
+                            height={30}
+                        />
+                        <TooltipContentContainerStats tooltipColor={'white'} colorLetter={'#000000'}>
+                            <span>Rewards</span>
+                        </TooltipContentContainerStats>
+                    </TooltipContainer>
+                </div>
             </div>
 
             <div className='flex flex-col justify-center gap-y-4'>
@@ -141,7 +227,7 @@ const Statitstics = () => {
                             />
                         </div>
 
-                        <div className='flex flex-col gap-y-2 mt-2 w-3/12'>
+                        <div className='flex flex-col gap-y-2 mt-2 w-4/12'>
                             <div className='flex gap-x-1 justify-center '>
                                 <div className='flex-1'>
                                     <ProgressSmoothBar
