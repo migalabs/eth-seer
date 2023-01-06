@@ -46,7 +46,7 @@ type Props = {
 export const TooltipContentContainerStats = styled(TooltipContentContainer)<Props>`
     position: absolute;
     top: ${({ mobile, blocks }) => (mobile ? '80px' : blocks ? '45px' : '20px')};
-    left: ${({ blocks }) => (blocks ? 'calc(42.5% - 105px)' : 'calc(50% - 110px)')};
+    left: ${({ blocks }) => (blocks ? 'calc(25% - 100px)' : 'calc(50% - 110px)')};
     height: 110px;
     width: 220px;
     padding: 35px 5px 0px 5px;
