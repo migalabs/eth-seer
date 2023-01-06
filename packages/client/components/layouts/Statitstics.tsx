@@ -132,10 +132,12 @@ const Statitstics = () => {
                             <ProgressTileBar
                                 tilesFilled={Number(epoch.proposed_blocks)}
                                 totalTiles={32}
-                                tooltipLines={[
-                                    `Proposed Blocks: ${epoch.proposed_blocks}`,
-                                    `Missed Blocks: ${32 - Number(epoch.proposed_blocks)}`,
-                                ]}
+                                tooltipContent={
+                                    <>
+                                        <span>Proposed Blocks: {epoch.proposed_blocks}</span>
+                                        <span>Missed Blocks: {32 - Number(epoch.proposed_blocks)}</span>
+                                    </>
+                                }
                             />
                         </div>
 
@@ -147,11 +149,13 @@ const Statitstics = () => {
                                         bg='#D17E00'
                                         color='#FFC163'
                                         percent={1 - epoch.f_missing_target / epoch.f_num_vals}
-                                        tooltipLines={[
-                                            `Missing Target: ${epoch.f_missing_target.toLocaleString()}`,
-                                            `Attestations: ${epoch.f_num_vals.toLocaleString()}`,
-                                        ]}
                                         tooltipColor='orange'
+                                        tooltipContent={
+                                            <>
+                                                <span>Missing Target: {epoch.f_missing_target.toLocaleString()}</span>
+                                                <span>Attestations: {epoch.f_num_vals.toLocaleString()}</span>
+                                            </>
+                                        }
                                     />
                                 </div>
                                 <div className='flex-1'>
@@ -160,11 +164,13 @@ const Statitstics = () => {
                                         bg='#00C5D1'
                                         color='#94F9FF'
                                         percent={1 - epoch.f_missing_source / epoch.f_num_vals}
-                                        tooltipLines={[
-                                            `Missing Source: ${epoch.f_missing_source.toLocaleString()}`,
-                                            `Attestations: ${epoch.f_num_vals.toLocaleString()}`,
-                                        ]}
                                         tooltipColor='blue'
+                                        tooltipContent={
+                                            <>
+                                                <span>Missing Source: {epoch.f_missing_source.toLocaleString()}</span>
+                                                <span>Attestations: {epoch.f_num_vals.toLocaleString()}</span>
+                                            </>
+                                        }
                                     />
                                 </div>
                                 <div className='flex-1'>
@@ -173,11 +179,13 @@ const Statitstics = () => {
                                         bg='#8F76D6'
                                         color='#CAB8FF'
                                         percent={1 - epoch.f_missing_head / epoch.f_num_vals}
-                                        tooltipLines={[
-                                            `Missing Head: ${epoch.f_missing_head.toLocaleString()}`,
-                                            `Attestations: ${epoch.f_num_vals.toLocaleString()}`,
-                                        ]}
                                         tooltipColor='purple'
+                                        tooltipContent={
+                                            <>
+                                                <span>Missing Head: {epoch.f_missing_head.toLocaleString()}</span>
+                                                <span>Attestations: {epoch.f_num_vals.toLocaleString()}</span>
+                                            </>
+                                        }
                                     />
                                 </div>
                             </div>
@@ -193,11 +201,13 @@ const Statitstics = () => {
                                 bg='#0016D8'
                                 color='#BDC4FF'
                                 percent={epoch.f_num_att_vals / epoch.f_num_vals}
-                                tooltipLines={[
-                                    `R. Attestations: ${epoch.f_num_att_vals.toLocaleString()}`,
-                                    `Attestations: ${epoch.f_num_vals.toLocaleString()}`,
-                                ]}
                                 tooltipColor='bluedark'
+                                tooltipContent={
+                                    <>
+                                        <span>R. Attestations: {epoch.f_num_att_vals.toLocaleString()}</span>
+                                        <span>Attestations: {epoch.f_num_vals.toLocaleString()}</span>
+                                    </>
+                                }
                             />
                             <p>
                                 {epoch.f_att_effective_balance_eth.toLocaleString()} /{' '}
@@ -211,15 +221,25 @@ const Statitstics = () => {
                                 bg='#bc00d8'
                                 color='#ffbdd9'
                                 percent={Number(epoch.reward_average) / Number(epoch.max_reward_average)}
-                                tooltipLines={[
-                                    `Reward: ${Number(
-                                        (Number(epoch.reward_average) / ETH_WEI).toFixed(3)
-                                    ).toLocaleString()} WEI`,
-                                    `M. Reward: ${Number(
-                                        (Number(epoch.max_reward_average) / ETH_WEI).toFixed(3)
-                                    ).toLocaleString()} WEI`,
-                                ]}
                                 tooltipColor='pink'
+                                tooltipContent={
+                                    <>
+                                        <span>
+                                            Reward:{' '}
+                                            {Number(
+                                                (Number(epoch.reward_average) / ETH_WEI).toFixed(3)
+                                            ).toLocaleString()}{' '}
+                                            WEI
+                                        </span>
+                                        <span>
+                                            M. Reward:{' '}
+                                            {Number(
+                                                (Number(epoch.max_reward_average) / ETH_WEI).toFixed(3)
+                                            ).toLocaleString()}{' '}
+                                            WEI
+                                        </span>
+                                    </>
+                                }
                             />
                         </div>
                     </Card>
@@ -249,10 +269,12 @@ const Statitstics = () => {
                                 totalTiles={32}
                                 hasImage
                                 statsInside
-                                tooltipLines={[
-                                    `Proposed Blocks: ${epoch.proposed_blocks}`,
-                                    `Missed Blocks: ${32 - Number(epoch.proposed_blocks)}`,
-                                ]}
+                                tooltipContent={
+                                    <>
+                                        <span>Proposed Blocks: {epoch.proposed_blocks}</span>
+                                        <span>Missed Blocks: {32 - Number(epoch.proposed_blocks)}</span>
+                                    </>
+                                }
                                 mobile
                             />
                         </div>
@@ -266,11 +288,13 @@ const Statitstics = () => {
                             bg='#D17E00'
                             color='#FFC163'
                             percent={1 - epoch.f_missing_target / epoch.f_num_vals}
-                            tooltipLines={[
-                                `Missing Target: ${epoch.f_missing_target.toLocaleString()}`,
-                                `Attestations: ${epoch.f_num_vals.toLocaleString()}`,
-                            ]}
                             tooltipColor='orange'
+                            tooltipContent={
+                                <>
+                                    <span>Missing Target: {epoch.f_missing_target.toLocaleString()}</span>
+                                    <span>Attestations: {epoch.f_num_vals.toLocaleString()}</span>
+                                </>
+                            }
                         />
 
                         <ProgressSmoothBar
@@ -278,11 +302,13 @@ const Statitstics = () => {
                             bg='#00C5D1'
                             color='#94F9FF'
                             percent={1 - epoch.f_missing_source / epoch.f_num_vals}
-                            tooltipLines={[
-                                `Missing Source: ${epoch.f_missing_source.toLocaleString()}`,
-                                `Attestations: ${epoch.f_num_vals.toLocaleString()}`,
-                            ]}
                             tooltipColor='blue'
+                            tooltipContent={
+                                <>
+                                    <span>Proposed Blocks: {epoch.proposed_blocks}</span>
+                                    <span>Missed Blocks: {32 - Number(epoch.proposed_blocks)}</span>
+                                </>
+                            }
                         />
 
                         <ProgressSmoothBar
@@ -290,11 +316,13 @@ const Statitstics = () => {
                             bg='#8F76D6'
                             color='#CAB8FF'
                             percent={1 - epoch.f_missing_head / epoch.f_num_vals}
-                            tooltipLines={[
-                                `Missing Head: ${epoch.f_missing_head.toLocaleString()}`,
-                                `Attestations: ${epoch.f_num_vals.toLocaleString()}`,
-                            ]}
                             tooltipColor='purple'
+                            tooltipContent={
+                                <>
+                                    <span>Missing Head: {epoch.f_missing_head.toLocaleString()}</span>
+                                    <span>Attestations: {epoch.f_num_vals.toLocaleString()}</span>
+                                </>
+                            }
                         />
 
                         <p className='text-center'>
@@ -310,11 +338,13 @@ const Statitstics = () => {
                             bg='#0016D8'
                             color='#BDC4FF'
                             percent={epoch.f_num_att_vals / epoch.f_num_vals}
-                            tooltipLines={[
-                                `R. Attestations: ${epoch.f_num_att_vals.toLocaleString()}`,
-                                `Attestations: ${epoch.f_num_vals.toLocaleString()}`,
-                            ]}
                             tooltipColor='bluedark'
+                            tooltipContent={
+                                <>
+                                    <span>R. Attestations: {epoch.f_num_att_vals.toLocaleString()}</span>
+                                    <span>Attestations: {epoch.f_num_vals.toLocaleString()}</span>
+                                </>
+                            }
                         />
 
                         <p>
@@ -332,15 +362,13 @@ const Statitstics = () => {
                                 bg='#bc00d8'
                                 color='#ffbdd9'
                                 percent={Number(epoch.reward_average) / Number(epoch.max_reward_average)}
-                                tooltipLines={[
-                                    `Reward: ${Number(
-                                        (Number(epoch.reward_average) / ETH_WEI).toFixed(3)
-                                    ).toLocaleString()} WEI`,
-                                    `M. Reward: ${Number(
-                                        (Number(epoch.max_reward_average) / ETH_WEI).toFixed(3)
-                                    ).toLocaleString()} WEI`,
-                                ]}
                                 tooltipColor='pink'
+                                tooltipContent={
+                                    <>
+                                        <span>Reward: {Number(epoch.reward_average).toLocaleString()} WEI</span>
+                                        <span>M. Reward: {Number(epoch.max_reward_average).toLocaleString()} WEI</span>
+                                    </>
+                                }
                             />
                         </div>
                     </div>
