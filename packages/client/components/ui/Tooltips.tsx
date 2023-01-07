@@ -39,23 +39,32 @@ const TooltipContentContainer = styled.div`
 type Props = {
     tooltipColor: string;
     colorLetter: string;
-    mobile?: boolean;
     blocks?: boolean;
 };
 
 export const TooltipContentContainerStats = styled(TooltipContentContainer)<Props>`
     position: absolute;
-    top: ${({ mobile, blocks }) => (mobile ? '80px' : blocks ? '45px' : '20px')};
-    left: ${({ blocks }) => (blocks ? 'calc(25% - 100px)' : 'calc(50% - 110px)')};
+    top: ${({ blocks }) => (blocks ? '50px' : '20px')};
+    left: calc(50% - 100px);
     height: 110px;
-    width: 220px;
-    padding: 35px 5px 0px 5px;
+    width: 200px;
+    padding-top: 30px;
     background-image: ${({ tooltipColor }) => `url('/static/images/tooltip_${tooltipColor}.svg')`};
     align-items: center;
 
     span {
         color: ${({ colorLetter }) => colorLetter};
-        font-size: 8px;
+        font-size: 7px;
         padding: ${({ blocks }) => (blocks ? '3px' : '6.25px')};
+    }
+
+    @media (min-width: 768px) {
+        left: calc(50% - 115px);
+        width: 230px;
+        padding-top: 35px;
+
+        span {
+            font-size: 8px;
+        }
     }
 `;
