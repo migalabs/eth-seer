@@ -9,6 +9,7 @@ import axiosClient from '../../config/axios';
 // Components
 import ProgressTileBar from '../ui/ProgressTileBar';
 import ProgressSmoothBar from '../ui/ProgressSmoothBar';
+import Loader from '../ui/Loader';
 
 // Styled
 const Card = styled.div`
@@ -44,6 +45,7 @@ const Statitstics = () => {
     const [desktopView, setDesktopView] = useState(true);
     const [currentPage, setCurrentPage] = useState(0);
     const [lastPageFetched, setLastPageFetched] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         if (epochs.length === 0) {
@@ -73,6 +75,8 @@ const Statitstics = () => {
     // get epochs
     const getEpochs = async (page: number, limit = 10) => {
         try {
+            setLoading(true);
+
             const response = await axiosClient.get('/api/validator-rewards-summary/', {
                 params: {
                     limit,
@@ -98,6 +102,8 @@ const Statitstics = () => {
 
                 setCurrentPage(page);
             }
+
+            setLoading(false);
         } catch (error) {
             console.log(error);
         }
@@ -382,6 +388,12 @@ const Statitstics = () => {
             <h1 className='text-lg md:text-3xl uppercase'>Epoch Statistics</h1>
 
             {desktopView ? getDesktopView() : getPhoneView()}
+
+            {loading && (
+                <div className='mt-6'>
+                    <Loader />
+                </div>
+            )}
         </div>
     );
 };
