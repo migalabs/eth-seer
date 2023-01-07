@@ -91,7 +91,10 @@ const ChainOverview = () => {
                 }
             });
 
-            setLastEpoch(lastEpochAux);
+            setLastEpoch(prevState => {
+                if (prevState < lastEpochAux) return lastEpochAux;
+                else return prevState;
+            });
 
             if (page > 0) {
                 setCurrentPage(page);
