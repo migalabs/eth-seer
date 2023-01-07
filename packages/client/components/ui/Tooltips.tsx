@@ -1,10 +1,7 @@
 import styled from '@emotion/styled';
-import { url } from 'inspector';
 
 export const TooltipContainer = styled.div`
     position: relative;
-    /* width: fit-content; */
-    margin: 0 auto;
 
     &:hover div {
         display: flex;
@@ -13,9 +10,14 @@ export const TooltipContainer = styled.div`
 
 const TooltipContentContainer = styled.div`
     position: absolute;
+    left: calc(50% - 100px);
+    height: 110px;
+    width: 200px;
     display: none;
     flex-direction: column;
+    padding-top: 30px;
     z-index: 1;
+    align-items: center;
 
     background-repeat: no-repeat;
     background-size: 100% auto;
@@ -25,39 +27,47 @@ const TooltipContentContainer = styled.div`
         font-family: var(--headingFont);
         font-style: normal;
         font-weight: 700;
-        font-size: 10px;
-        line-height: 12px;
-        letter-spacing: 1px;
+        font-size: 7px;
         text-transform: uppercase;
         white-space: nowrap;
     }
 
-    .title {
-        font-size: 14px;
-        text-align: center;
-        margin-bottom: 8px;
+    @media (min-width: 768px) {
+        left: calc(50% - 115px);
+        width: 230px;
+        padding-top: 35px;
+
+        span {
+            font-size: 8px;
+        }
     }
 `;
 
 type Props = {
     tooltipColor: string;
     colorLetter: string;
-    mobile?: boolean;
 };
 
 export const TooltipContentContainerStats = styled(TooltipContentContainer)<Props>`
-    position: absolute;
-    top: ${({ mobile }) => (mobile ? '80px' : '20px')};
-    left: calc(50% - 100px);
-    height: 100px;
-    width: 210px;
-    padding: 30px 5px 0px 5px;
+    top: 20px;
     background-image: ${({ tooltipColor }) => `url('/static/images/tooltip_${tooltipColor}.svg')`};
-    align-items: center;
 
     span {
-        color: ${({ colorLetter }) => `${colorLetter}`};
-        font-size: 7px;
+        color: ${({ colorLetter }) => colorLetter};
         padding: 6.25px;
     }
+`;
+
+export const TooltipContentContainerBlocks = styled(TooltipContentContainer)`
+    top: 50px;
+    background-image: url('/static/images/tooltip_white.svg');
+
+    span {
+        color: black;
+        padding: 3px;
+    }
+`;
+
+export const TooltipContentContainerHeaders = styled(TooltipContentContainerBlocks)`
+    top: 22px;
 `;
