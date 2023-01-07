@@ -1,6 +1,8 @@
 import React from 'react';
 import Image from 'next/image';
-import { TooltipContainer, TooltipContentContainerStats } from '../ui/Tooltips';
+
+// Components
+import { TooltipContainer, TooltipContentContainerBlocks } from '../ui/Tooltips';
 
 // Constants
 const POOLS = [
@@ -82,11 +84,11 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
                         <div key={block.f_slot} className='group'>
                             <TooltipContainer>
                                 {getBlockImage(block)}
-                                <TooltipContentContainerStats tooltipColor={'white'} colorLetter={'#000000'} blocks>
+                                <TooltipContentContainerBlocks>
                                     <span>Entity: {block.f_pool_name || 'others'}</span>
                                     <span>Proposer: {Number(block.f_proposer_index).toLocaleString()}</span>
                                     <span>Slot: {Number(block.f_slot).toLocaleString()}</span>
-                                </TooltipContentContainerStats>
+                                </TooltipContentContainerBlocks>
                             </TooltipContainer>
                         </div>
                     ))}

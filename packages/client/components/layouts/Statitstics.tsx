@@ -10,7 +10,7 @@ import axiosClient from '../../config/axios';
 import ProgressTileBar from '../ui/ProgressTileBar';
 import ProgressSmoothBar from '../ui/ProgressSmoothBar';
 import Loader from '../ui/Loader';
-import { TooltipContainer, TooltipContentContainerStats } from '../ui/Tooltips';
+import { TooltipContainer, TooltipContentContainerStats, TooltipContentContainerHeaders } from '../ui/Tooltips';
 
 // Styled
 const Card = styled.div`
@@ -19,6 +19,14 @@ const Card = styled.div`
 
 // Constants
 const firstBlock: number = 1606824023000;
+const columnsWidth = {
+    time: 10,
+    epoch: 10,
+    blocks: 12,
+    attestation: 33,
+    balance: 24,
+    rewards: 11,
+};
 
 type Epoch = {
     f_epoch: number;
@@ -113,95 +121,64 @@ const Statitstics = () => {
     const getDesktopView = () => (
         <div className='flex flex-col px-20'>
             <div className='flex gap-x-1 justify-around px-8 py-3  uppercase text-sm'>
-                <div className='flex w-1/12 mx-auto justify-center'>
-                    <p className=' ml-5 mt-0.5'>Time</p>
+                <div className={`flex w-[${columnsWidth.time}%] items-center gap-x-1 justify-center`}>
+                    <p className='mt-0.5'>Time</p>
                     <TooltipContainer>
-                        <Image
-                            className='ml-1'
-                            src='/static/images/information.svg'
-                            alt='Blocks'
-                            width={30}
-                            height={30}
-                        />
-                        <TooltipContentContainerStats tooltipColor={'white'} colorLetter={'#000000'}>
+                        <Image src='/static/images/information.svg' alt='Time information' width={24} height={24} />
+                        <TooltipContentContainerHeaders>
                             <span>Time</span>
-                        </TooltipContentContainerStats>
+                        </TooltipContentContainerHeaders>
                     </TooltipContainer>
                 </div>
 
-                <div className='flex w-1/12 mx-auto justify-center'>
-                    <p className=' ml-10 mt-0.5'>Epoch</p>
+                <div className={`flex w-[${columnsWidth.epoch}%] items-center gap-x-1 justify-center`}>
+                    <p className='mt-0.5'>Epoch</p>
                     <TooltipContainer>
-                        <Image
-                            className=' ml-1'
-                            src='/static/images/information.svg'
-                            alt='Blocks'
-                            width={30}
-                            height={30}
-                        />
-                        <TooltipContentContainerStats tooltipColor={'white'} colorLetter={'#000000'}>
+                        <Image src='/static/images/information.svg' alt='Epoch information' width={24} height={24} />
+                        <TooltipContentContainerHeaders>
                             <span>Epoch</span>
-                        </TooltipContentContainerStats>
+                        </TooltipContentContainerHeaders>
                     </TooltipContainer>
                 </div>
-                <div className='flex w-2/12 mx-auto justify-center'>
-                    <p className='ml-5 mt-0.5'>Blocks</p>
+                <div className={`flex w-[${columnsWidth.blocks}%] items-center gap-x-1 justify-center`}>
+                    <p className='mt-0.5'>Blocks</p>
                     <TooltipContainer>
-                        <Image
-                            className='ml-1'
-                            src='/static/images/information.svg'
-                            alt='Blocks'
-                            width={30}
-                            height={30}
-                        />
-                        <TooltipContentContainerStats tooltipColor={'white'} colorLetter={'#000000'}>
+                        <Image src='/static/images/information.svg' alt='Blocks information' width={24} height={24} />
+                        <TooltipContentContainerHeaders>
                             <span>Blocks</span>
-                        </TooltipContentContainerStats>
+                        </TooltipContentContainerHeaders>
                     </TooltipContainer>
                 </div>
-                <div className='flex w-4/12 mx-auto justify-center'>
-                    <p className=' mt-0.5'>Attestation Accuracy</p>
+                <div className={`flex w-[${columnsWidth.attestation}%] items-center gap-x-1 justify-center`}>
+                    <p className='mt-0.5'>Attestation Accuracy</p>
                     <TooltipContainer>
                         <Image
-                            className='ml-1'
                             src='/static/images/information.svg'
-                            alt='Blocks'
-                            width={30}
-                            height={30}
+                            alt='Attestation Accuracy information'
+                            width={24}
+                            height={24}
                         />
-                        <TooltipContentContainerStats tooltipColor={'white'} colorLetter={'#000000'}>
+                        <TooltipContentContainerHeaders>
                             <span>Attestation Accuracy</span>
-                        </TooltipContentContainerStats>
+                        </TooltipContentContainerHeaders>
                     </TooltipContainer>
                 </div>
-                <div className='flex w-3/12 mx-auto justify-center'>
+                <div className={`flex w-[${columnsWidth.balance}%] items-center gap-x-1 justify-center`}>
                     <p className='mt-0.5'>Balance</p>
                     <TooltipContainer>
-                        <Image
-                            className='ml-1'
-                            src='/static/images/information.svg'
-                            alt='Blocks'
-                            width={30}
-                            height={30}
-                        />
-                        <TooltipContentContainerStats tooltipColor={'white'} colorLetter={'#000000'}>
+                        <Image src='/static/images/information.svg' alt='Balance information' width={24} height={24} />
+                        <TooltipContentContainerHeaders>
                             <span>Balance</span>
-                        </TooltipContentContainerStats>
+                        </TooltipContentContainerHeaders>
                     </TooltipContainer>
                 </div>
-                <div className='flex w-1/12'>
+                <div className={`flex w-[${columnsWidth.rewards}%] items-center gap-x-1 justify-center`}>
                     <p className='mt-0.5'>Rewards</p>
                     <TooltipContainer>
-                        <Image
-                            className='ml-1'
-                            src='/static/images/information.svg'
-                            alt='Blocks'
-                            width={30}
-                            height={30}
-                        />
-                        <TooltipContentContainerStats tooltipColor={'white'} colorLetter={'#000000'}>
+                        <Image src='/static/images/information.svg' alt='Rewards information' width={24} height={24} />
+                        <TooltipContentContainerHeaders>
                             <span>Rewards</span>
-                        </TooltipContentContainerStats>
+                        </TooltipContentContainerHeaders>
                     </TooltipContainer>
                 </div>
             </div>
@@ -211,16 +188,16 @@ const Statitstics = () => {
                     <Card
                         key={epoch.f_epoch}
                         ref={idx === epochs.length - 1 ? ref : undefined}
-                        className='flex gap-x-3 justify-around items-center text-[9px] text-black bg-[#FFF0A1] rounded-[22px] px-8 py-3'
+                        className='flex gap-x-1 justify-around items-center text-[9px] text-black bg-[#FFF0A1] rounded-[22px] px-8 py-3'
                     >
-                        <div className='flex flex-col w-1/12'>
+                        <div className={`flex flex-col w-[${columnsWidth.time}%]`}>
                             <p>{new Date(firstBlock + epoch.f_slot * 12000).toLocaleDateString()}</p>
                             <p>{new Date(firstBlock + epoch.f_slot * 12000).toLocaleTimeString()}</p>
                         </div>
 
-                        <p className='w-1/12'>{epoch.f_epoch.toLocaleString()}</p>
+                        <p className={`w-[${columnsWidth.epoch}%]`}>{epoch.f_epoch.toLocaleString()}</p>
 
-                        <div className='w-2/12 pt-4 mb-2'>
+                        <div className={`w-[${columnsWidth.blocks}%] pt-3.5 mb-2`}>
                             <ProgressTileBar
                                 tilesFilled={Number(epoch.proposed_blocks)}
                                 totalTiles={32}
@@ -233,7 +210,7 @@ const Statitstics = () => {
                             />
                         </div>
 
-                        <div className='mb-2 w-4/12'>
+                        <div className={`mb-2 w-[${columnsWidth.attestation}%]`}>
                             <div className='flex gap-x-1 justify-center '>
                                 <div className='flex-1'>
                                     <ProgressSmoothBar
@@ -283,7 +260,7 @@ const Statitstics = () => {
                             </div>
                         </div>
 
-                        <div className='mb-2  w-3/12'>
+                        <div className={`mb-2 w-[${columnsWidth.balance}%]`}>
                             <ProgressSmoothBar
                                 title='Attesting/total active'
                                 bg='#0016D8'
@@ -299,7 +276,7 @@ const Statitstics = () => {
                             />
                         </div>
 
-                        <div className='w-1/12'>
+                        <div className={`w-[${columnsWidth.rewards}%] pt-1`}>
                             <ProgressSmoothBar
                                 title=''
                                 bg='#bc00d8'
