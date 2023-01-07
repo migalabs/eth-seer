@@ -311,21 +311,62 @@ const Statitstics = () => {
                 <Card
                     key={epoch.f_epoch}
                     ref={idx === epochs.length - 1 ? ref : undefined}
-                    className='flex flex-col gap-y-4 justify-around items-center text-xs text-black bg-[#FFF0A2] rounded-[22px] p-3'
+                    className='flex flex-col gap-y-4 justify-around items-center text-[10px] text-black bg-[#FFF0A2] rounded-[22px] px-3 py-4'
                 >
-                    <p className='font-bold'>Epoch {epoch.f_epoch.toLocaleString()}</p>
-
-                    <div className='flex gap-x-4 w-full'>
+                    <div className='flex gap-x-1 justify-center'>
+                        <p className='font-bold text-sm mt-0.5'>Epoch {epoch.f_epoch.toLocaleString()}</p>
+                        <TooltipContainer>
+                            <Image
+                                src='/static/images/information.svg'
+                                alt='Epoch information'
+                                width={24}
+                                height={24}
+                            />
+                            <TooltipContentContainerHeaders>
+                                <span>Epoch</span>
+                            </TooltipContentContainerHeaders>
+                        </TooltipContainer>
+                    </div>
+                    <div className='flex flex-col gap-x-4 w-full'>
+                        <div className='flex gap-x-1 justify-center mb-1'>
+                            <p className='text-xs mt-1'>Time</p>
+                            <TooltipContainer>
+                                <Image
+                                    src='/static/images/information.svg'
+                                    alt='Time information'
+                                    width={24}
+                                    height={24}
+                                />
+                                <TooltipContentContainerHeaders>
+                                    <span>Time</span>
+                                </TooltipContentContainerHeaders>
+                            </TooltipContainer>
+                        </div>
                         <div>
-                            <p className='uppercase'>Slot</p>
-                            <p>{epoch.f_slot}</p>
+                            <p>{new Date(firstBlock + epoch.f_slot * 12000).toLocaleDateString()}</p>
+                            <p>{new Date(firstBlock + epoch.f_slot * 12000).toLocaleTimeString()}</p>
+                        </div>
+                    </div>
+
+                    <div className='flex flex-col w-full'>
+                        <div className='flex gap-x-1 justify-center mb-1'>
+                            <p className='text-xs mt-1'>Blocks</p>
+                            <TooltipContainer>
+                                <Image
+                                    src='/static/images/information.svg'
+                                    alt='Blocks information'
+                                    width={24}
+                                    height={24}
+                                />
+                                <TooltipContentContainerHeaders>
+                                    <span>Blocks</span>
+                                </TooltipContentContainerHeaders>
+                            </TooltipContainer>
                         </div>
                         <div>
                             <ProgressTileBar
                                 tilesFilled={32}
                                 totalTiles={32}
-                                hasImage
-                                statsInside
                                 tooltipContent={
                                     <>
                                         <span>Proposed Blocks: {epoch.proposed_blocks}</span>
@@ -337,8 +378,20 @@ const Statitstics = () => {
                     </div>
 
                     <div className='flex flex-col w-full gap-y-2'>
-                        <p>Attestation Accuracy</p>
-
+                        <div className='flex flex-col gap-x-1 items-center mb-1'>
+                            <p className='text-xs mt-1'>Attestation Accuracy</p>
+                            <TooltipContainer>
+                                <Image
+                                    src='/static/images/information.svg'
+                                    alt='Attestation Accuracy information'
+                                    width={24}
+                                    height={24}
+                                />
+                                <TooltipContentContainerHeaders>
+                                    <span>Attestation Accuracy</span>
+                                </TooltipContentContainerHeaders>
+                            </TooltipContainer>
+                        </div>
                         <ProgressSmoothBar
                             title='Target'
                             bg='#D17E00'
@@ -380,15 +433,23 @@ const Statitstics = () => {
                                 </>
                             }
                         />
-
-                        <p className='text-center'>
-                            {epoch.f_num_att_vals.toLocaleString()} / {epoch.f_num_vals.toLocaleString()}
-                        </p>
                     </div>
 
                     <div className='flex flex-col w-full gap-y-2'>
-                        <p>Balance</p>
-
+                        <div className='flex gap-x-1 justify-center mb-1'>
+                            <p className='text-xs mt-1'>Balance</p>
+                            <TooltipContainer>
+                                <Image
+                                    src='/static/images/information.svg'
+                                    alt='Balance information'
+                                    width={24}
+                                    height={24}
+                                />
+                                <TooltipContentContainerHeaders>
+                                    <span>Balance</span>
+                                </TooltipContentContainerHeaders>
+                            </TooltipContainer>
+                        </div>
                         <ProgressSmoothBar
                             title='Attesting/total active'
                             bg='#0016D8'
@@ -402,19 +463,26 @@ const Statitstics = () => {
                                 </>
                             }
                         />
-
-                        <p>
-                            {epoch.f_att_effective_balance_eth.toLocaleString()} /{' '}
-                            {epoch.f_total_effective_balance_eth.toLocaleString()}
-                        </p>
                     </div>
 
-                    <div className='flex w-full gap-x-4'>
-                        <Image className='mx-auto' src='/static/images/cup.svg' alt='Blocks' width={30} height={30} />
-
+                    <div className='flex  flex-col w-full gap-x-4'>
+                        <div className='flex gap-x-1 justify-center mb-1'>
+                            <p className='text-xs mt-1'>Rewards</p>
+                            <TooltipContainer>
+                                <Image
+                                    src='/static/images/information.svg'
+                                    alt='Rewards information'
+                                    width={24}
+                                    height={24}
+                                />
+                                <TooltipContentContainerHeaders>
+                                    <span>Rewards</span>
+                                </TooltipContentContainerHeaders>
+                            </TooltipContainer>
+                        </div>
                         <div className='flex-1'>
                             <ProgressSmoothBar
-                                title='Reward'
+                                title=''
                                 bg='#bc00d8'
                                 color='#ffbdd9'
                                 percent={Number(epoch.reward_average) / Number(epoch.max_reward_average)}
