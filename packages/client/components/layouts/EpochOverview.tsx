@@ -72,6 +72,18 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
         }
     };
 
+    const getEntityName = (f_pool_name: string) => {
+        if (f_pool_name) {
+            if (f_pool_name.length > 18) {
+                return `${f_pool_name.substring(0, 15)}...`;
+            } else {
+                return f_pool_name;
+            }
+        } else {
+            return 'others';
+        }
+    };
+
     return (
         <div className='flex flex-col'>
             <h3 className='uppercase text-white text-center text-sm mb-2'>Epoch {epoch.toLocaleString()}</h3>
@@ -85,7 +97,7 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
                             <TooltipContainer>
                                 {getBlockImage(block)}
                                 <TooltipContentContainerBlocks>
-                                    <span>Entity: {block.f_pool_name || 'others'}</span>
+                                    <span>Entity: {getEntityName(block.f_pool_name)}</span>
                                     <span>Proposer: {Number(block.f_proposer_index).toLocaleString()}</span>
                                     <span>Slot: {Number(block.f_slot).toLocaleString()}</span>
                                 </TooltipContentContainerBlocks>
