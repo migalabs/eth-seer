@@ -10,6 +10,8 @@ type Block = {
     f_pool_name: string;
     f_proposed: boolean;
     f_epoch: number;
+    f_proposer_index: number;
+    f_graffiti: string;
 };
 
 const ChainOverview = () => {
@@ -20,10 +22,15 @@ const ChainOverview = () => {
     const [arrowRightHidden, setArrowRightHidden] = useState(true);
     const [arrowLeftHidden, setArrowLeftHidden] = useState(false);
     const [currentPage, setCurrentPage] = useState(0);
+    const [numberEpochsViewed, setNumberEpochsViewed] = useState(1);
 
     useEffect(() => {
         if (!epochs) {
             getBlocks(0);
+        }
+
+        if (window !== undefined) {
+            if (window.innerWidth > 768) setNumberEpochsViewed(2);
         }
 
         const eventSource = new EventSource(
@@ -84,7 +91,10 @@ const ChainOverview = () => {
                 }
             });
 
-            setLastEpoch(lastEpochAux);
+            setLastEpoch(prevState => {
+                if (prevState < lastEpochAux) return lastEpochAux;
+                else return prevState;
+            });
 
             if (page > 0) {
                 setCurrentPage(page);
@@ -95,7 +105,7 @@ const ChainOverview = () => {
     };
 
     const handleLeft = () => {
-        if (epochs && Object.entries(epochs).length - 2 - count === 1) {
+        if (epochs && Object.entries(epochs).length - numberEpochsViewed - count === 1) {
             getBlocks(currentPage + 1);
         }
 
@@ -111,7 +121,7 @@ const ChainOverview = () => {
             setArrowRightHidden(true);
         }
 
-        if (epochs && Object.entries(epochs).length - 2 - count !== 1) {
+        if (epochs && Object.entries(epochs).length - numberEpochsViewed - count !== 1) {
             setArrowLeftHidden(false);
         }
 
@@ -133,7 +143,10 @@ const ChainOverview = () => {
 
             {epochs &&
                 Object.entries(epochs)
-                    .slice(Object.entries(epochs).length - 2 - count, Object.entries(epochs).length - count)
+                    .slice(
+                        Object.entries(epochs).length - numberEpochsViewed - count,
+                        Object.entries(epochs).length - count
+                    )
                     .map(([epoch, blocks]) => (
                         <EpochOverview
                             key={epoch}
