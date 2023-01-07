@@ -47,11 +47,6 @@ const ProgressTileBar = ({ tilesFilled, totalTiles, hasImage, statsInside, mobil
                     </TooltipContentContainerStats>
                 </TooltipContainer>
             </div>
-            {!statsInside && (
-                <p className='text-[9px]'>
-                    {tilesFilled} / {totalTiles}
-                </p>
-            )}
         </div>
     );
 };
