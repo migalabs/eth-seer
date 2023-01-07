@@ -9,15 +9,6 @@ export const getEpochsStatistics = async (req: Request, res: Response) => {
 
         const skip = Number(page) * Number(limit);
 
-        const lastEpochResponse: any = await pgClient.query(`
-            SELECT f_epoch
-            FROM t_block_metrics
-            ORDER BY f_epoch DESC
-            LIMIT 1
-        `);
-
-        const lastEpoch = lastEpochResponse.rows[0].f_epoch;
-
         const [ epochsStats, rewardsStats, blocksStats ] =
          await Promise.all([
             pgClient.query(`
@@ -30,12 +21,20 @@ export const getEpochsStatistics = async (req: Request, res: Response) => {
                 LIMIT ${limit}
             `),
             pgClient.query(`
-                SELECT avg(f_reward) AS reward_average, avg(f_max_reward) AS max_reward_average, f_epoch
-                FROM (select f_val_idx, f_reward, f_max_reward, f_epoch
-                FROM t_validator_rewards_summary
-                WHERE f_epoch > ${lastEpoch-10-skip}
-                ORDER BY f_epoch desc) t1
-                LEFT JOIN t_proposer_duties on t1.f_val_idx = t_proposer_duties.f_val_idx and t1.f_epoch = t_proposer_duties.f_proposer_slot/32
+                SELECT AVG(f_reward) AS reward_average, AVG(f_max_reward) AS max_reward_average, f_epoch
+                FROM (
+                    SELECT f_val_idx, f_reward, f_max_reward, f_epoch
+                    FROM t_validator_rewards_summary
+                    WHERE f_epoch IN (
+                        SELECT DISTINCT(f_epoch)
+                        FROM t_block_metrics
+                        ORDER BY f_epoch DESC
+                        LIMIT ${limit}
+                        OFFSET ${skip + 2}
+                    )
+                    ORDER BY f_epoch DESC
+                ) t1
+                LEFT JOIN t_proposer_duties ON t1.f_val_idx = t_proposer_duties.f_val_idx AND t1.f_epoch = t_proposer_duties.f_proposer_slot/32
                 WHERE t_proposer_duties.f_val_idx IS null
                 GROUP BY t1.f_epoch
                 ORDER BY f_epoch desc
@@ -85,7 +84,8 @@ export const getBlocks = async (req: Request, res: Response) => {
         const skip = Number(page) * Number(limit);
 
         const blocks = await pgClient.query(`
-            SELECT t_block_metrics.f_epoch, t_block_metrics.f_slot, t_eth2_pubkeys.f_pool_name, t_block_metrics.f_proposed
+            SELECT t_block_metrics.f_epoch, t_block_metrics.f_slot, t_eth2_pubkeys.f_pool_name, t_block_metrics.f_proposed, t_block_metrics.f_proposer_index,
+            t_block_metrics.f_graffiti
             FROM t_block_metrics
             LEFT OUTER JOIN t_eth2_pubkeys ON t_block_metrics.f_proposer_index = t_eth2_pubkeys.f_val_idx
             ORDER BY f_slot DESC
