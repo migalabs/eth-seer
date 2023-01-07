@@ -281,8 +281,6 @@ const Statitstics = () => {
                                     />
                                 </div>
                             </div>
-
-                           
                         </div>
 
                         <div className='mb-2  w-3/12'>
@@ -299,7 +297,6 @@ const Statitstics = () => {
                                     </>
                                 }
                             />
-                            
                         </div>
 
                         <div className='w-1/12'>
@@ -362,7 +359,6 @@ const Statitstics = () => {
                                         <span>Missed Blocks: {32 - Number(epoch.proposed_blocks)}</span>
                                     </>
                                 }
-                                mobile
                             />
                         </div>
                     </div>
