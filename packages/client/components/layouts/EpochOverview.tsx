@@ -56,19 +56,19 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
         if (block.f_pool_name && POOLS.includes(block.f_pool_name.toUpperCase())) {
             return (
                 <Image
-                    src={`/static/images/block_${block.f_pool_name.toLowerCase()}${missedExtension}.svg`}
+                    src={`/static/images/blocks/block_${block.f_pool_name.toLowerCase()}${missedExtension}.svg`}
                     alt='Logo'
                     width={50}
                     height={50}
                 />
             );
         } else if (block.f_pool_name && block.f_pool_name.includes('lido')) {
-            return <Image src={`/static/images/block_lido${missedExtension}.svg`} alt='Logo' width={50} height={50} />;
+            return <Image src={`/static/images/blocks/block_lido${missedExtension}.svg`} alt='Logo' width={50} height={50} />;
         } else if (block.f_pool_name && block.f_pool_name.includes('whale')) {
-            return <Image src={`/static/images/block_whale${missedExtension}.svg`} alt='Logo' width={50} height={50} />;
+            return <Image src={`/static/images/blocks/block_whale${missedExtension}.svg`} alt='Logo' width={50} height={50} />;
         } else {
             return (
-                <Image src={`/static/images/block_others${missedExtension}.svg`} alt='Logo' width={50} height={50} />
+                <Image src={`/static/images/blocks/block_others${missedExtension}.svg`} alt='Logo' width={50} height={50} />
             );
         }
     };
@@ -108,12 +108,12 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
 
                     {blocks.length < 32 && (
                         <>
-                            <Image src={`/static/images/block_mining.svg`} alt='Mining block' width={50} height={50} />
+                            <Image src={`/static/images/blocks/block_mining.svg`} alt='Mining block' width={50} height={50} />
 
                             {Array.from(Array(32 - blocks.length - 1)).map((_, idx) => (
                                 <Image
                                     key={idx}
-                                    src={`/static/images/block_awaiting.svg`}
+                                    src={`/static/images/blocks/block_awaiting.svg`}
                                     alt='Awaiting block'
                                     width={50}
                                     height={50}
