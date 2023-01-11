@@ -50,7 +50,7 @@ type Props = {
 
 export const TooltipContentContainerStats = styled(TooltipContentContainer)<Props>`
     top: 20px;
-    background-image: ${({ tooltipColor }) => `url('/static/images/tooltip_${tooltipColor}.svg')`};
+    background-image: ${({ tooltipColor }) => `url('/static/images/tooltips/tooltip_${tooltipColor}.svg')`};
 
     span {
         color: ${({ colorLetter }) => colorLetter};
@@ -60,7 +60,7 @@ export const TooltipContentContainerStats = styled(TooltipContentContainer)<Prop
 
 export const TooltipContentContainerBlocks = styled(TooltipContentContainer)`
     top: 50px;
-    background-image: url('/static/images/tooltip_white.svg');
+    background-image: url('/static/images/tooltips/tooltip_white.svg');
 
     span {
         color: black;
