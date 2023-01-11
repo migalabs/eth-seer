@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import { useInView } from 'react-intersection-observer';
 
@@ -41,6 +41,8 @@ const Statitstics = () => {
     // Intersection Observer
     const { ref, inView } = useInView();
 
+    const conainerRef = useRef<HTMLInputElement>(null);
+
     // States
     const [epochs, setEpochs] = useState<Epoch[]>([]);
     const [desktopView, setDesktopView] = useState(true);
@@ -72,6 +74,19 @@ const Statitstics = () => {
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [inView]);
+
+    const handleMouseMove = (e: any) => {
+        if (conainerRef.current) {
+            const x = e.pageX;
+            const limit = 0.15;
+
+            if (x < conainerRef.current.clientWidth * limit) {
+                conainerRef.current.scrollLeft -= 10;
+            } else if (x > conainerRef.current.clientWidth * (1 - limit)) {
+                conainerRef.current.scrollLeft += 10;
+            }
+        }
+    };
 
     // get epochs
     const getEpochs = async (page: number, limit = 10) => {
@@ -111,8 +126,8 @@ const Statitstics = () => {
     };
 
     const getDesktopView = () => (
-        <div className='flex flex-col px-20'>
-            <div className='flex gap-x-1 justify-around px-8 py-3  uppercase text-sm'>
+        <div ref={conainerRef} className='flex flex-col px-2 xl:px-20 overflow-x-auto' onMouseMove={handleMouseMove}>
+            <div className='flex gap-x-1 justify-around px-2 xl:px-8 py-3 uppercase text-sm min-w-[1150px]'>
                 <div className='flex w-[10%] items-center gap-x-1 justify-center'>
                     <p className='mt-0.5'>Time</p>
                     <TooltipContainer>
@@ -133,7 +148,7 @@ const Statitstics = () => {
                     </TooltipContainer>
                 </div>
 
-                <div className='flex w-[12%] items-center gap-x-1 justify-center'>
+                <div className='flex w-[13%] items-center gap-x-1 justify-center'>
                     <p className='mt-0.5'>Blocks</p>
                     <TooltipContainer>
                         <Image src='/static/images/information.svg' alt='Blocks information' width={24} height={24} />
@@ -143,7 +158,7 @@ const Statitstics = () => {
                     </TooltipContainer>
                 </div>
 
-                <div className='flex w-[33%] items-center gap-x-1 justify-center'>
+                <div className='flex w-[31%] items-center gap-x-1 justify-center'>
                     <p className='mt-0.5'>Attestation Accuracy</p>
                     <TooltipContainer>
                         <Image
@@ -158,7 +173,7 @@ const Statitstics = () => {
                     </TooltipContainer>
                 </div>
 
-                <div className='flex w-[24%] items-center gap-x-1 justify-center'>
+                <div className='flex w-[22%] items-center gap-x-1 justify-center'>
                     <p className='mt-0.5'>Balance</p>
                     <TooltipContainer>
                         <Image src='/static/images/information.svg' alt='Balance information' width={24} height={24} />
@@ -168,7 +183,7 @@ const Statitstics = () => {
                     </TooltipContainer>
                 </div>
 
-                <div className='flex w-[11%] items-center gap-x-1 justify-center'>
+                <div className='flex w-[13%] items-center gap-x-1 justify-center'>
                     <p className='mt-0.5'>Rewards</p>
                     <TooltipContainer>
                         <Image src='/static/images/information.svg' alt='Rewards information' width={24} height={24} />
@@ -179,12 +194,12 @@ const Statitstics = () => {
                 </div>
             </div>
 
-            <div className='flex flex-col justify-center gap-y-4'>
+            <div className='flex flex-col justify-center gap-y-4 min-w-[1150px]'>
                 {epochs.map((epoch: Epoch, idx: number) => (
                     <Card
                         key={epoch.f_epoch}
                         ref={idx === epochs.length - 1 ? ref : undefined}
-                        className='flex gap-x-1 justify-around items-center text-[9px] text-black bg-[#FFF0A1] rounded-[22px] px-8 py-3'
+                        className='flex gap-x-1 justify-around items-center text-[9px] text-black bg-[#FFF0A1] rounded-[22px] px-2 xl:px-8 py-3'
                     >
                         <div className='flex flex-col w-[10%]'>
                             <p>{new Date(firstBlock + epoch.f_slot * 12000).toLocaleDateString()}</p>
@@ -193,7 +208,7 @@ const Statitstics = () => {
 
                         <p className='w-[10%]'>{epoch.f_epoch.toLocaleString()}</p>
 
-                        <div className='w-[10%] pt-3.5 mb-2'>
+                        <div className='w-[13%] pt-3.5 mb-2'>
                             <ProgressTileBar
                                 tilesFilled={Number(epoch.proposed_blocks)}
                                 totalTiles={32}
@@ -206,7 +221,7 @@ const Statitstics = () => {
                             />
                         </div>
 
-                        <div className='mb-2 w-[33%]'>
+                        <div className='mb-2 w-[31%]'>
                             <div className='flex gap-x-1 justify-center '>
                                 <div className='flex-1'>
                                     <ProgressSmoothBar
@@ -256,7 +271,7 @@ const Statitstics = () => {
                             </div>
                         </div>
 
-                        <div className='mb-2 w-[24%]'>
+                        <div className='mb-2 w-[22%]'>
                             <ProgressSmoothBar
                                 title='Attesting/total active'
                                 bg='#0016D8'
@@ -272,7 +287,7 @@ const Statitstics = () => {
                             />
                         </div>
 
-                        <div className='w-[11%] pt-1'>
+                        <div className='w-[13%] pt-1'>
                             <ProgressSmoothBar
                                 title=''
                                 bg='#bc00d8'
