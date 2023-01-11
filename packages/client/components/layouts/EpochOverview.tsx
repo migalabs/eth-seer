@@ -63,12 +63,31 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
                 />
             );
         } else if (block.f_pool_name && block.f_pool_name.includes('lido')) {
-            return <Image src={`/static/images/blocks/block_lido${missedExtension}.svg`} alt='Logo' width={50} height={50} />;
+            return (
+                <Image
+                    src={`/static/images/blocks/block_lido${missedExtension}.svg`}
+                    alt='Logo'
+                    width={50}
+                    height={50}
+                />
+            );
         } else if (block.f_pool_name && block.f_pool_name.includes('whale')) {
-            return <Image src={`/static/images/blocks/block_whale${missedExtension}.svg`} alt='Logo' width={50} height={50} />;
+            return (
+                <Image
+                    src={`/static/images/blocks/block_whale${missedExtension}.svg`}
+                    alt='Logo'
+                    width={50}
+                    height={50}
+                />
+            );
         } else {
             return (
-                <Image src={`/static/images/blocks/block_others${missedExtension}.svg`} alt='Logo' width={50} height={50} />
+                <Image
+                    src={`/static/images/blocks/block_others${missedExtension}.svg`}
+                    alt='Logo'
+                    width={50}
+                    height={50}
+                />
             );
         }
     };
@@ -88,7 +107,11 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
     return (
         <div className='flex flex-col'>
             <h3 className='uppercase text-white text-center text-sm mb-2'>Epoch {epoch.toLocaleString()}</h3>
-            <div className={`flex items-center p-2 h-full ${lastEpoch && 'border-[6px] border-[#F0C83A] rounded-3xl'}`}>
+            <div
+                className={`flex items-center p-2 h-full border-[6px] ${
+                    lastEpoch ? 'border-[#F0C83A] rounded-3xl' : 'border-transparent'
+                }`}
+            >
                 <div
                     className='grid grid-cols-4 md:grid-cols-8 w-fit  md:max-h-full  mx-auto gap-2 rounded-2xl bg-[#FFF0A1] p-4'
                     style={{ boxShadow: 'inset -7px -7px 8px #F0C83A, inset 7px 7px 8px #F0C83A' }}
@@ -108,7 +131,12 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
 
                     {blocks.length < 32 && (
                         <>
-                            <Image src={`/static/images/blocks/block_mining.svg`} alt='Mining block' width={50} height={50} />
+                            <Image
+                                src={`/static/images/blocks/block_mining.svg`}
+                                alt='Mining block'
+                                width={50}
+                                height={50}
+                            />
 
                             {Array.from(Array(32 - blocks.length - 1)).map((_, idx) => (
                                 <Image
