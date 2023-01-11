@@ -52,23 +52,24 @@ type Props = {
 
 const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
     const getBlockImage = (block: Block) => {
-        if (!block.f_proposed) {
-            return <Image src={`/static/images/block_missed.svg`} alt='Logo' width={50} height={50} />;
-        } else if (block.f_pool_name && POOLS.includes(block.f_pool_name.toUpperCase())) {
+        const missedExtension = block.f_proposed ? '' : '_missed';
+        if (block.f_pool_name && POOLS.includes(block.f_pool_name.toUpperCase())) {
             return (
                 <Image
-                    src={`/static/images/block_${block.f_pool_name.toLowerCase()}.svg`}
+                    src={`/static/images/block_${block.f_pool_name.toLowerCase()}${missedExtension}.svg`}
                     alt='Logo'
                     width={50}
                     height={50}
                 />
             );
         } else if (block.f_pool_name && block.f_pool_name.includes('lido')) {
-            return <Image src={`/static/images/block_lido.svg`} alt='Logo' width={50} height={50} />;
+            return <Image src={`/static/images/block_lido${missedExtension}.svg`} alt='Logo' width={50} height={50} />;
         } else if (block.f_pool_name && block.f_pool_name.includes('whale')) {
-            return <Image src={`/static/images/block_whale.svg`} alt='Logo' width={50} height={50} />;
+            return <Image src={`/static/images/block_whale${missedExtension}.svg`} alt='Logo' width={50} height={50} />;
         } else {
-            return <Image src={`/static/images/block_others.svg`} alt='Logo' width={50} height={50} />;
+            return (
+                <Image src={`/static/images/block_others${missedExtension}.svg`} alt='Logo' width={50} height={50} />
+            );
         }
     };
 
