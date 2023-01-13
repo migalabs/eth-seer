@@ -11,7 +11,7 @@ type Props = {
 const ProgressTileBar = ({ tilesFilled, totalTiles, statsInside, tooltipContent }: Props) => {
     return (
         <div className='flex flex-col gap-y-1'>
-            <div className='flex gap-x-2 bg-[#E9C920] px-2 py-1.5 w-fit rounded-2xl border-2 border-[#F7AF45] mx-auto'>
+            <div className='flex gap-x-2 bg-[#F0C83A] px-2 py-1.5 w-fit rounded-2xl border-2 border-[#FFF0A1] mx-auto'>
                 <TooltipContainer>
                     <div className='flex flex-col justify-center'>
                         <div className='flex gap-x-px'>
@@ -29,7 +29,7 @@ const ProgressTileBar = ({ tilesFilled, totalTiles, statsInside, tooltipContent 
                             </p>
                         )}
                     </div>
-                    <TooltipContentContainerStats tooltipColor='yellow' colorLetter='#D17E00'>
+                    <TooltipContentContainerStats tooltipColor='yellow' colorLetter='#d18a20'>
                         {tooltipContent}
                     </TooltipContentContainerStats>
                 </TooltipContainer>
