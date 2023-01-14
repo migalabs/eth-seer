@@ -10,12 +10,12 @@ export const TooltipContainer = styled.div`
 
 const TooltipContentContainer = styled.div`
     position: absolute;
-    left: calc(50% - 100px);
-    height: 110px;
-    width: 200px;
+    left: calc(50% - 110px);
+    height: 115px;
+    width: 220px;
     display: none;
     flex-direction: column;
-    padding-top: 30px;
+    padding-top: 35px;
     z-index: 1;
     align-items: center;
 
@@ -33,12 +33,12 @@ const TooltipContentContainer = styled.div`
     }
 
     @media (min-width: 768px) {
-        left: calc(50% - 115px);
-        width: 230px;
-        padding-top: 35px;
+        left: calc(50% - 117.5px);
+        width: 235px;
+        padding-top: 40px;
 
         span {
-            font-size: 8px;
+            font-size: 7.5px;
         }
     }
 `;
@@ -51,7 +51,7 @@ type Props = {
 export const TooltipContentContainerStats = styled(TooltipContentContainer)<Props>`
     top: 20px;
     background-image: ${({ tooltipColor }) => `url('/static/images/tooltips/tooltip_${tooltipColor}.svg')`};
-
+    width: 220px;
     span {
         color: ${({ colorLetter }) => colorLetter};
         padding: 6.25px;
@@ -61,6 +61,9 @@ export const TooltipContentContainerStats = styled(TooltipContentContainer)<Prop
 export const TooltipContentContainerBlocks = styled(TooltipContentContainer)`
     top: 50px;
     background-image: url('/static/images/tooltips/tooltip_white.svg');
+    width: 200px;
+    left: calc(50% - 100px);
+    padding-top: 30px;
 
     span {
         color: black;
@@ -70,4 +73,15 @@ export const TooltipContentContainerBlocks = styled(TooltipContentContainer)`
 
 export const TooltipContentContainerHeaders = styled(TooltipContentContainerBlocks)`
     top: 22px;
+    width: 220px;
+    left: calc(50% - 110px);
+    padding-top: 35px;
+    @media (min-width: 768px) {
+        padding-top: 30px;
+
+        span {
+            padding: 0.5px;
+            font-size: 7.5px;
+        }
+    }
 `;
