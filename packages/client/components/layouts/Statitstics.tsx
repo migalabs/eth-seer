@@ -125,15 +125,6 @@ const Statitstics = () => {
         }
     };
 
-    const convertToScientificNotation = (num: string) => {
-        console.log(num)
-        const length = num.length;
-        console.log(length)
-        const firstDigits = num.slice(0,length-6);
-        const lastDigits = num.slice(-6,-3);
-        return `${firstDigits},${lastDigits} x 10^${length-2}`
-    }
-
     const getDesktopView = () => (
         <div ref={conainerRef} className='flex flex-col px-2 xl:px-20 overflow-x-auto' onMouseMove={handleMouseMove}>
             <div className='flex gap-x-1 justify-around px-2 xl:px-8 py-3 uppercase text-sm min-w-[1150px]'>
@@ -176,7 +167,7 @@ const Statitstics = () => {
                         />
                         <TooltipContentContainerHeaders>
                             <span>Correctly Attested Flag Count</span>
-                            <span>vs</span> 
+                            <span>vs</span>
                             <span>Expected Attesting Flag Count</span>
                         </TooltipContentContainerHeaders>
                     </TooltipContainer>
@@ -188,7 +179,7 @@ const Statitstics = () => {
                         <Image src='/static/images/information.svg' alt='Balance information' width={24} height={24} />
                         <TooltipContentContainerHeaders>
                             <span>Attesting Balance</span>
-                            <span>vs</span> 
+                            <span>vs</span>
                             <span>Total Active Balance</span>
                         </TooltipContentContainerHeaders>
                     </TooltipContainer>
@@ -293,8 +284,12 @@ const Statitstics = () => {
                                 tooltipColor='bluedark'
                                 tooltipContent={
                                     <>
-                                        <span>Att. Balance: {epoch.f_att_effective_balance_eth.toLocaleString()} ETH</span>
-                                        <span>Act. Balanace: {epoch.f_total_effective_balance_eth.toLocaleString()} ETH</span>
+                                        <span>
+                                            Att. Balance: {epoch.f_att_effective_balance_eth.toLocaleString()} ETH
+                                        </span>
+                                        <span>
+                                            Act. Balanace: {epoch.f_total_effective_balance_eth.toLocaleString()} ETH
+                                        </span>
                                     </>
                                 }
                             />
@@ -410,7 +405,7 @@ const Statitstics = () => {
                                 />
                                 <TooltipContentContainerHeaders>
                                     <span>Correctly Attested Flag Count</span>
-                                    <span>vs</span> 
+                                    <span>vs</span>
                                     <span>Expected Attesting Flag Count</span>
                                 </TooltipContentContainerHeaders>
                             </TooltipContainer>
@@ -470,7 +465,7 @@ const Statitstics = () => {
                                 />
                                 <TooltipContentContainerHeaders>
                                     <span>Attesting Balance</span>
-                                    <span>vs</span> 
+                                    <span>vs</span>
                                     <span>Total Active Balance</span>
                                 </TooltipContentContainerHeaders>
                             </TooltipContainer>
@@ -484,7 +479,9 @@ const Statitstics = () => {
                             tooltipContent={
                                 <>
                                     <span>Att. Balance: {epoch.f_att_effective_balance_eth.toLocaleString()} eth</span>
-                                    <span>Act. Balanace: {epoch.f_total_effective_balance_eth.toLocaleString()} eth</span>
+                                    <span>
+                                        Act. Balanace: {epoch.f_total_effective_balance_eth.toLocaleString()} eth
+                                    </span>
                                 </>
                             }
                         />
@@ -517,7 +514,9 @@ const Statitstics = () => {
                                 tooltipContent={
                                     <>
                                         <span>Reward: {Number(epoch.reward_average).toLocaleString()} GWEI</span>
-                                        <span>Max. Reward: {Number(epoch.max_reward_average).toLocaleString()} GWEI</span>
+                                        <span>
+                                            Max. Reward: {Number(epoch.max_reward_average).toLocaleString()} GWEI
+                                        </span>
                                     </>
                                 }
                             />
