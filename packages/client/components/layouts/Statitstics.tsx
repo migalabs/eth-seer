@@ -132,7 +132,7 @@ const Statitstics = () => {
     const getDesktopView = () => (
         <div
             ref={conainerRef}
-            className='flex flex-col px-2 xl:px-20 overflow-x-auto overflow-y-hidden'
+            className='flex flex-col px-2 xl:px-20 overflow-x-hidden overflow-y-hidden'
             onMouseMove={handleMouseMove}
         >
             <div className='flex gap-x-1 justify-around px-2 xl:px-8 py-3 uppercase text-sm min-w-[1150px]'>
