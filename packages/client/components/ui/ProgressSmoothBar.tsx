@@ -8,9 +8,10 @@ type Props = {
     bg: string;
     tooltipColor: string;
     tooltipContent: any;
+    mobile?: boolean;
 };
 
-const ProgressSmoothBar = ({ title, percent, color, bg, tooltipColor, tooltipContent }: Props) => {
+const ProgressSmoothBar = ({ title, percent, color, bg, tooltipColor, tooltipContent, mobile }: Props) => {
     const width = Number(percent * 100).toFixed(0);
 
     return (
@@ -23,7 +24,7 @@ const ProgressSmoothBar = ({ title, percent, color, bg, tooltipColor, tooltipCon
                         <p className='font-bold pt-1' style={{ color: bg, cursor: 'default' }}>
                             {Number(Number(percent * 100).toFixed(2)).toLocaleString()}%
                         </p>
-                        <TooltipContentContainerStats tooltipColor={tooltipColor} colorLetter={bg}>
+                        <TooltipContentContainerStats tooltipColor={tooltipColor} colorLetter={bg} mobile={mobile}>
                             {tooltipContent}
                         </TooltipContentContainerStats>
                     </TooltipContainer>
