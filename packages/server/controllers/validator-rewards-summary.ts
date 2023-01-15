@@ -27,10 +27,10 @@ export const getEpochsStatistics = async (req: Request, res: Response) => {
                     FROM t_validator_rewards_summary
                     WHERE f_epoch IN (
                         SELECT DISTINCT(f_epoch)
-                        FROM t_block_metrics
+                        FROM t_epoch_metrics_summary
                         ORDER BY f_epoch DESC
-                        LIMIT ${Number(limit) + 4}
                         OFFSET ${skip}
+                        LIMIT ${limit}
                     )
                     ORDER BY f_epoch DESC
                 ) t1
