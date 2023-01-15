@@ -1,0 +1,12 @@
+FROM node:16
+
+RUN mkdir /app
+WORKDIR /app
+
+COPY ./packages/server/ ./
+
+WORKDIR /app/server
+RUN npm ci
+RUN npm run build
+
+CMD npm run start
