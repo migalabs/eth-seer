@@ -46,15 +46,26 @@ const TooltipContentContainer = styled.div`
 type Props = {
     tooltipColor: string;
     colorLetter: string;
+    mobile?: boolean;
 };
 
 export const TooltipContentContainerStats = styled(TooltipContentContainer)<Props>`
     top: 20px;
-    background-image: ${({ tooltipColor }) => `url('/static/images/tooltips/tooltip_${tooltipColor}.svg')`};
+    background-image: ${({ tooltipColor, mobile }) =>
+        tooltipColor === 'pink' && !mobile
+            ? `url('/static/images/tooltips/tooltip_${tooltipColor}_2.svg')`
+            : `url('/static/images/tooltips/tooltip_${tooltipColor}.svg')`};
     width: 220px;
     span {
         color: ${({ colorLetter }) => colorLetter};
         padding: 6.25px;
+    }
+    @media (min-width: 1300px) {
+        background-image: ${({ tooltipColor }) => `url('/static/images/tooltips/tooltip_${tooltipColor}.svg')`};
+    }
+
+    @media (max-width: 1300px) {
+        left: ${({ tooltipColor, mobile }) => tooltipColor === 'pink' && !mobile && 'calc(50% - 218.5px)'};
     }
 `;
 
@@ -70,12 +81,22 @@ export const TooltipContentContainerBlocks = styled(TooltipContentContainer)`
         padding: 3px;
     }
 `;
-
-export const TooltipContentContainerHeaders = styled(TooltipContentContainerBlocks)`
+type PropsHeader = {
+    rewards?: boolean;
+    time?: boolean;
+};
+export const TooltipContentContainerHeaders = styled(TooltipContentContainerBlocks)<PropsHeader>`
     top: 22px;
     width: 220px;
     left: calc(50% - 110px);
     padding-top: 35px;
+    background-image: ${({ rewards, time }) =>
+        rewards
+            ? `url('/static/images/tooltips/tooltip_white_2.svg')`
+            : time
+            ? `url('/static/images/tooltips/tooltip_white_3.svg')`
+            : `url('/static/images/tooltips/tooltip_white.svg')`};
+
     @media (min-width: 768px) {
         padding-top: 30px;
 
@@ -83,5 +104,14 @@ export const TooltipContentContainerHeaders = styled(TooltipContentContainerBloc
             padding: 0.5px;
             font-size: 7.5px;
         }
+    }
+
+    @media (min-width: 1300px) {
+        background-image: url('/static/images/tooltips/tooltip_white.svg');
+    }
+
+    @media (max-width: 1300px) {
+        left: ${({ rewards }) => rewards && 'calc(50% - 227.5px)'};
+        left: ${({ time }) => time && 'calc(50% - 13.5px)'};
     }
 `;
