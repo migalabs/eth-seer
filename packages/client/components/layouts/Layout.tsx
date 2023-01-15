@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import React, { PropsWithChildren } from 'react';
 
 // Components
@@ -6,6 +7,10 @@ import Header from './Header';
 const Layout = ({ children }: PropsWithChildren<{}>) => {
     return (
         <>
+            <Head>
+                <title>Ethseer Stats</title>
+            </Head>
+
             <Header />
 
             <main>{children}</main>
