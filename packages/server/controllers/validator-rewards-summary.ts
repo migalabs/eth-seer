@@ -29,8 +29,8 @@ export const getEpochsStatistics = async (req: Request, res: Response) => {
                         SELECT DISTINCT(f_epoch)
                         FROM t_block_metrics
                         ORDER BY f_epoch DESC
-                        LIMIT ${limit}
-                        OFFSET ${skip + 2}
+                        LIMIT ${Number(limit) + 4}
+                        OFFSET ${skip}
                     )
                     ORDER BY f_epoch DESC
                 ) t1
