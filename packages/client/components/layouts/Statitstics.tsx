@@ -70,7 +70,7 @@ const Statitstics = () => {
                 getEpochs(0, 2);
             });
             setEventSourceOpenened(true);
-    
+
             return () => {
                 eventSource.close();
             };
