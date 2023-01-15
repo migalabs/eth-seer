@@ -49,6 +49,7 @@ const Statitstics = () => {
     const [currentPage, setCurrentPage] = useState(0);
     const [lastPageFetched, setLastPageFetched] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [eventSourceOpenened, setEventSourceOpenened] = useState(false);
 
     useEffect(() => {
         if (epochs.length === 0) {
@@ -61,16 +62,19 @@ const Statitstics = () => {
             getEpochs(currentPage + 1);
         }
 
-        const eventSource = new EventSource(
-            `${process.env.NEXT_PUBLIC_URL_API}/api/validator-rewards-summary/new-epoch-notification`
-        );
-        eventSource.addEventListener('new_epoch', function (e) {
-            getEpochs(0, 2);
-        });
-
-        return () => {
-            eventSource.close();
-        };
+        if (!eventSourceOpenened) {
+            const eventSource = new EventSource(
+                `${process.env.NEXT_PUBLIC_URL_API}/api/validator-rewards-summary/new-epoch-notification`
+            );
+            eventSource.addEventListener('new_epoch', function (e) {
+                getEpochs(0, 2);
+            });
+            setEventSourceOpenened(true);
+    
+            return () => {
+                eventSource.close();
+            };
+        }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [inView]);
