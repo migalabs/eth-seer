@@ -67,9 +67,9 @@ export const TooltipContentContainerStats = styled(TooltipContentContainer)<Prop
                 : `url('/static/images/tooltips/tooltip_${tooltipColor}.svg')`};
     }
 
-    @media (min-width: 1300px) {
-        background-image: ${({ tooltipColor }) => `url('/static/images/tooltips/tooltip_${tooltipColor}.svg')`};
+    @media (min-width: 1280px) {
         left: calc(50% - 117.5px);
+        background-image: ${({ tooltipColor }) => `url('/static/images/tooltips/tooltip_${tooltipColor}.svg')`};
     }
 `;
 
@@ -85,10 +85,12 @@ export const TooltipContentContainerBlocks = styled(TooltipContentContainer)`
         padding: 3px;
     }
 `;
+
 type PropsHeader = {
     rewards?: boolean;
     time?: boolean;
 };
+
 export const TooltipContentContainerHeaders = styled(TooltipContentContainerBlocks)<PropsHeader>`
     top: 22px;
     width: 220px;
@@ -110,12 +112,13 @@ export const TooltipContentContainerHeaders = styled(TooltipContentContainerBloc
         }
     }
 
-    @media (min-width: 1300px) {
-        background-image: url('/static/images/tooltips/tooltip_white.svg');
+    @media (min-width: 768px) {
+        left: ${({ rewards, time }) =>
+            rewards ? 'calc(50% - 227.5px)' : time ? 'calc(50% - 13.5px)' : 'calc(50% - 117.5px)'};
     }
 
-    @media (max-width: 1300px) {
-        left: ${({ rewards }) => rewards && 'calc(50% - 227.5px)'};
-        left: ${({ time }) => time && 'calc(50% - 13.5px)'};
+    @media (min-width: 1280px) {
+        left: calc(50% - 117.5px);
+        background-image: url('/static/images/tooltips/tooltip_white.svg');
     }
 `;
