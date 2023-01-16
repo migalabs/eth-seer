@@ -10,12 +10,12 @@ export const TooltipContainer = styled.div`
 
 const TooltipContentContainer = styled.div`
     position: absolute;
-    left: calc(50% - 100px);
-    height: 110px;
-    width: 200px;
+    left: calc(50% - 110px);
+    height: 115px;
+    width: 220px;
     display: none;
     flex-direction: column;
-    padding-top: 30px;
+    padding-top: 35px;
     z-index: 1;
     align-items: center;
 
@@ -33,12 +33,12 @@ const TooltipContentContainer = styled.div`
     }
 
     @media (min-width: 768px) {
-        left: calc(50% - 115px);
-        width: 230px;
-        padding-top: 35px;
+        left: calc(50% - 117.5px);
+        width: 235px;
+        padding-top: 40px;
 
         span {
-            font-size: 8px;
+            font-size: 7.5px;
         }
     }
 `;
@@ -50,17 +50,35 @@ type Props = {
 
 export const TooltipContentContainerStats = styled(TooltipContentContainer)<Props>`
     top: 20px;
-    background-image: ${({ tooltipColor }) => `url('/static/images/tooltip_${tooltipColor}.svg')`};
+    left: calc(50% - 117.5px);
+    width: 220px;
+    background-image: ${({ tooltipColor }) => `url('/static/images/tooltips/tooltip_${tooltipColor}.svg')`};
 
     span {
         color: ${({ colorLetter }) => colorLetter};
         padding: 6.25px;
     }
+
+    @media (min-width: 768px) {
+        left: ${({ tooltipColor }) => tooltipColor === 'pink' && 'calc(50% - 218.5px)'};
+        background-image: ${({ tooltipColor }) =>
+            tooltipColor === 'pink'
+                ? `url('/static/images/tooltips/tooltip_${tooltipColor}_left.svg')`
+                : `url('/static/images/tooltips/tooltip_${tooltipColor}.svg')`};
+    }
+
+    @media (min-width: 1280px) {
+        left: calc(50% - 117.5px);
+        background-image: ${({ tooltipColor }) => `url('/static/images/tooltips/tooltip_${tooltipColor}.svg')`};
+    }
 `;
 
 export const TooltipContentContainerBlocks = styled(TooltipContentContainer)`
     top: 50px;
-    background-image: url('/static/images/tooltip_white.svg');
+    background-image: url('/static/images/tooltips/tooltip_white.svg');
+    width: 200px;
+    left: calc(50% - 100px);
+    padding-top: 30px;
 
     span {
         color: black;
@@ -68,6 +86,39 @@ export const TooltipContentContainerBlocks = styled(TooltipContentContainer)`
     }
 `;
 
-export const TooltipContentContainerHeaders = styled(TooltipContentContainerBlocks)`
+type PropsHeader = {
+    rewards?: boolean;
+    time?: boolean;
+};
+
+export const TooltipContentContainerHeaders = styled(TooltipContentContainerBlocks)<PropsHeader>`
     top: 22px;
+    width: 220px;
+    left: calc(50% - 110px);
+    padding-top: 35px;
+    background-image: ${({ rewards, time }) =>
+        rewards
+            ? "url('/static/images/tooltips/tooltip_white_left.svg')"
+            : time
+            ? "url('/static/images/tooltips/tooltip_white_right.svg')"
+            : "url('/static/images/tooltips/tooltip_white.svg')"};
+
+    @media (min-width: 768px) {
+        padding-top: 30px;
+
+        span {
+            padding: 0.5px;
+            font-size: 7.5px;
+        }
+    }
+
+    @media (min-width: 768px) {
+        left: ${({ rewards, time }) =>
+            rewards ? 'calc(50% - 227.5px)' : time ? 'calc(50% - 13.5px)' : 'calc(50% - 117.5px)'};
+    }
+
+    @media (min-width: 1280px) {
+        left: calc(50% - 117.5px);
+        background-image: url('/static/images/tooltips/tooltip_white.svg');
+    }
 `;

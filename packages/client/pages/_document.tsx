@@ -8,6 +8,12 @@ export default function Document() {
                 styles={css`
                     :root {
                         --headingFont: 'Press Start 2P', cursive;
+                        --purple1: #775cb1;
+                        --purple2: #e5d9ff;
+                        --green1: #cfffaa;
+                        --green2: #95db5e;
+                        --red1: #f1a5a5;
+                        --red2: #ba7272;
                     }
 
                     html {
