@@ -140,7 +140,7 @@ const Statitstics = () => {
                     <p className='mt-0.5'>Time</p>
                     <TooltipContainer>
                         <Image src='/static/images/information.svg' alt='Time information' width={24} height={24} />
-                        <TooltipContentContainerHeaders>
+                        <TooltipContentContainerHeaders time>
                             <span>Time at which the epoch</span>
                             <span>should have started</span>
                             <span>(calculated since genesis)</span>
@@ -197,7 +197,7 @@ const Statitstics = () => {
                     <p className='mt-0.5'>Rewards</p>
                     <TooltipContainer>
                         <Image src='/static/images/information.svg' alt='Rewards information' width={24} height={24} />
-                        <TooltipContentContainerHeaders>
+                        <TooltipContentContainerHeaders rewards>
                             <span>Achieved Average Reward</span>
                             <span>vs</span>
                             <span>Expected Average Reward</span>
@@ -527,6 +527,7 @@ const Statitstics = () => {
                                         </span>
                                     </>
                                 }
+                                mobile
                             />
                         </div>
                     </div>

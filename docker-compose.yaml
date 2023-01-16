@@ -1,0 +1,22 @@
+version: '3.7'
+
+services:
+          ethseer-client:
+                image: ethseer-client-image:1.0.0
+                build:
+                        context: ./
+                        dockerfile: Dockerfile-client
+                container_name: ethseer-client-container
+                init: true
+                network_mode: 'host'
+                restart: unless-stopped
+
+          ethseer-server:
+                image: ethseer-server-image:1.0.0
+                build:
+                        context: ./
+                        dockerfile: Dockerfile-server
+                container_name: ethseer-server-container
+                init: true
+                network_mode: 'host'
+                restart: unless-stopped
