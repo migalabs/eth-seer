@@ -132,249 +132,131 @@ const Statitstics = () => {
         }
     };
 
-    const getCalculatingEpochsDesktop = (epoch: Epoch) => (
+    const getCalculatingEpochDesktop = (f_slot: number, f_epoch: number) => (
+        <CardCalculating className='flex gap-x-1 justify-around items-center text-[9px] text-black bg-[#FFC163] rounded-[22px] px-2 xl:px-8 py-3'>
+            <div className='flex flex-col w-[8%] pt-2.5 pb-2.5'>
+                <p>{new Date(firstBlock + f_slot * 12000).toLocaleDateString()}</p>
+                <p>{new Date(firstBlock + f_slot * 12000).toLocaleTimeString()}</p>
+            </div>
+            <p className='w-[7%]'>{f_epoch.toLocaleString()}</p>
+            <p className='w-[14%]'>CALCULATING...</p>
+            <p className='w-[29%]'>CALCULATING...</p>
+            <p className='w-[29%]'>CALCULATING...</p>
+            <p className='w-[12%]'>CALCULATING...</p>
+        </CardCalculating>
+    );
+
+    const getCalculatingEpochMobile = (f_slot: number, f_epoch: number) => (
+        <CardCalculating className='flex flex-col gap-y-4 justify-around items-center text-[10px] text-black bg-[#FFC163] rounded-[22px] px-3 py-4'>
+            <div className='flex gap-x-1 justify-center'>
+                <p className='font-bold text-sm mt-0.5'>Epoch {f_epoch.toLocaleString()}</p>
+            </div>
+            <div className='flex flex-col gap-x-4 w-full'>
+                <div className='flex gap-x-1 justify-center mb-1'>
+                    <p className='text-xs mt-1'>Time</p>
+                    <TooltipContainer>
+                        <Image src='/static/images/information.svg' alt='Time information' width={24} height={24} />
+                        <TooltipContentContainerHeaders>
+                            <span>Time at which the epoch</span>
+                            <span>should have started</span>
+                            <span>(calculated since genesis)</span>
+                        </TooltipContentContainerHeaders>
+                    </TooltipContainer>
+                </div>
+                <div>
+                    <p>{new Date(firstBlock + f_slot * 12000).toLocaleDateString()}</p>
+                    <p>{new Date(firstBlock + f_slot * 12000).toLocaleTimeString()}</p>
+                </div>
+            </div>
+            <div className='flex flex-col w-full'>
+                <div className='flex gap-x-1 justify-center mb-1'>
+                    <p className='text-xs mt-1'>Blocks</p>
+                    <TooltipContainer>
+                        <Image src='/static/images/information.svg' alt='Blocks information' width={24} height={24} />
+                        <TooltipContentContainerHeaders>
+                            <span>Proposed Blocks out of 32</span>
+                            <span>vs</span>
+                            <span>Missed Blocks</span>
+                        </TooltipContentContainerHeaders>
+                    </TooltipContainer>
+                </div>
+                <div>
+                    <p>CALCULATING...</p>
+                </div>
+            </div>
+            <div className='flex flex-col w-full'>
+                <div className='flex flex-col gap-x-1 items-center mb-1'>
+                    <p className='text-xs mt-1'>Attestation Accuracy</p>
+                    <TooltipContainer>
+                        <Image
+                            src='/static/images/information.svg'
+                            alt='Attestation Accuracy information'
+                            width={24}
+                            height={24}
+                        />
+                        <TooltipContentContainerHeaders>
+                            <span>Correctly Attested Flag Count</span>
+                            <span>vs</span>
+                            <span>Expected Attesting Flag Count</span>
+                        </TooltipContentContainerHeaders>
+                    </TooltipContainer>
+                </div>
+                <div>
+                    <p>CALCULATING...</p>
+                </div>
+            </div>
+            <div className='flex flex-col w-full'>
+                <div className='flex flex-col gap-x-1 items-center mb-1'>
+                    <p className='text-xs mt-1'>Voting Participation</p>
+                    <TooltipContainer>
+                        <Image
+                            src='/static/images/information.svg'
+                            alt='Attestation Accuracy information'
+                            width={24}
+                            height={24}
+                        />
+
+                        <TooltipContentContainerHeaders>
+                            <span>Attesting Balance</span>
+                            <span>vs</span>
+                            <span>Total Active Balance</span>
+                        </TooltipContentContainerHeaders>
+                    </TooltipContainer>
+                </div>
+                <div>
+                    <p>CALCULATING...</p>
+                </div>
+            </div>
+            <div className='flex flex-col w-full'>
+                <div className='flex gap-x-1 justify-center mb-1'>
+                    <p className='text-xs mt-1'>Rewards</p>
+                    <TooltipContainer>
+                        <Image src='/static/images/information.svg' alt='Blocks information' width={24} height={24} />
+                        <TooltipContentContainerHeaders>
+                            <span>Achieved Average Reward</span>
+                            <span>vs</span>
+                            <span>Expected Average Reward</span>
+                        </TooltipContentContainerHeaders>
+                    </TooltipContainer>
+                </div>
+                <div>
+                    <p>CALCULATING...</p>
+                </div>
+            </div>
+        </CardCalculating>
+    );
+
+    const getCalculatingEpochsDesktop = (f_slot: number, f_epoch: number) => (
         <>
-            <CardCalculating className='flex gap-x-1 justify-around items-center text-[9px] text-black bg-[#FFC163] rounded-[22px] px-2 xl:px-8 py-3'>
-                <div className='flex flex-col w-[8%] pt-2.5 pb-2.5'>
-                    <p>{new Date(firstBlock + (epoch.f_slot + 64) * 12000).toLocaleDateString()}</p>
-                    <p>{new Date(firstBlock + (epoch.f_slot + 64) * 12000).toLocaleTimeString()}</p>
-                </div>
-                <p className='w-[7%]'>{(epoch.f_epoch + 2).toLocaleString()}</p>
-                <p className='w-[14%]'>CALCULATING...</p>
-                <p className='w-[29%]'>CALCULATING...</p>
-                <p className='w-[29%]'>CALCULATING...</p>
-                <p className='w-[12%]'>CALCULATING...</p>
-            </CardCalculating>
-            <CardCalculating className='flex gap-x-1 justify-around items-center text-[9px] text-black bg-[#FFC163] rounded-[22px] px-2 xl:px-8 py-3'>
-                <div className='flex flex-col w-[8%] pt-2.5 pb-2.5'>
-                    <p>{new Date(firstBlock + (epoch.f_slot + 32) * 12000).toLocaleDateString()}</p>
-                    <p>{new Date(firstBlock + (epoch.f_slot + 32) * 12000).toLocaleTimeString()}</p>
-                </div>
-                <p className='w-[7%]'>{(epoch.f_epoch + 1).toLocaleString()}</p>
-                <p className='w-[14%]'>CALCULATING...</p>
-                <p className='w-[29%]'>CALCULATING...</p>
-                <p className='w-[29%]'>CALCULATING...</p>
-                <p className='w-[12%]'>CALCULATING...</p>
-            </CardCalculating>
+            {getCalculatingEpochDesktop(f_slot + 64, f_epoch + 2)}
+            {getCalculatingEpochDesktop(f_slot + 32, f_epoch + 1)}
         </>
     );
 
-    const getCalculatingEpochsMobile = (epoch: Epoch) => (
+    const getCalculatingEpochsMobile = (f_slot: number, f_epoch: number) => (
         <>
-            <CardCalculating className='flex flex-col gap-y-4 justify-around items-center text-[10px] text-black bg-[#FFC163] rounded-[22px] px-3 py-4'>
-                <div className='flex gap-x-1 justify-center'>
-                    <p className='font-bold text-sm mt-0.5'>Epoch {(epoch.f_epoch + 2).toLocaleString()}</p>
-                </div>
-                <div className='flex flex-col gap-x-4 w-full'>
-                    <div className='flex gap-x-1 justify-center mb-1'>
-                        <p className='text-xs mt-1'>Time</p>
-                        <TooltipContainer>
-                            <Image src='/static/images/information.svg' alt='Time information' width={24} height={24} />
-                            <TooltipContentContainerHeaders>
-                                <span>Time at which the epoch</span>
-                                <span>should have started</span>
-                                <span>(calculated since genesis)</span>
-                            </TooltipContentContainerHeaders>
-                        </TooltipContainer>
-                    </div>
-                    <div>
-                        <p>{new Date(firstBlock + (epoch.f_slot + 64) * 12000).toLocaleDateString()}</p>
-                        <p>{new Date(firstBlock + (epoch.f_slot + 64) * 12000).toLocaleTimeString()}</p>
-                    </div>
-                </div>
-                <div className='flex flex-col w-full'>
-                    <div className='flex gap-x-1 justify-center mb-1'>
-                        <p className='text-xs mt-1'>Blocks</p>
-                        <TooltipContainer>
-                            <Image
-                                src='/static/images/information.svg'
-                                alt='Blocks information'
-                                width={24}
-                                height={24}
-                            />
-                            <TooltipContentContainerHeaders>
-                                <span>Proposed Blocks out of 32</span>
-                                <span>vs</span>
-                                <span>Missed Blocks</span>
-                            </TooltipContentContainerHeaders>
-                        </TooltipContainer>
-                    </div>
-                    <div>
-                        <p>CALCULATING...</p>
-                    </div>
-                </div>
-                <div className='flex flex-col w-full'>
-                    <div className='flex flex-col gap-x-1 items-center mb-1'>
-                        <p className='text-xs mt-1'>Attestation Accuracy</p>
-                        <TooltipContainer>
-                            <Image
-                                src='/static/images/information.svg'
-                                alt='Attestation Accuracy information'
-                                width={24}
-                                height={24}
-                            />
-                            <TooltipContentContainerHeaders>
-                                <span>Correctly Attested Flag Count</span>
-                                <span>vs</span>
-                                <span>Expected Attesting Flag Count</span>
-                            </TooltipContentContainerHeaders>
-                        </TooltipContainer>
-                    </div>
-                    <div>
-                        <p>CALCULATING...</p>
-                    </div>
-                </div>
-                <div className='flex flex-col w-full'>
-                    <div className='flex flex-col gap-x-1 items-center mb-1'>
-                        <p className='text-xs mt-1'>Voting Participation</p>
-                        <TooltipContainer>
-                            <Image
-                                src='/static/images/information.svg'
-                                alt='Attestation Accuracy information'
-                                width={24}
-                                height={24}
-                            />
-
-                            <TooltipContentContainerHeaders>
-                                <span>Attesting Balance</span>
-                                <span>vs</span>
-                                <span>Total Active Balance</span>
-                            </TooltipContentContainerHeaders>
-                        </TooltipContainer>
-                    </div>
-                    <div>
-                        <p>CALCULATING...</p>
-                    </div>
-                </div>
-                <div className='flex flex-col w-full'>
-                    <div className='flex gap-x-1 justify-center mb-1'>
-                        <p className='text-xs mt-1'>Rewards</p>
-                        <TooltipContainer>
-                            <Image
-                                src='/static/images/information.svg'
-                                alt='Blocks information'
-                                width={24}
-                                height={24}
-                            />
-                            <TooltipContentContainerHeaders>
-                                <span>Achieved Average Reward</span>
-                                <span>vs</span>
-                                <span>Expected Average Reward</span>
-                            </TooltipContentContainerHeaders>
-                        </TooltipContainer>
-                    </div>
-                    <div>
-                        <p>CALCULATING...</p>
-                    </div>
-                </div>
-            </CardCalculating>
-            <CardCalculating className='flex flex-col gap-y-4 justify-around items-center text-[10px] text-black bg-[#FFC163] rounded-[22px] px-3 py-4'>
-                <div className='flex gap-x-1 justify-center'>
-                    <p className='font-bold text-sm mt-0.5'>Epoch {(epoch.f_epoch + 1).toLocaleString()}</p>
-                </div>
-                <div className='flex flex-col gap-x-4 w-full'>
-                    <div className='flex gap-x-1 justify-center mb-1'>
-                        <p className='text-xs mt-1'>Time</p>
-                        <TooltipContainer>
-                            <Image src='/static/images/information.svg' alt='Time information' width={24} height={24} />
-                            <TooltipContentContainerHeaders>
-                                <span>Time at which the epoch</span>
-                                <span>should have started</span>
-                                <span>(calculated since genesis)</span>
-                            </TooltipContentContainerHeaders>
-                        </TooltipContainer>
-                    </div>
-                    <div>
-                        <p>{new Date(firstBlock + (epoch.f_slot + 32) * 12000).toLocaleDateString()}</p>
-                        <p>{new Date(firstBlock + (epoch.f_slot + 32) * 12000).toLocaleTimeString()}</p>
-                    </div>
-                </div>
-                <div className='flex flex-col w-full'>
-                    <div className='flex gap-x-1 justify-center mb-1'>
-                        <p className='text-xs mt-1'>Blocks</p>
-                        <TooltipContainer>
-                            <Image
-                                src='/static/images/information.svg'
-                                alt='Blocks information'
-                                width={24}
-                                height={24}
-                            />
-                            <TooltipContentContainerHeaders>
-                                <span>Proposed Blocks out of 32</span>
-                                <span>vs</span>
-                                <span>Missed Blocks</span>
-                            </TooltipContentContainerHeaders>
-                        </TooltipContainer>
-                    </div>
-                    <div>
-                        <p>CALCULATING...</p>
-                    </div>
-                </div>
-                <div className='flex flex-col w-full'>
-                    <div className='flex flex-col gap-x-1 items-center mb-1'>
-                        <p className='text-xs mt-1'>Attestation Accuracy</p>
-                        <TooltipContainer>
-                            <Image
-                                src='/static/images/information.svg'
-                                alt='Attestation Accuracy information'
-                                width={24}
-                                height={24}
-                            />
-                            <TooltipContentContainerHeaders>
-                                <span>Correctly Attested Flag Count</span>
-                                <span>vs</span>
-                                <span>Expected Attesting Flag Count</span>
-                            </TooltipContentContainerHeaders>
-                        </TooltipContainer>
-                    </div>
-                    <div>
-                        <p>CALCULATING...</p>
-                    </div>
-                </div>
-                <div className='flex flex-col w-full'>
-                    <div className='flex flex-col gap-x-1 items-center mb-1'>
-                        <p className='text-xs mt-1'>Voting Participation</p>
-                        <TooltipContainer>
-                            <Image
-                                src='/static/images/information.svg'
-                                alt='Attestation Accuracy information'
-                                width={24}
-                                height={24}
-                            />
-
-                            <TooltipContentContainerHeaders>
-                                <span>Attesting Balance</span>
-                                <span>vs</span>
-                                <span>Total Active Balance</span>
-                            </TooltipContentContainerHeaders>
-                        </TooltipContainer>
-                    </div>
-                    <div>
-                        <p>CALCULATING...</p>
-                    </div>
-                </div>
-                <div className='flex flex-col w-full'>
-                    <div className='flex gap-x-1 justify-center mb-1'>
-                        <p className='text-xs mt-1'>Rewards</p>
-                        <TooltipContainer>
-                            <Image
-                                src='/static/images/information.svg'
-                                alt='Blocks information'
-                                width={24}
-                                height={24}
-                            />
-                            <TooltipContentContainerHeaders>
-                                <span>Achieved Average Reward</span>
-                                <span>vs</span>
-                                <span>Expected Average Reward</span>
-                            </TooltipContentContainerHeaders>
-                        </TooltipContainer>
-                    </div>
-                    <div>
-                        <p>CALCULATING...</p>
-                    </div>
-                </div>
-            </CardCalculating>
+            {getCalculatingEpochMobile(f_slot + 64, f_epoch + 2)}
+            {getCalculatingEpochMobile(f_slot + 32, f_epoch + 1)}
         </>
     );
 
@@ -456,7 +338,7 @@ const Statitstics = () => {
             </div>
 
             <div className='flex flex-col justify-center gap-y-4 min-w-[1150px]'>
-                {epochs.length > 0 && getCalculatingEpochsDesktop(epochs[0])}
+                {epochs.length > 0 && getCalculatingEpochsDesktop(epochs[0].f_slot, epochs[0].f_epoch)}
                 {epochs.map((epoch: Epoch, idx: number) => (
                     <Card
                         key={epoch.f_epoch}
@@ -588,7 +470,7 @@ const Statitstics = () => {
 
     const getPhoneView = () => (
         <div className='flex flex-col gap-y-4 uppercase px-4 mt-3'>
-            {epochs.length > 0 && getCalculatingEpochsMobile(epochs[0])}
+            {epochs.length > 0 && getCalculatingEpochsMobile(epochs[0].f_slot, epochs[0].f_epoch)}
             {epochs.map((epoch: Epoch, idx: number) => (
                 <Card
                     key={epoch.f_epoch}
