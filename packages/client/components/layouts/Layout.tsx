@@ -3,6 +3,7 @@ import React, { PropsWithChildren } from 'react';
 
 // Components
 import Header from './Header';
+import Consent from './Consent';
 
 const Layout = ({ children }: PropsWithChildren<{}>) => {
     return (
@@ -24,6 +25,8 @@ const Layout = ({ children }: PropsWithChildren<{}>) => {
                     &nbsp; 2022.
                 </p>
             </footer>
+
+            <Consent />
         </>
     );
 };
