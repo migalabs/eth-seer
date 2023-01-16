@@ -52,11 +52,11 @@ export default function App({ Component, pageProps }: AppProps) {
                     strategy='afterInteractive'
                     dangerouslySetInnerHTML={{
                         __html: `
-                        gtag('consent', 'update', {
-                            'ad_storage': 'granted',
-                            'analytics_storage': 'granted'
-                        });
-					`,
+                            gtag('consent', 'update', {
+                                'ad_storage': 'granted',
+                                'analytics_storage': 'granted'
+                            });
+                        `,
                     }}
                 />
             )}
