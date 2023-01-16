@@ -135,26 +135,26 @@ const Statitstics = () => {
     const getCalculatingEpochsDesktop = (epoch: Epoch) => (
         <>
             <CardCalculating className='flex gap-x-1 justify-around items-center text-[9px] text-black bg-[#FFC163] rounded-[22px] px-2 xl:px-8 py-3'>
-                <div className='flex flex-col w-[10%] pt-2.5 pb-2.5'>
+                <div className='flex flex-col w-[8%] pt-2.5 pb-2.5'>
                     <p>{new Date(firstBlock + (epoch.f_slot + 64) * 12000).toLocaleDateString()}</p>
                     <p>{new Date(firstBlock + (epoch.f_slot + 64) * 12000).toLocaleTimeString()}</p>
                 </div>
-                <p className='w-[10%]'>{(epoch.f_epoch + 2).toLocaleString()}</p>
-                <p className='w-[13%]'>CALCULATING...</p>
-                <p className='w-[31%]'>CALCULATING...</p>
-                <p className='w-[22%]'>CALCULATING...</p>
-                <p className='w-[13%]'>CALCULATING...</p>
+                <p className='w-[7%]'>{(epoch.f_epoch + 2).toLocaleString()}</p>
+                <p className='w-[14%]'>CALCULATING...</p>
+                <p className='w-[29%]'>CALCULATING...</p>
+                <p className='w-[29%]'>CALCULATING...</p>
+                <p className='w-[12%]'>CALCULATING...</p>
             </CardCalculating>
             <CardCalculating className='flex gap-x-1 justify-around items-center text-[9px] text-black bg-[#FFC163] rounded-[22px] px-2 xl:px-8 py-3'>
-                <div className='flex flex-col w-[10%] pt-2.5 pb-2.5'>
+                <div className='flex flex-col w-[8%] pt-2.5 pb-2.5'>
                     <p>{new Date(firstBlock + (epoch.f_slot + 32) * 12000).toLocaleDateString()}</p>
                     <p>{new Date(firstBlock + (epoch.f_slot + 32) * 12000).toLocaleTimeString()}</p>
                 </div>
-                <p className='w-[10%]'>{(epoch.f_epoch + 1).toLocaleString()}</p>
-                <p className='w-[13%]'>CALCULATING...</p>
-                <p className='w-[31%]'>CALCULATING...</p>
-                <p className='w-[22%]'>CALCULATING...</p>
-                <p className='w-[13%]'>CALCULATING...</p>
+                <p className='w-[7%]'>{(epoch.f_epoch + 1).toLocaleString()}</p>
+                <p className='w-[14%]'>CALCULATING...</p>
+                <p className='w-[29%]'>CALCULATING...</p>
+                <p className='w-[29%]'>CALCULATING...</p>
+                <p className='w-[12%]'>CALCULATING...</p>
             </CardCalculating>
         </>
     );
@@ -778,7 +778,6 @@ const Statitstics = () => {
                                         </span>
                                     </>
                                 }
-                                mobile
                             />
                         </div>
                     </div>
