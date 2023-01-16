@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import { useInView } from 'react-intersection-observer';
 
@@ -15,6 +15,9 @@ import { TooltipContainer, TooltipContentContainerHeaders } from '../ui/Tooltips
 // Styled
 const Card = styled.div`
     box-shadow: inset -7px -7px 8px #f0c83a, inset 7px 7px 8px #f0c83a;
+`;
+const CardCalculating = styled.div`
+    box-shadow: inset -7px -7px 8px #ec903c, inset 7px 7px 8px #ec903c;
 `;
 
 // Constants
@@ -41,12 +44,15 @@ const Statitstics = () => {
     // Intersection Observer
     const { ref, inView } = useInView();
 
+    const conainerRef = useRef<HTMLInputElement>(null);
+
     // States
     const [epochs, setEpochs] = useState<Epoch[]>([]);
     const [desktopView, setDesktopView] = useState(true);
     const [currentPage, setCurrentPage] = useState(0);
     const [lastPageFetched, setLastPageFetched] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [eventSourceOpenened, setEventSourceOpenened] = useState(false);
 
     useEffect(() => {
         if (epochs.length === 0) {
@@ -59,19 +65,35 @@ const Statitstics = () => {
             getEpochs(currentPage + 1);
         }
 
-        const eventSource = new EventSource(
-            `${process.env.NEXT_PUBLIC_URL_API}/api/validator-rewards-summary/new-epoch-notification`
-        );
-        eventSource.addEventListener('new_epoch', function (e) {
-            getEpochs(0, 2);
-        });
+        if (!eventSourceOpenened) {
+            const eventSource = new EventSource(
+                `${process.env.NEXT_PUBLIC_URL_API}/api/validator-rewards-summary/new-epoch-notification`
+            );
+            eventSource.addEventListener('new_epoch', function (e) {
+                getEpochs(0, 2);
+            });
+            setEventSourceOpenened(true);
 
-        return () => {
-            eventSource.close();
-        };
+            return () => {
+                eventSource.close();
+            };
+        }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [inView]);
+
+    const handleMouseMove = (e: any) => {
+        if (conainerRef.current) {
+            const x = e.pageX;
+            const limit = 0.15;
+
+            if (x < conainerRef.current.clientWidth * limit) {
+                conainerRef.current.scrollLeft -= 10;
+            } else if (x > conainerRef.current.clientWidth * (1 - limit)) {
+                conainerRef.current.scrollLeft += 10;
+            }
+        }
+    };
 
     // get epochs
     const getEpochs = async (page: number, limit = 10) => {
@@ -110,40 +132,170 @@ const Statitstics = () => {
         }
     };
 
-    const getDesktopView = () => (
-        <div className='flex flex-col px-20'>
-            <div className='flex gap-x-1 justify-around px-8 py-3  uppercase text-sm'>
-                <div className='flex w-[10%] items-center gap-x-1 justify-center'>
-                    <p className='mt-0.5'>Time</p>
+    const getCalculatingEpochDesktop = (f_slot: number, f_epoch: number) => (
+        <CardCalculating className='flex gap-x-1 justify-around items-center text-[9px] text-black bg-[#FFC163] rounded-[22px] px-2 xl:px-8 py-3'>
+            <div className='flex flex-col w-[8%] pt-2.5 pb-2.5'>
+                <p>{new Date(firstBlock + f_slot * 12000).toLocaleDateString()}</p>
+                <p>{new Date(firstBlock + f_slot * 12000).toLocaleTimeString()}</p>
+            </div>
+            <p className='w-[7%]'>{f_epoch.toLocaleString()}</p>
+            <p className='w-[14%]'>CALCULATING...</p>
+            <p className='w-[29%]'>CALCULATING...</p>
+            <p className='w-[29%]'>CALCULATING...</p>
+            <p className='w-[12%]'>CALCULATING...</p>
+        </CardCalculating>
+    );
+
+    const getCalculatingEpochMobile = (f_slot: number, f_epoch: number) => (
+        <CardCalculating className='flex flex-col gap-y-4 justify-around items-center text-[10px] text-black bg-[#FFC163] rounded-[22px] px-3 py-4'>
+            <div className='flex gap-x-1 justify-center'>
+                <p className='font-bold text-sm mt-0.5'>Epoch {f_epoch.toLocaleString()}</p>
+            </div>
+            <div className='flex flex-col gap-x-4 w-full'>
+                <div className='flex gap-x-1 justify-center mb-1'>
+                    <p className='text-xs mt-1'>Time</p>
                     <TooltipContainer>
                         <Image src='/static/images/information.svg' alt='Time information' width={24} height={24} />
                         <TooltipContentContainerHeaders>
-                            <span>Time</span>
+                            <span>Time at which the epoch</span>
+                            <span>should have started</span>
+                            <span>(calculated since genesis)</span>
                         </TooltipContentContainerHeaders>
                     </TooltipContainer>
                 </div>
-
-                <div className='flex w-[10%] items-center gap-x-1 justify-center'>
-                    <p className='mt-0.5'>Epoch</p>
+                <div>
+                    <p>{new Date(firstBlock + f_slot * 12000).toLocaleDateString()}</p>
+                    <p>{new Date(firstBlock + f_slot * 12000).toLocaleTimeString()}</p>
+                </div>
+            </div>
+            <div className='flex flex-col w-full'>
+                <div className='flex gap-x-1 justify-center mb-1'>
+                    <p className='text-xs mt-1'>Blocks</p>
                     <TooltipContainer>
-                        <Image src='/static/images/information.svg' alt='Epoch information' width={24} height={24} />
+                        <Image src='/static/images/information.svg' alt='Blocks information' width={24} height={24} />
                         <TooltipContentContainerHeaders>
-                            <span>Epoch</span>
+                            <span>Proposed Blocks out of 32</span>
+                            <span>vs</span>
+                            <span>Missed Blocks</span>
+                        </TooltipContentContainerHeaders>
+                    </TooltipContainer>
+                </div>
+                <div>
+                    <p>CALCULATING...</p>
+                </div>
+            </div>
+            <div className='flex flex-col w-full'>
+                <div className='flex flex-col gap-x-1 items-center mb-1'>
+                    <p className='text-xs mt-1'>Attestation Accuracy</p>
+                    <TooltipContainer>
+                        <Image
+                            src='/static/images/information.svg'
+                            alt='Attestation Accuracy information'
+                            width={24}
+                            height={24}
+                        />
+                        <TooltipContentContainerHeaders>
+                            <span>Correctly Attested Flag Count</span>
+                            <span>vs</span>
+                            <span>Expected Attesting Flag Count</span>
+                        </TooltipContentContainerHeaders>
+                    </TooltipContainer>
+                </div>
+                <div>
+                    <p>CALCULATING...</p>
+                </div>
+            </div>
+            <div className='flex flex-col w-full'>
+                <div className='flex flex-col gap-x-1 items-center mb-1'>
+                    <p className='text-xs mt-1'>Voting Participation</p>
+                    <TooltipContainer>
+                        <Image
+                            src='/static/images/information.svg'
+                            alt='Attestation Accuracy information'
+                            width={24}
+                            height={24}
+                        />
+
+                        <TooltipContentContainerHeaders>
+                            <span>Attesting Balance</span>
+                            <span>vs</span>
+                            <span>Total Active Balance</span>
+                        </TooltipContentContainerHeaders>
+                    </TooltipContainer>
+                </div>
+                <div>
+                    <p>CALCULATING...</p>
+                </div>
+            </div>
+            <div className='flex flex-col w-full'>
+                <div className='flex gap-x-1 justify-center mb-1'>
+                    <p className='text-xs mt-1'>Rewards</p>
+                    <TooltipContainer>
+                        <Image src='/static/images/information.svg' alt='Blocks information' width={24} height={24} />
+                        <TooltipContentContainerHeaders>
+                            <span>Achieved Average Reward</span>
+                            <span>vs</span>
+                            <span>Expected Average Reward</span>
+                        </TooltipContentContainerHeaders>
+                    </TooltipContainer>
+                </div>
+                <div>
+                    <p>CALCULATING...</p>
+                </div>
+            </div>
+        </CardCalculating>
+    );
+
+    const getCalculatingEpochsDesktop = (f_slot: number, f_epoch: number) => (
+        <>
+            {getCalculatingEpochDesktop(f_slot + 64, f_epoch + 2)}
+            {getCalculatingEpochDesktop(f_slot + 32, f_epoch + 1)}
+        </>
+    );
+
+    const getCalculatingEpochsMobile = (f_slot: number, f_epoch: number) => (
+        <>
+            {getCalculatingEpochMobile(f_slot + 64, f_epoch + 2)}
+            {getCalculatingEpochMobile(f_slot + 32, f_epoch + 1)}
+        </>
+    );
+
+    const getDesktopView = () => (
+        <div
+            ref={conainerRef}
+            className='flex flex-col px-2 xl:px-20 overflow-x-hidden overflow-y-hidden'
+            onMouseMove={handleMouseMove}
+        >
+            <div className='flex gap-x-1 justify-around px-2 xl:px-8 py-3 uppercase text-sm min-w-[1150px]'>
+                <div className='flex w-[8%] items-center gap-x-1 justify-center'>
+                    <p className='mt-0.5'>Time</p>
+                    <TooltipContainer>
+                        <Image src='/static/images/information.svg' alt='Time information' width={24} height={24} />
+                        <TooltipContentContainerHeaders time>
+                            <span>Time at which the epoch</span>
+                            <span>should have started</span>
+                            <span>(calculated since genesis)</span>
                         </TooltipContentContainerHeaders>
                     </TooltipContainer>
                 </div>
 
-                <div className='flex w-[12%] items-center gap-x-1 justify-center'>
+                <div className='flex w-[7%] items-center gap-x-1 justify-center'>
+                    <p className='mt-0.5'>Epoch</p>
+                </div>
+
+                <div className='flex w-[14%] items-center gap-x-1 justify-center'>
                     <p className='mt-0.5'>Blocks</p>
                     <TooltipContainer>
                         <Image src='/static/images/information.svg' alt='Blocks information' width={24} height={24} />
                         <TooltipContentContainerHeaders>
-                            <span>Blocks</span>
+                            <span>Proposed Blocks out of 32</span>
+                            <span>vs</span>
+                            <span>Missed Blocks</span>
                         </TooltipContentContainerHeaders>
                     </TooltipContainer>
                 </div>
 
-                <div className='flex w-[33%] items-center gap-x-1 justify-center'>
+                <div className='flex w-[29%] items-center gap-x-1 justify-center'>
                     <p className='mt-0.5'>Attestation Accuracy</p>
                     <TooltipContainer>
                         <Image
@@ -153,47 +305,54 @@ const Statitstics = () => {
                             height={24}
                         />
                         <TooltipContentContainerHeaders>
-                            <span>Attestation Accuracy</span>
+                            <span>Correctly Attested Flag Count</span>
+                            <span>vs</span>
+                            <span>Expected Attesting Flag Count</span>
                         </TooltipContentContainerHeaders>
                     </TooltipContainer>
                 </div>
 
-                <div className='flex w-[24%] items-center gap-x-1 justify-center'>
-                    <p className='mt-0.5'>Balance</p>
+                <div className='flex w-[29%] items-center gap-x-1 justify-center'>
+                    <p className='mt-0.5'>Voting Participation</p>
                     <TooltipContainer>
                         <Image src='/static/images/information.svg' alt='Balance information' width={24} height={24} />
                         <TooltipContentContainerHeaders>
-                            <span>Balance</span>
+                            <span>Attesting Balance</span>
+                            <span>vs</span>
+                            <span>Total Active Balance</span>
                         </TooltipContentContainerHeaders>
                     </TooltipContainer>
                 </div>
 
-                <div className='flex w-[11%] items-center gap-x-1 justify-center'>
+                <div className='flex w-[12%] items-center gap-x-1 justify-center'>
                     <p className='mt-0.5'>Rewards</p>
                     <TooltipContainer>
                         <Image src='/static/images/information.svg' alt='Rewards information' width={24} height={24} />
-                        <TooltipContentContainerHeaders>
-                            <span>Rewards</span>
+                        <TooltipContentContainerHeaders rewards>
+                            <span>Achieved Average Reward</span>
+                            <span>vs</span>
+                            <span>Expected Average Reward</span>
                         </TooltipContentContainerHeaders>
                     </TooltipContainer>
                 </div>
             </div>
 
-            <div className='flex flex-col justify-center gap-y-4'>
+            <div className='flex flex-col justify-center gap-y-4 min-w-[1150px]'>
+                {epochs.length > 0 && getCalculatingEpochsDesktop(epochs[0].f_slot, epochs[0].f_epoch)}
                 {epochs.map((epoch: Epoch, idx: number) => (
                     <Card
                         key={epoch.f_epoch}
                         ref={idx === epochs.length - 1 ? ref : undefined}
-                        className='flex gap-x-1 justify-around items-center text-[9px] text-black bg-[#FFF0A1] rounded-[22px] px-8 py-3'
+                        className='flex gap-x-1 justify-around items-center text-[9px] text-black bg-[#FFF0A1] rounded-[22px] px-2 xl:px-8 py-3'
                     >
-                        <div className='flex flex-col w-[10%]'>
-                            <p>{new Date(firstBlock + epoch.f_slot * 12000).toLocaleDateString()}</p>
-                            <p>{new Date(firstBlock + epoch.f_slot * 12000).toLocaleTimeString()}</p>
+                        <div className='flex flex-col w-[8%]'>
+                            <p>{new Date(firstBlock + epoch.f_epoch * 32 * 12000).toLocaleDateString()}</p>
+                            <p>{new Date(firstBlock + epoch.f_epoch * 32 * 12000).toLocaleTimeString()}</p>
                         </div>
 
-                        <p className='w-[10%]'>{epoch.f_epoch.toLocaleString()}</p>
+                        <p className='w-[7%]'>{epoch.f_epoch.toLocaleString()}</p>
 
-                        <div className='w-[10%] pt-3.5 mb-2'>
+                        <div className='w-[14%] pt-3.5 mb-2'>
                             <ProgressTileBar
                                 tilesFilled={Number(epoch.proposed_blocks)}
                                 totalTiles={32}
@@ -206,12 +365,12 @@ const Statitstics = () => {
                             />
                         </div>
 
-                        <div className='mb-2 w-[33%]'>
+                        <div className='mb-2 w-[29%]'>
                             <div className='flex gap-x-1 justify-center '>
                                 <div className='flex-1'>
                                     <ProgressSmoothBar
                                         title='Target'
-                                        bg='#D17E00'
+                                        bg='#E86506'
                                         color='#FFC163'
                                         percent={1 - epoch.f_missing_target / epoch.f_num_vals}
                                         tooltipColor='orange'
@@ -226,8 +385,8 @@ const Statitstics = () => {
                                 <div className='flex-1'>
                                     <ProgressSmoothBar
                                         title='Source'
-                                        bg='#00C5D1'
-                                        color='#94F9FF'
+                                        bg='#14946e'
+                                        color='#BDFFEB'
                                         percent={1 - epoch.f_missing_source / epoch.f_num_vals}
                                         tooltipColor='blue'
                                         tooltipContent={
@@ -241,8 +400,8 @@ const Statitstics = () => {
                                 <div className='flex-1'>
                                     <ProgressSmoothBar
                                         title='Head'
-                                        bg='#8F76D6'
-                                        color='#CAB8FF'
+                                        bg='#532BC5'
+                                        color='#E6DDFF'
                                         percent={1 - epoch.f_missing_head / epoch.f_num_vals}
                                         tooltipColor='purple'
                                         tooltipContent={
@@ -256,27 +415,31 @@ const Statitstics = () => {
                             </div>
                         </div>
 
-                        <div className='mb-2 w-[24%]'>
+                        <div className='mb-2 w-[29%]'>
                             <ProgressSmoothBar
                                 title='Attesting/total active'
                                 bg='#0016D8'
                                 color='#BDC4FF'
-                                percent={epoch.f_num_att_vals / epoch.f_num_vals}
+                                percent={epoch.f_att_effective_balance_eth / epoch.f_total_effective_balance_eth}
                                 tooltipColor='bluedark'
                                 tooltipContent={
                                     <>
-                                        <span>R. Attestations: {epoch.f_num_att_vals.toLocaleString()}</span>
-                                        <span>Attestations: {epoch.f_num_vals.toLocaleString()}</span>
+                                        <span>
+                                            Att. Balance: {epoch.f_att_effective_balance_eth.toLocaleString()} ETH
+                                        </span>
+                                        <span>
+                                            Act. Balanace: {epoch.f_total_effective_balance_eth.toLocaleString()} ETH
+                                        </span>
                                     </>
                                 }
                             />
                         </div>
 
-                        <div className='w-[11%] pt-1'>
+                        <div className='w-[12%] pt-1'>
                             <ProgressSmoothBar
                                 title=''
-                                bg='#bc00d8'
-                                color='#ffbdd9'
+                                bg='#D80068'
+                                color='#FFBDD9'
                                 percent={Number(epoch.reward_average) / Number(epoch.max_reward_average)}
                                 tooltipColor='pink'
                                 tooltipContent={
@@ -286,14 +449,14 @@ const Statitstics = () => {
                                             {Number(
                                                 (Number(epoch.reward_average) / ETH_WEI).toFixed(3)
                                             ).toLocaleString()}{' '}
-                                            WEI
+                                            GWEI
                                         </span>
                                         <span>
-                                            M. Reward:{' '}
+                                            Max. Reward:{' '}
                                             {Number(
                                                 (Number(epoch.max_reward_average) / ETH_WEI).toFixed(3)
                                             ).toLocaleString()}{' '}
-                                            WEI
+                                            GWEI
                                         </span>
                                     </>
                                 }
@@ -307,6 +470,7 @@ const Statitstics = () => {
 
     const getPhoneView = () => (
         <div className='flex flex-col gap-y-4 uppercase px-4 mt-3'>
+            {epochs.length > 0 && getCalculatingEpochsMobile(epochs[0].f_slot, epochs[0].f_epoch)}
             {epochs.map((epoch: Epoch, idx: number) => (
                 <Card
                     key={epoch.f_epoch}
@@ -315,17 +479,6 @@ const Statitstics = () => {
                 >
                     <div className='flex gap-x-1 justify-center'>
                         <p className='font-bold text-sm mt-0.5'>Epoch {epoch.f_epoch.toLocaleString()}</p>
-                        <TooltipContainer>
-                            <Image
-                                src='/static/images/information.svg'
-                                alt='Epoch information'
-                                width={24}
-                                height={24}
-                            />
-                            <TooltipContentContainerHeaders>
-                                <span>Epoch</span>
-                            </TooltipContentContainerHeaders>
-                        </TooltipContainer>
                     </div>
                     <div className='flex flex-col gap-x-4 w-full'>
                         <div className='flex gap-x-1 justify-center mb-1'>
@@ -338,7 +491,9 @@ const Statitstics = () => {
                                     height={24}
                                 />
                                 <TooltipContentContainerHeaders>
-                                    <span>Time</span>
+                                    <span>Time at which the epoch</span>
+                                    <span>should have started</span>
+                                    <span>(calculated since genesis)</span>
                                 </TooltipContentContainerHeaders>
                             </TooltipContainer>
                         </div>
@@ -359,7 +514,9 @@ const Statitstics = () => {
                                     height={24}
                                 />
                                 <TooltipContentContainerHeaders>
-                                    <span>Blocks</span>
+                                    <span>Proposed Blocks out of 32</span>
+                                    <span>vs</span>
+                                    <span>Missed Blocks</span>
                                 </TooltipContentContainerHeaders>
                             </TooltipContainer>
                         </div>
@@ -388,13 +545,15 @@ const Statitstics = () => {
                                     height={24}
                                 />
                                 <TooltipContentContainerHeaders>
-                                    <span>Attestation Accuracy</span>
+                                    <span>Correctly Attested Flag Count</span>
+                                    <span>vs</span>
+                                    <span>Expected Attesting Flag Count</span>
                                 </TooltipContentContainerHeaders>
                             </TooltipContainer>
                         </div>
                         <ProgressSmoothBar
                             title='Target'
-                            bg='#D17E00'
+                            bg='#E86506'
                             color='#FFC163'
                             percent={1 - epoch.f_missing_target / epoch.f_num_vals}
                             tooltipColor='orange'
@@ -408,8 +567,8 @@ const Statitstics = () => {
 
                         <ProgressSmoothBar
                             title='Source'
-                            bg='#00C5D1'
-                            color='#94F9FF'
+                            bg='#14946e'
+                            color='#BDFFEB'
                             percent={1 - epoch.f_missing_source / epoch.f_num_vals}
                             tooltipColor='blue'
                             tooltipContent={
@@ -422,8 +581,8 @@ const Statitstics = () => {
 
                         <ProgressSmoothBar
                             title='Head'
-                            bg='#8F76D6'
-                            color='#CAB8FF'
+                            bg='#532BC5'
+                            color='#E6DDFF'
                             percent={1 - epoch.f_missing_head / epoch.f_num_vals}
                             tooltipColor='purple'
                             tooltipContent={
@@ -436,8 +595,8 @@ const Statitstics = () => {
                     </div>
 
                     <div className='flex flex-col w-full gap-y-2'>
-                        <div className='flex gap-x-1 justify-center mb-1'>
-                            <p className='text-xs mt-1'>Balance</p>
+                        <div className='flex flex-col gap-x-1 items-center mb-1'>
+                            <p className='text-xs mt-1'>Voting Participation</p>
                             <TooltipContainer>
                                 <Image
                                     src='/static/images/information.svg'
@@ -446,7 +605,9 @@ const Statitstics = () => {
                                     height={24}
                                 />
                                 <TooltipContentContainerHeaders>
-                                    <span>Balance</span>
+                                    <span>Attesting Balance</span>
+                                    <span>vs</span>
+                                    <span>Total Active Balance</span>
                                 </TooltipContentContainerHeaders>
                             </TooltipContainer>
                         </div>
@@ -458,8 +619,10 @@ const Statitstics = () => {
                             tooltipColor='bluedark'
                             tooltipContent={
                                 <>
-                                    <span>R. Attestations: {epoch.f_num_att_vals.toLocaleString()}</span>
-                                    <span>Attestations: {epoch.f_num_vals.toLocaleString()}</span>
+                                    <span>Att. Balance: {epoch.f_att_effective_balance_eth.toLocaleString()} eth</span>
+                                    <span>
+                                        Act. Balanace: {epoch.f_total_effective_balance_eth.toLocaleString()} eth
+                                    </span>
                                 </>
                             }
                         />
@@ -476,21 +639,25 @@ const Statitstics = () => {
                                     height={24}
                                 />
                                 <TooltipContentContainerHeaders>
-                                    <span>Rewards</span>
+                                    <span>Achieved Average Reward</span>
+                                    <span>vs</span>
+                                    <span>Expected Average Reward</span>
                                 </TooltipContentContainerHeaders>
                             </TooltipContainer>
                         </div>
                         <div className='flex-1'>
                             <ProgressSmoothBar
                                 title=''
-                                bg='#bc00d8'
-                                color='#ffbdd9'
+                                bg='#D80068'
+                                color='#FFBDD9'
                                 percent={Number(epoch.reward_average) / Number(epoch.max_reward_average)}
                                 tooltipColor='pink'
                                 tooltipContent={
                                     <>
-                                        <span>Reward: {Number(epoch.reward_average).toLocaleString()} WEI</span>
-                                        <span>M. Reward: {Number(epoch.max_reward_average).toLocaleString()} WEI</span>
+                                        <span>Reward: {Number(epoch.reward_average).toLocaleString()} GWEI</span>
+                                        <span>
+                                            Max. Reward: {Number(epoch.max_reward_average).toLocaleString()} GWEI
+                                        </span>
                                     </>
                                 }
                             />
