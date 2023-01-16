@@ -46,26 +46,30 @@ const TooltipContentContainer = styled.div`
 type Props = {
     tooltipColor: string;
     colorLetter: string;
-    mobile?: boolean;
 };
 
 export const TooltipContentContainerStats = styled(TooltipContentContainer)<Props>`
     top: 20px;
-    background-image: ${({ tooltipColor, mobile }) =>
-        tooltipColor === 'pink' && !mobile
-            ? `url('/static/images/tooltips/tooltip_${tooltipColor}_2.svg')`
-            : `url('/static/images/tooltips/tooltip_${tooltipColor}.svg')`};
+    left: calc(50% - 117.5px);
     width: 220px;
+    background-image: ${({ tooltipColor }) => `url('/static/images/tooltips/tooltip_${tooltipColor}.svg')`};
+
     span {
         color: ${({ colorLetter }) => colorLetter};
         padding: 6.25px;
     }
-    @media (min-width: 1300px) {
-        background-image: ${({ tooltipColor }) => `url('/static/images/tooltips/tooltip_${tooltipColor}.svg')`};
+
+    @media (min-width: 768px) {
+        left: ${({ tooltipColor }) => tooltipColor === 'pink' && 'calc(50% - 218.5px)'};
+        background-image: ${({ tooltipColor }) =>
+            tooltipColor === 'pink'
+                ? `url('/static/images/tooltips/tooltip_${tooltipColor}_left.svg')`
+                : `url('/static/images/tooltips/tooltip_${tooltipColor}.svg')`};
     }
 
-    @media (max-width: 1300px) {
-        left: ${({ tooltipColor, mobile }) => tooltipColor === 'pink' && !mobile && 'calc(50% - 218.5px)'};
+    @media (min-width: 1300px) {
+        background-image: ${({ tooltipColor }) => `url('/static/images/tooltips/tooltip_${tooltipColor}.svg')`};
+        left: calc(50% - 117.5px);
     }
 `;
 
@@ -92,10 +96,10 @@ export const TooltipContentContainerHeaders = styled(TooltipContentContainerBloc
     padding-top: 35px;
     background-image: ${({ rewards, time }) =>
         rewards
-            ? `url('/static/images/tooltips/tooltip_white_2.svg')`
+            ? "url('/static/images/tooltips/tooltip_white_left.svg')"
             : time
-            ? `url('/static/images/tooltips/tooltip_white_3.svg')`
-            : `url('/static/images/tooltips/tooltip_white.svg')`};
+            ? "url('/static/images/tooltips/tooltip_white_right.svg')"
+            : "url('/static/images/tooltips/tooltip_white.svg')"};
 
     @media (min-width: 768px) {
         padding-top: 30px;
