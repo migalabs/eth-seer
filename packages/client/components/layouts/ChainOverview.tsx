@@ -129,7 +129,7 @@ const ChainOverview = () => {
     };
 
     return (
-        <div className='flex flex-row justify-center space-x-4 md:space-x-5'>
+        <div className='flex flex-row justify-center space-x-4 md:space-x-5 px-1'>
             <div className='flex items-center mt-8'>
                 <Image
                     src='/static/images/arrow.svg'
