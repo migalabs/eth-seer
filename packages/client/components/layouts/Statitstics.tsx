@@ -428,7 +428,7 @@ const Statitstics = () => {
                                             Att. Balance: {epoch.f_att_effective_balance_eth.toLocaleString()} ETH
                                         </span>
                                         <span>
-                                            Act. Balanace: {epoch.f_total_effective_balance_eth.toLocaleString()} ETH
+                                            Act. Balance: {epoch.f_total_effective_balance_eth.toLocaleString()} ETH
                                         </span>
                                     </>
                                 }
@@ -619,9 +619,9 @@ const Statitstics = () => {
                             tooltipColor='bluedark'
                             tooltipContent={
                                 <>
-                                    <span>Att. Balance: {epoch.f_att_effective_balance_eth.toLocaleString()} eth</span>
+                                    <span>Att. Balance: {epoch.f_att_effective_balance_eth.toLocaleString()} ETH</span>
                                     <span>
-                                        Act. Balance: {epoch.f_total_effective_balance_eth.toLocaleString()} eth
+                                        Act. Balance: {epoch.f_total_effective_balance_eth.toLocaleString()} ETH
                                     </span>
                                 </>
                             }
