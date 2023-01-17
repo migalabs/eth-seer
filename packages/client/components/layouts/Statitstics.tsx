@@ -621,7 +621,7 @@ const Statitstics = () => {
                                 <>
                                     <span>Att. Balance: {epoch.f_att_effective_balance_eth.toLocaleString()} eth</span>
                                     <span>
-                                        Act. Balanace: {epoch.f_total_effective_balance_eth.toLocaleString()} eth
+                                        Act. Balance: {epoch.f_total_effective_balance_eth.toLocaleString()} eth
                                     </span>
                                 </>
                             }
