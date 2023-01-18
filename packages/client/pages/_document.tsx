@@ -51,7 +51,7 @@ export default function Document() {
                 <meta property="og:url" content="http://ethseer.com/" />
                 <meta property="og:title" content="Ethseer - Ethereum blockchain live data" />
                 <meta property="og:description" content="Ethereum's network latest epochs and blocks live data and statistics are shown on Ethseer" />
-                <meta property="og:image" content="http://ethseer.com/static/images/ethseer_metadata.png" />
+                <meta property="og:image" content="http://ethseer.com/static/images/ethseer_metadata.png?4362984378" />
             </Head>
 
             <body>
