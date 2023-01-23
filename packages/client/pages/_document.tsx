@@ -48,14 +48,14 @@ export default function Document() {
                 <link href='https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap' rel='stylesheet' />
                 <meta name='twitter:card' content='summary' />
                 <meta name='twitter:site' content='@miga_labs' />
-                <meta name='twitter:image' content='http://ethseer.com/static/images/ethseer_metadata.png?4362984378' />
+                <meta name='twitter:image' content='http://ethseer.com/static/images/ethseer_metadata.png' />
                 <meta property='og:url' content='http://ethseer.com/' />
                 <meta property='og:title' content='Ethseer - Ethereum blockchain live data' />
                 <meta
                     property='og:description'
                     content="Ethereum's network latest epochs and blocks live data and statistics are shown on Ethseer"
                 />
-                <meta property='og:image' content='http://ethseer.com/static/images/ethseer_metadata.png?4362984378' />
+                <meta property='og:image' content='http://ethseer.com/static/images/ethseer_metadata.png' />
             </Head>
 
             <body>
