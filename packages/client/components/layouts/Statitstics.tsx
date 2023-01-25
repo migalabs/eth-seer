@@ -376,8 +376,8 @@ const Statitstics = () => {
                                         tooltipColor='orange'
                                         tooltipContent={
                                             <>
-                                                <span>Missing Target: {epoch.f_missing_target.toLocaleString()}</span>
-                                                <span>Attestations: {epoch.f_num_vals.toLocaleString()}</span>
+                                                <span>Missing Target: {epoch.f_missing_target?.toLocaleString()}</span>
+                                                <span>Attestations: {epoch.f_num_vals?.toLocaleString()}</span>
                                             </>
                                         }
                                     />
@@ -391,8 +391,8 @@ const Statitstics = () => {
                                         tooltipColor='blue'
                                         tooltipContent={
                                             <>
-                                                <span>Missing Source: {epoch.f_missing_source.toLocaleString()}</span>
-                                                <span>Attestations: {epoch.f_num_vals.toLocaleString()}</span>
+                                                <span>Missing Source: {epoch.f_missing_source?.toLocaleString()}</span>
+                                                <span>Attestations: {epoch.f_num_vals?.toLocaleString()}</span>
                                             </>
                                         }
                                     />
@@ -406,8 +406,8 @@ const Statitstics = () => {
                                         tooltipColor='purple'
                                         tooltipContent={
                                             <>
-                                                <span>Missing Head: {epoch.f_missing_head.toLocaleString()}</span>
-                                                <span>Attestations: {epoch.f_num_vals.toLocaleString()}</span>
+                                                <span>Missing Head: {epoch.f_missing_head?.toLocaleString()}</span>
+                                                <span>Attestations: {epoch.f_num_vals?.toLocaleString()}</span>
                                             </>
                                         }
                                     />
@@ -425,10 +425,10 @@ const Statitstics = () => {
                                 tooltipContent={
                                     <>
                                         <span>
-                                            Att. Balance: {epoch.f_att_effective_balance_eth.toLocaleString()} ETH
+                                            Att. Balance: {epoch.f_att_effective_balance_eth?.toLocaleString()} ETH
                                         </span>
                                         <span>
-                                            Act. Balance: {epoch.f_total_effective_balance_eth.toLocaleString()} ETH
+                                            Act. Balance: {epoch.f_total_effective_balance_eth?.toLocaleString()} ETH
                                         </span>
                                     </>
                                 }
@@ -478,7 +478,7 @@ const Statitstics = () => {
                     className='flex flex-col gap-y-4 justify-around items-center text-[10px] text-black bg-[#FFF0A2] rounded-[22px] px-3 py-4'
                 >
                     <div className='flex gap-x-1 justify-center'>
-                        <p className='font-bold text-sm mt-0.5'>Epoch {epoch.f_epoch.toLocaleString()}</p>
+                        <p className='font-bold text-sm mt-0.5'>Epoch {epoch.f_epoch?.toLocaleString()}</p>
                     </div>
                     <div className='flex flex-col gap-x-4 w-full'>
                         <div className='flex gap-x-1 justify-center mb-1'>
@@ -559,8 +559,8 @@ const Statitstics = () => {
                             tooltipColor='orange'
                             tooltipContent={
                                 <>
-                                    <span>Missing Target: {epoch.f_missing_target.toLocaleString()}</span>
-                                    <span>Attestations: {epoch.f_num_vals.toLocaleString()}</span>
+                                    <span>Missing Target: {epoch.f_missing_target?.toLocaleString()}</span>
+                                    <span>Attestations: {epoch.f_num_vals?.toLocaleString()}</span>
                                 </>
                             }
                         />
@@ -587,8 +587,8 @@ const Statitstics = () => {
                             tooltipColor='purple'
                             tooltipContent={
                                 <>
-                                    <span>Missing Head: {epoch.f_missing_head.toLocaleString()}</span>
-                                    <span>Attestations: {epoch.f_num_vals.toLocaleString()}</span>
+                                    <span>Missing Head: {epoch.f_missing_head?.toLocaleString()}</span>
+                                    <span>Attestations: {epoch.f_num_vals?.toLocaleString()}</span>
                                 </>
                             }
                         />
@@ -619,9 +619,9 @@ const Statitstics = () => {
                             tooltipColor='bluedark'
                             tooltipContent={
                                 <>
-                                    <span>Att. Balance: {epoch.f_att_effective_balance_eth.toLocaleString()} ETH</span>
+                                    <span>Att. Balance: {epoch.f_att_effective_balance_eth?.toLocaleString()} ETH</span>
                                     <span>
-                                        Act. Balance: {epoch.f_total_effective_balance_eth.toLocaleString()} ETH
+                                        Act. Balance: {epoch.f_total_effective_balance_eth?.toLocaleString()} ETH
                                     </span>
                                 </>
                             }
@@ -654,9 +654,9 @@ const Statitstics = () => {
                                 tooltipColor='pink'
                                 tooltipContent={
                                     <>
-                                        <span>Reward: {Number(epoch.reward_average).toLocaleString()} GWEI</span>
+                                        <span>Reward: {Number(epoch.reward_average)?.toLocaleString()} GWEI</span>
                                         <span>
-                                            Max. Reward: {Number(epoch.max_reward_average).toLocaleString()} GWEI
+                                            Max. Reward: {Number(epoch.max_reward_average)?.toLocaleString()} GWEI
                                         </span>
                                     </>
                                 }
