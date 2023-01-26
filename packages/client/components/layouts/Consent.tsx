@@ -26,8 +26,8 @@ const Container = styled.div<Props>`
     width: 90vw;
     padding: 40px 5px 20px;
     text-align: center;
-    background-color: var(--purple2);
-    box-shadow: inset -12.6px -12.6px 25px rgba(0, 0, 0, 0.15), inset 12.6px 12.6px 25px rgba(0, 0, 0, 0.15);
+    background-color: var(--brown1);
+    box-shadow: inset 6.13061px 6.13061px 7.00641px var(--brown3), inset -6.13061px -6.13061px 7.00641px var(--brown3);
     border-radius: 30px;
     z-index: 1;
     animation-duration: 1s;
@@ -45,36 +45,11 @@ const Container = styled.div<Props>`
         }
     }
 
-    p {
+    .text {
         font-family: var(--headingFont);
-        font-style: normal;
-        color: var(--purple1);
-    }
-
-    .image-container {
-        position: absolute;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        top: 10px;
-        left: calc(50% - 20px);
-        height: 40px;
-        width: 40px;
-        border-radius: 50%;
-        background-color: var(--purple1);
-        padding: 5px;
-        cursor: pointer;
-    }
-
-    .title {
+        margin-top: 24px;
         font-size: 16px;
-        font-weight: 800;
-        margin: 20px 0;
-    }
-
-    .description {
-        font-size: 12px;
-        margin-bottom: 10px;
+        text-transform: uppercase;
     }
 
     .buttons-container {
@@ -85,51 +60,39 @@ const Container = styled.div<Props>`
     }
 
     button {
-        box-shadow: inset 0px 0px 7px 3px rgba(0, 0, 0, 0.15);
+        box-shadow: inset 6.13061px 6.13061px 7.00641px var(--brown3),
+            inset -6.13061px -6.13061px 7.00641px var(--brown3);
         border-radius: 40px;
-        font-size: 16px;
+        font-size: 14px;
         text-transform: uppercase;
         font-family: var(--headingFont);
         font-style: normal;
         font-weight: 500;
-        padding: 5px 10px;
-        width: 170px;
+        padding: 15px 20px;
         cursor: pointer;
-    }
+        background-color: var(--brown4);
+        color: white;
 
-    .green {
-        background: var(--green1);
-        border: 3px solid var(--green2);
-        color: var(--green2);
-    }
-
-    .red {
-        background: var(--red1);
-        border: 3px solid var(--red2);
-        color: var(--red2);
+        &:hover {
+            box-shadow: inset 6.13061px 6.13061px 7.00641px var(--brown5),
+                inset -6.13061px -6.13061px 7.00641px var(--brown5);
+            background-color: var(--yellow1);
+        }
     }
 
     @media (min-width: 768px) {
-        top: calc(50% - 160px);
-        left: calc(50% - 300px);
-        height: 320px;
-        width: 600px;
+        top: calc(50% - 185px);
+        left: calc(50% - 350px);
+        height: 370px;
+        width: 700px;
         border-radius: 70px;
-        padding: 40px;
+        padding: 30px 50px 10px;
 
         .image-container {
             top: -55px;
             left: calc(50% - 25px);
             height: 50px;
             width: 50px;
-        }
-
-        .title {
-            font-size: 30px;
-        }
-
-        .description {
-            font-size: 16px;
         }
     }
 `;
@@ -138,6 +101,9 @@ const Consent = () => {
     const screenRef = useRef(null);
 
     const [consent, setConsent] = useState(true);
+    const [generalVisisble, setGeneralVisible] = useState(true);
+    const [necessaryVisible, setNecessaryVisible] = useState(false);
+    const [allVisible, setAllVisible] = useState(false);
 
     useEffect(() => {
         setConsent(hasCookie('localConsent'));
@@ -168,6 +134,24 @@ const Consent = () => {
         setCookie('localConsent', 'false', { maxAge: 60 * 60 * 24 * 365 });
     };
 
+    const handleMouseEnterNecessary = () => {
+        setGeneralVisible(false);
+        setNecessaryVisible(true);
+        setAllVisible(false);
+    };
+
+    const handleMouseLeave = () => {
+        setGeneralVisible(true);
+        setNecessaryVisible(false);
+        setAllVisible(false);
+    };
+
+    const handleMouseEnterAll = () => {
+        setGeneralVisible(false);
+        setNecessaryVisible(false);
+        setAllVisible(true);
+    };
+
     if (consent === true) {
         return null;
     }
@@ -175,21 +159,106 @@ const Consent = () => {
     return (
         <Screen ref={screenRef} consent={consent} onClick={handleScreenClient}>
             <Container consent={consent}>
-                <div className='image-container' onClick={closeP}>
-                    <Image src='/static/images/cross.svg' alt='Cancel button' width={40} height={40} />
-                </div>
-                <p className='title'>We use cookies</p>
-                <p className='description'>
-                    This website uses cookies to ensure you get the best experience on our website.
-                </p>
+                <div className='flex flex-col justify-between h-full'>
+                    <div>
+                        <div className={generalVisisble ? 'flex' : 'hidden'}>
+                            <Image src='/static/images/pacman.svg' alt='Pacman' width={150} height={150} />
 
-                <div className='buttons-container'>
-                    <button className='green' onClick={acceptCookie}>
-                        Accept
-                    </button>
-                    <button className='red' onClick={denyCookie}>
-                        Deny
-                    </button>
+                            <div className='flex justify-around w-full'>
+                                <Image src='/static/images/cookie.svg' alt='Cookie' width={50} height={50} />
+                                <Image src='/static/images/cookie.svg' alt='Cookie' width={50} height={50} />
+                                <Image src='/static/images/cookie.svg' alt='Cookie' width={50} height={50} />
+                            </div>
+                        </div>
+
+                        <div className={`relative w-fit mx-auto ${necessaryVisible ? 'block' : 'hidden'}`}>
+                            <Image src='/static/images/pacman-eating.svg' alt='Logo' width={150} height={150} />
+
+                            <Image
+                                src='/static/images/cookie-bitten-right.svg'
+                                alt='Cookie bitten'
+                                width={50}
+                                height={50}
+                                className='absolute top-11 -left-9'
+                            />
+                            <Image
+                                src='/static/images/cookie-bitten-left.svg'
+                                alt='Cookie bitten'
+                                width={65}
+                                height={65}
+                                className='absolute top-12 -right-10'
+                            />
+                            <Image
+                                src='/static/images/cookie-crumbs.svg'
+                                alt='Cookie crumbs'
+                                width={50}
+                                height={50}
+                                className='absolute top-28 left-0'
+                            />
+                        </div>
+
+                        <div className={`relative w-fit mx-auto ${allVisible ? 'block' : 'hidden'}`}>
+                            <Image src='/static/images/pacman-happy.svg' alt='Pacman happy' width={150} height={150} />
+
+                            <Image
+                                src='/static/images/heart.svg'
+                                alt='Heart'
+                                width={40}
+                                height={40}
+                                className='absolute -top-2 -left-2 rotate-6'
+                            />
+                            <Image
+                                src='/static/images/heart.svg'
+                                alt='Heart'
+                                width={65}
+                                height={65}
+                                className='absolute top-9 -left-16 -rotate-12'
+                            />
+                            <Image
+                                src='/static/images/heart.svg'
+                                alt='Heart'
+                                width={65}
+                                height={65}
+                                className='absolute top-0 -right-12 rotate-12'
+                            />
+                            <Image
+                                src='/static/images/heart.svg'
+                                alt='Heart'
+                                width={40}
+                                height={40}
+                                className='absolute top-[84px] -right-10 rotate-[30deg]'
+                            />
+                        </div>
+                    </div>
+
+                    <div>
+                        <p className={`text ${generalVisisble ? 'flex' : 'hidden'}`}>
+                            We use cookies to know how users interact with our website to deliver a better user
+                            experience. READ MORE.
+                        </p>
+
+                        <p className={`text ${necessaryVisible ? 'block' : 'hidden'}`}>
+                            YUM! Just the necessary amount of cookies.
+                        </p>
+
+                        <p className={`text ${allVisible ? 'block' : 'hidden'}`}>
+                            We care about your data. Thanks for helping us improving the user experience on our website.
+                            Enjoy!
+                        </p>
+                    </div>
+
+                    <div className='buttons-container'>
+                        <button
+                            onClick={acceptCookie}
+                            onMouseEnter={handleMouseEnterNecessary}
+                            onMouseLeave={handleMouseLeave}
+                        >
+                            Only necessary
+                        </button>
+                        <button onClick={denyCookie} onMouseEnter={handleMouseEnterAll} onMouseLeave={handleMouseLeave}>
+                            Accept all cookies
+                        </button>
+                    </div>
                 </div>
             </Container>
         </Screen>
