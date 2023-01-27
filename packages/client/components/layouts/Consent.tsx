@@ -20,11 +20,11 @@ const Screen = styled.div<Props>`
 const Container = styled.div<Props>`
     display: ${props => (props.consent ? 'none' : 'block')};
     position: absolute;
-    top: calc(50% - 120px);
-    left: 5%;
-    height: 240px;
-    width: 90vw;
-    padding: 40px 5px 20px;
+    top: calc(50% - 175px);
+    left: 2.7%;
+    height: 350px;
+    width: 100%;
+    padding: 20px 10px 5px;
     text-align: center;
     background-color: var(--brown1);
     box-shadow: inset 6.13061px 6.13061px 7.00641px var(--brown3), inset -6.13061px -6.13061px 7.00641px var(--brown3);
@@ -48,14 +48,15 @@ const Container = styled.div<Props>`
     .text {
         font-family: var(--headingFont);
         margin-top: 24px;
-        font-size: 16px;
+        font-size: 12px;
         text-transform: uppercase;
     }
 
     .buttons-container {
         display: flex;
+        flex-direction: column;
         justify-content: center;
-        column-gap: 20px;
+        row-gap: 5px;
         margin: 20px 0;
     }
 
@@ -63,7 +64,7 @@ const Container = styled.div<Props>`
         box-shadow: inset 6.13061px 6.13061px 7.00641px var(--brown3),
             inset -6.13061px -6.13061px 7.00641px var(--brown3);
         border-radius: 40px;
-        font-size: 14px;
+        font-size: 10px;
         text-transform: uppercase;
         font-family: var(--headingFont);
         font-style: normal;
@@ -88,11 +89,19 @@ const Container = styled.div<Props>`
         border-radius: 70px;
         padding: 30px 50px 10px;
 
-        .image-container {
-            top: -55px;
-            left: calc(50% - 25px);
-            height: 50px;
-            width: 50px;
+        .text {
+            margin-top: 24px;
+            font-size: 16px;
+        }
+
+        .buttons-container {
+            flex-direction: row;
+            justify-content: center;
+            column-gap: 20px;
+        }
+
+        button {
+            font-size: 14px;
         }
     }
 `;
@@ -129,11 +138,6 @@ const Consent = () => {
         setCookie('localConsent', 'false', { maxAge: 60 * 60 });
     };
 
-    const denyCookie = () => {
-        setConsent(true);
-        setCookie('localConsent', 'false', { maxAge: 60 * 60 * 24 * 365 });
-    };
-
     const handleMouseEnterNecessary = () => {
         setGeneralVisible(false);
         setNecessaryVisible(true);
@@ -162,12 +166,36 @@ const Consent = () => {
                 <div className='flex flex-col justify-between h-full'>
                     <div>
                         <div className={generalVisisble ? 'flex' : 'hidden'}>
-                            <Image src='/static/images/pacman.svg' alt='Pacman' width={150} height={150} />
+                            <Image
+                                src='/static/images/pacman.svg'
+                                alt='Pacman'
+                                width={100}
+                                height={100}
+                                className='md:w-36'
+                            />
 
                             <div className='flex justify-around w-full'>
-                                <Image src='/static/images/cookie.svg' alt='Cookie' width={50} height={50} />
-                                <Image src='/static/images/cookie.svg' alt='Cookie' width={50} height={50} />
-                                <Image src='/static/images/cookie.svg' alt='Cookie' width={50} height={50} />
+                                <Image
+                                    src='/static/images/cookie.svg'
+                                    alt='Cookie'
+                                    width={40}
+                                    height={40}
+                                    className='md:w-12'
+                                />
+                                <Image
+                                    src='/static/images/cookie.svg'
+                                    alt='Cookie'
+                                    width={40}
+                                    height={40}
+                                    className='md:w-12'
+                                />
+                                <Image
+                                    src='/static/images/cookie.svg'
+                                    alt='Cookie'
+                                    width={40}
+                                    height={40}
+                                    className='md:w-12'
+                                />
                             </div>
                         </div>
 
@@ -255,7 +283,11 @@ const Consent = () => {
                         >
                             Only necessary
                         </button>
-                        <button onClick={denyCookie} onMouseEnter={handleMouseEnterAll} onMouseLeave={handleMouseLeave}>
+                        <button
+                            onClick={acceptCookie}
+                            onMouseEnter={handleMouseEnterAll}
+                            onMouseLeave={handleMouseLeave}
+                        >
                             Accept all cookies
                         </button>
                     </div>
