@@ -397,7 +397,8 @@ const Statitstics = () => {
 
                         <p className='w-[9%]'>{epoch.f_epoch.toLocaleString()}</p>
 
-                        <div className='w-[13%] pt-3.5 mb-2'>
+                        <div className='w-[13%] pt-3.5 mb-6'>
+                            <p className='uppercase'>blocks</p>
                             <ProgressTileBar
                                 totalBlocks={epoch.proposed_blocks}
                                 tooltipContent={
@@ -479,9 +480,9 @@ const Statitstics = () => {
                             />
                         </div>
 
-                        <div className='w-[12%] pt-1'>
+                        <div className='w-[12%] mb-2'>
                             <ProgressSmoothBar
-                                title=''
+                                title='rewards'
                                 bg='#D80068'
                                 color='#FFBDD9'
                                 percent={Number(epoch.reward_average) / Number(epoch.max_reward_average)}
