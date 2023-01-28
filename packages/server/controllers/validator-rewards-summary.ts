@@ -40,9 +40,9 @@ export const getEpochsStatistics = async (req: Request, res: Response) => {
                 ORDER BY f_epoch desc
             `),
             pgClient.query(`
-                SELECT f_proposer_slot/32 AS epoch, count(*) AS proposed_blocks
+                SELECT (f_proposer_slot/32) AS epoch, 
+                ARRAY_AGG(CASE WHEN f_proposed = true THEN 1 ELSE 0 END) AS proposed_blocks
                 FROM t_proposer_duties
-                WHERE f_proposed = true
                 GROUP BY epoch
                 ORDER BY epoch DESC
                 OFFSET ${skip}
