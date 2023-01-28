@@ -62,17 +62,12 @@ export const TooltipContentContainerStats = styled(TooltipContentContainer)<Prop
     }
 
     @media (min-width: 768px) {
-        left: ${({ tooltipColor }) => tooltipColor === 'pink' && 'calc(50% - 240px)'};
+        left: ${({ tooltipColor }) => (tooltipColor === 'pink' ? 'calc(50% - 230px)' : 'calc(50% - 117.5px)')};
         width: 235px;
         background-image: ${({ tooltipColor }) =>
             tooltipColor === 'pink'
                 ? `url('/static/images/tooltips/tooltip_${tooltipColor}_left.svg')`
                 : `url('/static/images/tooltips/tooltip_${tooltipColor}.svg')`};
-    }
-
-    @media (min-width: 1280px) {
-        left: calc(50% - 125px);
-        background-image: ${({ tooltipColor }) => `url('/static/images/tooltips/tooltip_${tooltipColor}.svg')`};
     }
 `;
 
@@ -80,11 +75,19 @@ export const TooltipContentContainerBlocks = styled(TooltipContentContainer)`
     left: calc(50% - 110px);
     height: 115px;
     width: 220px;
-    top: 50px;
+    top: 40px;
     background-image: url('/static/images/tooltips/tooltip_white.svg');
     width: 200px;
     left: calc(50% - 100px);
     padding-top: 30px;
+
+    @media (min-width: 768px) {
+        top: 45px;
+    }
+
+    @media (min-width: 1150px) {
+        top: 50px;
+    }
 `;
 
 type PropsHeader = {
@@ -111,7 +114,7 @@ export const TooltipContentContainerHeaders = styled(TooltipContentContainer)<Pr
     }
 
     @media (min-width: 1280px) {
-        left: calc(50% - 117.5px);
+        left: calc(50% - 125px);
         background-image: url('/static/images/tooltips/tooltip_white.svg');
     }
 `;
