@@ -122,6 +122,7 @@ export const listenBlockNotification = async (req: Request, res: Response) => {
                 res.write('event: new_block\n');
                 res.write(`data: ${msg.payload}`);
                 res.write('\n\n');
+                res.end();
             }
         });
 
@@ -150,6 +151,7 @@ export const listenEpochNotification = async (req: Request, res: Response) => {
                 res.write('event: new_epoch\n');
                 res.write(`data: ${msg.payload}`);
                 res.write('\n\n');
+                res.end();
             }
         });
 
