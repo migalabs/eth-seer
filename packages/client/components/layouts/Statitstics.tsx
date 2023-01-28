@@ -1,5 +1,5 @@
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import Image from 'next/image';
-import React, { useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import { useInView } from 'react-intersection-observer';
 
@@ -53,6 +53,8 @@ const Statitstics = () => {
     const [lastPageFetched, setLastPageFetched] = useState(false);
     const [loading, setLoading] = useState(false);
     const [eventSourceOpenened, setEventSourceOpenened] = useState(false);
+    const [calculatingText, setCalculatingText] = useState('');
+    const [animationStarted, setAnimationStarted] = useState(false);
 
     useEffect(() => {
         if (epochs.length === 0) {
@@ -81,6 +83,21 @@ const Statitstics = () => {
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [inView]);
+
+    const shuffle = useCallback(() => {
+        setCalculatingText(prevState => {
+            if (!prevState || prevState === 'Calculating...') {
+                return 'Calculating';
+            } else {
+                return prevState + '.';
+            }
+        });
+    }, []);
+
+    useEffect(() => {
+        const intervalID = setInterval(shuffle, 1000);
+        return () => clearInterval(intervalID);
+    }, [shuffle]);
 
     const handleMouseMove = (e: any) => {
         if (conainerRef.current) {
@@ -139,10 +156,18 @@ const Statitstics = () => {
                 <p>{new Date(firstBlock + f_slot * 12000).toLocaleTimeString()}</p>
             </div>
             <p className='w-[7%]'>{f_epoch.toLocaleString()}</p>
-            <p className='w-[14%]'>CALCULATING...</p>
-            <p className='w-[29%]'>CALCULATING...</p>
-            <p className='w-[29%]'>CALCULATING...</p>
-            <p className='w-[12%]'>CALCULATING...</p>
+            <div className='w-[14%]'>
+                <p className='w-32 uppercase mx-auto text-start'>{calculatingText}</p>
+            </div>
+            <div className='w-[29%]'>
+                <p className='w-32 uppercase mx-auto text-start'>{calculatingText}</p>
+            </div>
+            <div className='w-[29%]'>
+                <p className='w-32 uppercase mx-auto text-start'>{calculatingText}</p>
+            </div>
+            <div className='w-[12%]'>
+                <p className='w-32 uppercase mx-auto text-start'>{calculatingText}</p>
+            </div>
         </CardCalculating>
     );
 
@@ -181,7 +206,7 @@ const Statitstics = () => {
                     </TooltipContainer>
                 </div>
                 <div>
-                    <p>CALCULATING...</p>
+                    <p className='w-32 uppercase mx-auto text-start'>{calculatingText}</p>
                 </div>
             </div>
             <div className='flex flex-col w-full'>
@@ -202,7 +227,7 @@ const Statitstics = () => {
                     </TooltipContainer>
                 </div>
                 <div>
-                    <p>CALCULATING...</p>
+                    <p className='w-32 uppercase mx-auto text-start'>{calculatingText}</p>
                 </div>
             </div>
             <div className='flex flex-col w-full'>
@@ -224,7 +249,7 @@ const Statitstics = () => {
                     </TooltipContainer>
                 </div>
                 <div>
-                    <p>CALCULATING...</p>
+                    <p className='w-32 uppercase mx-auto text-start'>{calculatingText}</p>
                 </div>
             </div>
             <div className='flex flex-col w-full'>
@@ -240,7 +265,7 @@ const Statitstics = () => {
                     </TooltipContainer>
                 </div>
                 <div>
-                    <p>CALCULATING...</p>
+                    <p className='w-32 uppercase mx-auto text-start'>{calculatingText}</p>
                 </div>
             </div>
         </CardCalculating>
