@@ -38,7 +38,7 @@ type Epoch = {
     f_missing_head: number;
     reward_average: string;
     max_reward_average: string;
-    proposed_blocks: string;
+    proposed_blocks: Array<number>;
 };
 
 const Statitstics = () => {
@@ -130,6 +130,8 @@ const Statitstics = () => {
                     page,
                 },
             });
+
+            console.log('res', typeof response.data.epochsStats[0].proposed_blocks);
 
             if (response.data.epochsStats.length === 0) {
                 setLastPageFetched(true);
@@ -293,6 +295,10 @@ const Statitstics = () => {
         </>
     );
 
+    const getProposedBlocks = (totalBlock: Array<number>) => {
+        return totalBlock.filter(element => element === 1).length;
+    };
+
     const getDesktopView = () => (
         <div
             ref={conainerRef}
@@ -387,12 +393,11 @@ const Statitstics = () => {
 
                         <div className='w-[14%] pt-3.5 mb-2'>
                             <ProgressTileBar
-                                tilesFilled={Number(epoch.proposed_blocks)}
-                                totalTiles={32}
+                                totalBlocks={epoch.proposed_blocks}
                                 tooltipContent={
                                     <>
-                                        <span>Proposed Blocks: {epoch.proposed_blocks}</span>
-                                        <span>Missed Blocks: {32 - Number(epoch.proposed_blocks)}</span>
+                                        <span>Proposed Blocks: {getProposedBlocks(epoch.proposed_blocks)}</span>
+                                        <span>Missed Blocks: {32 - getProposedBlocks(epoch.proposed_blocks)}</span>
                                     </>
                                 }
                             />
@@ -555,12 +560,11 @@ const Statitstics = () => {
                         </div>
                         <div>
                             <ProgressTileBar
-                                tilesFilled={32}
-                                totalTiles={32}
+                                totalBlocks={epoch.proposed_blocks}
                                 tooltipContent={
                                     <>
-                                        <span>Proposed Blocks: {epoch.proposed_blocks}</span>
-                                        <span>Missed Blocks: {32 - Number(epoch.proposed_blocks)}</span>
+                                        <span>Proposed Blocks: {getProposedBlocks(epoch.proposed_blocks)}</span>
+                                        <span>Missed Blocks: {32 - getProposedBlocks(epoch.proposed_blocks)}</span>
                                     </>
                                 }
                             />
@@ -606,8 +610,8 @@ const Statitstics = () => {
                             tooltipColor='blue'
                             tooltipContent={
                                 <>
-                                    <span>Proposed Blocks: {epoch.proposed_blocks}</span>
-                                    <span>Missed Blocks: {32 - Number(epoch.proposed_blocks)}</span>
+                                    <span>Missing Source: {epoch.f_missing_source?.toLocaleString()}</span>
+                                    <span>Attestations: {epoch.f_num_vals?.toLocaleString()}</span>
                                 </>
                             }
                         />
