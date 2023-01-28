@@ -318,11 +318,17 @@ const Statitstics = () => {
                     </TooltipContainer>
                 </div>
 
-                <div className='flex w-[7%] items-center gap-x-1 justify-center'>
+                <div className='flex w-[9%] items-center gap-x-1 justify-center'>
                     <p className='mt-0.5'>Epoch</p>
+                    <TooltipContainer>
+                        <Image src='/static/images/information.svg' alt='Time information' width={24} height={24} />
+                        <TooltipContentContainerHeaders epoch>
+                            <span>Epoch number</span>
+                        </TooltipContentContainerHeaders>
+                    </TooltipContainer>
                 </div>
 
-                <div className='flex w-[14%] items-center gap-x-1 justify-center'>
+                <div className='flex w-[13%] items-center gap-x-1 justify-center'>
                     <p className='mt-0.5'>Blocks</p>
                     <TooltipContainer>
                         <Image src='/static/images/information.svg' alt='Blocks information' width={24} height={24} />
@@ -389,9 +395,9 @@ const Statitstics = () => {
                             <p>{new Date(firstBlock + epoch.f_epoch * 32 * 12000).toLocaleTimeString()}</p>
                         </div>
 
-                        <p className='w-[7%]'>{epoch.f_epoch.toLocaleString()}</p>
+                        <p className='w-[9%]'>{epoch.f_epoch.toLocaleString()}</p>
 
-                        <div className='w-[14%] pt-3.5 mb-2'>
+                        <div className='w-[13%] pt-3.5 mb-2'>
                             <ProgressTileBar
                                 totalBlocks={epoch.proposed_blocks}
                                 tooltipContent={
