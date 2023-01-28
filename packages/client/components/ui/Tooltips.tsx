@@ -93,6 +93,7 @@ export const TooltipContentContainerBlocks = styled(TooltipContentContainer)`
 type PropsHeader = {
     rewards?: boolean;
     time?: boolean;
+    epoch?: boolean;
 };
 
 export const TooltipContentContainerHeaders = styled(TooltipContentContainer)<PropsHeader>`
@@ -109,6 +110,14 @@ export const TooltipContentContainerHeaders = styled(TooltipContentContainer)<Pr
 
     @media (min-width: 768px) {
         padding-top: 32px;
+
+        span {
+            padding: ${({ epoch }) => (epoch ? '20px' : '0.5px')};
+            font-size: 7.5px;
+        }
+    }
+
+    @media (min-width: 768px) {
         left: ${({ rewards, time }) =>
             rewards ? 'calc(50% - 240px)' : time ? 'calc(50% - 13.5px)' : 'calc(50% - 124px)'};
     }
