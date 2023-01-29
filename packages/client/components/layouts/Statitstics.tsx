@@ -355,7 +355,7 @@ const Statitstics = () => {
                         </TooltipContainer>
                     </div>
                     <div>
-                        <p>CALCULATING...</p>
+                        <p className='w-32 uppercase mx-auto text-start'>{calculatingText}</p>
                     </div>
                 </div>
                 <div className='flex flex-col w-full'>
@@ -377,7 +377,7 @@ const Statitstics = () => {
                         </TooltipContainer>
                     </div>
                     <div>
-                        <p>CALCULATING...</p>
+                        <p className='w-32 uppercase mx-auto text-start'>{calculatingText}</p>
                     </div>
                 </div>
                 <div className='flex flex-col w-full'>
@@ -398,7 +398,7 @@ const Statitstics = () => {
                         </TooltipContainer>
                     </div>
                     <div>
-                        <p>CALCULATING...</p>
+                        <p className='w-32 uppercase mx-auto text-start'>{calculatingText}</p>
                     </div>
                 </div>
             </CardCalculating>
