@@ -6,6 +6,12 @@ type Props = {
     totalBlocks: Array<number>;
 };
 
+const addBars = (restBlocks: Array<number>) => {
+    return restBlocks.map((element, idx) => (
+        <div key={idx} className={`w-[3px] h-2.5 ${element === 1 && 'bg-gray-400'}`} />
+    ));
+};
+
 const ProgressTileBar = ({ tooltipContent, totalBlocks }: Props) => {
     return (
         <div className='flex flex-col gap-y-1'>
@@ -19,6 +25,7 @@ const ProgressTileBar = ({ tooltipContent, totalBlocks }: Props) => {
                                     className={`w-[3px] h-2.5 ${element === 1 ? 'bg-green-500' : 'bg-red-500'}`}
                                 />
                             ))}
+                            {totalBlocks.length < 32 && addBars(Array(32 - totalBlocks.length).fill(1))}
                         </div>
                     </div>
                     <TooltipContentContainerStats tooltipColor='yellow' colorLetter='#D88D1C'>
