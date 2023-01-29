@@ -4,11 +4,14 @@ import Script from 'next/script';
 import { getCookie } from 'cookies-next';
 import Head from 'next/head';
 
+// Contexts
+import StatusContextProvider from '../contexts/status/StatusState';
+
 export default function App({ Component, pageProps }: AppProps) {
     const consent = getCookie('localConsent');
 
     return (
-        <>
+        <StatusContextProvider>
             <Head>
                 <meta name='viewport' content='width=device-width, initial-scale=1.0' />
             </Head>
@@ -64,6 +67,6 @@ export default function App({ Component, pageProps }: AppProps) {
                     }}
                 />
             )}
-        </>
+        </StatusContextProvider>
     );
 }
