@@ -6,6 +6,9 @@ import { useInView } from 'react-intersection-observer';
 // Axios
 import axiosClient from '../../config/axios';
 
+// Contexts
+import StatusContext from '../../contexts/status/StatusContext';
+
 // Components
 import ProgressTileBar from '../ui/ProgressTileBar';
 import ProgressSmoothBar from '../ui/ProgressSmoothBar';
@@ -41,6 +44,10 @@ type Epoch = {
 const Statitstics = () => {
     // Constants
     const ETH_WEI = 1;
+
+    // Contexts
+    const { setNotWorking } = React.useContext(StatusContext) || {};
+
     // Intersection Observer
     const { ref, inView } = useInView();
 
@@ -146,6 +153,7 @@ const Statitstics = () => {
             setLoading(false);
         } catch (error) {
             console.log(error);
+            setNotWorking?.();
         }
     };
 
