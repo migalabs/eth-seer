@@ -41,6 +41,15 @@ type Epoch = {
     proposed_blocks: Array<number>;
 };
 
+type Block = {
+    f_slot: number;
+    f_pool_name: string;
+    f_proposed: boolean;
+    f_epoch: number;
+    f_proposer_index: number;
+    f_graffiti: string;
+};
+
 const Statitstics = () => {
     // Constants
     const ETH_WEI = 1;
@@ -55,6 +64,7 @@ const Statitstics = () => {
 
     // States
     const [epochs, setEpochs] = useState<Epoch[]>([]);
+    const [epochsBlocks, setEpochsBlocks] = useState<Record<number, Block[]> | null>(null);
     const [desktopView, setDesktopView] = useState(true);
     const [currentPage, setCurrentPage] = useState(0);
     const [lastPageFetched, setLastPageFetched] = useState(false);
@@ -106,6 +116,28 @@ const Statitstics = () => {
         return () => clearInterval(intervalID);
     }, [shuffle]);
 
+    useEffect(() => {
+        if (epochs.length === 0) {
+            getBlocks(0, 64);
+        }
+
+        const eventSourceBlock = new EventSource(
+            `${process.env.NEXT_PUBLIC_URL_API}/api/validator-rewards-summary/new-block-notification`
+        );
+
+        eventSourceBlock.addEventListener('new_block', function (e) {
+            getBlocks(0, 32);
+            if (epochs.length > 0 && epochsBlocks !== null) {
+                getCalculatingEpochsDesktop(epochs[0].f_slot, epochs[0].f_epoch, epochsBlocks);
+            }
+        });
+
+        return () => {
+            eventSourceBlock.close();
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     const handleMouseMove = (e: any) => {
         if (conainerRef.current) {
             const x = e.pageX;
@@ -116,6 +148,49 @@ const Statitstics = () => {
             } else if (x > conainerRef.current.clientWidth * (1 - limit)) {
                 conainerRef.current.scrollLeft += 10;
             }
+        }
+    };
+
+    // Get blocks
+    const getBlocks = async (page: number, limit: number = 320) => {
+        try {
+            const response = await axiosClient.get(`/api/validator-rewards-summary/blocks`, {
+                params: {
+                    limit,
+                    page,
+                },
+            });
+            const blocks: Block[] = response.data.blocks;
+
+            let aux: Record<number, Block[]> = epochsBlocks || {};
+            let lastEpochAux = -1;
+
+            blocks.forEach(block => {
+                if (aux[block.f_epoch]) {
+                    if (!aux[block.f_epoch].some(b => b.f_slot === block.f_slot)) {
+                        aux[block.f_epoch] = [block, ...aux[block.f_epoch]];
+                    }
+                } else {
+                    aux[block.f_epoch] = [block];
+                }
+
+                if (block.f_epoch > lastEpochAux) {
+                    lastEpochAux = block.f_epoch;
+                }
+            });
+
+            setEpochsBlocks(prevState => {
+                if (prevState) {
+                    return {
+                        ...prevState,
+                        [lastEpochAux]: aux[lastEpochAux],
+                    };
+                } else {
+                    return aux;
+                }
+            });
+        } catch (error) {
+            console.log(error);
         }
     };
 
@@ -130,8 +205,6 @@ const Statitstics = () => {
                     page,
                 },
             });
-
-            console.log('res', typeof response.data.epochsStats[0].proposed_blocks);
 
             if (response.data.epochsStats.length === 0) {
                 setLastPageFetched(true);
@@ -159,139 +232,190 @@ const Statitstics = () => {
         }
     };
 
-    const getCalculatingEpochDesktop = (f_slot: number, f_epoch: number) => (
-        <CardCalculating className='flex gap-x-1 justify-around items-center text-[9px] text-black bg-[#FFC163] rounded-[22px] px-2 xl:px-8 py-3'>
-            <div className='flex flex-col w-[8%] pt-2.5 pb-2.5'>
-                <p>{new Date(firstBlock + f_slot * 12000).toLocaleDateString()}</p>
-                <p>{new Date(firstBlock + f_slot * 12000).toLocaleTimeString()}</p>
-            </div>
-            <p className='w-[7%]'>{f_epoch.toLocaleString()}</p>
-            <div className='w-[14%]'>
-                <p className='w-32 uppercase mx-auto text-start'>{calculatingText}</p>
-            </div>
-            <div className='w-[29%]'>
-                <p className='w-32 uppercase mx-auto text-start'>{calculatingText}</p>
-            </div>
-            <div className='w-[29%]'>
-                <p className='w-32 uppercase mx-auto text-start'>{calculatingText}</p>
-            </div>
-            <div className='w-[12%]'>
-                <p className='w-32 uppercase mx-auto text-start'>{calculatingText}</p>
-            </div>
-        </CardCalculating>
-    );
+    const createArrayBlocks = (blocks: Block[]) => {
+        const arrayBlocks = blocks.map(element => (element.f_proposed ? 1 : 0));
+        return arrayBlocks;
+    };
 
-    const getCalculatingEpochMobile = (f_slot: number, f_epoch: number) => (
-        <CardCalculating className='flex flex-col gap-y-4 justify-around items-center text-[10px] text-black bg-[#FFC163] rounded-[22px] px-3 py-4'>
-            <div className='flex gap-x-1 justify-center'>
-                <p className='font-bold text-sm mt-0.5'>Epoch {f_epoch.toLocaleString()}</p>
-            </div>
-            <div className='flex flex-col gap-x-4 w-full'>
-                <div className='flex gap-x-1 justify-center mb-1'>
-                    <p className='text-xs mt-1'>Time</p>
-                    <TooltipContainer>
-                        <Image src='/static/images/information.svg' alt='Time information' width={24} height={24} />
-                        <TooltipContentContainerHeaders>
-                            <span>Time at which the epoch</span>
-                            <span>should have started</span>
-                            <span>(calculated since genesis)</span>
-                        </TooltipContentContainerHeaders>
-                    </TooltipContainer>
-                </div>
-                <div>
+    const getCalculatingEpochDesktop = (f_slot: number, f_epoch: number, blocks: Block[]) => {
+        const arrayBlocks = createArrayBlocks(blocks);
+
+        return (
+            <CardCalculating className='flex gap-x-1 justify-around items-center text-[9px] text-black bg-[#FFC163] rounded-[22px] px-2 xl:px-8 py-3'>
+                <div className='flex flex-col w-[8%] pt-2.5 pb-2.5'>
                     <p>{new Date(firstBlock + f_slot * 12000).toLocaleDateString()}</p>
                     <p>{new Date(firstBlock + f_slot * 12000).toLocaleTimeString()}</p>
                 </div>
-            </div>
-            <div className='flex flex-col w-full'>
-                <div className='flex gap-x-1 justify-center mb-1'>
-                    <p className='text-xs mt-1'>Blocks</p>
-                    <TooltipContainer>
-                        <Image src='/static/images/information.svg' alt='Blocks information' width={24} height={24} />
-                        <TooltipContentContainerHeaders>
-                            <span>Proposed Blocks out of 32</span>
-                            <span>vs</span>
-                            <span>Missed Blocks</span>
-                        </TooltipContentContainerHeaders>
-                    </TooltipContainer>
-                </div>
-                <div>
-                    <p className='w-32 uppercase mx-auto text-start'>{calculatingText}</p>
-                </div>
-            </div>
-            <div className='flex flex-col w-full'>
-                <div className='flex flex-col gap-x-1 items-center mb-1'>
-                    <p className='text-xs mt-1'>Attestation Accuracy</p>
-                    <TooltipContainer>
-                        <Image
-                            src='/static/images/information.svg'
-                            alt='Attestation Accuracy information'
-                            width={24}
-                            height={24}
-                        />
-                        <TooltipContentContainerHeaders>
-                            <span>Correctly Attested Flag Count</span>
-                            <span>vs</span>
-                            <span>Expected Attesting Flag Count</span>
-                        </TooltipContentContainerHeaders>
-                    </TooltipContainer>
-                </div>
-                <div>
-                    <p className='w-32 uppercase mx-auto text-start'>{calculatingText}</p>
-                </div>
-            </div>
-            <div className='flex flex-col w-full'>
-                <div className='flex flex-col gap-x-1 items-center mb-1'>
-                    <p className='text-xs mt-1'>Voting Participation</p>
-                    <TooltipContainer>
-                        <Image
-                            src='/static/images/information.svg'
-                            alt='Attestation Accuracy information'
-                            width={24}
-                            height={24}
-                        />
+                <p className='w-[9%]'>{f_epoch.toLocaleString()}</p>
+                <div className='w-[13%] pt-3.5 mb-6'>
+                    <p className='uppercase'>blocks</p>
+                    <ProgressTileBar
+                        totalBlocks={arrayBlocks}
+                        tooltipContent={
+                            <>
+                                <span>Proposed Blocks: {arrayBlocks.filter(element => element === 1).length}</span>
 
-                        <TooltipContentContainerHeaders>
-                            <span>Attesting Balance</span>
-                            <span>vs</span>
-                            <span>Total Active Balance</span>
-                        </TooltipContentContainerHeaders>
-                    </TooltipContainer>
+                                <span>
+                                    Missed Blocks:{' '}
+                                    {arrayBlocks.length === 32
+                                        ? 32 - arrayBlocks.filter(element => element === 1).length
+                                        : arrayBlocks.length - arrayBlocks.filter(element => element === 1).length}
+                                </span>
+                            </>
+                        }
+                    />
                 </div>
-                <div>
+                <div className='w-[29%]'>
                     <p className='w-32 uppercase mx-auto text-start'>{calculatingText}</p>
                 </div>
-            </div>
-            <div className='flex flex-col w-full'>
-                <div className='flex gap-x-1 justify-center mb-1'>
-                    <p className='text-xs mt-1'>Rewards</p>
-                    <TooltipContainer>
-                        <Image src='/static/images/information.svg' alt='Blocks information' width={24} height={24} />
-                        <TooltipContentContainerHeaders>
-                            <span>Achieved Average Reward</span>
-                            <span>vs</span>
-                            <span>Expected Average Reward</span>
-                        </TooltipContentContainerHeaders>
-                    </TooltipContainer>
-                </div>
-                <div>
+                <div className='w-[29%]'>
                     <p className='w-32 uppercase mx-auto text-start'>{calculatingText}</p>
                 </div>
-            </div>
-        </CardCalculating>
-    );
+                <div className='w-[12%]'>
+                    <p className='w-32 uppercase mx-auto text-start'>{calculatingText}</p>
+                </div>
+            </CardCalculating>
+        );
+    };
 
-    const getCalculatingEpochsDesktop = (f_slot: number, f_epoch: number) => (
+    const getCalculatingEpochMobile = (f_slot: number, f_epoch: number, blocks: Block[]) => {
+        const arrayBlocks = createArrayBlocks(blocks);
+        return (
+            <CardCalculating className='flex flex-col gap-y-4 justify-around items-center text-[10px] text-black bg-[#FFC163] rounded-[22px] px-3 py-4'>
+                <div className='flex gap-x-1 justify-center'>
+                    <p className='font-bold text-sm mt-0.5'>Epoch {f_epoch.toLocaleString()}</p>
+                </div>
+                <div className='flex flex-col gap-x-4 w-full'>
+                    <div className='flex gap-x-1 justify-center mb-1'>
+                        <p className='text-xs mt-1'>Time</p>
+                        <TooltipContainer>
+                            <Image src='/static/images/information.svg' alt='Time information' width={24} height={24} />
+                            <TooltipContentContainerHeaders>
+                                <span>Time at which the epoch</span>
+                                <span>should have started</span>
+                                <span>(calculated since genesis)</span>
+                            </TooltipContentContainerHeaders>
+                        </TooltipContainer>
+                    </div>
+                    <div>
+                        <p>{new Date(firstBlock + f_slot * 12000).toLocaleDateString()}</p>
+                        <p>{new Date(firstBlock + f_slot * 12000).toLocaleTimeString()}</p>
+                    </div>
+                </div>
+                <div className='flex flex-col w-full'>
+                    <div className='flex gap-x-1 justify-center mb-1'>
+                        <p className='text-xs mt-1'>Blocks</p>
+                        <TooltipContainer>
+                            <Image
+                                src='/static/images/information.svg'
+                                alt='Blocks information'
+                                width={24}
+                                height={24}
+                            />
+                            <TooltipContentContainerHeaders>
+                                <span>Proposed Blocks out of 32</span>
+                                <span>vs</span>
+                                <span>Missed Blocks</span>
+                            </TooltipContentContainerHeaders>
+                        </TooltipContainer>
+                    </div>
+                    <div>
+                        <ProgressTileBar
+                            totalBlocks={arrayBlocks}
+                            tooltipContent={
+                                <>
+                                    <span>Proposed Blocks: {arrayBlocks.filter(element => element === 1).length}</span>
+
+                                    <span>
+                                        Missed Blocks:{' '}
+                                        {arrayBlocks.length === 32
+                                            ? 32 - arrayBlocks.filter(element => element === 1).length
+                                            : arrayBlocks.length - arrayBlocks.filter(element => element === 1).length}
+                                    </span>
+                                </>
+                            }
+                        />
+                    </div>
+                </div>
+                <div className='flex flex-col w-full'>
+                    <div className='flex flex-col gap-x-1 items-center mb-1'>
+                        <p className='text-xs mt-1'>Attestation Accuracy</p>
+                        <TooltipContainer>
+                            <Image
+                                src='/static/images/information.svg'
+                                alt='Attestation Accuracy information'
+                                width={24}
+                                height={24}
+                            />
+                            <TooltipContentContainerHeaders>
+                                <span>Correctly Attested Flag Count</span>
+                                <span>vs</span>
+                                <span>Expected Attesting Flag Count</span>
+                            </TooltipContentContainerHeaders>
+                        </TooltipContainer>
+                    </div>
+                    <div>
+                        <p>CALCULATING...</p>
+                    </div>
+                </div>
+                <div className='flex flex-col w-full'>
+                    <div className='flex flex-col gap-x-1 items-center mb-1'>
+                        <p className='text-xs mt-1'>Voting Participation</p>
+                        <TooltipContainer>
+                            <Image
+                                src='/static/images/information.svg'
+                                alt='Attestation Accuracy information'
+                                width={24}
+                                height={24}
+                            />
+
+                            <TooltipContentContainerHeaders>
+                                <span>Attesting Balance</span>
+                                <span>vs</span>
+                                <span>Total Active Balance</span>
+                            </TooltipContentContainerHeaders>
+                        </TooltipContainer>
+                    </div>
+                    <div>
+                        <p>CALCULATING...</p>
+                    </div>
+                </div>
+                <div className='flex flex-col w-full'>
+                    <div className='flex gap-x-1 justify-center mb-1'>
+                        <p className='text-xs mt-1'>Rewards</p>
+                        <TooltipContainer>
+                            <Image
+                                src='/static/images/information.svg'
+                                alt='Blocks information'
+                                width={24}
+                                height={24}
+                            />
+                            <TooltipContentContainerHeaders>
+                                <span>Achieved Average Reward</span>
+                                <span>vs</span>
+                                <span>Expected Average Reward</span>
+                            </TooltipContentContainerHeaders>
+                        </TooltipContainer>
+                    </div>
+                    <div>
+                        <p>CALCULATING...</p>
+                    </div>
+                </div>
+            </CardCalculating>
+        );
+    };
+
+    const getCalculatingEpochsDesktop = (f_slot: number, f_epoch: number, blocks: Record<number, Block[]>) => (
         <>
-            {getCalculatingEpochDesktop(f_slot + 64, f_epoch + 2)}
-            {getCalculatingEpochDesktop(f_slot + 32, f_epoch + 1)}
+            {getCalculatingEpochDesktop(f_slot + 64, f_epoch + 2, blocks[f_epoch + 2])}
+            {getCalculatingEpochDesktop(f_slot + 32, f_epoch + 1, blocks[f_epoch + 1])}
         </>
     );
 
-    const getCalculatingEpochsMobile = (f_slot: number, f_epoch: number) => (
+    const getCalculatingEpochsMobile = (f_slot: number, f_epoch: number, blocks: Record<number, Block[]>) => (
         <>
-            {getCalculatingEpochMobile(f_slot + 64, f_epoch + 2)}
-            {getCalculatingEpochMobile(f_slot + 32, f_epoch + 1)}
+            {getCalculatingEpochMobile(f_slot + 64, f_epoch + 2, blocks[f_epoch + 2])}
+            {getCalculatingEpochMobile(f_slot + 32, f_epoch + 1, blocks[f_epoch + 1])}
         </>
     );
 
@@ -383,7 +507,9 @@ const Statitstics = () => {
             </div>
 
             <div className='flex flex-col justify-center gap-y-4 min-w-[1150px]'>
-                {epochs.length > 0 && getCalculatingEpochsDesktop(epochs[0].f_slot, epochs[0].f_epoch)}
+                {epochs.length > 0 &&
+                    epochsBlocks !== null &&
+                    getCalculatingEpochsDesktop(epochs[0].f_slot, epochs[0].f_epoch, epochsBlocks)}
                 {epochs.map((epoch: Epoch, idx: number) => (
                     <Card
                         key={epoch.f_epoch}
@@ -515,7 +641,9 @@ const Statitstics = () => {
 
     const getPhoneView = () => (
         <div className='flex flex-col gap-y-4 uppercase px-4 mt-3'>
-            {epochs.length > 0 && getCalculatingEpochsMobile(epochs[0].f_slot, epochs[0].f_epoch)}
+            {epochs.length > 0 &&
+                epochsBlocks !== null &&
+                getCalculatingEpochsMobile(epochs[0].f_slot, epochs[0].f_epoch, epochsBlocks)}
             {epochs.map((epoch: Epoch, idx: number) => (
                 <Card
                     key={epoch.f_epoch}
