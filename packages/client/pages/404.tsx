@@ -22,7 +22,7 @@ const NotFoundPage = () => {
                 <p className='2xl:text-4xl md:text-3xl sm:text-2xl text-xl'>Page not found</p>
 
                 <p className='2xl:text-lg md:text-base sm:text-sm text-xs'>
-                    Sorry. We couldn't find the <br /> page you were looking for.
+                    Sorry. We couldn&apos;t find the <br /> page you were looking for.
                 </p>
 
                 <div className='relative mt-10'>
