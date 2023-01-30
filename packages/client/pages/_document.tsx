@@ -56,6 +56,7 @@ export default function Document() {
                     content="Ethereum's network latest epochs and blocks live data and statistics are shown on Ethseer"
                 />
                 <meta property='og:image' content='http://ethseer.com/static/images/ethseer_metadata.png' />
+                <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
             </Head>
 
             <body>
