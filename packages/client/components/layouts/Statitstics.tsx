@@ -1,10 +1,13 @@
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import Image from 'next/image';
-import React, { useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import { useInView } from 'react-intersection-observer';
 
 // Axios
 import axiosClient from '../../config/axios';
+
+// Contexts
+import StatusContext from '../../contexts/status/StatusContext';
 
 // Components
 import ProgressTileBar from '../ui/ProgressTileBar';
@@ -35,12 +38,25 @@ type Epoch = {
     f_missing_head: number;
     reward_average: string;
     max_reward_average: string;
-    proposed_blocks: string;
+    proposed_blocks: Array<number>;
+};
+
+type Block = {
+    f_slot: number;
+    f_pool_name: string;
+    f_proposed: boolean;
+    f_epoch: number;
+    f_proposer_index: number;
+    f_graffiti: string;
 };
 
 const Statitstics = () => {
     // Constants
     const ETH_WEI = 1;
+
+    // Contexts
+    const { setNotWorking } = React.useContext(StatusContext) || {};
+
     // Intersection Observer
     const { ref, inView } = useInView();
 
@@ -48,11 +64,14 @@ const Statitstics = () => {
 
     // States
     const [epochs, setEpochs] = useState<Epoch[]>([]);
+    const [epochsBlocks, setEpochsBlocks] = useState<Record<number, Block[]> | null>(null);
     const [desktopView, setDesktopView] = useState(true);
     const [currentPage, setCurrentPage] = useState(0);
     const [lastPageFetched, setLastPageFetched] = useState(false);
     const [loading, setLoading] = useState(false);
     const [eventSourceOpenened, setEventSourceOpenened] = useState(false);
+    const [calculatingText, setCalculatingText] = useState('');
+    const [animationStarted, setAnimationStarted] = useState(false);
 
     useEffect(() => {
         if (epochs.length === 0) {
@@ -82,6 +101,43 @@ const Statitstics = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [inView]);
 
+    const shuffle = useCallback(() => {
+        setCalculatingText(prevState => {
+            if (!prevState || prevState === 'Calculating...') {
+                return 'Calculating';
+            } else {
+                return prevState + '.';
+            }
+        });
+    }, []);
+
+    useEffect(() => {
+        const intervalID = setInterval(shuffle, 1000);
+        return () => clearInterval(intervalID);
+    }, [shuffle]);
+
+    useEffect(() => {
+        if (epochs.length === 0) {
+            getBlocks(0, 64);
+        }
+
+        const eventSourceBlock = new EventSource(
+            `${process.env.NEXT_PUBLIC_URL_API}/api/validator-rewards-summary/new-block-notification`
+        );
+
+        eventSourceBlock.addEventListener('new_block', function (e) {
+            getBlocks(0, 32);
+            if (epochs.length > 0 && epochsBlocks !== null) {
+                getCalculatingEpochsDesktop(epochs[0].f_slot, epochs[0].f_epoch, epochsBlocks);
+            }
+        });
+
+        return () => {
+            eventSourceBlock.close();
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     const handleMouseMove = (e: any) => {
         if (conainerRef.current) {
             const x = e.pageX;
@@ -92,6 +148,49 @@ const Statitstics = () => {
             } else if (x > conainerRef.current.clientWidth * (1 - limit)) {
                 conainerRef.current.scrollLeft += 10;
             }
+        }
+    };
+
+    // Get blocks
+    const getBlocks = async (page: number, limit: number = 320) => {
+        try {
+            const response = await axiosClient.get(`/api/validator-rewards-summary/blocks`, {
+                params: {
+                    limit,
+                    page,
+                },
+            });
+            const blocks: Block[] = response.data.blocks;
+
+            let aux: Record<number, Block[]> = epochsBlocks || {};
+            let lastEpochAux = -1;
+
+            blocks.forEach(block => {
+                if (aux[block.f_epoch]) {
+                    if (!aux[block.f_epoch].some(b => b.f_slot === block.f_slot)) {
+                        aux[block.f_epoch] = [block, ...aux[block.f_epoch]];
+                    }
+                } else {
+                    aux[block.f_epoch] = [block];
+                }
+
+                if (block.f_epoch > lastEpochAux) {
+                    lastEpochAux = block.f_epoch;
+                }
+            });
+
+            setEpochsBlocks(prevState => {
+                if (prevState) {
+                    return {
+                        ...prevState,
+                        [lastEpochAux]: aux[lastEpochAux],
+                    };
+                } else {
+                    return aux;
+                }
+            });
+        } catch (error) {
+            console.log(error);
         }
     };
 
@@ -129,141 +228,205 @@ const Statitstics = () => {
             setLoading(false);
         } catch (error) {
             console.log(error);
+            setNotWorking?.();
         }
     };
 
-    const getCalculatingEpochDesktop = (f_slot: number, f_epoch: number) => (
-        <CardCalculating className='flex gap-x-1 justify-around items-center text-[9px] text-black bg-[#FFC163] rounded-[22px] px-2 xl:px-8 py-3'>
-            <div className='flex flex-col w-[8%] pt-2.5 pb-2.5'>
-                <p>{new Date(firstBlock + f_slot * 12000).toLocaleDateString()}</p>
-                <p>{new Date(firstBlock + f_slot * 12000).toLocaleTimeString()}</p>
-            </div>
-            <p className='w-[7%]'>{f_epoch.toLocaleString()}</p>
-            <p className='w-[14%]'>CALCULATING...</p>
-            <p className='w-[29%]'>CALCULATING...</p>
-            <p className='w-[29%]'>CALCULATING...</p>
-            <p className='w-[12%]'>CALCULATING...</p>
-        </CardCalculating>
-    );
+    const createArrayBlocks = (blocks: Block[]) => {
+        const arrayBlocks = blocks.map(element => (element.f_proposed ? 1 : 0));
+        return arrayBlocks;
+    };
 
-    const getCalculatingEpochMobile = (f_slot: number, f_epoch: number) => (
-        <CardCalculating className='flex flex-col gap-y-4 justify-around items-center text-[10px] text-black bg-[#FFC163] rounded-[22px] px-3 py-4'>
-            <div className='flex gap-x-1 justify-center'>
-                <p className='font-bold text-sm mt-0.5'>Epoch {f_epoch.toLocaleString()}</p>
-            </div>
-            <div className='flex flex-col gap-x-4 w-full'>
-                <div className='flex gap-x-1 justify-center mb-1'>
-                    <p className='text-xs mt-1'>Time</p>
-                    <TooltipContainer>
-                        <Image src='/static/images/information.svg' alt='Time information' width={24} height={24} />
-                        <TooltipContentContainerHeaders>
-                            <span>Time at which the epoch</span>
-                            <span>should have started</span>
-                            <span>(calculated since genesis)</span>
-                        </TooltipContentContainerHeaders>
-                    </TooltipContainer>
-                </div>
-                <div>
+    const getCalculatingEpochDesktop = (f_slot: number, f_epoch: number, blocks: Block[]) => {
+        const arrayBlocks = createArrayBlocks(blocks);
+
+        return (
+            <CardCalculating className='flex gap-x-1 justify-around items-center text-[9px] text-black bg-[#FFC163] rounded-[22px] px-2 xl:px-8 py-3'>
+                <div className='flex flex-col w-[8%] pt-2.5 pb-2.5'>
                     <p>{new Date(firstBlock + f_slot * 12000).toLocaleDateString()}</p>
                     <p>{new Date(firstBlock + f_slot * 12000).toLocaleTimeString()}</p>
                 </div>
-            </div>
-            <div className='flex flex-col w-full'>
-                <div className='flex gap-x-1 justify-center mb-1'>
-                    <p className='text-xs mt-1'>Blocks</p>
-                    <TooltipContainer>
-                        <Image src='/static/images/information.svg' alt='Blocks information' width={24} height={24} />
-                        <TooltipContentContainerHeaders>
-                            <span>Proposed Blocks out of 32</span>
-                            <span>vs</span>
-                            <span>Missed Blocks</span>
-                        </TooltipContentContainerHeaders>
-                    </TooltipContainer>
-                </div>
-                <div>
-                    <p>CALCULATING...</p>
-                </div>
-            </div>
-            <div className='flex flex-col w-full'>
-                <div className='flex flex-col gap-x-1 items-center mb-1'>
-                    <p className='text-xs mt-1'>Attestation Accuracy</p>
-                    <TooltipContainer>
-                        <Image
-                            src='/static/images/information.svg'
-                            alt='Attestation Accuracy information'
-                            width={24}
-                            height={24}
-                        />
-                        <TooltipContentContainerHeaders>
-                            <span>Correctly Attested Flag Count</span>
-                            <span>vs</span>
-                            <span>Expected Attesting Flag Count</span>
-                        </TooltipContentContainerHeaders>
-                    </TooltipContainer>
-                </div>
-                <div>
-                    <p>CALCULATING...</p>
-                </div>
-            </div>
-            <div className='flex flex-col w-full'>
-                <div className='flex flex-col gap-x-1 items-center mb-1'>
-                    <p className='text-xs mt-1'>Voting Participation</p>
-                    <TooltipContainer>
-                        <Image
-                            src='/static/images/information.svg'
-                            alt='Attestation Accuracy information'
-                            width={24}
-                            height={24}
-                        />
+                <p className='w-[9%]'>{f_epoch.toLocaleString()}</p>
+                <div className='w-[13%] pt-3.5 mb-6'>
+                    <p className='uppercase'>blocks</p>
+                    <ProgressTileBar
+                        totalBlocks={arrayBlocks}
+                        tooltipContent={
+                            <>
+                                <span>Proposed Blocks: {arrayBlocks.filter(element => element === 1).length}</span>
 
-                        <TooltipContentContainerHeaders>
-                            <span>Attesting Balance</span>
-                            <span>vs</span>
-                            <span>Total Active Balance</span>
-                        </TooltipContentContainerHeaders>
-                    </TooltipContainer>
+                                <span>
+                                    Missed Blocks:{' '}
+                                    {arrayBlocks.length === 32
+                                        ? 32 - arrayBlocks.filter(element => element === 1).length
+                                        : arrayBlocks.length - arrayBlocks.filter(element => element === 1).length}
+                                </span>
+                            </>
+                        }
+                    />
                 </div>
-                <div>
-                    <p>CALCULATING...</p>
+                <div className='w-[29%]'>
+                    <p className='w-32 uppercase mx-auto text-start'>{calculatingText}</p>
                 </div>
-            </div>
-            <div className='flex flex-col w-full'>
-                <div className='flex gap-x-1 justify-center mb-1'>
-                    <p className='text-xs mt-1'>Rewards</p>
-                    <TooltipContainer>
-                        <Image src='/static/images/information.svg' alt='Blocks information' width={24} height={24} />
-                        <TooltipContentContainerHeaders>
-                            <span>Achieved Average Reward</span>
-                            <span>vs</span>
-                            <span>Expected Average Reward</span>
-                        </TooltipContentContainerHeaders>
-                    </TooltipContainer>
+                <div className='w-[29%]'>
+                    <p className='w-32 uppercase mx-auto text-start'>{calculatingText}</p>
                 </div>
-                <div>
-                    <p>CALCULATING...</p>
+                <div className='w-[12%]'>
+                    <p className='w-32 uppercase mx-auto text-start'>{calculatingText}</p>
                 </div>
-            </div>
-        </CardCalculating>
-    );
+            </CardCalculating>
+        );
+    };
 
-    const getCalculatingEpochsDesktop = (f_slot: number, f_epoch: number) => (
+    const getCalculatingEpochMobile = (f_slot: number, f_epoch: number, blocks: Block[]) => {
+        const arrayBlocks = createArrayBlocks(blocks);
+        return (
+            <CardCalculating className='flex flex-col gap-y-4 justify-around items-center text-[10px] text-black bg-[#FFC163] rounded-[22px] px-3 py-4'>
+                <div className='flex gap-x-1 justify-center'>
+                    <p className='font-bold text-sm mt-0.5'>Epoch {f_epoch.toLocaleString()}</p>
+                </div>
+                <div className='flex flex-col gap-x-4 w-full'>
+                    <div className='flex gap-x-1 justify-center mb-1'>
+                        <p className='text-xs mt-1'>Time</p>
+                        <TooltipContainer>
+                            <Image src='/static/images/information.svg' alt='Time information' width={24} height={24} />
+                            <TooltipContentContainerHeaders>
+                                <span>Time at which the epoch</span>
+                                <span>should have started</span>
+                                <span>(calculated since genesis)</span>
+                            </TooltipContentContainerHeaders>
+                        </TooltipContainer>
+                    </div>
+                    <div>
+                        <p>{new Date(firstBlock + f_slot * 12000).toLocaleDateString()}</p>
+                        <p>{new Date(firstBlock + f_slot * 12000).toLocaleTimeString()}</p>
+                    </div>
+                </div>
+                <div className='flex flex-col w-full'>
+                    <div className='flex gap-x-1 justify-center mb-1'>
+                        <p className='text-xs mt-1'>Blocks</p>
+                        <TooltipContainer>
+                            <Image
+                                src='/static/images/information.svg'
+                                alt='Blocks information'
+                                width={24}
+                                height={24}
+                            />
+                            <TooltipContentContainerHeaders>
+                                <span>Proposed Blocks out of 32</span>
+                                <span>vs</span>
+                                <span>Missed Blocks</span>
+                            </TooltipContentContainerHeaders>
+                        </TooltipContainer>
+                    </div>
+                    <div>
+                        <ProgressTileBar
+                            totalBlocks={arrayBlocks}
+                            tooltipContent={
+                                <>
+                                    <span>Proposed Blocks: {arrayBlocks.filter(element => element === 1).length}</span>
+
+                                    <span>
+                                        Missed Blocks:{' '}
+                                        {arrayBlocks.length === 32
+                                            ? 32 - arrayBlocks.filter(element => element === 1).length
+                                            : arrayBlocks.length - arrayBlocks.filter(element => element === 1).length}
+                                    </span>
+                                </>
+                            }
+                        />
+                    </div>
+                </div>
+                <div className='flex flex-col w-full'>
+                    <div className='flex flex-col gap-x-1 items-center mb-1'>
+                        <p className='text-xs mt-1'>Attestation Accuracy</p>
+                        <TooltipContainer>
+                            <Image
+                                src='/static/images/information.svg'
+                                alt='Attestation Accuracy information'
+                                width={24}
+                                height={24}
+                            />
+                            <TooltipContentContainerHeaders>
+                                <span>Correctly Attested Flag Count</span>
+                                <span>vs</span>
+                                <span>Expected Attesting Flag Count</span>
+                            </TooltipContentContainerHeaders>
+                        </TooltipContainer>
+                    </div>
+                    <div>
+                        <p className='w-32 uppercase mx-auto text-start'>{calculatingText}</p>
+                    </div>
+                </div>
+                <div className='flex flex-col w-full'>
+                    <div className='flex flex-col gap-x-1 items-center mb-1'>
+                        <p className='text-xs mt-1'>Voting Participation</p>
+                        <TooltipContainer>
+                            <Image
+                                src='/static/images/information.svg'
+                                alt='Attestation Accuracy information'
+                                width={24}
+                                height={24}
+                            />
+
+                            <TooltipContentContainerHeaders>
+                                <span>Attesting Balance</span>
+                                <span>vs</span>
+                                <span>Total Active Balance</span>
+                            </TooltipContentContainerHeaders>
+                        </TooltipContainer>
+                    </div>
+                    <div>
+                        <p className='w-32 uppercase mx-auto text-start'>{calculatingText}</p>
+                    </div>
+                </div>
+                <div className='flex flex-col w-full'>
+                    <div className='flex gap-x-1 justify-center mb-1'>
+                        <p className='text-xs mt-1'>Rewards</p>
+                        <TooltipContainer>
+                            <Image
+                                src='/static/images/information.svg'
+                                alt='Blocks information'
+                                width={24}
+                                height={24}
+                            />
+                            <TooltipContentContainerHeaders>
+                                <span>Achieved Average Reward</span>
+                                <span>vs</span>
+                                <span>Expected Average Reward</span>
+                            </TooltipContentContainerHeaders>
+                        </TooltipContainer>
+                    </div>
+                    <div>
+                        <p className='w-32 uppercase mx-auto text-start'>{calculatingText}</p>
+                    </div>
+                </div>
+            </CardCalculating>
+        );
+    };
+
+    const getCalculatingEpochsDesktop = (f_slot: number, f_epoch: number, blocks: Record<number, Block[]>) => (
         <>
-            {getCalculatingEpochDesktop(f_slot + 64, f_epoch + 2)}
-            {getCalculatingEpochDesktop(f_slot + 32, f_epoch + 1)}
+            {getCalculatingEpochDesktop(f_slot + 64, f_epoch + 2, blocks[f_epoch + 2])}
+            {getCalculatingEpochDesktop(f_slot + 32, f_epoch + 1, blocks[f_epoch + 1])}
         </>
     );
 
-    const getCalculatingEpochsMobile = (f_slot: number, f_epoch: number) => (
+    const getCalculatingEpochsMobile = (f_slot: number, f_epoch: number, blocks: Record<number, Block[]>) => (
         <>
-            {getCalculatingEpochMobile(f_slot + 64, f_epoch + 2)}
-            {getCalculatingEpochMobile(f_slot + 32, f_epoch + 1)}
+            {getCalculatingEpochMobile(f_slot + 64, f_epoch + 2, blocks[f_epoch + 2])}
+            {getCalculatingEpochMobile(f_slot + 32, f_epoch + 1, blocks[f_epoch + 1])}
         </>
     );
+
+    const getProposedBlocks = (totalBlock: Array<number>) => {
+        return totalBlock.filter(element => element === 1).length;
+    };
 
     const getDesktopView = () => (
         <div
             ref={conainerRef}
-            className='flex flex-col px-2 xl:px-20 overflow-x-hidden overflow-y-hidden'
+            className='flex flex-col px-2 xl:px-20 overflow-x-scroll overflow-y-hidden scrollbar-thin'
             onMouseMove={handleMouseMove}
         >
             <div className='flex gap-x-1 justify-around px-2 xl:px-8 py-3 uppercase text-sm min-w-[1150px]'>
@@ -279,11 +442,17 @@ const Statitstics = () => {
                     </TooltipContainer>
                 </div>
 
-                <div className='flex w-[7%] items-center gap-x-1 justify-center'>
+                <div className='flex w-[9%] items-center gap-x-1 justify-center'>
                     <p className='mt-0.5'>Epoch</p>
+                    <TooltipContainer>
+                        <Image src='/static/images/information.svg' alt='Time information' width={24} height={24} />
+                        <TooltipContentContainerHeaders epoch>
+                            <span>Epoch number</span>
+                        </TooltipContentContainerHeaders>
+                    </TooltipContainer>
                 </div>
 
-                <div className='flex w-[14%] items-center gap-x-1 justify-center'>
+                <div className='flex w-[13%] items-center gap-x-1 justify-center'>
                     <p className='mt-0.5'>Blocks</p>
                     <TooltipContainer>
                         <Image src='/static/images/information.svg' alt='Blocks information' width={24} height={24} />
@@ -338,7 +507,9 @@ const Statitstics = () => {
             </div>
 
             <div className='flex flex-col justify-center gap-y-4 min-w-[1150px]'>
-                {epochs.length > 0 && getCalculatingEpochsDesktop(epochs[0].f_slot, epochs[0].f_epoch)}
+                {epochs.length > 0 &&
+                    epochsBlocks !== null &&
+                    getCalculatingEpochsDesktop(epochs[0].f_slot, epochs[0].f_epoch, epochsBlocks)}
                 {epochs.map((epoch: Epoch, idx: number) => (
                     <Card
                         key={epoch.f_epoch}
@@ -350,16 +521,16 @@ const Statitstics = () => {
                             <p>{new Date(firstBlock + epoch.f_epoch * 32 * 12000).toLocaleTimeString()}</p>
                         </div>
 
-                        <p className='w-[7%]'>{epoch.f_epoch.toLocaleString()}</p>
+                        <p className='w-[9%]'>{epoch.f_epoch.toLocaleString()}</p>
 
-                        <div className='w-[14%] pt-3.5 mb-2'>
+                        <div className='w-[13%] pt-3.5 mb-6'>
+                            <p className='uppercase'>blocks</p>
                             <ProgressTileBar
-                                tilesFilled={Number(epoch.proposed_blocks)}
-                                totalTiles={32}
+                                totalBlocks={epoch.proposed_blocks}
                                 tooltipContent={
                                     <>
-                                        <span>Proposed Blocks: {epoch.proposed_blocks}</span>
-                                        <span>Missed Blocks: {32 - Number(epoch.proposed_blocks)}</span>
+                                        <span>Proposed Blocks: {getProposedBlocks(epoch.proposed_blocks)}</span>
+                                        <span>Missed Blocks: {32 - getProposedBlocks(epoch.proposed_blocks)}</span>
                                     </>
                                 }
                             />
@@ -376,8 +547,8 @@ const Statitstics = () => {
                                         tooltipColor='orange'
                                         tooltipContent={
                                             <>
-                                                <span>Missing Target: {epoch.f_missing_target.toLocaleString()}</span>
-                                                <span>Attestations: {epoch.f_num_vals.toLocaleString()}</span>
+                                                <span>Missing Target: {epoch.f_missing_target?.toLocaleString()}</span>
+                                                <span>Attestations: {epoch.f_num_vals?.toLocaleString()}</span>
                                             </>
                                         }
                                     />
@@ -391,8 +562,8 @@ const Statitstics = () => {
                                         tooltipColor='blue'
                                         tooltipContent={
                                             <>
-                                                <span>Missing Source: {epoch.f_missing_source.toLocaleString()}</span>
-                                                <span>Attestations: {epoch.f_num_vals.toLocaleString()}</span>
+                                                <span>Missing Source: {epoch.f_missing_source?.toLocaleString()}</span>
+                                                <span>Attestations: {epoch.f_num_vals?.toLocaleString()}</span>
                                             </>
                                         }
                                     />
@@ -406,8 +577,8 @@ const Statitstics = () => {
                                         tooltipColor='purple'
                                         tooltipContent={
                                             <>
-                                                <span>Missing Head: {epoch.f_missing_head.toLocaleString()}</span>
-                                                <span>Attestations: {epoch.f_num_vals.toLocaleString()}</span>
+                                                <span>Missing Head: {epoch.f_missing_head?.toLocaleString()}</span>
+                                                <span>Attestations: {epoch.f_num_vals?.toLocaleString()}</span>
                                             </>
                                         }
                                     />
@@ -425,19 +596,19 @@ const Statitstics = () => {
                                 tooltipContent={
                                     <>
                                         <span>
-                                            Att. Balance: {epoch.f_att_effective_balance_eth.toLocaleString()} ETH
+                                            Att. Balance: {epoch.f_att_effective_balance_eth?.toLocaleString()} ETH
                                         </span>
                                         <span>
-                                            Act. Balance: {epoch.f_total_effective_balance_eth.toLocaleString()} ETH
+                                            Act. Balance: {epoch.f_total_effective_balance_eth?.toLocaleString()} ETH
                                         </span>
                                     </>
                                 }
                             />
                         </div>
 
-                        <div className='w-[12%] pt-1'>
+                        <div className='w-[12%] mb-2'>
                             <ProgressSmoothBar
-                                title=''
+                                title='rewards'
                                 bg='#D80068'
                                 color='#FFBDD9'
                                 percent={Number(epoch.reward_average) / Number(epoch.max_reward_average)}
@@ -470,7 +641,9 @@ const Statitstics = () => {
 
     const getPhoneView = () => (
         <div className='flex flex-col gap-y-4 uppercase px-4 mt-3'>
-            {epochs.length > 0 && getCalculatingEpochsMobile(epochs[0].f_slot, epochs[0].f_epoch)}
+            {epochs.length > 0 &&
+                epochsBlocks !== null &&
+                getCalculatingEpochsMobile(epochs[0].f_slot, epochs[0].f_epoch, epochsBlocks)}
             {epochs.map((epoch: Epoch, idx: number) => (
                 <Card
                     key={epoch.f_epoch}
@@ -478,7 +651,7 @@ const Statitstics = () => {
                     className='flex flex-col gap-y-4 justify-around items-center text-[10px] text-black bg-[#FFF0A2] rounded-[22px] px-3 py-4'
                 >
                     <div className='flex gap-x-1 justify-center'>
-                        <p className='font-bold text-sm mt-0.5'>Epoch {epoch.f_epoch.toLocaleString()}</p>
+                        <p className='font-bold text-sm mt-0.5'>Epoch {epoch.f_epoch?.toLocaleString()}</p>
                     </div>
                     <div className='flex flex-col gap-x-4 w-full'>
                         <div className='flex gap-x-1 justify-center mb-1'>
@@ -522,12 +695,11 @@ const Statitstics = () => {
                         </div>
                         <div>
                             <ProgressTileBar
-                                tilesFilled={32}
-                                totalTiles={32}
+                                totalBlocks={epoch.proposed_blocks}
                                 tooltipContent={
                                     <>
-                                        <span>Proposed Blocks: {epoch.proposed_blocks}</span>
-                                        <span>Missed Blocks: {32 - Number(epoch.proposed_blocks)}</span>
+                                        <span>Proposed Blocks: {getProposedBlocks(epoch.proposed_blocks)}</span>
+                                        <span>Missed Blocks: {32 - getProposedBlocks(epoch.proposed_blocks)}</span>
                                     </>
                                 }
                             />
@@ -559,8 +731,8 @@ const Statitstics = () => {
                             tooltipColor='orange'
                             tooltipContent={
                                 <>
-                                    <span>Missing Target: {epoch.f_missing_target.toLocaleString()}</span>
-                                    <span>Attestations: {epoch.f_num_vals.toLocaleString()}</span>
+                                    <span>Missing Target: {epoch.f_missing_target?.toLocaleString()}</span>
+                                    <span>Attestations: {epoch.f_num_vals?.toLocaleString()}</span>
                                 </>
                             }
                         />
@@ -573,8 +745,8 @@ const Statitstics = () => {
                             tooltipColor='blue'
                             tooltipContent={
                                 <>
-                                    <span>Proposed Blocks: {epoch.proposed_blocks}</span>
-                                    <span>Missed Blocks: {32 - Number(epoch.proposed_blocks)}</span>
+                                    <span>Missing Source: {epoch.f_missing_source?.toLocaleString()}</span>
+                                    <span>Attestations: {epoch.f_num_vals?.toLocaleString()}</span>
                                 </>
                             }
                         />
@@ -587,8 +759,8 @@ const Statitstics = () => {
                             tooltipColor='purple'
                             tooltipContent={
                                 <>
-                                    <span>Missing Head: {epoch.f_missing_head.toLocaleString()}</span>
-                                    <span>Attestations: {epoch.f_num_vals.toLocaleString()}</span>
+                                    <span>Missing Head: {epoch.f_missing_head?.toLocaleString()}</span>
+                                    <span>Attestations: {epoch.f_num_vals?.toLocaleString()}</span>
                                 </>
                             }
                         />
@@ -619,9 +791,9 @@ const Statitstics = () => {
                             tooltipColor='bluedark'
                             tooltipContent={
                                 <>
-                                    <span>Att. Balance: {epoch.f_att_effective_balance_eth.toLocaleString()} ETH</span>
+                                    <span>Att. Balance: {epoch.f_att_effective_balance_eth?.toLocaleString()} ETH</span>
                                     <span>
-                                        Act. Balance: {epoch.f_total_effective_balance_eth.toLocaleString()} ETH
+                                        Act. Balance: {epoch.f_total_effective_balance_eth?.toLocaleString()} ETH
                                     </span>
                                 </>
                             }
@@ -654,9 +826,9 @@ const Statitstics = () => {
                                 tooltipColor='pink'
                                 tooltipContent={
                                     <>
-                                        <span>Reward: {Number(epoch.reward_average).toLocaleString()} GWEI</span>
+                                        <span>Reward: {Number(epoch.reward_average)?.toLocaleString()} GWEI</span>
                                         <span>
-                                            Max. Reward: {Number(epoch.max_reward_average).toLocaleString()} GWEI
+                                            Max. Reward: {Number(epoch.max_reward_average)?.toLocaleString()} GWEI
                                         </span>
                                     </>
                                 }
