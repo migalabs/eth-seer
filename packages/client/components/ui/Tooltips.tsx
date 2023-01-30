@@ -69,6 +69,11 @@ export const TooltipContentContainerStats = styled(TooltipContentContainer)<Prop
                 ? `url('/static/images/tooltips/tooltip_${tooltipColor}_left.svg')`
                 : `url('/static/images/tooltips/tooltip_${tooltipColor}.svg')`};
     }
+
+    @media (min-width: 1280px) {
+        left: calc(50% - 117.5px);
+        background-image: ${({ tooltipColor }) => `url('/static/images/tooltips/tooltip_${tooltipColor}.svg')`};
+    }
 `;
 
 export const TooltipContentContainerBlocks = styled(TooltipContentContainer)`
