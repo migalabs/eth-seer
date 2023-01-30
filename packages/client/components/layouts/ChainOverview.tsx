@@ -5,6 +5,9 @@ import EpochOverview from './EpochOverview';
 // Axios
 import axiosClient from '../../config/axios';
 
+// Contexts
+import StatusContext from '../../contexts/status/StatusContext';
+
 type Block = {
     f_slot: number;
     f_pool_name: string;
@@ -15,6 +18,9 @@ type Block = {
 };
 
 const ChainOverview = () => {
+    // Contexts
+    const { setNotWorking } = React.useContext(StatusContext) || {};
+
     // States
     const [epochs, setEpochs] = useState<Record<number, Block[]> | null>(null);
     const [lastEpoch, setLastEpoch] = useState(0);
@@ -101,6 +107,7 @@ const ChainOverview = () => {
             }
         } catch (error) {
             console.log(error);
+            setNotWorking?.();
         }
     };
 
@@ -129,7 +136,7 @@ const ChainOverview = () => {
     };
 
     return (
-        <div className='flex flex-row justify-center space-x-4 md:space-x-5 px-1'>
+        <div className='flex flex-row justify-center space-x-4 md:space-x-5 px-7'>
             <div className='flex items-center mt-8'>
                 <Image
                     src='/static/images/arrow.svg'
