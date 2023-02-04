@@ -15,40 +15,20 @@ import ProgressSmoothBar from '../ui/ProgressSmoothBar';
 import Loader from '../ui/Loader';
 import { TooltipContainer, TooltipContentContainerHeaders } from '../ui/Tooltips';
 
+// Types
+import { Epoch, Block } from '../../types';
+
 // Styled
 const Card = styled.div`
     box-shadow: inset -7px -7px 8px #f0c83a, inset 7px 7px 8px #f0c83a;
 `;
+
 const CardCalculating = styled.div`
     box-shadow: inset -7px -7px 8px #ec903c, inset 7px 7px 8px #ec903c;
 `;
 
 // Constants
 const firstBlock: number = 1606824023000;
-
-type Epoch = {
-    f_epoch: number;
-    f_slot: number;
-    f_num_att_vals: number;
-    f_num_vals: number;
-    f_att_effective_balance_eth: number;
-    f_total_effective_balance_eth: number;
-    f_missing_source: number;
-    f_missing_target: number;
-    f_missing_head: number;
-    reward_average: string;
-    max_reward_average: string;
-    proposed_blocks: Array<number>;
-};
-
-type Block = {
-    f_slot: number;
-    f_pool_name: string;
-    f_proposed: boolean;
-    f_epoch: number;
-    f_proposer_index: number;
-    f_graffiti: string;
-};
 
 const Statitstics = () => {
     // Constants
@@ -420,7 +400,7 @@ const Statitstics = () => {
     );
 
     const getProposedBlocks = (totalBlock: Array<number>) => {
-        return totalBlock.filter(element => element === 1).length;
+        return totalBlock?.filter(element => element === 1).length;
     };
 
     const getDesktopView = () => (
