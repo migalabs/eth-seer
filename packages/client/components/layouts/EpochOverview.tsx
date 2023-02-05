@@ -102,7 +102,7 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
                                 alt='Mining block'
                                 width={50}
                                 height={50}
-                                style={{aspectRatio: "50/52", scale: "1.2"}}
+                                style={{ aspectRatio: '50/52', scale: '1.2' }}
                             />
 
                             {Array.from(Array(32 - blocks.length - 1)).map((_, idx) => (

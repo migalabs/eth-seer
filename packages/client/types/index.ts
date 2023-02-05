@@ -1,4 +1,3 @@
-
 export type Epoch = {
     f_epoch: number;
     f_slot: number;
