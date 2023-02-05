@@ -5,44 +5,10 @@ import Image from 'next/image';
 import { TooltipContainer, TooltipContentContainerBlocks } from '../ui/Tooltips';
 
 // Constants
-const POOLS = [
-    'ANKR',
-    'AVADO',
-    'BINANCE',
-    'BITCOINSUISSE',
-    'BITFINEX',
-    'BLOXSTAKING',
-    'COINBASE',
-    'CREAM',
-    'DAPPNODE',
-    'ERIGON-GFM',
-    'HUOBI',
-    'KRAKEN',
-    'KUCOIN',
-    'LIGHTHOUSE-TEAM',
-    'LODESTAR-TEAM',
-    'NIMBUS-TEAM',
-    'OKEX',
-    'PIEDAO',
-    'POLONIEX',
-    'PRYSM-TEAM',
-    'ROCKET_POOL',
-    'STAKEFISH',
-    'STAKEWISE',
-    'TEKU-TEAM',
-    'VITALIK',
-    'WEXEXCHANGE',
-];
+import { POOLS } from '../../constants';
 
 // Types
-type Block = {
-    f_slot: number;
-    f_pool_name: string;
-    f_proposed: boolean;
-    f_epoch: number;
-    f_proposer_index: number;
-    f_graffiti: string;
-};
+import { Block } from '../../types';
 
 type Props = {
     epoch: number;
@@ -136,7 +102,7 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
                                 alt='Mining block'
                                 width={50}
                                 height={50}
-                                style={{aspectRatio: "50/52", scale: "1.2"}}
+                                style={{ aspectRatio: '50/52', scale: '1.2' }}
                             />
 
                             {Array.from(Array(32 - blocks.length - 1)).map((_, idx) => (
