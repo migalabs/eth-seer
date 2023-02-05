@@ -3,6 +3,7 @@ import Image from 'next/image';
 
 // Components
 import { TooltipContainer, TooltipContentContainerBlocks } from '../ui/Tooltips';
+import Link from 'next/link';
 
 // Constants
 const POOLS = [
@@ -118,14 +119,25 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
                 >
                     {blocks.map(block => (
                         <div key={block.f_slot} className='group'>
-                            <TooltipContainer>
-                                {getBlockImage(block)}
-                                <TooltipContentContainerBlocks>
-                                    <span>Entity: {getEntityName(block.f_pool_name)}</span>
-                                    <span>Proposer: {Number(block.f_proposer_index).toLocaleString()}</span>
-                                    <span>Slot: {Number(block.f_slot).toLocaleString()}</span>
-                                </TooltipContentContainerBlocks>
-                            </TooltipContainer>
+                            <Link
+                                href={{
+                                    pathname: '/block/[id]',
+                                    query: {
+                                        id: block.f_slot,
+                                    },
+                                }}
+                                passHref
+                                as={`/block/${block.f_slot}`}
+                            >
+                                <TooltipContainer>
+                                    {getBlockImage(block)}
+                                    <TooltipContentContainerBlocks>
+                                        <span>Entity: {getEntityName(block.f_pool_name)}</span>
+                                        <span>Proposer: {Number(block.f_proposer_index).toLocaleString()}</span>
+                                        <span>Slot: {Number(block.f_slot).toLocaleString()}</span>
+                                    </TooltipContentContainerBlocks>
+                                </TooltipContainer>
+                            </Link>
                         </div>
                     ))}
 
