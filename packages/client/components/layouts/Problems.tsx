@@ -28,7 +28,7 @@ const Problems = () => {
                         page: 0,
                     },
                 }),
-                axiosClient.get('/api/validator-rewards-summary/', {
+                axiosClient.get('/api/validator-rewards-summary', {
                     params: {
                         limit: 1,
                         page: 0,
