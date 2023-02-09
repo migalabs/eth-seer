@@ -3,7 +3,7 @@ import { useReducer, useContext } from 'react';
 import BlocksContext from './BlocksContext';
 import BlocksReducer from './BlocksReducer';
 
-import { ADD_BLOCKS, CLOSE_CONNECTION } from './BlocksTypes';
+import { ADD_BLOCKS } from './BlocksTypes';
 
 // Axios
 import axiosClient from '../../config/axios';
@@ -48,10 +48,6 @@ const BlocksState = (props: any) => {
         if (eventSourceBlock) {
             eventSourceBlock.close();
         }
-
-        dispatch({
-            type: CLOSE_CONNECTION,
-        });
     };
 
     // Get blocks

@@ -142,6 +142,33 @@ export const getBlocks = async (req: Request, res: Response) => {
     }
 };
 
+export const getBlock = async (req: Request, res: Response) => {
+
+    try {
+
+        const {id } = req.params;
+
+        const [ block ] = 
+            await Promise.all([
+                pgClient.query(`
+                    SELECT *
+                    FROM t_block_metrics
+                    WHERE f_slot = '${id}'
+                `)
+            ]);
+
+        res.json({
+            row: block.rows[0],
+        });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            msg: 'An error occurred on the server'
+        });
+    }
+};
+
 export const listenBlockNotification = async (req: Request, res: Response) => {
 
     try {

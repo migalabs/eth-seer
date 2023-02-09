@@ -2,7 +2,6 @@
 import { Block } from '../../types';
 
 export const ADD_BLOCKS = 'ADD_BLOCKS';
-export const CLOSE_CONNECTION = 'CLOSE_CONNECTION';
 
 export interface IBlocks {
     epochs: Record<number, Block[]>;
