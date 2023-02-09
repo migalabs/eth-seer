@@ -5,15 +5,6 @@ import EpochOverview from './EpochOverview';
 // Contexts
 import BlocksContext from '../../contexts/blocks/BlocksContext';
 
-type Block = {
-    f_slot: number;
-    f_pool_name: string;
-    f_proposed: boolean;
-    f_epoch: number;
-    f_proposer_index: number;
-    f_graffiti: string;
-};
-
 const ChainOverview = () => {
     // Blocks Context
     const { blocks, startEventSource, closeEventSource, getBlocks } = React.useContext(BlocksContext) || {};
