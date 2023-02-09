@@ -1,4 +1,4 @@
-import { ADD_BLOCKS, CLOSE_CONNECTION } from './BlocksTypes';
+import { ADD_BLOCKS } from './BlocksTypes';
 
 const BlocksReducer = (state: any, action: any) => {
     switch (action.type) {
@@ -9,12 +9,6 @@ const BlocksReducer = (state: any, action: any) => {
                     ...state.epochs,
                     ...action.payload,
                 },
-            };
-
-        case CLOSE_CONNECTION:
-            return {
-                ...state,
-                epochs: [],
             };
 
         default:

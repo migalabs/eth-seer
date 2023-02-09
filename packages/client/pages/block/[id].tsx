@@ -1,43 +1,44 @@
-import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import Image from 'next/image';
+
+// Axios
 import axiosClient from '../../config/axios';
+
+// Components
+import Layout from '../../components/layouts/Layout';
+
+// Types
+import { Block } from '../../types';
 
 type Props = {
     title: string;
     content: string | number | boolean;
+    icon?: string;
+    iconSize?: number;
+    canCopy?: boolean;
 };
 
-const Card = (props: Props) => {
-    const { title, content } = props;
+const Card = ({ title, content, icon, iconSize, canCopy }: Props) => {
     return (
-        <div className='flex flex-1 p-4'>
-            <div className='bg-[#A7EED4] rounded-[22px] px-2  py-3'>
-                <p>{title}: </p>
+        <div className='flex gap-3 items-center'>
+            <div className='bg-[#A7EED4] rounded-2xl px-2 py-3 w-40 md:w-[21rem]'>
+                <p className='uppercase text-[#29C68E] text-center text-[10px] md:text-base'>{title}</p>
             </div>
-            <p className='px-2  py-3'>{content}</p>
+            <div className='flex gap-1 items-center'>
+                <p className='uppercase text-white text-[8px] md:text-sm'>{content}</p>
+                {icon && (
+                    <Image
+                        src={`/static/images/${icon}.svg`}
+                        width={iconSize || 35}
+                        height={iconSize || 35}
+                        alt='Icon'
+                        className={canCopy ? 'cursor-pointer' : ''}
+                    />
+                )}
+            </div>
         </div>
     );
-};
-
-type Block = {
-    f_slot: number;
-    f_proposed: boolean;
-    f_epoch: number;
-    f_proposer_index: number;
-    f_graffiti: string;
-    f_att_slashings: number;
-    f_attestations: number;
-    f_deposits: number;
-    f_el_base_fee_per_gas: number;
-    f_el_block_hash: string;
-    f_el_fee_recp: string;
-    f_el_gas_limit: number;
-    f_el_gas_used: number;
-    f_el_transactions: number;
-    f_proposer_slashings: number;
-    f_sync_bits: number;
-    f_timestamp: number;
-    f_voluntary_exits: number;
 };
 
 const BlockComponet = () => {
@@ -49,11 +50,16 @@ const BlockComponet = () => {
 
     // States
     const [block, setBlock] = useState<Block | null>(null);
+    const [isPhoneView, setIsPhoneView] = useState<boolean>(true);
 
     // UseEffect
     useEffect(() => {
-        if (id && block === null) {
+        if (id && !block) {
             getBlock();
+        }
+
+        if (window !== undefined) {
+            setIsPhoneView(window.innerWidth <= 768);
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -62,50 +68,65 @@ const BlockComponet = () => {
     // Get blocks
     const getBlock = async () => {
         try {
-            console.log('res: ', id);
             const response = await axiosClient.get(`/api/validator-rewards-summary/block/${id}`);
             const blockResponse: Block = response.data.row;
             setBlock(blockResponse);
-            console.log(blockResponse);
         } catch (error) {
             console.log(error);
         }
     };
 
-    const addContent = (block: Block) => {
-        return (
-            <div
-                className='flex flex-col w-fit md:max-h-full  mx-auto mb-10 gap-2 text-[16px] bg-[#A7EED466] rounded-[22px] px-2 py-3'
-                style={{ boxShadow: 'inset -7px -7px 8px #A7EED4, inset 7px 7px 8px #A7EED4' }}
-            >
-                <Card title='Epoch' content={block.f_epoch} />
-                <Card title='Slot' content={block.f_slot} />
-                <Card title='Graffiti' content={block.f_graffiti} />
-                <Card title='Att. slashings' content={block.f_att_slashings} />
-                <Card title='Attestations' content={block.f_attestations} />
-                <Card title='Deposits' content={block.f_deposits} />
-                <Card title='Base fee per gas' content={block.f_el_base_fee_per_gas} />
-                <Card title='Block hash' content={block.f_el_block_hash} />
-                <Card title='Fee recp.' content={block.f_el_fee_recp} />
-                <Card title='Gas limit' content={block.f_el_gas_limit} />
-                <Card title='Gas used' content={block.f_el_gas_used} />
-                <Card title='Transaction' content={block.f_el_transactions} />
-                <Card title='Proposed' content={block.f_proposed === true ? 'proposed' : 'missed'} />
-                <Card title='Proposer Index' content={block.f_proposer_index} />
-                <Card title='Proposer slashings' content={block.f_proposer_slashings} />
-                <Card title='Sync bits' content={block.f_sync_bits} />
-                <Card title='Timestamp' content={block.f_timestamp} />
-                <Card title='Voluntary exits' content={block.f_voluntary_exits} />
-            </div>
-        );
+    // Get Short Address
+    const getShortAddress = (address: string) => {
+        console.log('getShortAddress -> address', address);
+        return `${address.slice(0, 6)}...${address.slice(address.length - 6, address.length)}`;
     };
 
     return (
-        <>
-            <h1 className='text-white text-center'>Slot {id}</h1>
+        <Layout>
+            <h1 className='text-white text-center text-xl md:text-3xl'>Slot {id}</h1>
 
-            {block && addContent(block)}
-        </>
+            {block && (
+                <div
+                    className='flex flex-col w-fit md:max-h-full mx-2 md:mx-auto mt-4 mb-10 gap-y-5 bg-[#A7EED466] rounded-[22px] p-4 md:p-8'
+                    style={{ boxShadow: 'inset -7px -7px 8px #A7EED4, inset 7px 7px 8px #A7EED4' }}
+                >
+                    <Card title='Epoch' content={block.f_epoch.toLocaleString()} icon='copy-icon' canCopy />
+                    <Card title='Slot' content={block.f_slot.toLocaleString()} icon='copy-icon' canCopy />
+                    <Card title='Graffiti' content={block.f_graffiti} />
+                    <Card title='Att. slashings' content={block.f_att_slashings.toLocaleString()} />
+                    <Card title='Attestations' content={block.f_attestations.toLocaleString()} />
+                    <Card title='Deposits' content={block.f_deposits.toLocaleString()} />
+                    <Card title='Base fee per gas' content={block.f_el_base_fee_per_gas.toLocaleString()} />
+                    <Card
+                        title='Block hash'
+                        content={isPhoneView ? getShortAddress(block.f_el_block_hash) : block.f_el_block_hash}
+                        icon='copy-icon'
+                        canCopy
+                    />
+                    <Card
+                        title='Fee recp.'
+                        content={isPhoneView ? getShortAddress(block.f_el_fee_recp) : block.f_el_fee_recp}
+                        icon='copy-icon'
+                        canCopy
+                    />
+                    <Card title='Gas limit' content={block.f_el_gas_limit.toLocaleString()} />
+                    <Card title='Gas used' content={block.f_el_gas_used.toLocaleString()} />
+                    <Card title='Transaction' content={block.f_el_transactions.toLocaleString()} />
+                    <Card title='Proposed' content={block.f_proposed === true ? 'proposed' : 'missed'} />
+                    <Card
+                        title='Proposer Index'
+                        content={block.f_proposer_index.toLocaleString()}
+                        icon='proposer-icon'
+                        iconSize={40}
+                    />
+                    <Card title='Proposer slashings' content={block.f_proposer_slashings.toLocaleString()} />
+                    <Card title='Sync bits' content={block.f_sync_bits.toLocaleString()} />
+                    <Card title='Timestamp' content={block.f_timestamp} />
+                    <Card title='Voluntary exits' content={block.f_voluntary_exits.toLocaleString()} />
+                </div>
+            )}
+        </Layout>
     );
 };
 
