@@ -3,6 +3,7 @@ import Image from 'next/image';
 
 // Components
 import { TooltipContainer, TooltipContentContainerBlocks } from '../ui/Tooltips';
+import Link from 'next/link';
 
 // Constants
 import { POOLS } from '../../constants';
@@ -84,26 +85,31 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
                 >
                     {blocks.map(block => (
                         <div key={block.f_slot} className='group'>
-                            <TooltipContainer>
-                                {getBlockImage(block)}
-                                <TooltipContentContainerBlocks>
-                                    <span>Entity: {getEntityName(block.f_pool_name)}</span>
-                                    <span>Proposer: {Number(block.f_proposer_index).toLocaleString()}</span>
-                                    <span>Slot: {Number(block.f_slot).toLocaleString()}</span>
-                                </TooltipContentContainerBlocks>
-                            </TooltipContainer>
+                            <Link
+                                href={{
+                                    pathname: '/block/[id]',
+                                    query: {
+                                        id: block.f_slot,
+                                    },
+                                }}
+                                passHref
+                                as={`/block/${block.f_slot}`}
+                            >
+                                <TooltipContainer>
+                                    {getBlockImage(block)}
+                                    <TooltipContentContainerBlocks>
+                                        <span>Entity: {getEntityName(block.f_pool_name)}</span>
+                                        <span>Proposer: {Number(block.f_proposer_index).toLocaleString()}</span>
+                                        <span>Slot: {Number(block.f_slot).toLocaleString()}</span>
+                                    </TooltipContentContainerBlocks>
+                                </TooltipContainer>
+                            </Link>
                         </div>
                     ))}
 
                     {blocks.length < 32 && (
                         <>
-                            <Image
-                                src={`/static/images/blocks/block_mining.gif`}
-                                alt='Mining block'
-                                width={50}
-                                height={50}
-                                style={{ aspectRatio: '50/52', scale: '1.2' }}
-                            />
+                            <Image src={`/static/gifs/block_mining2.gif`} alt='Mining block' width={50} height={50} />
 
                             {Array.from(Array(32 - blocks.length - 1)).map((_, idx) => (
                                 <Image
