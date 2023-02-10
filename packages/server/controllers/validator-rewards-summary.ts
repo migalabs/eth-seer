@@ -83,21 +83,9 @@ export const getBlocks = async (req: Request, res: Response) => {
 
         const skip = Number(page) * Number(limit);
 
-        const [actualBlocks,finalBlocks] = await Promise.all([
-            pgClient.query(`
-                SELECT t_block_metrics.f_epoch, t_block_metrics.f_slot, t_eth2_pubkeys.f_pool_name, t_block_metrics.f_proposed, t_block_metrics.f_proposer_index,
-                t_block_metrics.f_graffiti
-                FROM t_block_metrics
-                LEFT OUTER JOIN t_eth2_pubkeys ON t_block_metrics.f_proposer_index = t_eth2_pubkeys.f_val_idx
-                WHERE t_block_metrics.f_epoch IN (
-                    SELECT DISTINCT(f_epoch)
-                    FROM t_block_metrics
-                    ORDER BY f_epoch DESC
-                    LIMIT 2
-                )
-                ORDER BY f_slot DESC
-        `),
-            pgClient.query(`
+        if (Number(page) > 0) {
+
+            const blocks = await pgClient.query(`
                 SELECT (f_proposer_slot/32) AS f_epoch, f_proposer_slot AS f_slot, f_proposed, t_eth2_pubkeys.f_pool_name,
                 t_proposer_duties.f_val_idx AS f_proposer_index
                 FROM t_proposer_duties
@@ -105,13 +93,72 @@ export const getBlocks = async (req: Request, res: Response) => {
                 ORDER BY f_proposer_slot DESC
                 OFFSET ${skip}
                 LIMIT ${limit}
-            `)
-        ])
-    
-        let arrayEpochs: any[] = [...actualBlocks.rows, ...finalBlocks.rows];
+            `);
+
+            res.json({
+                blocks: blocks.rows
+            });
+
+        } else {
+
+            const [actualBlocks, finalBlocks] = await Promise.all([
+                pgClient.query(`
+                    SELECT (f_proposer_slot/32) AS f_epoch, f_proposer_slot AS f_slot, f_proposed, t_eth2_pubkeys.f_pool_name,
+                    t_proposer_duties.f_val_idx AS f_proposer_index
+                    FROM t_proposer_duties
+                    LEFT OUTER JOIN t_eth2_pubkeys ON t_proposer_duties.f_val_idx = t_eth2_pubkeys.f_val_idx
+                    ORDER BY f_proposer_slot DESC
+                    OFFSET ${skip}
+                    LIMIT ${limit}
+                `),
+                pgClient.query(`
+                    SELECT t_block_metrics.f_epoch, t_block_metrics.f_slot, t_eth2_pubkeys.f_pool_name, t_block_metrics.f_proposed, t_block_metrics.f_proposer_index,
+                    t_block_metrics.f_graffiti
+                    FROM t_block_metrics
+                    LEFT OUTER JOIN t_eth2_pubkeys ON t_block_metrics.f_proposer_index = t_eth2_pubkeys.f_val_idx
+                    WHERE t_block_metrics.f_epoch IN (
+                        SELECT DISTINCT(f_epoch)
+                        FROM t_block_metrics
+                        ORDER BY f_epoch DESC
+                        LIMIT 2
+                    )
+                    ORDER BY f_slot DESC
+                `)
+            ])
         
+            let arrayEpochs: any[] = [...actualBlocks.rows, ...finalBlocks.rows];
+            
+            res.json({
+                blocks: arrayEpochs
+            });
+    
+        }
+        
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            msg: 'An error occurred on the server'
+        });
+    }
+};
+
+export const getBlock = async (req: Request, res: Response) => {
+
+    try {
+
+        const {id } = req.params;
+
+        const [ block ] = 
+            await Promise.all([
+                pgClient.query(`
+                    SELECT *
+                    FROM t_block_metrics
+                    WHERE f_slot = '${id}'
+                `)
+            ]);
+
         res.json({
-            blocks: arrayEpochs
+            row: block.rows[0],
         });
 
     } catch (error) {

@@ -8,6 +8,7 @@ import axiosClient from '../../config/axios';
 
 // Contexts
 import StatusContext from '../../contexts/status/StatusContext';
+import BlocksContext from '../../contexts/blocks/BlocksContext';
 
 // Components
 import ProgressTileBar from '../ui/ProgressTileBar';
@@ -15,10 +16,14 @@ import ProgressSmoothBar from '../ui/ProgressSmoothBar';
 import Loader from '../ui/Loader';
 import { TooltipContainer, TooltipContentContainerHeaders } from '../ui/Tooltips';
 
+// Types
+import { Epoch, Block } from '../../types';
+
 // Styled
 const Card = styled.div`
     box-shadow: inset -7px -7px 8px #f0c83a, inset 7px 7px 8px #f0c83a;
 `;
+
 const CardCalculating = styled.div`
     box-shadow: inset -7px -7px 8px #ec903c, inset 7px 7px 8px #ec903c;
 `;
@@ -26,36 +31,15 @@ const CardCalculating = styled.div`
 // Constants
 const firstBlock: number = 1606824023000;
 
-type Epoch = {
-    f_epoch: number;
-    f_slot: number;
-    f_num_att_vals: number;
-    f_num_vals: number;
-    f_att_effective_balance_eth: number;
-    f_total_effective_balance_eth: number;
-    f_missing_source: number;
-    f_missing_target: number;
-    f_missing_head: number;
-    reward_average: string;
-    max_reward_average: string;
-    proposed_blocks: Array<number>;
-};
-
-type Block = {
-    f_slot: number;
-    f_pool_name: string;
-    f_proposed: boolean;
-    f_epoch: number;
-    f_proposer_index: number;
-    f_graffiti: string;
-};
-
 const Statitstics = () => {
     // Constants
     const ETH_WEI = 1;
 
-    // Contexts
+    // Status Context
     const { setNotWorking } = React.useContext(StatusContext) || {};
+
+    // Blocks Context
+    const { blocks, startEventSource, closeEventSource, getBlocks } = React.useContext(BlocksContext) || {};
 
     // Intersection Observer
     const { ref, inView } = useInView();
@@ -64,14 +48,12 @@ const Statitstics = () => {
 
     // States
     const [epochs, setEpochs] = useState<Epoch[]>([]);
-    const [epochsBlocks, setEpochsBlocks] = useState<Record<number, Block[]> | null>(null);
     const [desktopView, setDesktopView] = useState(true);
     const [currentPage, setCurrentPage] = useState(0);
     const [lastPageFetched, setLastPageFetched] = useState(false);
     const [loading, setLoading] = useState(false);
     const [eventSourceOpenened, setEventSourceOpenened] = useState(false);
     const [calculatingText, setCalculatingText] = useState('');
-    const [animationStarted, setAnimationStarted] = useState(false);
 
     useEffect(() => {
         if (epochs.length === 0) {
@@ -117,24 +99,23 @@ const Statitstics = () => {
     }, [shuffle]);
 
     useEffect(() => {
-        if (epochs.length === 0) {
-            getBlocks(0, 64);
+        if (blocks && !blocks.epochs) {
+            getBlocks?.(0);
         }
 
-        const eventSourceBlock = new EventSource(
-            `${process.env.NEXT_PUBLIC_URL_API}/api/validator-rewards-summary/new-block-notification`
-        );
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [blocks]);
 
-        eventSourceBlock.addEventListener('new_block', function (e) {
-            getBlocks(0, 32);
-            if (epochs.length > 0 && epochsBlocks !== null) {
-                getCalculatingEpochsDesktop(epochs[0].f_slot, epochs[0].f_epoch, epochsBlocks);
-            }
-        });
+    useEffect(() => {
+        if (!eventSourceOpenened) {
+            startEventSource?.();
+            setEventSourceOpenened(true);
+        }
 
         return () => {
-            eventSourceBlock.close();
+            closeEventSource?.();
         };
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -151,55 +132,12 @@ const Statitstics = () => {
         }
     };
 
-    // Get blocks
-    const getBlocks = async (page: number, limit: number = 320) => {
-        try {
-            const response = await axiosClient.get(`/api/validator-rewards-summary/blocks`, {
-                params: {
-                    limit,
-                    page,
-                },
-            });
-            const blocks: Block[] = response.data.blocks;
-
-            let aux: Record<number, Block[]> = epochsBlocks || {};
-            let lastEpochAux = -1;
-
-            blocks.forEach(block => {
-                if (aux[block.f_epoch]) {
-                    if (!aux[block.f_epoch].some(b => b.f_slot === block.f_slot)) {
-                        aux[block.f_epoch] = [block, ...aux[block.f_epoch]];
-                    }
-                } else {
-                    aux[block.f_epoch] = [block];
-                }
-
-                if (block.f_epoch > lastEpochAux) {
-                    lastEpochAux = block.f_epoch;
-                }
-            });
-
-            setEpochsBlocks(prevState => {
-                if (prevState) {
-                    return {
-                        ...prevState,
-                        [lastEpochAux]: aux[lastEpochAux],
-                    };
-                } else {
-                    return aux;
-                }
-            });
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
     // get epochs
     const getEpochs = async (page: number, limit = 10) => {
         try {
             setLoading(true);
 
-            const response = await axiosClient.get('/api/validator-rewards-summary/', {
+            const response = await axiosClient.get('/api/validator-rewards-summary', {
                 params: {
                     limit,
                     page,
@@ -233,18 +171,22 @@ const Statitstics = () => {
     };
 
     const createArrayBlocks = (blocks: Block[]) => {
-        const arrayBlocks = blocks.map(element => (element.f_proposed ? 1 : 0));
+        const arrayBlocks = blocks?.map(element => (element.f_proposed ? 1 : 0));
         return arrayBlocks;
     };
 
     const getCalculatingEpochDesktop = (f_slot: number, f_epoch: number, blocks: Block[]) => {
         const arrayBlocks = createArrayBlocks(blocks);
 
+        if (!arrayBlocks) {
+            return null;
+        }
+
         return (
             <CardCalculating className='flex gap-x-1 justify-around items-center text-[9px] text-black bg-[#FFC163] rounded-[22px] px-2 xl:px-8 py-3'>
                 <div className='flex flex-col w-[8%] pt-2.5 pb-2.5'>
-                    <p>{new Date(firstBlock + f_slot * 12000).toLocaleDateString()}</p>
-                    <p>{new Date(firstBlock + f_slot * 12000).toLocaleTimeString()}</p>
+                    <p>{new Date(firstBlock + f_epoch * 32 * 12000).toLocaleDateString()}</p>
+                    <p>{new Date(firstBlock + f_epoch * 32 * 12000).toLocaleTimeString()}</p>
                 </div>
                 <p className='w-[9%]'>{f_epoch.toLocaleString()}</p>
                 <div className='w-[13%] pt-3.5 mb-6'>
@@ -280,6 +222,11 @@ const Statitstics = () => {
 
     const getCalculatingEpochMobile = (f_slot: number, f_epoch: number, blocks: Block[]) => {
         const arrayBlocks = createArrayBlocks(blocks);
+
+        if (!arrayBlocks) {
+            return null;
+        }
+
         return (
             <CardCalculating className='flex flex-col gap-y-4 justify-around items-center text-[10px] text-black bg-[#FFC163] rounded-[22px] px-3 py-4'>
                 <div className='flex gap-x-1 justify-center'>
@@ -420,7 +367,7 @@ const Statitstics = () => {
     );
 
     const getProposedBlocks = (totalBlock: Array<number>) => {
-        return totalBlock.filter(element => element === 1).length;
+        return totalBlock?.filter(element => element === 1).length;
     };
 
     const getDesktopView = () => (
@@ -508,8 +455,9 @@ const Statitstics = () => {
 
             <div className='flex flex-col justify-center gap-y-4 min-w-[1150px]'>
                 {epochs.length > 0 &&
-                    epochsBlocks !== null &&
-                    getCalculatingEpochsDesktop(epochs[0].f_slot, epochs[0].f_epoch, epochsBlocks)}
+                    blocks &&
+                    blocks.epochs &&
+                    getCalculatingEpochsDesktop(epochs[0].f_slot, epochs[0].f_epoch, blocks.epochs)}
                 {epochs.map((epoch: Epoch, idx: number) => (
                     <Card
                         key={epoch.f_epoch}
@@ -642,8 +590,9 @@ const Statitstics = () => {
     const getPhoneView = () => (
         <div className='flex flex-col gap-y-4 uppercase px-4 mt-3'>
             {epochs.length > 0 &&
-                epochsBlocks !== null &&
-                getCalculatingEpochsMobile(epochs[0].f_slot, epochs[0].f_epoch, epochsBlocks)}
+                blocks &&
+                blocks.epochs &&
+                getCalculatingEpochsMobile(epochs[0].f_slot, epochs[0].f_epoch, blocks.epochs)}
             {epochs.map((epoch: Epoch, idx: number) => (
                 <Card
                     key={epoch.f_epoch}
