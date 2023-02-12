@@ -16,7 +16,7 @@ export default function Home() {
     return (
         <>
             {status && status.working ? (
-                <Layout>
+                <Layout isMain>
                     <ChainOverview />
 
                     <div className='mt-3'>
