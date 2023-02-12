@@ -154,7 +154,7 @@ const BlockComponet = () => {
                             backgroundColor={'#A7EED4'}
                             letterColor={'#29C68E'}
                             title='Entity'
-                            content={block.f_slot.toLocaleString()}
+                            content={block.f_pool_name.toLocaleString()}
                         />
                         <Card
                             backgroundColor={'#A7EED4'}
@@ -308,7 +308,7 @@ const BlockComponet = () => {
                             backgroundColor={'#A7EED4'}
                             letterColor={'#29C68E'}
                             title='Entity'
-                            content={block.f_slot.toLocaleString()}
+                            content={block.f_pool_name.toLocaleString()}
                         />
                         <Card
                             backgroundColor={'#A7EED4'}
