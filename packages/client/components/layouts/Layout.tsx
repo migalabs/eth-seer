@@ -5,14 +5,19 @@ import React, { PropsWithChildren } from 'react';
 import Header from './Header';
 import Consent from './Consent';
 
-const Layout = ({ children }: PropsWithChildren<{}>) => {
+type PropsWithChildren = {
+    children?: React.ReactNode;
+    isMain: boolean;
+};
+
+const Layout = ({ children, isMain }: PropsWithChildren) => {
     return (
         <>
             <Head>
                 <title>Ethseer Stats</title>
             </Head>
 
-            <Header />
+            <Header isMain={isMain} />
 
             <main>{children}</main>
 
