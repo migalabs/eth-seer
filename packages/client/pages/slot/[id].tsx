@@ -11,6 +11,9 @@ import Layout from '../../components/layouts/Layout';
 // Types
 import { Block } from '../../types';
 
+// Constants
+import { POOLS } from '../../constants';
+
 type Props = {
     title: string;
     content: string | number | boolean;
@@ -40,12 +43,14 @@ const Card = ({
     id,
     block,
 }: Props) => {
+    console.log(backgroundColor);
     return (
         <div className='flex gap-3 items-center'>
             <div
                 className={`bg-[${backgroundColor}] rounded-2xl px-2 py-3 w-40 md:w-[21rem]`}
                 style={{
                     boxShadow: header ? `inset -7px -7px 8px ${letterColor}, inset 7px 7px 8px ${letterColor}` : 'none',
+                    background: `${backgroundColor}`,
                 }}
             >
                 <p
@@ -121,6 +126,25 @@ const BlockComponet = () => {
     // Get Short Address
     const getShortAddress = (address: string) => {
         return `${address.slice(0, 6)}...${address.slice(address.length - 6, address.length)}`;
+    };
+
+    const getBlockGif = (block: Block) => {
+        if (block.f_pool_name && POOLS.includes(block.f_pool_name.toUpperCase())) {
+            return (
+                <Image
+                    src={`/static/gifs/block_${block.f_pool_name.toLowerCase()}.gif`}
+                    alt='Logo'
+                    width={400}
+                    height={400}
+                />
+            );
+        } else if (block.f_pool_name && block.f_pool_name.includes('lido')) {
+            return <Image src={`/static/gifs/block_lido.gif`} alt='Logo' width={400} height={400} />;
+        } else if (block.f_pool_name && block.f_pool_name.includes('whale')) {
+            return <Image src={`/static/gifs/block_whale.gif`} alt='Logo' width={400} height={400} />;
+        } else {
+            return <Image src={`/static/gifs/block_others.gif`} alt='Logo' width={400} height={400} />;
+        }
     };
 
     const getDesktopView = (block: Block) => {
@@ -224,7 +248,7 @@ const BlockComponet = () => {
                     </div>
                 </div>
                 <div className='flex flex-col self-end items-center'>
-                    <Image src={`/static/gifs/block_lido.gif`} alt='Awaiting block' width={400} height={400} />
+                    {getBlockGif(block)}
                     <Card
                         backgroundColor={'#FFCEA1'}
                         letterColor={'#F18D30'}
@@ -431,7 +455,7 @@ const BlockComponet = () => {
     };
 
     return (
-        <Layout>
+        <Layout isMain={false}>
             <h1 className='text-white text-center text-xl md:text-3xl mb-5'>Slot {id}</h1>
             {block && (desktopView ? getDesktopView(block) : getPhoneView(block))}
         </Layout>
