@@ -153,13 +153,13 @@ export const getBlock = async (req: Request, res: Response) => {
                 pgClient.query(`
                     SELECT t_block_metrics.*, t_eth2_pubkeys.f_pool_name
                     FROM t_block_metrics
-                    INNER JOIN t_eth2_pubkeys ON t_block_metrics.f_proposer_index = t_eth2_pubkeys.f_val_idx
+                    LEFT OUTER JOIN t_eth2_pubkeys ON t_block_metrics.f_proposer_index = t_eth2_pubkeys.f_val_idx
                     WHERE f_slot = '${id}'
                 `)
             ]);
 
         res.json({
-            row: block.rows[0],
+            block: block.rows[0],
         });
 
     } catch (error) {

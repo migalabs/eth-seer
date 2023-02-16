@@ -43,7 +43,6 @@ const Card = ({
     id,
     block,
 }: Props) => {
-    console.log(backgroundColor);
     return (
         <div className='flex gap-3 items-center'>
             <div
@@ -103,8 +102,11 @@ const BlockComponet = () => {
 
     // UseEffect
     useEffect(() => {
+        console.log("hola")
         if (id && !block) {
+            
             getBlock();
+
         }
 
         setDesktopView(window !== undefined && window.innerWidth > 768);
@@ -116,7 +118,8 @@ const BlockComponet = () => {
     const getBlock = async () => {
         try {
             const response = await axiosClient.get(`/api/validator-rewards-summary/block/${id}`);
-            const blockResponse: Block = response.data.row;
+            const blockResponse: Block = response.data.block;
+            console.log(response.data)
             setBlock(blockResponse);
         } catch (error) {
             console.log(error);
@@ -136,14 +139,15 @@ const BlockComponet = () => {
                     alt='Logo'
                     width={400}
                     height={400}
+                    priority
                 />
             );
         } else if (block.f_pool_name && block.f_pool_name.includes('lido')) {
-            return <Image src={`/static/gifs/block_lido.gif`} alt='Logo' width={400} height={400} />;
+            return <Image src={`/static/gifs/block_lido.gif`} alt='Logo' width={400} height={400} priority />;
         } else if (block.f_pool_name && block.f_pool_name.includes('whale')) {
-            return <Image src={`/static/gifs/block_whale.gif`} alt='Logo' width={400} height={400} />;
+            return <Image src={`/static/gifs/block_whale.gif`} alt='Logo' width={400} height={400} priority />;
         } else {
-            return <Image src={`/static/gifs/block_others.gif`} alt='Logo' width={400} height={400} />;
+            return <Image src={`/static/gifs/block_others.gif`} alt='Logo' width={400} height={400} priority />;
         }
     };
 
@@ -178,7 +182,7 @@ const BlockComponet = () => {
                             backgroundColor={'#A7EED4'}
                             letterColor={'#29C68E'}
                             title='Entity'
-                            content={block.f_pool_name.toLocaleString()}
+                            content={block.f_pool_name?.toLocaleString() || "others"}
                         />
                         <Card
                             backgroundColor={'#A7EED4'}
@@ -332,7 +336,7 @@ const BlockComponet = () => {
                             backgroundColor={'#A7EED4'}
                             letterColor={'#29C68E'}
                             title='Entity'
-                            content={block.f_pool_name.toLocaleString()}
+                            content={block.f_pool_name?.toLocaleString() || "others"}
                         />
                         <Card
                             backgroundColor={'#A7EED4'}
