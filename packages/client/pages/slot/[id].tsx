@@ -128,7 +128,7 @@ const BlockComponet = () => {
 
     // Get Short Address
     const getShortAddress = (address: string) => {
-        return `${address.slice(0, 6)}...${address.slice(address.length - 6, address.length)}`;
+        return address && `${address.slice(0, 6)}...${address.slice(address.length - 6, address.length)}`;
     };
 
     const getBlockGif = (block: Block) => {
@@ -217,37 +217,37 @@ const BlockComponet = () => {
                             backgroundColor={'#A7EED4'}
                             letterColor={'#29C68E'}
                             title='Sync bits'
-                            content={block.f_sync_bits.toLocaleString()}
+                            content={block.f_sync_bits?.toLocaleString()}
                         />
                         <Card
                             backgroundColor={'#A7EED4'}
                             letterColor={'#29C68E'}
                             title='Attestations'
-                            content={block.f_attestations.toLocaleString()}
+                            content={block.f_attestations?.toLocaleString()}
                         />
                         <Card
                             backgroundColor={'#A7EED4'}
                             letterColor={'#29C68E'}
                             title='Voluntary exits'
-                            content={block.f_voluntary_exits.toLocaleString()}
+                            content={block.f_voluntary_exits?.toLocaleString()}
                         />
                         <Card
                             backgroundColor={'#A7EED4'}
                             letterColor={'#29C68E'}
                             title='Proposer slashings'
-                            content={block.f_proposer_slashings.toLocaleString()}
+                            content={block.f_proposer_slashings?.toLocaleString()}
                         />
                         <Card
                             backgroundColor={'#A7EED4'}
                             letterColor={'#29C68E'}
                             title='Att. slashings'
-                            content={block.f_att_slashings.toLocaleString()}
+                            content={block.f_att_slashings?.toLocaleString()}
                         />
                         <Card
                             backgroundColor={'#A7EED4'}
                             letterColor={'#29C68E'}
                             title='Deposits'
-                            content={block.f_deposits.toLocaleString()}
+                            content={block.f_deposits?.toLocaleString()}
                         />
                     </div>
                 </div>
@@ -285,19 +285,19 @@ const BlockComponet = () => {
                             backgroundColor={'#FFCEA1'}
                             letterColor={'#F18D30'}
                             title='Gas used'
-                            content={block.f_el_gas_used.toLocaleString()}
+                            content={block.f_el_gas_used?.toLocaleString()}
                         />
                         <Card
                             backgroundColor={'#FFCEA1'}
                             letterColor={'#F18D30'}
                             title='Gas limit'
-                            content={block.f_el_gas_limit.toLocaleString()}
+                            content={block.f_el_gas_limit?.toLocaleString()}
                         />
                         <Card
                             backgroundColor={'#FFCEA1'}
                             letterColor={'#F18D30'}
                             title='Transaction'
-                            content={block.f_el_transactions.toLocaleString()}
+                            content={block.f_el_transactions?.toLocaleString()}
                         />
                     </div>
                 </div>
@@ -371,37 +371,37 @@ const BlockComponet = () => {
                             backgroundColor={'#A7EED4'}
                             letterColor={'#29C68E'}
                             title='Sync bits'
-                            content={block.f_sync_bits.toLocaleString()}
+                            content={block.f_sync_bits?.toLocaleString()}
                         />
                         <Card
                             backgroundColor={'#A7EED4'}
                             letterColor={'#29C68E'}
                             title='Attestations'
-                            content={block.f_attestations.toLocaleString()}
+                            content={block.f_attestations?.toLocaleString()}
                         />
                         <Card
                             backgroundColor={'#A7EED4'}
                             letterColor={'#29C68E'}
                             title='Voluntary exits'
-                            content={block.f_voluntary_exits.toLocaleString()}
+                            content={block.f_voluntary_exits?.toLocaleString()}
                         />
                         <Card
                             backgroundColor={'#A7EED4'}
                             letterColor={'#29C68E'}
                             title='Proposer slashings'
-                            content={block.f_proposer_slashings.toLocaleString()}
+                            content={block.f_proposer_slashings?.toLocaleString()}
                         />
                         <Card
                             backgroundColor={'#A7EED4'}
                             letterColor={'#29C68E'}
                             title='Att. slashings'
-                            content={block.f_att_slashings.toLocaleString()}
+                            content={block.f_att_slashings?.toLocaleString()}
                         />
                         <Card
                             backgroundColor={'#A7EED4'}
                             letterColor={'#29C68E'}
                             title='Deposits'
-                            content={block.f_deposits.toLocaleString()}
+                            content={block.f_deposits?.toLocaleString()}
                         />
                     </div>
                 </div>
@@ -438,19 +438,19 @@ const BlockComponet = () => {
                             backgroundColor={'#FFCEA1'}
                             letterColor={'#F18D30'}
                             title='Gas used'
-                            content={block.f_el_gas_used.toLocaleString()}
+                            content={block.f_el_gas_used?.toLocaleString()}
                         />
                         <Card
                             backgroundColor={'#FFCEA1'}
                             letterColor={'#F18D30'}
                             title='Gas limit'
-                            content={block.f_el_gas_limit.toLocaleString()}
+                            content={block.f_el_gas_limit?.toLocaleString()}
                         />
                         <Card
                             backgroundColor={'#FFCEA1'}
                             letterColor={'#F18D30'}
                             title='Transaction'
-                            content={block.f_el_transactions.toLocaleString()}
+                            content={block.f_el_transactions?.toLocaleString()}
                         />
                     </div>
                 </div>
