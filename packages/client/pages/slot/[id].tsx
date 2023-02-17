@@ -167,7 +167,7 @@ const BlockComponet = () => {
                             backgroundColor={'#A7EED4'}
                             letterColor={'#29C68E'}
                             title='Timestamp'
-                            content={block.f_timestamp}
+                            content={new Date(block.f_timestamp * 1000)?.toLocaleString()}
                         />
                         <Card
                             backgroundColor={'#A7EED4'}
@@ -319,7 +319,7 @@ const BlockComponet = () => {
                             backgroundColor={'#A7EED4'}
                             letterColor={'#29C68E'}
                             title='Timestamp'
-                            content={block.f_timestamp}
+                            content={new Date(block.f_timestamp * 1000)?.toLocaleString()}
                         />
                         <Card
                             backgroundColor={'#A7EED4'}
