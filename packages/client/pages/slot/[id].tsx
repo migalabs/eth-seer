@@ -19,30 +19,13 @@ type Props = {
     content: string | number | boolean;
     icon?: string;
     iconSize?: number;
-    canCopy?: boolean;
     backgroundColor: string;
     letterColor: string;
     header?: boolean;
-    beacon?: boolean;
-    etherscan?: boolean;
-    id?: number;
-    block?: string;
+    link?: string;
 };
 
-const Card = ({
-    title,
-    content,
-    icon,
-    iconSize,
-    canCopy,
-    backgroundColor,
-    letterColor,
-    header,
-    beacon,
-    etherscan,
-    id,
-    block,
-}: Props) => {
+const Card = ({ title, content, icon, iconSize, backgroundColor, letterColor, header, link }: Props) => {
     return (
         <div className='flex gap-3 items-center'>
             <div
@@ -64,13 +47,7 @@ const Card = ({
                 <p className='uppercase text-white text-[8px] md:text-[10px]'>{content}</p>
                 {icon && (
                     <a
-                        href={
-                            beacon
-                                ? `https://beaconcha.in/validator/${id}`
-                                : etherscan
-                                ? `https://etherscan.io/block/${block}`
-                                : 'none'
-                        }
+                        href={link || 'none'}
                         target='_blank'
                         rel='noreferrer'
                         style={{ textDecoration: 'none', color: 'black' }}
@@ -80,7 +57,7 @@ const Card = ({
                             width={iconSize || 35}
                             height={iconSize || 35}
                             alt='Icon'
-                            className={canCopy ? 'cursor-pointer' : ''}
+                            className={link && 'cursor-pointer'}
                         />
                     </a>
                 )}
@@ -102,11 +79,8 @@ const BlockComponet = () => {
 
     // UseEffect
     useEffect(() => {
-        console.log("hola")
         if (id && !block) {
-            
             getBlock();
-
         }
 
         setDesktopView(window !== undefined && window.innerWidth > 768);
@@ -119,7 +93,6 @@ const BlockComponet = () => {
         try {
             const response = await axiosClient.get(`/api/validator-rewards-summary/block/${id}`);
             const blockResponse: Block = response.data.block;
-            console.log(response.data)
             setBlock(blockResponse);
         } catch (error) {
             console.log(error);
@@ -153,7 +126,7 @@ const BlockComponet = () => {
 
     const getDesktopView = (block: Block) => {
         return (
-            <div className='flex flex-row gap-20 justify-center'>
+            <div className='flex flex-col xl:flex-row xl:gap-28 xl:justify-center max-w-full'>
                 <div className='flex flex-col items-center'>
                     <Card
                         backgroundColor={'#A7EED4'}
@@ -182,7 +155,7 @@ const BlockComponet = () => {
                             backgroundColor={'#A7EED4'}
                             letterColor={'#29C68E'}
                             title='Entity'
-                            content={block.f_pool_name?.toLocaleString() || "others"}
+                            content={block.f_pool_name?.toLocaleString() || 'others'}
                         />
                         <Card
                             backgroundColor={'#A7EED4'}
@@ -203,9 +176,7 @@ const BlockComponet = () => {
                             content={block.f_proposer_index.toLocaleString()}
                             icon='beacon-icon'
                             iconSize={35}
-                            canCopy
-                            beacon
-                            id={block.f_proposer_index}
+                            link={`https://beaconcha.in/validator/${block.f_proposer_index}`}
                         />
                         <Card
                             backgroundColor={'#A7EED4'}
@@ -251,8 +222,9 @@ const BlockComponet = () => {
                         />
                     </div>
                 </div>
-                <div className='flex flex-col self-end items-center'>
-                    {getBlockGif(block)}
+                <div className='flex flex-col xl:self-end items-center'>
+                    <div className='hidden xl:block'>{getBlockGif(block)}</div>
+
                     <Card
                         backgroundColor={'#FFCEA1'}
                         letterColor={'#F18D30'}
@@ -260,8 +232,9 @@ const BlockComponet = () => {
                         content={''}
                         header
                     />
+
                     <div
-                        className='flex  flex-col self-end w-fit h-fit md:max-h-full mx-2 md:mx-auto mt-4 mb-10 gap-y-5 bg-[#FFB16866] rounded-[22px] p-4 md:p-8'
+                        className='flex flex-col xl:self-end w-fit h-fit md:max-h-full mx-2 md:mx-auto mt-4 mb-10 gap-y-5 bg-[#FFB16866] rounded-[22px] p-4 md:p-8'
                         style={{ boxShadow: 'inset -7px -7px 8px #FFCEA1, inset 7px 7px 8px #FFCEA1' }}
                     >
                         <Card
@@ -271,9 +244,7 @@ const BlockComponet = () => {
                             content={getShortAddress(block.f_el_block_hash)}
                             icon='etherscan-icon'
                             iconSize={35}
-                            canCopy
-                            etherscan
-                            block={block.f_el_block_hash}
+                            link={`https://etherscan.io/block/${block.f_el_block_hash}`}
                         />
                         <Card
                             backgroundColor={'#FFCEA1'}
@@ -336,7 +307,7 @@ const BlockComponet = () => {
                             backgroundColor={'#A7EED4'}
                             letterColor={'#29C68E'}
                             title='Entity'
-                            content={block.f_pool_name?.toLocaleString() || "others"}
+                            content={block.f_pool_name?.toLocaleString() || 'others'}
                         />
                         <Card
                             backgroundColor={'#A7EED4'}
@@ -357,9 +328,7 @@ const BlockComponet = () => {
                             content={block.f_proposer_index.toLocaleString()}
                             icon='beacon-icon'
                             iconSize={35}
-                            canCopy
-                            beacon
-                            id={block.f_proposer_index}
+                            link={`https://beaconcha.in/validator/${block.f_proposer_index}`}
                         />
                         <Card
                             backgroundColor={'#A7EED4'}
@@ -424,9 +393,7 @@ const BlockComponet = () => {
                             content={getShortAddress(block.f_el_block_hash)}
                             icon='etherscan-icon'
                             iconSize={35}
-                            canCopy
-                            etherscan
-                            block={block.f_el_block_hash}
+                            link={`https://etherscan.io/block/${block.f_el_block_hash}`}
                         />
                         <Card
                             backgroundColor={'#FFCEA1'}
@@ -458,10 +425,43 @@ const BlockComponet = () => {
         );
     };
 
+    const handleLeftArrowClick = () => {
+        router.push(`/slot/${id && Number(id) - 1}`).then(() => {
+            router.reload();
+        });
+    };
+
+    const handleRightArrowClick = () => {
+        router.push(`/slot/${id && Number(id) + 1}`).then(() => {
+            router.reload();
+        });
+    };
+
     return (
         <Layout isMain={false}>
-            <h1 className='text-white text-center text-xl md:text-3xl mb-5'>Slot {id}</h1>
-            {block && (desktopView ? getDesktopView(block) : getPhoneView(block))}
+            <div className='flex gap-x-3 justify-center items-center mt-2 mb-5'>
+                <Image
+                    src='/static/images/arrow-purple.svg'
+                    alt='Left arrow'
+                    width={15}
+                    height={15}
+                    className='mb-1 cursor-pointer'
+                    onClick={handleLeftArrowClick}
+                />
+
+                <h1 className='text-white text-center text-xl md:text-3xl'>Slot {id}</h1>
+
+                <Image
+                    src='/static/images/arrow-purple.svg'
+                    alt='Left arrow'
+                    width={15}
+                    height={15}
+                    className='rotate-180 mb-1 cursor-pointer'
+                    onClick={handleRightArrowClick}
+                />
+            </div>
+            {/* {block && (desktopView ? getDesktopView(block) : getPhoneView(block))} */}
+            {block && getDesktopView(block)}
         </Layout>
     );
 };
