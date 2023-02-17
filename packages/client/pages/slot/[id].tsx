@@ -79,7 +79,7 @@ const BlockComponet = () => {
 
     // UseEffect
     useEffect(() => {
-        if (id && !block) {
+        if ((id && !block) || (block && block.f_slot !== Number(id))) {
             getBlock();
         }
 
@@ -427,13 +427,13 @@ const BlockComponet = () => {
 
     const handleLeftArrowClick = () => {
         router.push(`/slot/${id && Number(id) - 1}`).then(() => {
-            router.reload();
+            // router.reload();
         });
     };
 
     const handleRightArrowClick = () => {
         router.push(`/slot/${id && Number(id) + 1}`).then(() => {
-            router.reload();
+            // router.reload();
         });
     };
 
