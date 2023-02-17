@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import React, { PropsWithChildren } from 'react';
+import React from 'react';
 
 // Components
 import Header from './Header';
