@@ -14,34 +14,50 @@ import { Block } from '../../types';
 // Constants
 import { POOLS } from '../../constants';
 
-type Props = {
+type TitleProps = {
+    text: string;
+    backgroundColor: string;
+    letterColor: string;
+};
+
+const Title = ({ text, backgroundColor, letterColor }: TitleProps) => {
+    return (
+        <div className='flex gap-3 items-center'>
+            <div
+                className='rounded-2xl px-2 py-3 w-60 sm:w-[21rem]'
+                style={{
+                    boxShadow: `inset -7px -7px 8px ${letterColor}, inset 7px 7px 8px ${letterColor}`,
+                    background: backgroundColor,
+                }}
+            >
+                <p className='uppercase text-center text-[12px] sm:text-[14px]' style={{ color: letterColor }}>
+                    {text}
+                </p>
+            </div>
+        </div>
+    );
+};
+
+type CardProps = {
     title: string;
-    content: string | number | boolean;
+    content: string | number | boolean | any;
     icon?: string;
     iconSize?: number;
     backgroundColor: string;
     letterColor: string;
-    header?: boolean;
     link?: string;
 };
 
-const Card = ({ title, content, icon, iconSize, backgroundColor, letterColor, header, link }: Props) => {
+const Card = ({ title, content, icon, iconSize, backgroundColor, letterColor, link }: CardProps) => {
     return (
         <div className='flex gap-3 items-center'>
             <div
-                className={`bg-[${backgroundColor}] rounded-2xl px-2 py-3 w-40 md:w-[21rem]`}
+                className={`rounded-2xl px-2 py-3 w-40 md:w-[21rem]`}
                 style={{
-                    boxShadow: header ? `inset -7px -7px 8px ${letterColor}, inset 7px 7px 8px ${letterColor}` : 'none',
                     background: `${backgroundColor}`,
                 }}
             >
-                <p
-                    className={`uppercase text-[${letterColor}] text-center text-[10px] ${
-                        header ? 'md:text-[12px]' : 'md:text-[10px]'
-                    }`}
-                >
-                    {title}
-                </p>
+                <p className={`uppercase text-[${letterColor}] text-center text-[10px] ${'md:text-[10px]'}`}>{title}</p>
             </div>
             <div className='flex gap-1 items-center'>
                 <p className='uppercase text-white text-[8px] md:text-[10px]'>{content}</p>
@@ -124,19 +140,14 @@ const BlockComponet = () => {
         }
     };
 
-    const getDesktopView = (block: Block) => {
+    const getInformationView = (block: Block) => {
         return (
-            <div className='flex flex-col xl:flex-row xl:gap-28 xl:justify-center max-w-full'>
+            <div className='flex flex-col xl:flex-row xl:gap-28 xl:justify-center max-w-full px-4'>
                 <div className='flex flex-col items-center'>
-                    <Card
-                        backgroundColor={'#A7EED4'}
-                        letterColor={'#29C68E'}
-                        title='Consensus Layer'
-                        content={''}
-                        header
-                    />
+                    <Title backgroundColor={'#A7EED4'} letterColor={'#29C68E'} text='Consensus Layer' />
+
                     <div
-                        className='flex flex-col w-fit md:max-h-full mx-2 md:mx-auto mt-4 mb-10 gap-y-5 bg-[#A7EED466] rounded-[22px] p-4 md:p-8'
+                        className='flex flex-col w-full md:w-fit md:max-h-full md:mx-auto mt-4 mb-10 gap-y-5 bg-[#A7EED466] rounded-[22px] p-4 md:p-8'
                         style={{ boxShadow: 'inset -7px -7px 8px #A7EED4, inset 7px 7px 8px #A7EED4' }}
                     >
                         <Card
@@ -161,12 +172,22 @@ const BlockComponet = () => {
                             backgroundColor={'#A7EED4'}
                             letterColor={'#29C68E'}
                             title='Status'
-                            content={block.f_proposed === true ? 'proposed' : 'missed'}
+                            content={
+                                block.f_proposed ? (
+                                    <p className='uppercase bg-[#83E18C] border-2 border-[#00720B] text-[#00720B] px-5 py-1.5 rounded-2xl font-bold'>
+                                        Proposed
+                                    </p>
+                                ) : (
+                                    <p className='uppercase bg-[#FF9090] border-2 border-[#980E0E] text-[#980E0E] px-5 py-1.5 rounded-2xl font-bold'>
+                                        Missed
+                                    </p>
+                                )
+                            }
                         />
                         <Card
                             backgroundColor={'#A7EED4'}
                             letterColor={'#29C68E'}
-                            title='Timestamp'
+                            title='Date (Local)'
                             content={new Date(block.f_timestamp * 1000)?.toLocaleString()}
                         />
                         <Card
@@ -225,165 +246,10 @@ const BlockComponet = () => {
                 <div className='flex flex-col xl:self-end items-center'>
                     <div className='hidden xl:block'>{getBlockGif(block)}</div>
 
-                    <Card
-                        backgroundColor={'#FFCEA1'}
-                        letterColor={'#F18D30'}
-                        title='Execution Layer'
-                        content={''}
-                        header
-                    />
+                    <Title backgroundColor='#FFCEA1' letterColor='#F18D30' text='Execution Layer' />
 
                     <div
-                        className='flex flex-col xl:self-end w-fit h-fit md:max-h-full mx-2 md:mx-auto mt-4 mb-10 gap-y-5 bg-[#FFB16866] rounded-[22px] p-4 md:p-8'
-                        style={{ boxShadow: 'inset -7px -7px 8px #FFCEA1, inset 7px 7px 8px #FFCEA1' }}
-                    >
-                        <Card
-                            backgroundColor={'#FFCEA1'}
-                            letterColor={'#F18D30'}
-                            title='Block hash'
-                            content={getShortAddress(block.f_el_block_hash)}
-                            icon='etherscan-icon'
-                            iconSize={35}
-                            link={`https://etherscan.io/block/${block.f_el_block_hash}`}
-                        />
-                        <Card
-                            backgroundColor={'#FFCEA1'}
-                            letterColor={'#F18D30'}
-                            title='Fee recp.'
-                            content={getShortAddress(block.f_el_fee_recp)}
-                        />
-                        <Card
-                            backgroundColor={'#FFCEA1'}
-                            letterColor={'#F18D30'}
-                            title='Gas used'
-                            content={block.f_el_gas_used?.toLocaleString()}
-                        />
-                        <Card
-                            backgroundColor={'#FFCEA1'}
-                            letterColor={'#F18D30'}
-                            title='Gas limit'
-                            content={block.f_el_gas_limit?.toLocaleString()}
-                        />
-                        <Card
-                            backgroundColor={'#FFCEA1'}
-                            letterColor={'#F18D30'}
-                            title='Transaction'
-                            content={block.f_el_transactions?.toLocaleString()}
-                        />
-                    </div>
-                </div>
-            </div>
-        );
-    };
-
-    const getPhoneView = (block: Block) => {
-        return (
-            <div className='flex flex-col justify-center'>
-                <div className='flex flex-col items-center'>
-                    <Card
-                        backgroundColor={'#A7EED4'}
-                        letterColor={'#29C68E'}
-                        title='Consensus Layer'
-                        content={''}
-                        header
-                    />
-                    <div
-                        className='flex flex-col w-fit md:max-h-full mx-2 md:mx-auto mt-4 mb-10 gap-y-5 bg-[#A7EED466] rounded-[22px] p-4 md:p-8'
-                        style={{ boxShadow: 'inset -7px -7px 8px #A7EED4, inset 7px 7px 8px #A7EED4' }}
-                    >
-                        <Card
-                            backgroundColor={'#A7EED4'}
-                            letterColor={'#29C68E'}
-                            title='Epoch'
-                            content={block.f_epoch.toLocaleString()}
-                        />
-                        <Card
-                            backgroundColor={'#A7EED4'}
-                            letterColor={'#29C68E'}
-                            title='Slot'
-                            content={block.f_slot.toLocaleString()}
-                        />
-                        <Card
-                            backgroundColor={'#A7EED4'}
-                            letterColor={'#29C68E'}
-                            title='Entity'
-                            content={block.f_pool_name?.toLocaleString() || 'others'}
-                        />
-                        <Card
-                            backgroundColor={'#A7EED4'}
-                            letterColor={'#29C68E'}
-                            title='Status'
-                            content={block.f_proposed === true ? 'proposed' : 'missed'}
-                        />
-                        <Card
-                            backgroundColor={'#A7EED4'}
-                            letterColor={'#29C68E'}
-                            title='Timestamp'
-                            content={new Date(block.f_timestamp * 1000)?.toLocaleString()}
-                        />
-                        <Card
-                            backgroundColor={'#A7EED4'}
-                            letterColor={'#29C68E'}
-                            title='Proposer Index'
-                            content={block.f_proposer_index.toLocaleString()}
-                            icon='beacon-icon'
-                            iconSize={35}
-                            link={`https://beaconcha.in/validator/${block.f_proposer_index}`}
-                        />
-                        <Card
-                            backgroundColor={'#A7EED4'}
-                            letterColor={'#29C68E'}
-                            title='Graffiti'
-                            content={block.f_graffiti}
-                        />
-                        <Card
-                            backgroundColor={'#A7EED4'}
-                            letterColor={'#29C68E'}
-                            title='Sync bits'
-                            content={block.f_sync_bits?.toLocaleString()}
-                        />
-                        <Card
-                            backgroundColor={'#A7EED4'}
-                            letterColor={'#29C68E'}
-                            title='Attestations'
-                            content={block.f_attestations?.toLocaleString()}
-                        />
-                        <Card
-                            backgroundColor={'#A7EED4'}
-                            letterColor={'#29C68E'}
-                            title='Voluntary exits'
-                            content={block.f_voluntary_exits?.toLocaleString()}
-                        />
-                        <Card
-                            backgroundColor={'#A7EED4'}
-                            letterColor={'#29C68E'}
-                            title='Proposer slashings'
-                            content={block.f_proposer_slashings?.toLocaleString()}
-                        />
-                        <Card
-                            backgroundColor={'#A7EED4'}
-                            letterColor={'#29C68E'}
-                            title='Att. slashings'
-                            content={block.f_att_slashings?.toLocaleString()}
-                        />
-                        <Card
-                            backgroundColor={'#A7EED4'}
-                            letterColor={'#29C68E'}
-                            title='Deposits'
-                            content={block.f_deposits?.toLocaleString()}
-                        />
-                    </div>
-                </div>
-                <div className='flex flex-col self-end items-center'>
-                    <Card
-                        backgroundColor={'#FFCEA1'}
-                        letterColor={'#F18D30'}
-                        title='Execution Layer'
-                        content={''}
-                        header
-                    />
-                    <div
-                        className='flex  flex-col self-end w-fit h-fit md:max-h-full mx-2 md:mx-auto mt-4 mb-10 gap-y-5 bg-[#FFB16866] rounded-[22px] p-4 md:p-8'
+                        className='flex flex-col xl:self-end w-full md:w-fit h-fit md:max-h-full mx-2 md:mx-auto mt-4 mb-10 gap-y-5 bg-[#FFB16866] rounded-[22px] p-4 md:p-8'
                         style={{ boxShadow: 'inset -7px -7px 8px #FFCEA1, inset 7px 7px 8px #FFCEA1' }}
                     >
                         <Card
@@ -460,8 +326,8 @@ const BlockComponet = () => {
                     onClick={handleRightArrowClick}
                 />
             </div>
-            {/* {block && (desktopView ? getDesktopView(block) : getPhoneView(block))} */}
-            {block && getDesktopView(block)}
+
+            {block && getInformationView(block)}
         </Layout>
     );
 };
