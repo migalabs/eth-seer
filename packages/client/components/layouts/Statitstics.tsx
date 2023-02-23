@@ -377,11 +377,11 @@ const Statitstics = () => {
             onMouseMove={handleMouseMove}
         >
             <div className='flex gap-x-1 justify-around px-2 xl:px-8 py-3 uppercase text-sm min-w-[1150px]'>
-                <div className='flex w-[8%] items-center gap-x-1 justify-center'>
+                <div className='flex w-[10%] items-center gap-x-1 justify-center'>
                     <p className='mt-0.5'>Time</p>
                     <TooltipContainer>
                         <Image src='/static/images/information.svg' alt='Time information' width={24} height={24} />
-                        <TooltipContentContainerHeaders time>
+                        <TooltipContentContainerHeaders leftSide>
                             <span>Time at which the epoch</span>
                             <span>should have started</span>
                             <span>(calculated since genesis)</span>
@@ -389,7 +389,7 @@ const Statitstics = () => {
                     </TooltipContainer>
                 </div>
 
-                <div className='flex w-[9%] items-center gap-x-1 justify-center'>
+                <div className='flex w-[11%] items-center gap-x-1 justify-center'>
                     <p className='mt-0.5'>Epoch</p>
                     <TooltipContainer>
                         <Image src='/static/images/information.svg' alt='Time information' width={24} height={24} />
@@ -399,7 +399,7 @@ const Statitstics = () => {
                     </TooltipContainer>
                 </div>
 
-                <div className='flex w-[13%] items-center gap-x-1 justify-center'>
+                <div className='flex w-[15%] items-center gap-x-1 justify-center'>
                     <p className='mt-0.5'>Blocks</p>
                     <TooltipContainer>
                         <Image src='/static/images/information.svg' alt='Blocks information' width={24} height={24} />
@@ -411,7 +411,7 @@ const Statitstics = () => {
                     </TooltipContainer>
                 </div>
 
-                <div className='flex w-[29%] items-center gap-x-1 justify-center'>
+                <div className='flex w-[32%] items-center gap-x-1 justify-center'>
                     <p className='mt-0.5'>Attestation Accuracy</p>
                     <TooltipContainer>
                         <Image
@@ -428,26 +428,14 @@ const Statitstics = () => {
                     </TooltipContainer>
                 </div>
 
-                <div className='flex w-[29%] items-center gap-x-1 justify-center'>
+                <div className='flex w-[32%] items-center gap-x-1 justify-center'>
                     <p className='mt-0.5'>Voting Participation</p>
                     <TooltipContainer>
                         <Image src='/static/images/information.svg' alt='Balance information' width={24} height={24} />
-                        <TooltipContentContainerHeaders>
+                        <TooltipContentContainerHeaders rightSide>
                             <span>Attesting Balance</span>
                             <span>vs</span>
                             <span>Total Active Balance</span>
-                        </TooltipContentContainerHeaders>
-                    </TooltipContainer>
-                </div>
-
-                <div className='flex w-[12%] items-center gap-x-1 justify-center'>
-                    <p className='mt-0.5'>Rewards</p>
-                    <TooltipContainer>
-                        <Image src='/static/images/information.svg' alt='Rewards information' width={24} height={24} />
-                        <TooltipContentContainerHeaders rewards>
-                            <span>Achieved Average Reward</span>
-                            <span>vs</span>
-                            <span>Expected Average Reward</span>
                         </TooltipContentContainerHeaders>
                     </TooltipContainer>
                 </div>
@@ -464,14 +452,14 @@ const Statitstics = () => {
                         ref={idx === epochs.length - 1 ? ref : undefined}
                         className='flex gap-x-1 justify-around items-center text-[9px] text-black bg-[#FFF0A1] rounded-[22px] px-2 xl:px-8 py-3'
                     >
-                        <div className='flex flex-col w-[8%]'>
+                        <div className='flex flex-col w-[10%]'>
                             <p>{new Date(firstBlock + epoch.f_epoch * 32 * 12000).toLocaleDateString()}</p>
                             <p>{new Date(firstBlock + epoch.f_epoch * 32 * 12000).toLocaleTimeString()}</p>
                         </div>
 
-                        <p className='w-[9%]'>{epoch.f_epoch.toLocaleString()}</p>
+                        <p className='w-[11%]'>{epoch.f_epoch.toLocaleString()}</p>
 
-                        <div className='w-[13%] pt-3.5 mb-6'>
+                        <div className='w-[15%] pt-3.5 mb-6'>
                             <p className='uppercase'>blocks</p>
                             <ProgressTileBar
                                 totalBlocks={epoch.proposed_blocks}
@@ -484,7 +472,7 @@ const Statitstics = () => {
                             />
                         </div>
 
-                        <div className='mb-2 w-[29%]'>
+                        <div className='mb-2 w-[32%]'>
                             <div className='flex gap-x-1 justify-center '>
                                 <div className='flex-1'>
                                     <ProgressSmoothBar
@@ -534,7 +522,7 @@ const Statitstics = () => {
                             </div>
                         </div>
 
-                        <div className='mb-2 w-[29%]'>
+                        <div className='mb-2 w-[32%]'>
                             <ProgressSmoothBar
                                 title='Attesting/total active'
                                 bg='#0016D8'
@@ -548,34 +536,6 @@ const Statitstics = () => {
                                         </span>
                                         <span>
                                             Act. Balance: {epoch.f_total_effective_balance_eth?.toLocaleString()} ETH
-                                        </span>
-                                    </>
-                                }
-                            />
-                        </div>
-
-                        <div className='w-[12%] mb-2'>
-                            <ProgressSmoothBar
-                                title='rewards'
-                                bg='#D80068'
-                                color='#FFBDD9'
-                                percent={Number(epoch.reward_average) / Number(epoch.max_reward_average)}
-                                tooltipColor='pink'
-                                tooltipContent={
-                                    <>
-                                        <span>
-                                            Reward:{' '}
-                                            {Number(
-                                                (Number(epoch.reward_average) / ETH_WEI).toFixed(3)
-                                            ).toLocaleString()}{' '}
-                                            GWEI
-                                        </span>
-                                        <span>
-                                            Max. Reward:{' '}
-                                            {Number(
-                                                (Number(epoch.max_reward_average) / ETH_WEI).toFixed(3)
-                                            ).toLocaleString()}{' '}
-                                            GWEI
                                         </span>
                                     </>
                                 }
