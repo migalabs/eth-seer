@@ -139,7 +139,7 @@ const BlockComponet = () => {
                         if (Number(id) === slotRef.current) {
                             getBlock();
                         }
-                    }, timeDifference + 1000);
+                    }, timeDifference + 4000);
                 }
             } else {
                 setExistsBlock(true);
