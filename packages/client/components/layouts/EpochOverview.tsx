@@ -109,7 +109,7 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
 
                     {blocks.length < 32 && (
                         <>
-                            <Image src={`/static/gifs/block_mining4.gif`} alt='Mining block' width={50} height={50} />
+                            <Image src={`/static/gifs/block_mining5.gif`} alt='Mining block' width={50} height={50} />
 
                             {Array.from(Array(32 - blocks.length - 1)).map((_, idx) => (
                                 <Image
