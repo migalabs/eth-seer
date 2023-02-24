@@ -183,7 +183,7 @@ const BlockComponet = () => {
                     <Title backgroundColor={'#A7EED4'} letterColor={'#29C68E'} text='Consensus Layer' />
 
                     <div
-                        className='flex flex-col w-full md:w-fit md:max-h-full md:mx-auto mt-4 mb-10 gap-y-5 bg-[#A7EED466] rounded-[22px] p-4 md:p-8'
+                        className='flex flex-col w-full md:w-[750px] md:max-h-full md:mx-auto mt-4 mb-10 gap-y-5 bg-[#A7EED466] rounded-[22px] p-4 md:p-8'
                         style={{ boxShadow: 'inset -7px -7px 8px #A7EED4, inset 7px 7px 8px #A7EED4' }}
                     >
                         <Card
