@@ -184,12 +184,12 @@ const Statitstics = () => {
 
         return (
             <CardCalculating className='flex gap-x-1 justify-around items-center text-[9px] text-black bg-[#FFC163] rounded-[22px] px-2 xl:px-8 py-3'>
-                <div className='flex flex-col w-[8%] pt-2.5 pb-2.5'>
+                <div className='flex flex-col w-[10%] pt-2.5 pb-2.5'>
                     <p>{new Date(firstBlock + f_epoch * 32 * 12000).toLocaleDateString()}</p>
                     <p>{new Date(firstBlock + f_epoch * 32 * 12000).toLocaleTimeString()}</p>
                 </div>
-                <p className='w-[9%]'>{f_epoch.toLocaleString()}</p>
-                <div className='w-[13%] pt-3.5 mb-6'>
+                <p className='w-[11%]'>{f_epoch.toLocaleString()}</p>
+                <div className='w-[15%] pt-3.5 mb-6'>
                     <p className='uppercase'>blocks</p>
                     <ProgressTileBar
                         totalBlocks={arrayBlocks}
@@ -207,13 +207,10 @@ const Statitstics = () => {
                         }
                     />
                 </div>
-                <div className='w-[29%]'>
+                <div className='w-[32%]'>
                     <p className='w-32 uppercase mx-auto text-start'>{calculatingText}</p>
                 </div>
-                <div className='w-[29%]'>
-                    <p className='w-32 uppercase mx-auto text-start'>{calculatingText}</p>
-                </div>
-                <div className='w-[12%]'>
+                <div className='w-[32%]'>
                     <p className='w-32 uppercase mx-auto text-start'>{calculatingText}</p>
                 </div>
             </CardCalculating>
@@ -320,27 +317,6 @@ const Statitstics = () => {
                                 <span>Attesting Balance</span>
                                 <span>vs</span>
                                 <span>Total Active Balance</span>
-                            </TooltipContentContainerHeaders>
-                        </TooltipContainer>
-                    </div>
-                    <div>
-                        <p className='w-32 uppercase mx-auto text-start'>{calculatingText}</p>
-                    </div>
-                </div>
-                <div className='flex flex-col w-full'>
-                    <div className='flex gap-x-1 justify-center mb-1'>
-                        <p className='text-xs mt-1'>Rewards</p>
-                        <TooltipContainer>
-                            <Image
-                                src='/static/images/information.svg'
-                                alt='Blocks information'
-                                width={24}
-                                height={24}
-                            />
-                            <TooltipContentContainerHeaders>
-                                <span>Achieved Average Reward</span>
-                                <span>vs</span>
-                                <span>Expected Average Reward</span>
                             </TooltipContentContainerHeaders>
                         </TooltipContainer>
                     </div>
