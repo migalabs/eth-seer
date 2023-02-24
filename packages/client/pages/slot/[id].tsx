@@ -13,6 +13,7 @@ import { Block } from '../../types';
 
 // Constants
 import { POOLS } from '../../constants';
+const firstBlock: number = 1606824023000;
 
 type TitleProps = {
     text: string;
@@ -50,6 +51,8 @@ type CardProps = {
 
 const Card = ({ title, content, icon, iconSize, backgroundColor, letterColor, link }: CardProps) => {
     return (
+        <>
+        { content !== undefined && 
         <div className='flex gap-3 items-center'>
             <div
                 className={`rounded-2xl px-2 py-3 w-40 md:w-[21rem]`}
@@ -79,6 +82,8 @@ const Card = ({ title, content, icon, iconSize, backgroundColor, letterColor, li
                 )}
             </div>
         </div>
+                }
+                </>
     );
 };
 
@@ -110,6 +115,13 @@ const BlockComponet = () => {
             const response = await axiosClient.get(`/api/validator-rewards-summary/block/${id}`);
             const blockResponse: Block = response.data.block;
             setBlock(blockResponse);
+            if(blockResponse === undefined){
+                setBlock({
+                    f_epoch: Math.floor(Number(id) / 32),
+                    f_slot: Number(id),
+                    f_timestamp: (firstBlock + Number(id)  * 12000) / 1000 
+                })
+            }
         } catch (error) {
             console.log(error);
         }
@@ -121,23 +133,25 @@ const BlockComponet = () => {
     };
 
     const getBlockGif = (block: Block) => {
-        if (block.f_pool_name && POOLS.includes(block.f_pool_name.toUpperCase())) {
-            return (
-                <Image
+        if(block.f_pool_name !== undefined){
+            if (block.f_pool_name && POOLS.includes(block.f_pool_name.toUpperCase())) {
+                return (
+                    <Image
                     src={`/static/gifs/block_${block.f_pool_name.toLowerCase()}.gif`}
                     alt='Logo'
                     width={400}
                     height={400}
                     priority
-                />
-            );
-        } else if (block.f_pool_name && block.f_pool_name.includes('lido')) {
-            return <Image src={`/static/gifs/block_lido.gif`} alt='Logo' width={400} height={400} priority />;
+                    />
+                    );
+                } else if (block.f_pool_name && block.f_pool_name.includes('lido')) {
+                    return <Image src={`/static/gifs/block_lido.gif`} alt='Logo' width={400} height={400} priority />;
         } else if (block.f_pool_name && block.f_pool_name.includes('whale')) {
             return <Image src={`/static/gifs/block_whale.gif`} alt='Logo' width={400} height={400} priority />;
         } else {
             return <Image src={`/static/gifs/block_others.gif`} alt='Logo' width={400} height={400} priority />;
         }
+    }
     };
 
     const getInformationView = (block: Block) => {
@@ -162,12 +176,14 @@ const BlockComponet = () => {
                             title='Slot'
                             content={block.f_slot.toLocaleString()}
                         />
+                        {block.f_pool_name !== undefined &&
                         <Card
                             backgroundColor={'#A7EED4'}
                             letterColor={'#29C68E'}
                             title='Entity'
                             content={block.f_pool_name?.toLocaleString() || 'others'}
-                        />
+                        />}
+                        { block.f_proposed !== undefined &&
                         <Card
                             backgroundColor={'#A7EED4'}
                             letterColor={'#29C68E'}
@@ -184,17 +200,18 @@ const BlockComponet = () => {
                                 )
                             }
                         />
+                        }
                         <Card
                             backgroundColor={'#A7EED4'}
                             letterColor={'#29C68E'}
                             title='Date (Local)'
-                            content={new Date(block.f_timestamp * 1000)?.toLocaleString()}
+                            content={new Date(block.f_timestamp * 1000).toLocaleString()}
                         />
                         <Card
                             backgroundColor={'#A7EED4'}
                             letterColor={'#29C68E'}
                             title='Proposer Index'
-                            content={block.f_proposer_index.toLocaleString()}
+                            content={block.f_proposer_index?.toLocaleString()}
                             icon='beacon-icon'
                             iconSize={35}
                             link={`https://beaconcha.in/validator/${block.f_proposer_index}`}
@@ -243,6 +260,7 @@ const BlockComponet = () => {
                         />
                     </div>
                 </div>
+                {block.f_el_block_hash !== undefined &&
                 <div className='flex flex-col xl:self-end items-center'>
                     <div className='hidden xl:block'>{getBlockGif(block)}</div>
 
@@ -256,7 +274,7 @@ const BlockComponet = () => {
                             backgroundColor={'#FFCEA1'}
                             letterColor={'#F18D30'}
                             title='Block hash'
-                            content={getShortAddress(block.f_el_block_hash)}
+                            content={block.f_el_block_hash && getShortAddress(block.f_el_block_hash)}
                             icon='etherscan-icon'
                             iconSize={35}
                             link={`https://etherscan.io/block/${block.f_el_block_hash}`}
@@ -265,7 +283,7 @@ const BlockComponet = () => {
                             backgroundColor={'#FFCEA1'}
                             letterColor={'#F18D30'}
                             title='Fee recp.'
-                            content={getShortAddress(block.f_el_fee_recp)}
+                            content={block.f_el_fee_recp && getShortAddress(block.f_el_fee_recp)}
                         />
                         <Card
                             backgroundColor={'#FFCEA1'}
@@ -287,6 +305,7 @@ const BlockComponet = () => {
                         />
                     </div>
                 </div>
+    }
             </div>
         );
     };

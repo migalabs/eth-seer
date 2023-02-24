@@ -98,7 +98,7 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
                                 <TooltipContainer>
                                     {getBlockImage(block)}
                                     <TooltipContentContainerBlocks>
-                                        <span>Entity: {getEntityName(block.f_pool_name)}</span>
+                                        <span>Entity: {getEntityName(block.f_pool_name as string)}</span>
                                         <span>Proposer: {Number(block.f_proposer_index).toLocaleString()}</span>
                                         <span>Slot: {Number(block.f_slot).toLocaleString()}</span>
                                     </TooltipContentContainerBlocks>
