@@ -43,7 +43,7 @@ const NotFoundPage = () => {
                         alt='Ghost'
                         width={200}
                         height={200}
-                        className='absolute top-[60px] right-[0px] sm:top-[-30px] sm:right-[-180px]'
+                        className='absolute top-[60px] right-[0px] sm:top-[-30px] sm:right-[-180px] ghost'
                     />
                 </div>
             </div>
