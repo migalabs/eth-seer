@@ -14,6 +14,7 @@ import { Block } from '../../types';
 // Constants
 import { POOLS } from '../../constants';
 const firstBlock: number = 1606824023000;
+const zeroAddress = "0x0000000000000000000000000000000000000000000000000000000000000000";
 
 type TitleProps = {
     text: string;
@@ -122,6 +123,7 @@ const BlockComponet = () => {
                     f_timestamp: (firstBlock + Number(id)  * 12000) / 1000 
                 })
             }
+            console.log(block)
         } catch (error) {
             console.log(error);
         }
@@ -205,7 +207,7 @@ const BlockComponet = () => {
                             backgroundColor={'#A7EED4'}
                             letterColor={'#29C68E'}
                             title='Date (Local)'
-                            content={new Date(block.f_timestamp * 1000).toLocaleString()}
+                            content={block.f_proposed ? `${new Date(block.f_timestamp * 1000).toLocaleString()}` : `${new Date((firstBlock + Number(id)  * 12000)).toLocaleString()}` }
                         />
                         <Card
                             backgroundColor={'#A7EED4'}
@@ -226,37 +228,37 @@ const BlockComponet = () => {
                             backgroundColor={'#A7EED4'}
                             letterColor={'#29C68E'}
                             title='Sync bits'
-                            content={block.f_sync_bits?.toLocaleString()}
+                            content={block.f_proposed ? `${block.f_sync_bits?.toLocaleString()}` : block.f_proposed !== undefined ? "---" : undefined}
                         />
                         <Card
                             backgroundColor={'#A7EED4'}
                             letterColor={'#29C68E'}
                             title='Attestations'
-                            content={block.f_attestations?.toLocaleString()}
+                            content={block.f_proposed ? `${block.f_attestations?.toLocaleString()}` : block.f_proposed !== undefined ? "---" : undefined}
                         />
                         <Card
                             backgroundColor={'#A7EED4'}
                             letterColor={'#29C68E'}
                             title='Voluntary exits'
-                            content={block.f_voluntary_exits?.toLocaleString()}
+                            content={block.f_proposed ? `${block.f_voluntary_exits?.toLocaleString()}` : block.f_proposed !== undefined ? "---" : undefined}
                         />
                         <Card
                             backgroundColor={'#A7EED4'}
                             letterColor={'#29C68E'}
                             title='Proposer slashings'
-                            content={block.f_proposer_slashings?.toLocaleString()}
+                            content={block.f_proposed ? `${block.f_proposer_slashings?.toLocaleString()}`: block.f_proposed !== undefined ? "---" : undefined}
                         />
                         <Card
                             backgroundColor={'#A7EED4'}
                             letterColor={'#29C68E'}
                             title='Att. slashings'
-                            content={block.f_att_slashings?.toLocaleString()}
+                            content={block.f_proposed ? `${block.f_att_slashings?.toLocaleString()}`: block.f_proposed !== undefined ? "---" : undefined}
                         />
                         <Card
                             backgroundColor={'#A7EED4'}
                             letterColor={'#29C68E'}
                             title='Deposits'
-                            content={block.f_deposits?.toLocaleString()}
+                            content={block.f_proposed ? `${block.f_deposits?.toLocaleString()}`: block.f_proposed !== undefined ? "---" : undefined}
                         />
                     </div>
                 </div>
@@ -275,7 +277,7 @@ const BlockComponet = () => {
                             letterColor={'#F18D30'}
                             title='Block hash'
                             content={block.f_el_block_hash && getShortAddress(block.f_el_block_hash)}
-                            icon='etherscan-icon'
+                            icon={block.f_el_block_hash !== zeroAddress ? `etherscan-icon` : undefined}
                             iconSize={35}
                             link={`https://etherscan.io/block/${block.f_el_block_hash}`}
                         />
@@ -289,19 +291,19 @@ const BlockComponet = () => {
                             backgroundColor={'#FFCEA1'}
                             letterColor={'#F18D30'}
                             title='Gas used'
-                            content={block.f_el_gas_used?.toLocaleString()}
+                            content={block.f_proposed ? `${block.f_el_gas_used?.toLocaleString()}`: "---"}
                         />
                         <Card
                             backgroundColor={'#FFCEA1'}
                             letterColor={'#F18D30'}
                             title='Gas limit'
-                            content={block.f_el_gas_limit?.toLocaleString()}
+                            content={block.f_proposed ? `${block.f_el_gas_limit?.toLocaleString()}`: "---"}
                         />
                         <Card
                             backgroundColor={'#FFCEA1'}
                             letterColor={'#F18D30'}
                             title='Transaction'
-                            content={block.f_el_transactions?.toLocaleString()}
+                            content={block.f_proposed ? `${block.f_el_transactions?.toLocaleString()}`: "---"}
                         />
                     </div>
                 </div>
