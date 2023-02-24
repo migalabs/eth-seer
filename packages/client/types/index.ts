@@ -15,22 +15,22 @@ export type Epoch = {
 
 export type Block = {
     f_slot: number;
-    f_pool_name: string;
-    f_proposed: boolean;
+    f_pool_name?: string;
+    f_proposed?: boolean;
     f_epoch: number;
-    f_proposer_index: number;
-    f_graffiti: string;
-    f_att_slashings: number;
-    f_attestations: number;
-    f_deposits: number;
-    f_el_base_fee_per_gas: number;
-    f_el_block_hash: string;
-    f_el_fee_recp: string;
-    f_el_gas_limit: number;
-    f_el_gas_used: number;
-    f_el_transactions: number;
-    f_proposer_slashings: number;
-    f_sync_bits: number;
+    f_proposer_index?: number;
+    f_graffiti?: string;
+    f_att_slashings?: number;
+    f_attestations?: number;
+    f_deposits?: number;
+    f_el_base_fee_per_gas?: number;
+    f_el_block_hash?: string;
+    f_el_fee_recp?: string;
+    f_el_gas_limit?: number;
+    f_el_gas_used?: number;
+    f_el_transactions?: number;
+    f_proposer_slashings?: number;
+    f_sync_bits?: number;
     f_timestamp: number;
-    f_voluntary_exits: number;
+    f_voluntary_exits?: number;
 };
