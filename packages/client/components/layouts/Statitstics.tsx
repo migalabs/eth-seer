@@ -529,6 +529,7 @@ const Statitstics = () => {
                 blocks &&
                 blocks.epochs &&
                 getCalculatingEpochsMobile(epochs[0].f_slot, epochs[0].f_epoch, blocks.epochs)}
+
             {epochs.map((epoch: Epoch, idx: number) => (
                 <Card
                     key={epoch.f_epoch}
@@ -683,42 +684,6 @@ const Statitstics = () => {
                                 </>
                             }
                         />
-                    </div>
-
-                    <div className='flex  flex-col w-full gap-x-4'>
-                        <div className='flex gap-x-1 justify-center mb-1'>
-                            <p className='text-xs mt-1'>Rewards</p>
-                            <TooltipContainer>
-                                <Image
-                                    src='/static/images/information.svg'
-                                    alt='Rewards information'
-                                    width={24}
-                                    height={24}
-                                />
-                                <TooltipContentContainerHeaders>
-                                    <span>Achieved Average Reward</span>
-                                    <span>vs</span>
-                                    <span>Expected Average Reward</span>
-                                </TooltipContentContainerHeaders>
-                            </TooltipContainer>
-                        </div>
-                        <div className='flex-1'>
-                            <ProgressSmoothBar
-                                title=''
-                                bg='#D80068'
-                                color='#FFBDD9'
-                                percent={Number(epoch.reward_average) / Number(epoch.max_reward_average)}
-                                tooltipColor='pink'
-                                tooltipContent={
-                                    <>
-                                        <span>Reward: {Number(epoch.reward_average)?.toLocaleString()} GWEI</span>
-                                        <span>
-                                            Max. Reward: {Number(epoch.max_reward_average)?.toLocaleString()} GWEI
-                                        </span>
-                                    </>
-                                }
-                            />
-                        </div>
                     </div>
                 </Card>
             ))}
