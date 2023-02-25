@@ -145,7 +145,13 @@ const Slot = () => {
                         if (Number(id) === slotRef.current) {
                             getBlock();
                         }
-                    }, timeDifference + 4000);
+                    }, timeDifference + 2000);
+                } else {
+                    setTimeout(() => {
+                        if (Number(id) === slotRef.current) {
+                            getBlock();
+                        }
+                    }, 1000);
                 }
             } else {
                 setExistsBlock(true);
