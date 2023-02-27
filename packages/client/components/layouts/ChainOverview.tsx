@@ -4,10 +4,14 @@ import EpochOverview from './EpochOverview';
 
 // Contexts
 import BlocksContext from '../../contexts/blocks/BlocksContext';
+import { useRouter } from 'next/router';
 
 const ChainOverview = () => {
     // Blocks Context
     const { blocks, startEventSource, closeEventSource, getBlocks } = React.useContext(BlocksContext) || {};
+
+    // Router
+    const router = useRouter();
 
     // States
     const [lastEpoch, setLastEpoch] = useState(0);
@@ -29,6 +33,12 @@ const ChainOverview = () => {
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [blocks]);
+
+    useEffect(() => {
+        getBlocks?.(0);
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [router]);
 
     useEffect(() => {
         if (blocks && blocks.epochs) {
