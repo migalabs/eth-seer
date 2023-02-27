@@ -41,7 +41,7 @@ export const getEpochsStatistics = async (req: Request, res: Response) => {
             `),
             pgClient.query(`
                 SELECT (f_proposer_slot/32) AS epoch, 
-                ARRAY_AGG(CASE WHEN f_proposed = true THEN 1 ELSE 0 END) AS proposed_blocks
+                ARRAY_AGG(CASE WHEN f_proposed = true THEN 1 ELSE 0 END ORDER BY f_proposer_slot ASC) AS proposed_blocks
                 FROM t_proposer_duties
                 GROUP BY epoch
                 ORDER BY epoch DESC
@@ -151,14 +151,15 @@ export const getBlock = async (req: Request, res: Response) => {
         const [ block ] = 
             await Promise.all([
                 pgClient.query(`
-                    SELECT *
+                    SELECT t_block_metrics.*, t_eth2_pubkeys.f_pool_name
                     FROM t_block_metrics
+                    LEFT OUTER JOIN t_eth2_pubkeys ON t_block_metrics.f_proposer_index = t_eth2_pubkeys.f_val_idx
                     WHERE f_slot = '${id}'
                 `)
             ]);
 
         res.json({
-            row: block.rows[0],
+            block: block.rows[0],
         });
 
     } catch (error) {

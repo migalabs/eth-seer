@@ -2,6 +2,26 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import Head from 'next/head';
+import styled from '@emotion/styled';
+
+// Styled
+const Button = styled.div`
+    background-color: #90d1f4;
+    box-shadow: inset -6px -6px 10px rgba(20, 21, 62, 0.6), inset 6px 6px 10px rgba(20, 21, 62, 0.6);
+
+    p {
+        color: white;
+    }
+
+    &:hover {
+        background-color: white;
+        box-shadow: inset -6px -6px 10px rgba(20, 21, 62, 0.6), inset 6px 6px 10px rgba(20, 21, 62, 0.6);
+
+        p {
+            color: #90d1f4;
+        }
+    }
+`;
 
 const NotFoundPage = () => {
     return (
@@ -22,20 +42,14 @@ const NotFoundPage = () => {
                 <p className='2xl:text-4xl md:text-3xl sm:text-2xl text-xl'>Page not found</p>
 
                 <p className='2xl:text-lg md:text-base sm:text-sm text-xs'>
-                    Sorry. We couldn't find the <br /> page you were looking for.
+                    Sorry. We couldn&apos;t find the <br /> page you were looking for.
                 </p>
 
                 <div className='relative mt-10'>
                     <Link href='/' passHref>
-                        <div
-                            className='bg-[#90D1F4] w-fit rounded-[50px] py-4 px-5 md:py-4 md:px-5 mx-auto'
-                            style={{
-                                boxShadow:
-                                    'inset -6px -6px 10px rgba(20, 21, 62, 0.6), inset 6px 6px 10px rgba(20, 21, 62, 0.6)',
-                            }}
-                        >
+                        <Button className='w-fit rounded-[50px] py-4 px-5 md:py-4 md:px-5 mx-auto'>
                             <p className='uppercase 2xl:text-base xl:text-xl md:text-base text-sm'>Go back home</p>
-                        </div>
+                        </Button>
                     </Link>
 
                     <Image
@@ -43,7 +57,7 @@ const NotFoundPage = () => {
                         alt='Ghost'
                         width={200}
                         height={200}
-                        className='absolute top-[60px] right-[0px] sm:top-[-30px] sm:right-[-180px]'
+                        className='absolute top-[60px] right-[0px] sm:top-[-30px] sm:right-[-180px] ghost'
                     />
                 </div>
             </div>

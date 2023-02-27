@@ -87,20 +87,20 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
                         <div key={block.f_slot} className='group'>
                             <Link
                                 href={{
-                                    pathname: '/block/[id]',
+                                    pathname: '/slot/[id]',
                                     query: {
                                         id: block.f_slot,
                                     },
                                 }}
                                 passHref
-                                as={`/block/${block.f_slot}`}
+                                as={`/slot/${block.f_slot}`}
                             >
                                 <TooltipContainer>
                                     {getBlockImage(block)}
                                     <TooltipContentContainerBlocks>
-                                        <span>Entity: {getEntityName(block.f_pool_name)}</span>
-                                        <span>Proposer: {Number(block.f_proposer_index).toLocaleString()}</span>
-                                        <span>Slot: {Number(block.f_slot).toLocaleString()}</span>
+                                        <span>Entity: {getEntityName(block.f_pool_name as string)}</span>
+                                        <span>Proposer: {Number(block.f_proposer_index)?.toLocaleString()}</span>
+                                        <span>Slot: {Number(block.f_slot)?.toLocaleString()}</span>
                                     </TooltipContentContainerBlocks>
                                 </TooltipContainer>
                             </Link>
@@ -109,12 +109,12 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
 
                     {blocks.length < 32 && (
                         <>
-                            <Image src={`/static/gifs/block_mining2.gif`} alt='Mining block' width={50} height={50} />
+                            <Image src='/static/gifs/block_mining5.gif' alt='Mining block' width={50} height={50} />
 
                             {Array.from(Array(32 - blocks.length - 1)).map((_, idx) => (
                                 <Image
                                     key={idx}
-                                    src={`/static/images/blocks/block_awaiting.svg`}
+                                    src='/static/images/blocks/block_awaiting.svg'
                                     alt='Awaiting block'
                                     width={50}
                                     height={50}
