@@ -96,8 +96,8 @@ export const TooltipContentContainerBlocks = styled(TooltipContentContainer)`
 `;
 
 type PropsHeader = {
-    rewards?: boolean;
-    time?: boolean;
+    rightSide?: boolean;
+    leftSide?: boolean;
     epoch?: boolean;
 };
 
@@ -106,10 +106,10 @@ export const TooltipContentContainerHeaders = styled(TooltipContentContainer)<Pr
     width: 220px;
     left: calc(50% - 110px);
     padding-top: 38px;
-    background-image: ${({ rewards, time }) =>
-        rewards
+    background-image: ${({ rightSide, leftSide }) =>
+        rightSide
             ? "url('/static/images/tooltips/tooltip_white_left.svg')"
-            : time
+            : leftSide
             ? "url('/static/images/tooltips/tooltip_white_right.svg')"
             : "url('/static/images/tooltips/tooltip_white.svg')"};
 
@@ -123,8 +123,8 @@ export const TooltipContentContainerHeaders = styled(TooltipContentContainer)<Pr
     }
 
     @media (min-width: 768px) {
-        left: ${({ rewards, time }) =>
-            rewards ? 'calc(50% - 240px)' : time ? 'calc(50% - 13.5px)' : 'calc(50% - 124px)'};
+        left: ${({ rightSide, leftSide }) =>
+            rightSide ? 'calc(50% - 240px)' : leftSide ? 'calc(50% - 13.5px)' : 'calc(50% - 124px)'};
     }
 
     @media (min-width: 1280px) {
