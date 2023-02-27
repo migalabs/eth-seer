@@ -114,7 +114,7 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
                             {Array.from(Array(32 - blocks.length - 1)).map((_, idx) => (
                                 <Image
                                     key={idx}
-                                    src='/static/images/blocks/block_awaiting.svg'
+                                    src='/static/gifs/block_awaiting.gif'
                                     alt='Awaiting block'
                                     width={50}
                                     height={50}
