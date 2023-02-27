@@ -53,7 +53,7 @@ const Problems = () => {
             />
 
             <p className='uppercase text-white text-center text-lg md:text-2xl'>
-                Sorry, we&apos;re experiencing some problems with the server connection. Please try again in 5 minuts. Thank
+                Sorry, we&apos;re experiencing some problems with the server connection. Please try again in 5 minutes. Thank
                 you.
             </p>
         </div>

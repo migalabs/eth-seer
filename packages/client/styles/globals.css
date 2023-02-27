@@ -58,4 +58,14 @@
             background-color: #2d2d2d;
         }
     }
+
+    .ghost {
+        animation: ghostAnimation 3s infinite ease-in-out;
+    }
+
+    @keyframes ghostAnimation {
+        50% {
+            transform: translate(0, 20px);
+        }
+    }
 }
