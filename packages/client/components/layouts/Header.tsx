@@ -14,7 +14,7 @@ const Header = ({ isMain }: Props) => {
                     className={
                         isMain
                             ? 'flex flex-row justify-start items-center p-2'
-                            : 'flex flex-row justify-start items-center p-2 bg-[#D9D9D94D] rounded-2xl  border-2 border-white mt-2 ml-2'
+                            : 'flex flex-row justify-start items-center p-2 bg-[#D9D9D94D] rounded-2xl  border-2 border-white mt-2 ml-2 hover:bg-[#202021e3]'
                     }
                 >
                     <Image src='/static/images/ethseer_logo.svg' alt='Logo' width={50} height={50} />
