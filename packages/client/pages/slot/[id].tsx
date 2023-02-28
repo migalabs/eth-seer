@@ -268,7 +268,7 @@ const Slot = () => {
                                 backgroundColor='#A7EED4'
                                 letterColor='#29C68E'
                                 title='Graffiti'
-                                content={block.f_graffiti}
+                                content={block.f_proposed ? block.f_graffiti : '---'}
                             />
                         )}
 
