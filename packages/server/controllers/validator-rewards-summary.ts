@@ -146,17 +146,26 @@ export const getBlock = async (req: Request, res: Response) => {
 
     try {
 
-        const {id } = req.params;
+        const { id } = req.params;
 
-        const [ block ] = 
+        const [ block, proposerDuties ] = 
             await Promise.all([
                 pgClient.query(`
                     SELECT t_block_metrics.*, t_eth2_pubkeys.f_pool_name
                     FROM t_block_metrics
                     LEFT OUTER JOIN t_eth2_pubkeys ON t_block_metrics.f_proposer_index = t_eth2_pubkeys.f_val_idx
                     WHERE f_slot = '${id}'
+                `),
+                pgClient.query(`
+                    SELECT f_proposed
+                    FROM t_proposer_duties
+                    WHERE f_proposer_slot = '${id}'
                 `)
             ]);
+
+        if (proposerDuties.rows.length > 0) {
+            block.rows[0].f_proposed = proposerDuties.rows[0].f_proposed;
+        }
 
         res.json({
             block: block.rows[0],
