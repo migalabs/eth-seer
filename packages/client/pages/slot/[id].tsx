@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -104,19 +104,35 @@ const Slot = () => {
 
     // Refs
     const slotRef = useRef(0);
+    const existsBlockRef = useRef(true);
 
     // States
     const [block, setBlock] = useState<Block | null>(null);
     const [existsBlock, setExistsBlock] = useState<boolean>(true);
+    const [countdownText, setCountdownText] = useState<string>('');
 
     // UseEffect
     useEffect(() => {
+        if (id) {
+            slotRef.current = Number(id);
+        }
+
         if ((id && !block) || (block && block.f_slot !== Number(id))) {
             getBlock();
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id]);
+
+    const shuffle = useCallback(() => {
+        const text: string = getCountdownText();
+        setCountdownText(text);
+    }, []);
+
+    useEffect(() => {
+        const intervalID = setInterval(shuffle, 1000);
+        return () => clearInterval(intervalID);
+    }, [shuffle, slotRef.current]);
 
     // Get blocks
     const getBlock = async () => {
@@ -135,8 +151,8 @@ const Slot = () => {
                     f_timestamp: expectedTimestamp,
                 });
 
-                slotRef.current = Number(id);
                 setExistsBlock(false);
+                existsBlockRef.current = false;
 
                 const timeDifference = new Date(expectedTimestamp * 1000).getTime() - new Date().getTime();
 
@@ -155,6 +171,7 @@ const Slot = () => {
                 }
             } else {
                 setExistsBlock(true);
+                existsBlockRef.current = true;
             }
         } catch (error) {
             console.log(error);
@@ -186,6 +203,55 @@ const Slot = () => {
                 return <Image src='/static/gifs/block_others.gif' alt='Logo' width={400} height={400} priority />;
             }
         }
+    };
+
+    const getTimeBlock = () => {
+        let text;
+
+        if (block) {
+            if (block.f_timestamp) {
+                text = new Date(block.f_timestamp * 1000).toLocaleString();
+            } else {
+                text = new Date(firstBlock + Number(id) * 12000).toLocaleString();
+            }
+        }
+
+        return text + countdownText;
+    };
+
+    const getCountdownText = () => {
+        let text = '';
+
+        if (!existsBlockRef.current) {
+            const expectedTimestamp = (firstBlock + slotRef.current * 12000) / 1000;
+            const timeDifference = new Date(expectedTimestamp * 1000).getTime() - new Date().getTime();
+
+            const minutesMiliseconds = 1000 * 60;
+            const hoursMiliseconds = minutesMiliseconds * 60;
+            const daysMiliseconds = hoursMiliseconds * 24;
+            const yearsMiliseconds = daysMiliseconds * 365;
+
+            if (timeDifference > yearsMiliseconds) {
+                const years = Math.floor(timeDifference / yearsMiliseconds);
+                text = ` (in ${years} ${years > 1 ? 'years' : 'year'})`;
+            } else if (timeDifference > daysMiliseconds) {
+                const days = Math.floor(timeDifference / daysMiliseconds);
+                text = ` (in ${days} ${days > 1 ? 'days' : 'day'})`;
+            } else if (timeDifference > hoursMiliseconds) {
+                const hours = Math.floor(timeDifference / hoursMiliseconds);
+                text = ` (in ${hours} ${hours > 1 ? 'hours' : 'hour'})`;
+            } else if (timeDifference > minutesMiliseconds) {
+                const minutes = Math.floor(timeDifference / minutesMiliseconds);
+                text = ` (in ${minutes} ${minutes > 1 ? 'minutes' : 'minute'})`;
+            } else if (timeDifference > 1000) {
+                const seconds = Math.floor(timeDifference / 1000);
+                text = ` (in ${seconds} ${seconds > 1 ? 'seconds' : 'second'})`;
+            } else {
+                text = ' (updating...)';
+            }
+        }
+
+        return text;
     };
 
     const getInformationView = (block: Block) => {
@@ -244,11 +310,7 @@ const Slot = () => {
                             backgroundColor='#A7EED4'
                             letterColor='#29C68E'
                             title='Date Time (Local)'
-                            content={
-                                block.f_proposed
-                                    ? new Date(block.f_timestamp * 1000).toLocaleString()
-                                    : new Date(firstBlock + Number(id) * 12000).toLocaleString()
-                            }
+                            content={getTimeBlock()}
                         />
 
                         {existsBlock && (
@@ -343,11 +405,15 @@ const Slot = () => {
                                 letterColor='#F18D30'
                                 title='Block hash'
                                 content={
-                                    block.f_el_block_hash !== zeroAddress
+                                    block.f_proposed && block.f_el_block_hash !== zeroAddress
                                         ? getShortAddress(block.f_el_block_hash)
                                         : '---'
                                 }
-                                icon={block.f_el_block_hash !== zeroAddress ? 'etherscan-icon' : undefined}
+                                icon={
+                                    block.f_proposed && block.f_el_block_hash !== zeroAddress
+                                        ? 'etherscan-icon'
+                                        : undefined
+                                }
                                 iconSize={35}
                                 link={`https://etherscan.io/block/${block.f_el_block_hash}`}
                             />
@@ -357,7 +423,7 @@ const Slot = () => {
                                 letterColor='#F18D30'
                                 title='Fee Recipient'
                                 content={
-                                    block.f_el_fee_recp !== zeroAddressShort
+                                    block.f_proposed && block.f_el_fee_recp !== zeroAddressShort
                                         ? getShortAddress(block.f_el_fee_recp)
                                         : '---'
                                 }
