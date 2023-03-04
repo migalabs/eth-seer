@@ -11,6 +11,7 @@ export type Epoch = {
     reward_average: string;
     max_reward_average: string;
     proposed_blocks: Array<number>;
+    f_slots?: Array<Slot>;
 };
 
 export type Block = {
@@ -33,4 +34,10 @@ export type Block = {
     f_sync_bits?: number;
     f_timestamp: number;
     f_voluntary_exits?: number;
+};
+
+export type Slot = {
+    f_slot: number;
+    f_pool_name?: string;
+    f_proposer_index?: number;
 };
