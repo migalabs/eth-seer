@@ -18,16 +18,39 @@ export default function Document() {
                         --yellow3: #edbf4a;
                         --yellow4: #f0c83a;
                         --orange1: #ec903c;
+                        --orange2: #ffcea1;
+                        --orange3: #f18d30;
+                        --orange4: #ffb16866;
                         --blue1: #c6ecf8;
                         --blue2: #6cc4e0;
                         --blue3: #86d4ed;
+                        --blue4: #86d4ed99;
+                        --blue5: #4fc1e480;
+                        --blue6: #4089a080;
+                        --blue7: #0080a9;
+                        --blue8: #0080a94d;
+                        --green1: #a7eed466;
+                        --green2: #a7eed4;
+                        --green3: #29c68e;
+                        --green4: #89ebc8;
+                        --purple1: #bdc4ff99;
+                        --purple2: #886ed2;
+                        --purple3: #bdc4ff;
+                        --purple4: #886ed280;
 
                         --boxShadowYellow1: inset -7px -7px 8px var(--yellow3), inset 7px 7px 8px var(--yellow3);
                         --boxShadowOrange1: inset -7px -7px 8px var(--orange1), inset 7px 7px 8px var(--orange1);
-                        --boxShadowBlue1: inset -5px -5px 4px rgba(79, 193, 228, 0.5),
-                            inset 5px 5px 4px rgba(79, 193, 228, 0.5);
-                        --boxShadowBlue2: inset -5px -5px 4px rgba(64, 137, 160, 0.5),
-                            inset 5px 5px 4px rgba(64, 137, 160, 0.5);
+                        --boxShadowOrange2: inset -7px -7px 8px var(--orange2), inset 7px 7px 8px var(--orange2);
+                        --boxShadowOrange3: inset -4px -4px 4px var(--orange3), inset 4px 4px 4px var(--orange3);
+                        --boxShadowBlue1: inset -5px -5px 4px var(--blue5), inset 5px 5px 4px var(--blue5);
+                        --boxShadowBlue2: inset -5px -5px 4px var(--blue6), inset 5px 5px 4px var(--blue6);
+                        --boxShadowBlue3: inset -7px -7px 8px var(--blue3), inset 7px 7px 8px var(--blue3);
+                        --boxShadowBlue4: inset 4px 4px 4px var(--blue8), inset -4px -4px 4px var(--blue8);
+                        --boxShadowGreen1: inset -7px -7px 8px var(--green2), inset 7px 7px 8px var(--green2);
+                        --boxShadowGreen2: inset -7px -7px 8px var(--green3), inset 7px 7px 8px var(--green3);
+                        --boxShadowGreen3: inset 4px 4px 4px var(--green3), inset -4px -4px 4px var(--green3);
+                        --boxShadowPurple1: inset -7px -7px 8px var(--purple2), inset 7px 7px 8px var(--purple2);
+                        --boxShadowPurple2: inset -4px -4px 4px var(--purple4), inset 4px 4px 4px var(--purple4);
 
                         --background-image-light: url('/static/images/background-orange.svg');
                         --background-image-dark: url('/static/images/background-purple.svg');
