@@ -14,6 +14,23 @@ export default function Document() {
                         --brown4: #c57f18;
                         --brown5: #b38b02;
                         --yellow1: #fbc508;
+                        --yellow2: #fff0a1;
+                        --yellow3: #edbf4a;
+                        --yellow4: #f0c83a;
+                        --orange1: #ec903c;
+                        --blue1: #c6ecf8;
+                        --blue2: #6cc4e0;
+                        --blue3: #86d4ed;
+
+                        --boxShadowYellow1: inset -7px -7px 8px var(--yellow3), inset 7px 7px 8px var(--yellow3);
+                        --boxShadowOrange1: inset -7px -7px 8px var(--orange1), inset 7px 7px 8px var(--orange1);
+                        --boxShadowBlue1: inset -5px -5px 4px rgba(79, 193, 228, 0.5),
+                            inset 5px 5px 4px rgba(79, 193, 228, 0.5);
+                        --boxShadowBlue2: inset -5px -5px 4px rgba(64, 137, 160, 0.5),
+                            inset 5px 5px 4px rgba(64, 137, 160, 0.5);
+
+                        --background-image-light: url('/static/images/background-orange.svg');
+                        --background-image-dark: url('/static/images/background-purple.svg');
                     }
 
                     html {
@@ -27,7 +44,8 @@ export default function Document() {
                     }
 
                     body {
-                        background: url('/static/images/background-purple.svg') no-repeat;
+                        background-image: var(--background-image-light);
+                        background-repeat: no-repeat;
                         background-size: cover;
                         background-attachment: fixed;
                         font-size: 1.6rem;
@@ -57,6 +75,7 @@ export default function Document() {
                 />
                 <meta property='og:image' content='http://ethseer.com/static/images/ethseer_metadata.png' />
                 <meta httpEquiv='Content-Security-Policy' content='upgrade-insecure-requests' />
+                <link href='/static/css/theme-mode-switch.css' rel='stylesheet' />
             </Head>
 
             <body>
