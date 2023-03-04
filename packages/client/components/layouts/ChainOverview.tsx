@@ -3,15 +3,15 @@ import Image from 'next/image';
 import EpochOverview from './EpochOverview';
 
 // Contexts
+import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 import BlocksContext from '../../contexts/blocks/BlocksContext';
-import { useRouter } from 'next/router';
 
 const ChainOverview = () => {
+    // Theme Mode Context
+    const { themeMode } = React.useContext(ThemeModeContext) || {};
+
     // Blocks Context
     const { blocks, startEventSource, closeEventSource, getBlocks } = React.useContext(BlocksContext) || {};
-
-    // Router
-    const router = useRouter();
 
     // States
     const [lastEpoch, setLastEpoch] = useState(0);
@@ -38,7 +38,7 @@ const ChainOverview = () => {
         getBlocks?.(0);
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [router]);
+    }, []);
 
     useEffect(() => {
         if (blocks && blocks.epochs) {
@@ -90,7 +90,7 @@ const ChainOverview = () => {
         <div className='flex flex-row justify-center space-x-4 md:space-x-5 px-7'>
             <div className='flex items-center mt-8'>
                 <Image
-                    src='/static/images/arrow.svg'
+                    src={themeMode?.darkMode ? '/static/images/arrow.svg' : '/static/images/arrow-blue.svg'}
                     alt='Left arrow'
                     width={30}
                     height={30}
@@ -117,7 +117,7 @@ const ChainOverview = () => {
 
             <div className='flex items-center mt-8'>
                 <Image
-                    src='/static/images/arrow.svg'
+                    src={themeMode?.darkMode ? '/static/images/arrow.svg' : '/static/images/arrow-blue.svg'}
                     alt='Left arrow'
                     width={30}
                     height={30}
