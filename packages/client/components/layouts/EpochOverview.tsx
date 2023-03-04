@@ -1,9 +1,12 @@
 import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
+
+// Contexts
+import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
 // Components
 import { TooltipContainer, TooltipContentContainerBlocks } from '../ui/Tooltips';
-import Link from 'next/link';
 
 // Constants
 import { POOLS } from '../../constants';
@@ -18,6 +21,9 @@ type Props = {
 };
 
 const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
+    // Theme Mode Context
+    const { themeMode } = React.useContext(ThemeModeContext) || {};
+
     const getBlockImage = (block: Block) => {
         const missedExtension = block.f_proposed ? '' : '_missed';
         if (block.f_pool_name && POOLS.includes(block.f_pool_name.toUpperCase())) {
@@ -75,13 +81,19 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
         <div className='flex flex-col'>
             <h3 className='uppercase text-white text-center text-sm mb-2'>Epoch {epoch.toLocaleString()}</h3>
             <div
-                className={`flex items-center p-2 h-full border-[6px] ${
-                    lastEpoch ? 'border-[#F0C83A] rounded-3xl' : 'border-transparent'
-                }`}
+                className={`flex items-center p-2 h-full border-[6px] ${lastEpoch && 'rounded-3xl'}`}
+                style={{
+                    borderColor: lastEpoch
+                        ? `${themeMode?.darkMode ? 'var(--yellow4)' : 'var(--blue2)'}`
+                        : 'transparent',
+                }}
             >
                 <div
                     className='grid grid-cols-4 md:grid-cols-8 w-fit  md:max-h-full  mx-auto gap-2 rounded-2xl bg-[#FFF0A1] p-4'
-                    style={{ boxShadow: 'inset -7px -7px 8px #F0C83A, inset 7px 7px 8px #F0C83A' }}
+                    style={{
+                        backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
+                        boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
+                    }}
                 >
                     {blocks.map(block => (
                         <div key={block.f_slot} className='group'>
