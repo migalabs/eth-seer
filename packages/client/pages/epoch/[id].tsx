@@ -1,10 +1,8 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import Layout from '../../components/layouts/Layout';
-import ProgressSmoothBar from '../../components/ui/ProgressSmoothBar';
 import ProgressSmoothBarEpoch from '../../components/ui/ProgressSmoothBarEpoch';
 import { Epoch, Slot } from '../../types';
 
