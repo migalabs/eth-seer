@@ -1,9 +1,10 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Layout from '../../components/layouts/Layout';
 import ProgressSmoothBarEpoch from '../../components/ui/ProgressSmoothBarEpoch';
+import axiosClient from '../../config/axios';
 import { Epoch, Slot } from '../../types';
 
 // Styled
@@ -34,22 +35,25 @@ const Epoch = () => {
         query: { id },
     } = router;
 
+    const slotRef = useRef(0);
+
     const [epoch, setEpoch] = useState<Epoch | null>(null);
 
     // UseEffect
     useEffect(() => {
-        if (!epoch) {
+        if (id) {
+            slotRef.current = Number(id);
+        }
+
+        if ((id && !epoch) || (epoch && epoch.f_epoch !== Number(id))) {
             getEpoch();
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [id]);
 
-    const getEpoch = () => {
-        let proposed_blocks = [];
-        for (let index = 0; index < 32; index++) {
-            proposed_blocks.push(1);
-        }
+    const getEpoch = async () => {
+        const response = await axiosClient.get(`/api/validator-rewards-summary/epoch/${id}`);
 
         let f_slots = [];
         for (let index = 0; index < 32; index++) {
@@ -61,18 +65,9 @@ const Epoch = () => {
         }
 
         setEpoch({
-            f_epoch: 10,
-            f_slot: 20,
-            f_num_att_vals: 10,
-            f_num_vals: 10,
-            f_att_effective_balance_eth: 10,
-            f_total_effective_balance_eth: 10,
-            f_missing_source: 10,
-            f_missing_target: 10,
-            f_missing_head: 10,
+            ...response.data.epoch,
             reward_average: '1223',
             max_reward_average: '1223',
-            proposed_blocks,
             f_slots,
         });
     };
@@ -80,10 +75,10 @@ const Epoch = () => {
     const getSlots = (slots: Slot[]) => {
         return (
             <>
-                {slots.map(element => {
+                {slots.map((element, idx) => {
                     return (
                         <>
-                            <div className='flex flex-col w-[20%] '>
+                            <div className='flex flex-col w-[20%]'>
                                 <Image
                                     src='/static/images/blocks/block_binance.svg'
                                     alt='Awaiting block'
@@ -130,16 +125,16 @@ const Epoch = () => {
         );
     };
 
-    const getAttestation = (title: string, bg: string, color: string) => {
+    const getAttestation = (title: string, bg: string, color: string, value: number, attestations: number) => {
         return (
             <div className='flex flex-row gap-x-10 ml-5'>
                 <p>{title}</p>
                 <div className='w-60 text-center'>
-                    <ProgressSmoothBarEpoch bg={bg} color={color} percent={1 - 0.5} />
+                    <ProgressSmoothBarEpoch bg={bg} color={color} percent={1 - value / attestations} />
                 </div>
                 <div>
-                    <CardContent content={`Missing ${title}: 12023`} bg={bg} color={color} />
-                    <CardContent content='Attestations: 122134' bg={bg} color={color} />
+                    <CardContent content={`Missing ${title}: ${value}`} bg={bg} color={color} />
+                    <CardContent content={`Attestations: ${attestations}`} bg={bg} color={color} />
                 </div>
             </div>
         );
@@ -151,7 +146,7 @@ const Epoch = () => {
                 <Card className='uppercase text-xl items-center text-[9px] text-black bg-[#FFF0A1] rounded-[22px] px-2 xl:px-8 py-3'>
                     <div className='flex flex-row gap-x-10'>
                         <p>epoch number</p>
-                        <p>12343324</p>
+                        <p>{epoch?.f_epoch}</p>
                     </div>
                     <div className='flex flex-row gap-x-10'>
                         <p>date time</p>
@@ -160,28 +155,65 @@ const Epoch = () => {
                     <div className='flex flex-row gap-x-10'>
                         <p>blocks</p>
                         <div>
-                            <CardContent content='Proposed: 30' bg='#00720B' color='#83E18C' />
-                            <CardContent content='Missed: 2' bg='#980E0E' color='#FF9090' />
+                            <CardContent content={`Proposed: ${epoch?.proposed_blocks}`} bg='#00720B' color='#83E18C' />
+                            <CardContent
+                                content={`Missed: ${32 - Number(epoch?.proposed_blocks)}`}
+                                bg='#980E0E'
+                                color='#FF9090'
+                            />
                         </div>
                     </div>
                     <div className='flex flex-col gap-y-5'>
                         <p>attestation accuracy</p>
-                        {getAttestation('target', '#E86506', '#FFC163')}
-                        {getAttestation('source', '#14946e', '#BDFFEB')}
-                        {getAttestation('head', '#532BC5', '#E6DDFF')}
+                        {getAttestation(
+                            'target',
+                            '#E86506',
+                            '#FFC163',
+                            Number(epoch?.f_missing_target),
+                            Number(epoch?.f_num_att_vals)
+                        )}
+                        {getAttestation(
+                            'source',
+                            '#14946e',
+                            '#BDFFEB',
+                            Number(epoch?.f_missing_source),
+                            Number(epoch?.f_num_att_vals)
+                        )}
+                        {getAttestation(
+                            'head',
+                            '#532BC5',
+                            '#E6DDFF',
+                            Number(epoch?.f_missing_head),
+                            Number(epoch?.f_num_att_vals)
+                        )}
                     </div>
                     <div className='flex flex-col'>
                         <p>voting participation</p>
                         <div className='flex flex-row gap-x-10 ml-5'>
                             <div className='w-60 text-center'>
-                                <ProgressSmoothBarEpoch bg='#0016D8' color='#BDC4FF' percent={1} />
+                                <ProgressSmoothBarEpoch
+                                    bg='#0016D8'
+                                    color='#BDC4FF'
+                                    percent={
+                                        Number(epoch?.f_att_effective_balance_eth) /
+                                        Number(epoch?.f_total_effective_balance_eth)
+                                    }
+                                />
                             </div>
                             <div className='flex flex-col'>
                                 <div className='mb-5'>
-                                    <CardContent content='Attesting Balance: 30' bg='#0016D8' color='#BDC4FF' />
+                                    <CardContent
+                                        content={`Attesting Balance: ${epoch?.f_att_effective_balance_eth?.toLocaleString()} ETH`}
+                                        bg='#0016D8'
+                                        color='#BDC4FF'
+                                    />
                                 </div>
                                 <div>
-                                    <CardContent content='Total Active Balance: 30' bg='#0016D8' color='#BDC4FF' />
+                                    <CardContent
+                                        content={`Total Active Balance: ${epoch?.f_total_effective_balance_eth?.toLocaleString()} ETH`}
+                                        bg='#0016D8'
+                                        color='#BDC4FF'
+                                    />
                                 </div>
                             </div>
                         </div>
