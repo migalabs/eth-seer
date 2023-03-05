@@ -179,6 +179,42 @@ export const getBlock = async (req: Request, res: Response) => {
     }
 };
 
+export const getEpoch = async (req: Request, res: Response) => {
+
+    try {
+
+        const { id } = req.params;
+
+        const [ epochStats, blocksProposed ] = 
+            await Promise.all([
+                pgClient.query(`
+                    SELECT f_epoch, f_slot, f_num_att_vals, f_num_vals, 
+                    f_att_effective_balance_eth, f_total_effective_balance_eth,
+                    f_missing_source, f_missing_target, f_missing_head
+                    FROM t_epoch_metrics_summary
+                    WHERE f_epoch = '${id}'
+                `),
+                pgClient.query(`
+                    SELECT COUNT(*) AS proposed_blocks
+                    FROM t_proposer_duties
+                    WHERE f_proposer_slot/32 = '${id}' AND f_proposed = true
+                `)
+            ]);
+
+            const epoch = {...epochStats.rows[0],...blocksProposed.rows[0]}
+
+        res.json({
+            epoch
+        });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            msg: 'An error occurred on the server'
+        });
+    }
+};
+
 export const listenBlockNotification = async (req: Request, res: Response) => {
 
     try {
