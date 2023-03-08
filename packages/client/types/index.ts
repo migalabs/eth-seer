@@ -37,7 +37,8 @@ export type Block = {
 };
 
 export type Slot = {
-    f_slot: number;
-    f_pool_name?: string;
-    f_proposer_index?: number;
+    f_proposer_slot: number;
+    f_pool_name: string;
+    f_val_idx: number;
+    f_proposed: boolean;
 };
