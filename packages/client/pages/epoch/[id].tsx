@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 import Layout from '../../components/layouts/Layout';
@@ -276,23 +277,26 @@ const Epoch = () => {
     return (
         <Layout isMain={false}>
             <div className='flex gap-x-3 justify-center items-center mt-2 mb-5'>
-                <Image
-                    src='/static/images/arrow-purple.svg'
-                    alt='Left arrow'
-                    width={15}
-                    height={15}
-                    className='mb-1 cursor-pointer'
-                />
+                <Link href={`/epoch/${id && Number(id) - 1}`} passHref>
+                    <Image
+                        src='/static/images/arrow-purple.svg'
+                        alt='Left arrow'
+                        width={15}
+                        height={15}
+                        className='mb-1 cursor-pointer'
+                    />
+                </Link>
 
                 <h1 className='text-white text-center text-xl md:text-3xl'>Epoch {Number(id)?.toLocaleString()}</h1>
-
-                <Image
-                    src='/static/images/arrow-purple.svg'
-                    alt='Left arrow'
-                    width={15}
-                    height={15}
-                    className='rotate-180 mb-1 cursor-pointer'
-                />
+                <Link href={`/epoch/${id && Number(id) + 1}`} passHref>
+                    <Image
+                        src='/static/images/arrow-purple.svg'
+                        alt='Left arrow'
+                        width={15}
+                        height={15}
+                        className='rotate-180 mb-1 cursor-pointer'
+                    />
+                </Link>
             </div>
             <div className='text-white'>{getDesktopView()}</div>
         </Layout>
