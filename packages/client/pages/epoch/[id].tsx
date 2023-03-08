@@ -5,7 +5,11 @@ import { useEffect, useRef, useState } from 'react';
 import Layout from '../../components/layouts/Layout';
 import ProgressSmoothBarEpoch from '../../components/ui/ProgressSmoothBarEpoch';
 import axiosClient from '../../config/axios';
+import { POOLS } from '../../constants';
 import { Epoch, Slot } from '../../types';
+
+// Constants
+const firstBlock: number = 1606824023000;
 
 // Styled
 const Card = styled.div`
@@ -68,8 +72,48 @@ const Epoch = () => {
             ...response.data.epoch,
             reward_average: '1223',
             max_reward_average: '1223',
-            f_slots,
         });
+    };
+
+    const getBlockImage = (slot: Slot) => {
+        const missedExtension = slot.f_proposed ? '' : '_missed';
+        if (slot.f_pool_name && POOLS.includes(slot.f_pool_name.toUpperCase())) {
+            return (
+                <Image
+                    src={`/static/images/blocks/block_${slot.f_pool_name.toLowerCase()}${missedExtension}.svg`}
+                    alt='Logo'
+                    width={50}
+                    height={50}
+                />
+            );
+        } else if (slot.f_pool_name && slot.f_pool_name.includes('lido')) {
+            return (
+                <Image
+                    src={`/static/images/blocks/block_lido${missedExtension}.svg`}
+                    alt='Logo'
+                    width={50}
+                    height={50}
+                />
+            );
+        } else if (slot.f_pool_name && slot.f_pool_name.includes('whale')) {
+            return (
+                <Image
+                    src={`/static/images/blocks/block_whale${missedExtension}.svg`}
+                    alt='Logo'
+                    width={50}
+                    height={50}
+                />
+            );
+        } else {
+            return (
+                <Image
+                    src={`/static/images/blocks/block_others${missedExtension}.svg`}
+                    alt='Logo'
+                    width={50}
+                    height={50}
+                />
+            );
+        }
     };
 
     const getSlots = (slots: Slot[]) => {
@@ -78,18 +122,15 @@ const Epoch = () => {
                 {slots.map((element, idx) => {
                     return (
                         <>
-                            <div className='flex flex-col w-[20%]'>
-                                <Image
-                                    src='/static/images/blocks/block_binance.svg'
-                                    alt='Awaiting block'
-                                    width={50}
-                                    height={50}
-                                />
-                            </div>
-                            <p className='w-[20%] uppercase'>{element.f_pool_name}</p>
-                            <p className='w-[20%] uppercase'>{element.f_proposer_index}</p>
-                            <p className='w-[20%] uppercase'>{element.f_slot}</p>
-                            <p className='w-[20%]'>{new Date(12123324 + 213213 * 32 * 12000).toLocaleDateString()}</p>
+                            <div className='flex flex-col w-[20%]'>{getBlockImage(element)}</div>
+                            <p className='w-[20%] uppercase'>
+                                {element.f_pool_name !== null ? element.f_pool_name : 'others'}
+                            </p>
+                            <p className='w-[20%] uppercase'>{element.f_val_idx}</p>
+                            <p className='w-[20%] uppercase'>{element.f_proposer_slot}</p>
+                            <p className='w-[20%]'>
+                                {new Date(firstBlock + Number(element.f_proposer_slot) * 12000).toLocaleString()}
+                            </p>
                         </>
                     );
                 })}
@@ -150,7 +191,7 @@ const Epoch = () => {
                     </div>
                     <div className='flex flex-row gap-x-10'>
                         <p>date time</p>
-                        <p>{new Date(12123324 + 213213 * 32 * 12000).toLocaleDateString()}</p>
+                        <p>{new Date(firstBlock + Number(epoch?.f_slot) * 12000).toLocaleString()}</p>
                     </div>
                     <div className='flex flex-row gap-x-10'>
                         <p>blocks</p>
