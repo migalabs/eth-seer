@@ -60,19 +60,8 @@ const Epoch = () => {
     const getEpoch = async () => {
         const response = await axiosClient.get(`/api/validator-rewards-summary/epoch/${id}`);
 
-        let f_slots = [];
-        for (let index = 0; index < 32; index++) {
-            f_slots.push({
-                f_slot: 13124,
-                f_pool_name: 'binance',
-                f_proposer_index: 12133,
-            });
-        }
-
         setEpoch({
-            ...response.data.epoch,
-            reward_average: '1223',
-            max_reward_average: '1223',
+            ...response.data.epoch
         });
     };
 
@@ -268,8 +257,8 @@ const Epoch = () => {
     const getDesktopView = () => {
         return (
             <div>
-                <div>{epoch && getContentEpochStats()}</div>
-                <div>{epoch && getContentSlots()}</div>
+                <div>{epoch && epoch?.f_slots?.length !== 0 && getContentEpochStats()}</div>
+                <div>{epoch && epoch?.f_slots?.length !== 0 && getContentSlots()}</div>
             </div>
         );
     };
