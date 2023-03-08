@@ -267,8 +267,8 @@ const Epoch = () => {
     const getDesktopView = () => {
         return (
             <div>
-                <div>{getContentEpochStats()}</div>
-                <div>{getContentSlots()}</div>
+                <div>{epoch && getContentEpochStats()}</div>
+                <div>{epoch && getContentSlots()}</div>
             </div>
         );
     };
