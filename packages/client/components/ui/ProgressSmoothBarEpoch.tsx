@@ -11,9 +11,12 @@ const ProgressSmoothBarEpoch = ({ percent, color, bg }: Props) => {
 
     return (
         <div>
-            <div className={`rounded-xl p-1 w-100 h-6`} style={{ backgroundColor: bg }}>
-                <div className={`rounded-lg h-4`} style={{ backgroundColor: color, width: `${width}%` }}>
-                    <p className='font-bold' style={{ color: bg, cursor: 'default' }}>
+            <div className='rounded-xl p-1 w-100 h-6' style={{ backgroundColor: bg }}>
+                <div className='relative rounded-lg h-4' style={{ backgroundColor: color, width: `${width}%` }}>
+                    <p
+                        className='absolute -top-1 left-[calc(50%-26px)] font-bold'
+                        style={{ color: bg, cursor: 'default' }}
+                    >
                         {Number(Number(percent * 100).toFixed(2)).toLocaleString()}%
                     </p>
                 </div>

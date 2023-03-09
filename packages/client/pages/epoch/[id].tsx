@@ -25,7 +25,7 @@ type Props = {
 const CardContent = ({ content, bg, color }: Props) => {
     return (
         <span
-            className={`mr-5 uppercase  border-2 text-[]  text-[${color}] px-5 py-1.5 rounded-2xl font-bold`}
+            className='uppercase border-2 px-5 py-1.5 rounded-2xl font-bold'
             style={{ background: color, borderColor: bg, color: bg }}
         >
             {content}
@@ -33,7 +33,7 @@ const CardContent = ({ content, bg, color }: Props) => {
     );
 };
 
-const Epoch = () => {
+const EpochComponent = () => {
     // Next router
     const router = useRouter();
     const {
@@ -61,7 +61,7 @@ const Epoch = () => {
         const response = await axiosClient.get(`/api/validator-rewards-summary/epoch/${id}`);
 
         setEpoch({
-            ...response.data.epoch
+            ...response.data.epoch,
         });
     };
 
@@ -72,8 +72,8 @@ const Epoch = () => {
                 <Image
                     src={`/static/images/blocks/block_${slot.f_pool_name.toLowerCase()}${missedExtension}.svg`}
                     alt='Logo'
-                    width={50}
-                    height={50}
+                    width={60}
+                    height={60}
                 />
             );
         } else if (slot.f_pool_name && slot.f_pool_name.includes('lido')) {
@@ -81,8 +81,8 @@ const Epoch = () => {
                 <Image
                     src={`/static/images/blocks/block_lido${missedExtension}.svg`}
                     alt='Logo'
-                    width={50}
-                    height={50}
+                    width={60}
+                    height={60}
                 />
             );
         } else if (slot.f_pool_name && slot.f_pool_name.includes('whale')) {
@@ -90,8 +90,8 @@ const Epoch = () => {
                 <Image
                     src={`/static/images/blocks/block_whale${missedExtension}.svg`}
                     alt='Logo'
-                    width={50}
-                    height={50}
+                    width={60}
+                    height={60}
                 />
             );
         } else {
@@ -99,39 +99,17 @@ const Epoch = () => {
                 <Image
                     src={`/static/images/blocks/block_others${missedExtension}.svg`}
                     alt='Logo'
-                    width={50}
-                    height={50}
+                    width={60}
+                    height={60}
                 />
             );
         }
     };
 
-    const getSlots = (slots: Slot[]) => {
-        return (
-            <>
-                {slots.map((element, idx) => {
-                    return (
-                        <>
-                            <div className='flex flex-col w-[20%]'>{getBlockImage(element)}</div>
-                            <p className='w-[20%] uppercase'>
-                                {element.f_pool_name !== null ? element.f_pool_name : 'others'}
-                            </p>
-                            <p className='w-[20%] uppercase'>{element.f_val_idx}</p>
-                            <p className='w-[20%] uppercase'>{element.f_proposer_slot}</p>
-                            <p className='w-[20%]'>
-                                {new Date(firstBlock + Number(element.f_proposer_slot) * 12000).toLocaleString()}
-                            </p>
-                        </>
-                    );
-                })}
-            </>
-        );
-    };
-
     const getContentSlots = () => {
         return (
-            <div className='flex flex-col px-2 xl:px-20 overflow-x-scroll overflow-y-hidden scrollbar-thin'>
-                <div className='flex gap-x-1 justify-around px-2 xl:px-8 py-3 uppercase text-sm min-w-[1150px]'>
+            <div className='flex flex-col px-2 xl:px-20 mt-10'>
+                <div className='flex gap-x-1 justify-around px-2 xl:px-8 py-3 uppercase text-sm'>
                     <div className='flex w-[20%] items-center gap-x-1 justify-center'>
                         <p className='mt-0.5'>Block</p>
                     </div>
@@ -145,12 +123,25 @@ const Epoch = () => {
                         <p className='mt-0.5'>Slot</p>
                     </div>
                     <div className='flex w-[20%] items-center gap-x-1 justify-center'>
-                        <p className='mt-0.5'>Date Time</p>
+                        <p className='mt-0.5'>DateTime</p>
                     </div>
                 </div>
 
-                <Card className='grid grid-cols-5 md:grid-cols-5 gap-y-5 justify-items-center items-center text-[9px] text-black bg-[#FFF0A1] rounded-[22px] px-2 xl:px-8 py-3'>
-                    {epoch && getSlots(epoch.f_slots as Slot[])}
+                <Card className='flex flex-col gap-y-5 text-xs text-[#D1A128] bg-[#FFF0A1] rounded-[22px] px-2 xl:px-8 py-3'>
+                    {epoch?.f_slots?.map(element => (
+                        <div
+                            className='flex gap-x-1 py-3 uppercase text-center items-center'
+                            key={element.f_proposer_slot}
+                        >
+                            <div className='flex items-center justify-center w-[20%]'>{getBlockImage(element)}</div>
+                            <p className='w-[20%]'>{element.f_pool_name !== null ? element.f_pool_name : 'others'}</p>
+                            <p className='w-[20%]'>{element.f_val_idx}</p>
+                            <p className='w-[20%]'>{element.f_proposer_slot}</p>
+                            <p className='w-[20%]'>
+                                {new Date(firstBlock + Number(element.f_proposer_slot) * 12000).toLocaleString()}
+                            </p>
+                        </div>
+                    ))}
                 </Card>
             </div>
         );
@@ -158,13 +149,17 @@ const Epoch = () => {
 
     const getAttestation = (title: string, bg: string, color: string, value: number, attestations: number) => {
         return (
-            <div className='flex flex-row gap-x-10 ml-5'>
-                <p>{title}</p>
-                <div className='w-60 text-center'>
+            <div className='flex flex-row gap-x-10 ml-20 items-center'>
+                <p className='w-20' style={{ color: bg }}>
+                    {title}
+                </p>
+                <div className='w-64'>
                     <ProgressSmoothBarEpoch bg={bg} color={color} percent={1 - value / attestations} />
                 </div>
-                <div>
+                <div className='w-64'>
                     <CardContent content={`Missing ${title}: ${value}`} bg={bg} color={color} />
+                </div>
+                <div>
                     <CardContent content={`Attestations: ${attestations}`} bg={bg} color={color} />
                 </div>
             </div>
@@ -174,19 +169,21 @@ const Epoch = () => {
     const getContentEpochStats = () => {
         return (
             <div className='flex flex-col px-2 xl:px-20 overflow-x-scroll overflow-y-hidden scrollbar-thin'>
-                <Card className='uppercase text-xl items-center text-[9px] text-black bg-[#FFF0A1] rounded-[22px] px-2 xl:px-8 py-3'>
-                    <div className='flex flex-row gap-x-10'>
-                        <p>epoch number</p>
+                <Card className='uppercase text-xl items-center text-[10px] text-black bg-[#FFF0A1] rounded-[22px] px-2 xl:px-8 py-3'>
+                    <div className='flex flex-row gap-x-5'>
+                        <p className='w-60'>Epoch Number:</p>
                         <p>{epoch?.f_epoch}</p>
                     </div>
-                    <div className='flex flex-row gap-x-10'>
-                        <p>date time</p>
+                    <div className='flex flex-row gap-x-5'>
+                        <p className='w-60'>DateTime (Local):</p>
                         <p>{new Date(firstBlock + Number(epoch?.f_slot) * 12000).toLocaleString()}</p>
                     </div>
-                    <div className='flex flex-row gap-x-10'>
-                        <p>blocks</p>
+                    <div className='flex flex-row gap-x-5'>
+                        <p className='w-60'>Blocks:</p>
                         <div>
                             <CardContent content={`Proposed: ${epoch?.proposed_blocks}`} bg='#00720B' color='#83E18C' />
+                        </div>
+                        <div>
                             <CardContent
                                 content={`Missed: ${32 - Number(epoch?.proposed_blocks)}`}
                                 bg='#980E0E'
@@ -194,24 +191,24 @@ const Epoch = () => {
                             />
                         </div>
                     </div>
-                    <div className='flex flex-col gap-y-5'>
-                        <p>attestation accuracy</p>
+                    <div className='flex flex-col gap-y-2'>
+                        <p>Attestation Accuracy:</p>
                         {getAttestation(
-                            'target',
+                            'Target',
                             '#E86506',
                             '#FFC163',
                             Number(epoch?.f_missing_target),
                             Number(epoch?.f_num_att_vals)
                         )}
                         {getAttestation(
-                            'source',
+                            'Source',
                             '#14946e',
                             '#BDFFEB',
                             Number(epoch?.f_missing_source),
                             Number(epoch?.f_num_att_vals)
                         )}
                         {getAttestation(
-                            'head',
+                            'Head',
                             '#532BC5',
                             '#E6DDFF',
                             Number(epoch?.f_missing_head),
@@ -219,8 +216,8 @@ const Epoch = () => {
                         )}
                     </div>
                     <div className='flex flex-col'>
-                        <p>voting participation</p>
-                        <div className='flex flex-row gap-x-10 ml-5'>
+                        <p>Voting Participation:</p>
+                        <div className='flex flex-row gap-x-10 ml-20'>
                             <div className='w-60 text-center'>
                                 <ProgressSmoothBarEpoch
                                     bg='#0016D8'
@@ -232,7 +229,7 @@ const Epoch = () => {
                                 />
                             </div>
                             <div className='flex flex-col'>
-                                <div className='mb-5'>
+                                <div className='mb-2'>
                                     <CardContent
                                         content={`Attesting Balance: ${epoch?.f_att_effective_balance_eth?.toLocaleString()} ETH`}
                                         bg='#0016D8'
@@ -256,7 +253,7 @@ const Epoch = () => {
 
     const getDesktopView = () => {
         return (
-            <div>
+            <div className='mx-auto max-w-[1300px]'>
                 <div>{epoch && epoch?.f_slots?.length !== 0 && getContentEpochStats()}</div>
                 <div>{epoch && epoch?.f_slots?.length !== 0 && getContentSlots()}</div>
             </div>
@@ -292,4 +289,4 @@ const Epoch = () => {
     );
 };
 
-export default Epoch;
+export default EpochComponent;
