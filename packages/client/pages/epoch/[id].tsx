@@ -1,12 +1,20 @@
+import { useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useEffect, useRef, useState } from 'react';
+
+// Axios
+import axiosClient from '../../config/axios';
+
+// Components
 import Layout from '../../components/layouts/Layout';
 import ProgressSmoothBarEpoch from '../../components/ui/ProgressSmoothBarEpoch';
-import axiosClient from '../../config/axios';
+
+// Constants
 import { POOLS } from '../../constants';
+
+// Types
 import { Epoch, Slot } from '../../types';
 
 // Constants
@@ -25,7 +33,7 @@ type Props = {
 const CardContent = ({ content, bg, color }: Props) => {
     return (
         <span
-            className='uppercase border-2 px-5 py-1.5 rounded-2xl font-bold'
+            className='block uppercase border-2 px-5 rounded-2xl font-bold leading-4 py-0.5 sm:py-1'
             style={{ background: color, borderColor: bg, color: bg }}
         >
             {content}
@@ -40,7 +48,9 @@ const EpochComponent = () => {
         query: { id },
     } = router;
 
+    // Refs
     const slotRef = useRef(0);
+    const containerRef = useRef<HTMLInputElement>(null);
 
     const [epoch, setEpoch] = useState<Epoch | null>(null);
 
@@ -63,6 +73,19 @@ const EpochComponent = () => {
         setEpoch({
             ...response.data.epoch,
         });
+    };
+
+    const handleMouseMove = (e: any) => {
+        if (containerRef.current) {
+            const x = e.pageX;
+            const limit = 0.15;
+
+            if (x < containerRef.current.clientWidth * limit) {
+                containerRef.current.scrollLeft -= 10;
+            } else if (x > containerRef.current.clientWidth * (1 - limit)) {
+                containerRef.current.scrollLeft += 10;
+            }
+        }
     };
 
     const getBlockImage = (slot: Slot) => {
@@ -108,35 +131,29 @@ const EpochComponent = () => {
 
     const getContentSlots = () => {
         return (
-            <div className='flex flex-col px-2 xl:px-20 mt-10'>
-                <div className='flex gap-x-1 justify-around px-2 xl:px-8 py-3 uppercase text-sm'>
-                    <div className='flex w-[20%] items-center gap-x-1 justify-center'>
-                        <p className='mt-0.5'>Block</p>
-                    </div>
-                    <div className='flex w-[20%] items-center gap-x-1 justify-center'>
-                        <p className='mt-0.5'>Entity</p>
-                    </div>
-                    <div className='flex w-[20%] items-center gap-x-1 justify-center'>
-                        <p className='mt-0.5'>Proposer</p>
-                    </div>
-                    <div className='flex w-[20%] items-center gap-x-1 justify-center'>
-                        <p className='mt-0.5'>Slot</p>
-                    </div>
-                    <div className='flex w-[20%] items-center gap-x-1 justify-center'>
-                        <p className='mt-0.5'>DateTime</p>
-                    </div>
+            <div
+                ref={containerRef}
+                className='flex flex-col px-2 mt-10 overflow-x-scroll overflow-y-hidden scrollbar-thin'
+                onMouseMove={handleMouseMove}
+            >
+                <div className='flex gap-x-4 justify-around px-4 xl:px-8 min-w-[700px] py-3 uppercase text-sm text-white text-center'>
+                    <p className='mt-0.5 w-[10%]'>Block</p>
+                    <p className='mt-0.5 w-[35%]'>Entity</p>
+                    <p className='mt-0.5 w-[20%]'>Proposer</p>
+                    <p className='mt-0.5 w-[15%]'>Slot</p>
+                    <p className='mt-0.5 w-[20%]'>DateTime</p>
                 </div>
 
-                <Card className='flex flex-col gap-y-5 text-xs text-[#D1A128] bg-[#FFF0A1] rounded-[22px] px-2 xl:px-8 py-3'>
+                <Card className='flex flex-col gap-y-5 text-[#D1A128] min-w-[700px] text-2xs sm:text-xs bg-[#FFF0A1] rounded-[22px] px-4 xl:px-8 py-3'>
                     {epoch?.f_slots?.map(element => (
                         <div
-                            className='flex gap-x-1 py-3 uppercase text-center items-center'
+                            className='flex gap-x-4 py-3 uppercase text-center items-center'
                             key={element.f_proposer_slot}
                         >
-                            <div className='flex items-center justify-center w-[20%]'>{getBlockImage(element)}</div>
-                            <p className='w-[20%]'>{element.f_pool_name !== null ? element.f_pool_name : 'others'}</p>
-                            <p className='w-[20%]'>{element.f_val_idx}</p>
-                            <p className='w-[20%]'>{element.f_proposer_slot}</p>
+                            <div className='flex items-center justify-center w-[10%]'>{getBlockImage(element)}</div>
+                            <p className='w-[35%]'>{element.f_pool_name || 'others'}</p>
+                            <p className='w-[20%]'>{element.f_val_idx.toLocaleString()}</p>
+                            <p className='w-[15%]'>{element.f_proposer_slot.toLocaleString()}</p>
                             <p className='w-[20%]'>
                                 {new Date(firstBlock + Number(element.f_proposer_slot) * 12000).toLocaleString()}
                             </p>
@@ -149,18 +166,22 @@ const EpochComponent = () => {
 
     const getAttestation = (title: string, bg: string, color: string, value: number, attestations: number) => {
         return (
-            <div className='flex flex-row gap-x-10 ml-20 items-center'>
-                <p className='w-20' style={{ color: bg }}>
-                    {title}
-                </p>
-                <div className='w-64'>
-                    <ProgressSmoothBarEpoch bg={bg} color={color} percent={1 - value / attestations} />
+            <div className='flex flex-col md:flex-row gap-x-10 gap-y-2 items-center md:justify-end md:w-full'>
+                <div className='flex flex-row gap-x-3 justify-between w-full md:w-auto flex-grow max-w-[350px] min-w-[200px]'>
+                    <p className='w-20' style={{ color: bg }}>
+                        {title}
+                    </p>
+                    <div className='flex-grow'>
+                        <ProgressSmoothBarEpoch bg={bg} color={color} percent={1 - value / attestations} />
+                    </div>
                 </div>
-                <div className='w-64'>
-                    <CardContent content={`Missing ${title}: ${value}`} bg={bg} color={color} />
-                </div>
-                <div>
-                    <CardContent content={`Attestations: ${attestations}`} bg={bg} color={color} />
+                <div className='flex flex-col md:flex-row gap-x-10 gap-y-2'>
+                    <div className='flex-grow md:max-w-[244px]'>
+                        <CardContent content={`Missing ${title}: ${value.toLocaleString()}`} bg={bg} color={color} />
+                    </div>
+                    <div className='flex-shrink'>
+                        <CardContent content={`Attestations: ${attestations.toLocaleString()}`} bg={bg} color={color} />
+                    </div>
                 </div>
             </div>
         );
@@ -168,95 +189,75 @@ const EpochComponent = () => {
 
     const getContentEpochStats = () => {
         return (
-            <div className='flex flex-col px-2 xl:px-20 overflow-x-scroll overflow-y-hidden scrollbar-thin'>
-                <Card className='uppercase text-xl items-center text-[10px] text-black bg-[#FFF0A1] rounded-[22px] px-2 xl:px-8 py-3'>
-                    <div className='flex flex-row gap-x-5'>
-                        <p className='w-60'>Epoch Number:</p>
-                        <p>{epoch?.f_epoch}</p>
+            <Card className='flex flex-col gap-y-2 mx-2 px-6 uppercase overflow-x-scroll overflow-y-hidden scrollbar-thin text-black text-xl text-[8px] sm:text-[10px] bg-[#FFF0A1] rounded-[22px] py-3'>
+                <div className='flex flex-row items-center gap-x-5'>
+                    <p className='w-60'>DateTime (Local):</p>
+                    <p>{new Date(firstBlock + Number(epoch?.f_slot) * 12000).toLocaleString()}</p>
+                </div>
+                <div className='flex flex-col sm:flex-row gap-x-5'>
+                    <p className='w-60'>Blocks (out of 32):</p>
+                    <div className='flex justify-center gap-x-4 '>
+                        <CardContent content={`Proposed: ${epoch?.proposed_blocks}`} bg='#00720B' color='#83E18C' />
+                        <CardContent
+                            content={`Missed: ${32 - Number(epoch?.proposed_blocks)}`}
+                            bg='#980E0E'
+                            color='#FF9090'
+                        />
                     </div>
-                    <div className='flex flex-row gap-x-5'>
-                        <p className='w-60'>DateTime (Local):</p>
-                        <p>{new Date(firstBlock + Number(epoch?.f_slot) * 12000).toLocaleString()}</p>
-                    </div>
-                    <div className='flex flex-row gap-x-5'>
-                        <p className='w-60'>Blocks:</p>
-                        <div>
-                            <CardContent content={`Proposed: ${epoch?.proposed_blocks}`} bg='#00720B' color='#83E18C' />
+                </div>
+                <div className='flex flex-col gap-y-4'>
+                    <p className='items-start'>Attestation Accuracy:</p>
+
+                    {getAttestation(
+                        'Target',
+                        '#E86506',
+                        '#FFC163',
+                        Number(epoch?.f_missing_target),
+                        Number(epoch?.f_num_att_vals)
+                    )}
+                    {getAttestation(
+                        'Source',
+                        '#14946e',
+                        '#BDFFEB',
+                        Number(epoch?.f_missing_source),
+                        Number(epoch?.f_num_att_vals)
+                    )}
+                    {getAttestation(
+                        'Head',
+                        '#532BC5',
+                        '#E6DDFF',
+                        Number(epoch?.f_missing_head),
+                        Number(epoch?.f_num_att_vals)
+                    )}
+                </div>
+                <div className='flex flex-col'>
+                    <p>Voting Participation:</p>
+                    <div className='flex flex-col md:flex-row items-center md:items-start md:justify-center gap-x-10 gap-y-2'>
+                        <div className='w-64 text-center'>
+                            <ProgressSmoothBarEpoch
+                                bg='#0016D8'
+                                color='#BDC4FF'
+                                percent={
+                                    Number(epoch?.f_att_effective_balance_eth) /
+                                    Number(epoch?.f_total_effective_balance_eth)
+                                }
+                            />
                         </div>
-                        <div>
+                        <div className='flex flex-col gap-y-2 w-64 md:w-fit'>
                             <CardContent
-                                content={`Missed: ${32 - Number(epoch?.proposed_blocks)}`}
-                                bg='#980E0E'
-                                color='#FF9090'
+                                content={`Attesting Balance: ${epoch?.f_att_effective_balance_eth?.toLocaleString()} ETH`}
+                                bg='#0016D8'
+                                color='#BDC4FF'
+                            />
+                            <CardContent
+                                content={`Total Active Balance: ${epoch?.f_total_effective_balance_eth?.toLocaleString()} ETH`}
+                                bg='#0016D8'
+                                color='#BDC4FF'
                             />
                         </div>
                     </div>
-                    <div className='flex flex-col gap-y-2'>
-                        <p>Attestation Accuracy:</p>
-                        {getAttestation(
-                            'Target',
-                            '#E86506',
-                            '#FFC163',
-                            Number(epoch?.f_missing_target),
-                            Number(epoch?.f_num_att_vals)
-                        )}
-                        {getAttestation(
-                            'Source',
-                            '#14946e',
-                            '#BDFFEB',
-                            Number(epoch?.f_missing_source),
-                            Number(epoch?.f_num_att_vals)
-                        )}
-                        {getAttestation(
-                            'Head',
-                            '#532BC5',
-                            '#E6DDFF',
-                            Number(epoch?.f_missing_head),
-                            Number(epoch?.f_num_att_vals)
-                        )}
-                    </div>
-                    <div className='flex flex-col'>
-                        <p>Voting Participation:</p>
-                        <div className='flex flex-row gap-x-10 ml-20'>
-                            <div className='w-60 text-center'>
-                                <ProgressSmoothBarEpoch
-                                    bg='#0016D8'
-                                    color='#BDC4FF'
-                                    percent={
-                                        Number(epoch?.f_att_effective_balance_eth) /
-                                        Number(epoch?.f_total_effective_balance_eth)
-                                    }
-                                />
-                            </div>
-                            <div className='flex flex-col'>
-                                <div className='mb-2'>
-                                    <CardContent
-                                        content={`Attesting Balance: ${epoch?.f_att_effective_balance_eth?.toLocaleString()} ETH`}
-                                        bg='#0016D8'
-                                        color='#BDC4FF'
-                                    />
-                                </div>
-                                <div>
-                                    <CardContent
-                                        content={`Total Active Balance: ${epoch?.f_total_effective_balance_eth?.toLocaleString()} ETH`}
-                                        bg='#0016D8'
-                                        color='#BDC4FF'
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </Card>
-            </div>
-        );
-    };
-
-    const getDesktopView = () => {
-        return (
-            <div className='mx-auto max-w-[1300px]'>
-                <div>{epoch && epoch?.f_slots?.length !== 0 && getContentEpochStats()}</div>
-                <div>{epoch && epoch?.f_slots?.length !== 0 && getContentSlots()}</div>
-            </div>
+                </div>
+            </Card>
         );
     };
 
@@ -273,7 +274,9 @@ const EpochComponent = () => {
                     />
                 </Link>
 
-                <h1 className='text-white text-center text-xl md:text-3xl'>Epoch {Number(id)?.toLocaleString()}</h1>
+                <h1 className='text-white text-center text-xl md:text-3xl uppercase'>
+                    Epoch {Number(id)?.toLocaleString()}
+                </h1>
                 <Link href={`/epoch/${id && Number(id) + 1}`} passHref>
                     <Image
                         src='/static/images/arrow-purple.svg'
@@ -284,7 +287,11 @@ const EpochComponent = () => {
                     />
                 </Link>
             </div>
-            <div className='text-white'>{getDesktopView()}</div>
+
+            <div className='mx-auto max-w-[1100px]'>
+                <div>{epoch && epoch?.f_slots?.length !== 0 && getContentEpochStats()}</div>
+                <div>{epoch && epoch?.f_slots?.length !== 0 && getContentSlots()}</div>
+            </div>
         </Layout>
     );
 };
