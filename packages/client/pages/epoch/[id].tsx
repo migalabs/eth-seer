@@ -139,9 +139,9 @@ const EpochComponent = () => {
                 <div className='flex gap-x-4 justify-around px-4 xl:px-8 min-w-[700px] py-3 uppercase text-sm text-white text-center'>
                     <p className='mt-0.5 w-[10%]'>Block</p>
                     <p className='mt-0.5 w-[35%]'>Entity</p>
-                    <p className='mt-0.5 w-[20%]'>Proposer</p>
-                    <p className='mt-0.5 w-[15%]'>Slot</p>
-                    <p className='mt-0.5 w-[20%]'>DateTime</p>
+                    <p className='mt-0.5 w-[18%]'>Proposer</p>
+                    <p className='mt-0.5 w-[18%]'>Slot</p>
+                    <p className='mt-0.5 w-[18%]'>DateTime</p>
                 </div>
 
                 <Card className='flex flex-col gap-y-5 text-[#D1A128] min-w-[700px] text-2xs sm:text-xs bg-[#FFF0A1] rounded-[22px] px-4 xl:px-8 py-3'>
@@ -152,9 +152,30 @@ const EpochComponent = () => {
                         >
                             <div className='flex items-center justify-center w-[10%]'>{getBlockImage(element)}</div>
                             <p className='w-[35%]'>{element.f_pool_name || 'others'}</p>
-                            <p className='w-[20%]'>{element.f_val_idx.toLocaleString()}</p>
-                            <p className='w-[15%]'>{element.f_proposer_slot.toLocaleString()}</p>
-                            <p className='w-[20%]'>
+                            <p className='w-[18%]'>{element.f_val_idx.toLocaleString()}</p>
+                            <div className='w-[18%]'>
+                                <Link
+                                    href={{
+                                        pathname: '/slot/[id]',
+                                        query: {
+                                            id: element.f_proposer_slot,
+                                        },
+                                    }}
+                                    passHref
+                                    as={`/slot/${element.f_proposer_slot}`}
+                                    className='flex gap-x-1 items-center w-fit mx-auto'
+                                >
+                                    <p>{element.f_proposer_slot.toLocaleString()}</p>
+                                    <Image
+                                        src='/static/images/link.svg'
+                                        alt='Link icon'
+                                        width={20}
+                                        height={20}
+                                        className='mb-1'
+                                    />
+                                </Link>
+                            </div>
+                            <p className='w-[18%]'>
                                 {new Date(firstBlock + Number(element.f_proposer_slot) * 12000).toLocaleString()}
                             </p>
                         </div>
@@ -176,7 +197,7 @@ const EpochComponent = () => {
                     </div>
                 </div>
                 <div className='flex flex-col md:flex-row gap-x-10 gap-y-2'>
-                    <div className='flex-grow md:max-w-[244px]'>
+                    <div className='md:w-[244px]'>
                         <CardContent content={`Missing ${title}: ${value.toLocaleString()}`} bg={bg} color={color} />
                     </div>
                     <div className='flex-shrink'>
@@ -192,7 +213,7 @@ const EpochComponent = () => {
             <Card className='flex flex-col gap-y-2 mx-2 px-6 uppercase overflow-x-scroll overflow-y-hidden scrollbar-thin text-black text-xl text-[8px] sm:text-[10px] bg-[#FFF0A1] rounded-[22px] py-3'>
                 <div className='flex flex-row items-center gap-x-5'>
                     <p className='w-60'>DateTime (Local):</p>
-                    <p>{new Date(firstBlock + Number(epoch?.f_slot) * 12000).toLocaleString()}</p>
+                    <p className='leading-3'>{new Date(firstBlock + Number(epoch?.f_slot) * 12000).toLocaleString()}</p>
                 </div>
                 <div className='flex flex-col sm:flex-row gap-x-5'>
                     <p className='w-60'>Blocks (out of 32):</p>

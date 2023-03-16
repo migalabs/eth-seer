@@ -190,18 +190,22 @@ const Statitstics = () => {
                     <p>{new Date(firstBlock + f_epoch * 32 * 12000).toLocaleDateString()}</p>
                     <p>{new Date(firstBlock + f_epoch * 32 * 12000).toLocaleTimeString()}</p>
                 </div>
-                <Link
-                    href={{
-                        pathname: '/epoch/[id]',
-                        query: {
-                            id: f_epoch,
-                        },
-                    }}
-                    passHref
-                    as={`/epoch/${f_epoch}`}
-                >
-                    <p className='w-[11%]'>{f_epoch.toLocaleString()}</p>
-                </Link>
+                <div className='w-[11%]'>
+                    <Link
+                        href={{
+                            pathname: '/epoch/[id]',
+                            query: {
+                                id: f_epoch,
+                            },
+                        }}
+                        passHref
+                        as={`/epoch/${f_epoch}`}
+                        className='flex gap-x-1 items-center w-fit mx-auto'
+                    >
+                        <p>{f_epoch.toLocaleString()}</p>
+                        <Image src='/static/images/link.svg' alt='Link icon' width={20} height={20} className='mb-1' />
+                    </Link>
+                </div>
                 <div className='w-[15%] pt-3.5 mb-6'>
                     <p className='uppercase'>blocks</p>
                     <ProgressTileBar
@@ -456,18 +460,28 @@ const Statitstics = () => {
                             <p>{new Date(firstBlock + epoch.f_epoch * 32 * 12000).toLocaleDateString()}</p>
                             <p>{new Date(firstBlock + epoch.f_epoch * 32 * 12000).toLocaleTimeString()}</p>
                         </div>
-                        <Link
-                            href={{
-                                pathname: '/epoch/[id]',
-                                query: {
-                                    id: epoch.f_epoch,
-                                },
-                            }}
-                            passHref
-                            as={`/epoch/${epoch.f_epoch}`}
-                        >
-                            <p className='w-[11%]'>{epoch.f_epoch.toLocaleString()}</p>
-                        </Link>
+                        <div className='w-[11%]'>
+                            <Link
+                                href={{
+                                    pathname: '/epoch/[id]',
+                                    query: {
+                                        id: epoch.f_epoch,
+                                    },
+                                }}
+                                passHref
+                                as={`/epoch/${epoch.f_epoch}`}
+                                className='flex gap-x-1 items-center w-fit mx-auto'
+                            >
+                                <p>{epoch.f_epoch.toLocaleString()}</p>
+                                <Image
+                                    src='/static/images/link.svg'
+                                    alt='Link icon'
+                                    width={20}
+                                    height={20}
+                                    className='mb-1'
+                                />
+                            </Link>
+                        </div>
 
                         <div className='w-[15%] pt-3.5 mb-6'>
                             <p className='uppercase'>blocks</p>

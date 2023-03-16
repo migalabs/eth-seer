@@ -50,9 +50,10 @@ type CardProps = {
     backgroundColor: string;
     letterColor: string;
     link?: string;
+    target?: string;
 };
 
-const Card = ({ title, content, icon, iconSize, backgroundColor, letterColor, link }: CardProps) => {
+const Card = ({ title, content, icon, iconSize, backgroundColor, letterColor, link, target }: CardProps) => {
     return (
         <>
             <div className='flex gap-3 items-center'>
@@ -76,7 +77,7 @@ const Card = ({ title, content, icon, iconSize, backgroundColor, letterColor, li
                     {icon && (
                         <a
                             href={link || 'none'}
-                            target='_blank'
+                            target={target}
                             rel='noreferrer'
                             style={{ textDecoration: 'none', color: 'black' }}
                         >
@@ -162,7 +163,7 @@ const Slot = () => {
                             getBlock();
                         }
                     }, timeDifference + 2000);
-                } else {
+                } else if (timeDifference > -10000) {
                     setTimeout(() => {
                         if (Number(id) === slotRef.current) {
                             getBlock();
@@ -246,6 +247,8 @@ const Slot = () => {
             } else if (timeDifference > 1000) {
                 const seconds = Math.floor(timeDifference / 1000);
                 text = ` (in ${seconds} ${seconds > 1 ? 'seconds' : 'second'})`;
+            } else if (timeDifference < -10000) {
+                text = ' (data not saved)';
             } else {
                 text = ' (updating...)';
             }
@@ -269,6 +272,10 @@ const Slot = () => {
                             letterColor='#29C68E'
                             title='Epoch'
                             content={block.f_epoch.toLocaleString()}
+                            link={`/epoch/${block.f_epoch}`}
+                            icon='link'
+                            iconSize={25}
+                            target='_self'
                         />
 
                         <Card
@@ -322,6 +329,7 @@ const Slot = () => {
                                 icon='beacon-icon'
                                 iconSize={35}
                                 link={`https://beaconcha.in/validator/${block.f_proposer_index}`}
+                                target='_blank'
                             />
                         )}
 
@@ -416,6 +424,7 @@ const Slot = () => {
                                 }
                                 iconSize={35}
                                 link={`https://etherscan.io/block/${block.f_el_block_hash}`}
+                                target='_blank'
                             />
 
                             <Card
