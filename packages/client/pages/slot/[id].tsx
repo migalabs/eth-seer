@@ -1,10 +1,13 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback, useContext } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import Link from 'next/link';
 
 // Axios
 import axiosClient from '../../config/axios';
+
+// Contexts
+import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
 // Components
 import Layout from '../../components/layouts/Layout';
@@ -20,18 +23,32 @@ const zeroAddressShort = '0x0000000000000000000000000000000000000000';
 
 type TitleProps = {
     text: string;
-    backgroundColor: string;
-    letterColor: string;
+    consensusLayer?: boolean;
+    darkMode?: boolean;
 };
 
-const Title = ({ text, backgroundColor, letterColor }: TitleProps) => {
+const Title = ({ text, consensusLayer, darkMode }: TitleProps) => {
+    let backgroundColor;
+    let letterColor;
+    let boxShadow;
+
+    if (consensusLayer) {
+        backgroundColor = darkMode ? 'var(--green2)' : 'var(--blue3)';
+        letterColor = darkMode ? 'var(--green3)' : 'var(--blue7)';
+        boxShadow = darkMode ? 'var(--boxShadowGreen3)' : 'var(--boxShadowBlue4)';
+    } else {
+        backgroundColor = darkMode ? 'var(--orange2)' : 'var(--purple3)';
+        letterColor = darkMode ? 'var(--orange3)' : 'var(--purple2)';
+        boxShadow = darkMode ? 'var(--boxShadowOrange3)' : 'var(--boxShadowPurple2)';
+    }
+
     return (
         <div className='flex gap-3 items-center'>
             <div
                 className='rounded-2xl px-2 py-3 w-60 sm:w-[21rem]'
                 style={{
-                    boxShadow: `inset -7px -7px 8px ${letterColor}, inset 7px 7px 8px ${letterColor}`,
-                    background: backgroundColor,
+                    boxShadow,
+                    backgroundColor,
                 }}
             >
                 <p className='uppercase text-center text-[12px] sm:text-[14px]' style={{ color: letterColor }}>
@@ -47,17 +64,29 @@ type CardProps = {
     content: string | number | boolean | any;
     icon?: string;
     iconSize?: number;
-    backgroundColor: string;
-    letterColor: string;
+    consensusLayer?: boolean;
     link?: string;
+    target?: string;
+    darkMode?: boolean;
 };
 
-const Card = ({ title, content, icon, iconSize, backgroundColor, letterColor, link }: CardProps) => {
+const Card = ({ title, content, icon, iconSize, consensusLayer, link, darkMode, target }: CardProps) => {
+    let backgroundColor;
+    let letterColor;
+
+    if (consensusLayer) {
+        backgroundColor = darkMode ? 'var(--green2)' : 'var(--blue3)';
+        letterColor = darkMode ? 'var(--green3)' : 'var(--blue7)';
+    } else {
+        backgroundColor = darkMode ? 'var(--orange2)' : 'var(--purple3)';
+        letterColor = darkMode ? 'var(--orange3)' : 'var(--purple2)';
+    }
+
     return (
         <>
             <div className='flex gap-3 items-center'>
                 <div
-                    className='flex-shrink-0 rounded-2xl px-2 py-3 w-40 md:w-[18rem]'
+                    className='flex-shrink-0 rounded-2xl px-2 py-3 w-40 md:w-[15rem]'
                     style={{
                         background: backgroundColor,
                     }}
@@ -76,7 +105,7 @@ const Card = ({ title, content, icon, iconSize, backgroundColor, letterColor, li
                     {icon && (
                         <a
                             href={link || 'none'}
-                            target='_blank'
+                            target={target}
                             rel='noreferrer'
                             style={{ textDecoration: 'none', color: 'black' }}
                         >
@@ -102,21 +131,40 @@ const Slot = () => {
         query: { id },
     } = router;
 
+    // Theme Mode Context
+    const { themeMode } = useContext(ThemeModeContext) || {};
+
     // Refs
     const slotRef = useRef(0);
+    const existsBlockRef = useRef(true);
 
     // States
     const [block, setBlock] = useState<Block | null>(null);
     const [existsBlock, setExistsBlock] = useState<boolean>(true);
+    const [countdownText, setCountdownText] = useState<string>('');
 
     // UseEffect
     useEffect(() => {
+        if (id) {
+            slotRef.current = Number(id);
+        }
+
         if ((id && !block) || (block && block.f_slot !== Number(id))) {
             getBlock();
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id]);
+
+    const shuffle = useCallback(() => {
+        const text: string = getCountdownText();
+        setCountdownText(text);
+    }, []);
+
+    useEffect(() => {
+        const intervalID = setInterval(shuffle, 1000);
+        return () => clearInterval(intervalID);
+    }, [shuffle, slotRef.current]);
 
     // Get blocks
     const getBlock = async () => {
@@ -135,8 +183,8 @@ const Slot = () => {
                     f_timestamp: expectedTimestamp,
                 });
 
-                slotRef.current = Number(id);
                 setExistsBlock(false);
+                existsBlockRef.current = false;
 
                 const timeDifference = new Date(expectedTimestamp * 1000).getTime() - new Date().getTime();
 
@@ -146,7 +194,7 @@ const Slot = () => {
                             getBlock();
                         }
                     }, timeDifference + 2000);
-                } else {
+                } else if (timeDifference > -10000) {
                     setTimeout(() => {
                         if (Number(id) === slotRef.current) {
                             getBlock();
@@ -155,6 +203,7 @@ const Slot = () => {
                 }
             } else {
                 setExistsBlock(true);
+                existsBlockRef.current = true;
             }
         } catch (error) {
             console.log(error);
@@ -188,43 +237,99 @@ const Slot = () => {
         }
     };
 
+    const getTimeBlock = () => {
+        let text;
+
+        if (block) {
+            if (block.f_timestamp) {
+                text = new Date(block.f_timestamp * 1000).toLocaleString();
+            } else {
+                text = new Date(firstBlock + Number(id) * 12000).toLocaleString();
+            }
+        }
+
+        return text + countdownText;
+    };
+
+    const getCountdownText = () => {
+        let text = '';
+
+        if (!existsBlockRef.current) {
+            const expectedTimestamp = (firstBlock + slotRef.current * 12000) / 1000;
+            const timeDifference = new Date(expectedTimestamp * 1000).getTime() - new Date().getTime();
+
+            const minutesMiliseconds = 1000 * 60;
+            const hoursMiliseconds = minutesMiliseconds * 60;
+            const daysMiliseconds = hoursMiliseconds * 24;
+            const yearsMiliseconds = daysMiliseconds * 365;
+
+            if (timeDifference > yearsMiliseconds) {
+                const years = Math.floor(timeDifference / yearsMiliseconds);
+                text = ` (in ${years} ${years > 1 ? 'years' : 'year'})`;
+            } else if (timeDifference > daysMiliseconds) {
+                const days = Math.floor(timeDifference / daysMiliseconds);
+                text = ` (in ${days} ${days > 1 ? 'days' : 'day'})`;
+            } else if (timeDifference > hoursMiliseconds) {
+                const hours = Math.floor(timeDifference / hoursMiliseconds);
+                text = ` (in ${hours} ${hours > 1 ? 'hours' : 'hour'})`;
+            } else if (timeDifference > minutesMiliseconds) {
+                const minutes = Math.floor(timeDifference / minutesMiliseconds);
+                text = ` (in ${minutes} ${minutes > 1 ? 'minutes' : 'minute'})`;
+            } else if (timeDifference > 1000) {
+                const seconds = Math.floor(timeDifference / 1000);
+                text = ` (in ${seconds} ${seconds > 1 ? 'seconds' : 'second'})`;
+            } else if (timeDifference < -10000) {
+                text = ' (data not saved)';
+            } else {
+                text = ' (updating...)';
+            }
+        }
+
+        return text;
+    };
+
     const getInformationView = (block: Block) => {
         return (
             <div className='flex flex-col xl:flex-row xl:gap-5 2xl:gap-28 xl:justify-center max-w-full px-4'>
                 <div className='flex flex-col items-center'>
-                    <Title backgroundColor='#A7EED4' letterColor='#29C68E' text='Consensus Layer' />
+                    <Title text='Consensus Layer' consensusLayer darkMode={themeMode?.darkMode} />
 
                     <div
-                        className='flex flex-col w-full md:w-[650px] 2xl:w-[750px] md:max-h-full md:mx-auto mt-4 mb-10 gap-y-5 bg-[#A7EED466] rounded-[22px] p-4 md:p-8'
-                        style={{ boxShadow: 'inset -7px -7px 8px #A7EED4, inset 7px 7px 8px #A7EED4' }}
+                        className='flex flex-col w-full md:w-[650px] 2xl:w-[750px] md:max-h-full md:mx-auto mt-4 mb-10 gap-y-5 rounded-[22px] p-4 md:p-8'
+                        style={{
+                            backgroundColor: themeMode?.darkMode ? 'var(--green1)' : 'var(--blue4)',
+                            boxShadow: themeMode?.darkMode ? 'var(--boxShadowGreen1)' : 'var(--boxShadowBlue3)',
+                        }}
                     >
                         <Card
-                            backgroundColor='#A7EED4'
-                            letterColor='#29C68E'
                             title='Epoch'
                             content={block.f_epoch.toLocaleString()}
+                            link={`/epoch/${block.f_epoch}`}
+                            icon='link'
+                            iconSize={25}
+                            target='_self'
+                            consensusLayer
+                            darkMode={themeMode?.darkMode}
                         />
 
                         <Card
-                            backgroundColor='#A7EED4'
-                            letterColor='#29C68E'
                             title='Slot'
                             content={block.f_slot.toLocaleString()}
+                            consensusLayer
+                            darkMode={themeMode?.darkMode}
                         />
 
                         {existsBlock && (
                             <Card
-                                backgroundColor='#A7EED4'
-                                letterColor='#29C68E'
                                 title='Entity'
                                 content={block.f_pool_name?.toLocaleString() || 'others'}
+                                consensusLayer
+                                darkMode={themeMode?.darkMode}
                             />
                         )}
 
                         {existsBlock && (
                             <Card
-                                backgroundColor='#A7EED4'
-                                letterColor='#29C68E'
                                 title='Status'
                                 content={
                                     block.f_proposed ? (
@@ -237,92 +342,91 @@ const Slot = () => {
                                         </span>
                                     )
                                 }
+                                consensusLayer
+                                darkMode={themeMode?.darkMode}
                             />
                         )}
 
                         <Card
-                            backgroundColor='#A7EED4'
-                            letterColor='#29C68E'
                             title='Date Time (Local)'
-                            content={
-                                block.f_proposed
-                                    ? new Date(block.f_timestamp * 1000).toLocaleString()
-                                    : new Date(firstBlock + Number(id) * 12000).toLocaleString()
-                            }
+                            content={getTimeBlock()}
+                            consensusLayer
+                            darkMode={themeMode?.darkMode}
                         />
 
                         {existsBlock && (
                             <Card
-                                backgroundColor='#A7EED4'
-                                letterColor='#29C68E'
                                 title='Proposer Index'
                                 content={block.f_proposer_index?.toLocaleString()}
                                 icon='beacon-icon'
                                 iconSize={35}
+                                consensusLayer
                                 link={`https://beaconcha.in/validator/${block.f_proposer_index}`}
+                                target='_blank'
+                                darkMode={themeMode?.darkMode}
                             />
                         )}
 
                         {existsBlock && (
                             <Card
-                                backgroundColor='#A7EED4'
-                                letterColor='#29C68E'
                                 title='Graffiti'
                                 content={block.f_proposed ? block.f_graffiti : '---'}
+                                consensusLayer
+                                darkMode={themeMode?.darkMode}
                             />
                         )}
 
                         {existsBlock && (
                             <Card
-                                backgroundColor='#A7EED4'
-                                letterColor='#29C68E'
                                 title='Sync bits'
                                 content={block.f_proposed ? block.f_sync_bits?.toLocaleString() : '---'}
+                                consensusLayer
+                                darkMode={themeMode?.darkMode}
                             />
                         )}
 
                         {existsBlock && (
                             <Card
-                                backgroundColor='#A7EED4'
-                                letterColor='#29C68E'
                                 title='Attestations'
                                 content={block.f_proposed ? block.f_attestations?.toLocaleString() : '---'}
+                                consensusLayer
+                                darkMode={themeMode?.darkMode}
                             />
                         )}
 
                         {existsBlock && (
                             <Card
-                                backgroundColor='#A7EED4'
-                                letterColor='#29C68E'
                                 title='Voluntary exits'
                                 content={block.f_proposed ? block.f_voluntary_exits?.toLocaleString() : '---'}
+                                consensusLayer
+                                darkMode={themeMode?.darkMode}
                             />
                         )}
 
                         {existsBlock && (
                             <Card
-                                backgroundColor='#A7EED4'
-                                letterColor='#29C68E'
                                 title='Proposer slashings'
                                 content={block.f_proposed ? block.f_proposer_slashings?.toLocaleString() : '---'}
+                                consensusLayer
+                                darkMode={themeMode?.darkMode}
                             />
                         )}
 
                         {existsBlock && (
                             <Card
-                                backgroundColor='#A7EED4'
-                                letterColor='#29C68E'
                                 title='Attestation Slashing'
                                 content={block.f_proposed ? block.f_att_slashings?.toLocaleString() : '---'}
+                                consensusLayer
+                                darkMode={themeMode?.darkMode}
                             />
                         )}
 
                         {existsBlock && (
                             <Card
-                                backgroundColor='#A7EED4'
-                                letterColor='#29C68E'
                                 title='Deposits'
                                 content={block.f_proposed ? block.f_deposits?.toLocaleString() : '---'}
+                                consensusLayer
+                                darkMode={themeMode?.darkMode}
                             />
                         )}
                     </div>
@@ -332,56 +436,59 @@ const Slot = () => {
                     <div className='flex flex-col xl:self-end items-center'>
                         <div className='hidden xl:block'>{getBlockGif(block)}</div>
 
-                        <Title backgroundColor='#FFCEA1' letterColor='#F18D30' text='Execution Layer' />
+                        <Title text='Execution Layer' darkMode={themeMode?.darkMode} />
 
                         <div
-                            className='flex flex-col xl:self-end w-full md:w-fit h-fit md:max-h-full mx-2 md:mx-auto mt-4 mb-10 gap-y-5 bg-[#FFB16866] rounded-[22px] p-4 md:p-8'
-                            style={{ boxShadow: 'inset -7px -7px 8px #FFCEA1, inset 7px 7px 8px #FFCEA1' }}
+                            className='flex flex-col xl:self-end w-full md:w-fit h-fit md:max-h-full mx-2 md:mx-auto mt-4 mb-10 gap-y-5 rounded-[22px] p-4 md:p-8'
+                            style={{
+                                backgroundColor: themeMode?.darkMode ? 'var(--orange4)' : 'var(--purple1)',
+                                boxShadow: themeMode?.darkMode ? 'var(--boxShadowOrange2)' : 'var(--boxShadowPurple1)',
+                            }}
                         >
                             <Card
-                                backgroundColor='#FFCEA1'
-                                letterColor='#F18D30'
                                 title='Block hash'
                                 content={
-                                    block.f_el_block_hash !== zeroAddress
+                                    block.f_proposed && block.f_el_block_hash !== zeroAddress
                                         ? getShortAddress(block.f_el_block_hash)
                                         : '---'
                                 }
-                                icon={block.f_el_block_hash !== zeroAddress ? 'etherscan-icon' : undefined}
+                                icon={
+                                    block.f_proposed && block.f_el_block_hash !== zeroAddress
+                                        ? 'etherscan-icon'
+                                        : undefined
+                                }
                                 iconSize={35}
                                 link={`https://etherscan.io/block/${block.f_el_block_hash}`}
+                                target='_blank'
+                                darkMode={themeMode?.darkMode}
                             />
 
                             <Card
-                                backgroundColor='#FFCEA1'
-                                letterColor='#F18D30'
                                 title='Fee Recipient'
                                 content={
-                                    block.f_el_fee_recp !== zeroAddressShort
+                                    block.f_proposed && block.f_el_fee_recp !== zeroAddressShort
                                         ? getShortAddress(block.f_el_fee_recp)
                                         : '---'
                                 }
+                                darkMode={themeMode?.darkMode}
                             />
 
                             <Card
-                                backgroundColor='#FFCEA1'
-                                letterColor='#F18D30'
                                 title='Gas used'
                                 content={block.f_proposed ? block.f_el_gas_used?.toLocaleString() : '---'}
+                                darkMode={themeMode?.darkMode || false}
                             />
 
                             <Card
-                                backgroundColor='#FFCEA1'
-                                letterColor='#F18D30'
                                 title='Gas limit'
                                 content={block.f_proposed ? block.f_el_gas_limit?.toLocaleString() : '---'}
+                                darkMode={themeMode?.darkMode || false}
                             />
 
                             <Card
-                                backgroundColor='#FFCEA1'
-                                letterColor='#F18D30'
                                 title='Transactions'
                                 content={block.f_proposed ? block.f_el_transactions?.toLocaleString() : '---'}
+                                darkMode={themeMode?.darkMode || false}
                             />
                         </div>
                     </div>
@@ -403,7 +510,9 @@ const Slot = () => {
                     />
                 </Link>
 
-                <h1 className='text-white text-center text-xl md:text-3xl'>Slot {Number(id)?.toLocaleString()}</h1>
+                <h1 className='text-white text-center text-xl md:text-3xl uppercase'>
+                    Slot {Number(id)?.toLocaleString()}
+                </h1>
 
                 <Link href={`/slot/${id && Number(id) + 1}`} passHref>
                     <Image
