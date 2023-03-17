@@ -18,6 +18,7 @@ import { TooltipContainer, TooltipContentContainerHeaders } from '../ui/Tooltips
 
 // Types
 import { Epoch, Block } from '../../types';
+import Link from 'next/link';
 
 // Constants
 const firstBlock: number = 1606824023000;
@@ -35,7 +36,8 @@ const Statitstics = () => {
     // Intersection Observer
     const { ref, inView } = useInView();
 
-    const conainerRef = useRef<HTMLInputElement>(null);
+    // Refs
+    const containerRef = useRef<HTMLInputElement>(null);
 
     // States
     const [epochs, setEpochs] = useState<Epoch[]>([]);
@@ -111,14 +113,14 @@ const Statitstics = () => {
     }, []);
 
     const handleMouseMove = (e: any) => {
-        if (conainerRef.current) {
+        if (containerRef.current) {
             const x = e.pageX;
             const limit = 0.15;
 
-            if (x < conainerRef.current.clientWidth * limit) {
-                conainerRef.current.scrollLeft -= 10;
-            } else if (x > conainerRef.current.clientWidth * (1 - limit)) {
-                conainerRef.current.scrollLeft += 10;
+            if (x < containerRef.current.clientWidth * limit) {
+                containerRef.current.scrollLeft -= 10;
+            } else if (x > containerRef.current.clientWidth * (1 - limit)) {
+                containerRef.current.scrollLeft += 10;
             }
         }
     };
@@ -185,7 +187,22 @@ const Statitstics = () => {
                     <p>{new Date(firstBlock + f_epoch * 32 * 12000).toLocaleDateString()}</p>
                     <p>{new Date(firstBlock + f_epoch * 32 * 12000).toLocaleTimeString()}</p>
                 </div>
-                <p className='w-[11%]'>{f_epoch.toLocaleString()}</p>
+                <div className='w-[11%]'>
+                    <Link
+                        href={{
+                            pathname: '/epoch/[id]',
+                            query: {
+                                id: f_epoch,
+                            },
+                        }}
+                        passHref
+                        as={`/epoch/${f_epoch}`}
+                        className='flex gap-x-1 items-center w-fit mx-auto'
+                    >
+                        <p>{f_epoch.toLocaleString()}</p>
+                        <Image src='/static/images/link.svg' alt='Link icon' width={20} height={20} className='mb-1' />
+                    </Link>
+                </div>
                 <div className='w-[15%] pt-3.5 mb-6'>
                     <p className='uppercase'>blocks</p>
                     <ProgressTileBar
@@ -230,7 +247,18 @@ const Statitstics = () => {
                 }}
             >
                 <div className='flex gap-x-1 justify-center'>
-                    <p className='font-bold text-sm mt-0.5'>Epoch {f_epoch.toLocaleString()}</p>
+                    <Link
+                        href={{
+                            pathname: '/epoch/[id]',
+                            query: {
+                                id: f_epoch,
+                            },
+                        }}
+                        passHref
+                        as={`/epoch/${f_epoch}`}
+                    >
+                        <p className='font-bold text-sm mt-0.5'>Epoch {f_epoch.toLocaleString()}</p>
+                    </Link>
                 </div>
                 <div className='flex flex-col gap-x-4 w-full'>
                     <div className='flex gap-x-1 justify-center mb-1'>
@@ -337,7 +365,7 @@ const Statitstics = () => {
 
     const getDesktopView = () => (
         <div
-            ref={conainerRef}
+            ref={containerRef}
             className='flex flex-col px-2 xl:px-20 overflow-x-scroll overflow-y-hidden scrollbar-thin'
             onMouseMove={handleMouseMove}
         >
@@ -427,8 +455,28 @@ const Statitstics = () => {
                             <p>{new Date(firstBlock + epoch.f_epoch * 32 * 12000).toLocaleDateString()}</p>
                             <p>{new Date(firstBlock + epoch.f_epoch * 32 * 12000).toLocaleTimeString()}</p>
                         </div>
-
-                        <p className='w-[11%]'>{epoch.f_epoch.toLocaleString()}</p>
+                        <div className='w-[11%]'>
+                            <Link
+                                href={{
+                                    pathname: '/epoch/[id]',
+                                    query: {
+                                        id: epoch.f_epoch,
+                                    },
+                                }}
+                                passHref
+                                as={`/epoch/${epoch.f_epoch}`}
+                                className='flex gap-x-1 items-center w-fit mx-auto'
+                            >
+                                <p>{epoch.f_epoch.toLocaleString()}</p>
+                                <Image
+                                    src='/static/images/link.svg'
+                                    alt='Link icon'
+                                    width={20}
+                                    height={20}
+                                    className='mb-1'
+                                />
+                            </Link>
+                        </div>
 
                         <div className='w-[15%] pt-3.5 mb-6'>
                             <p className='uppercase'>blocks</p>
@@ -538,7 +586,18 @@ const Statitstics = () => {
                     }}
                 >
                     <div className='flex gap-x-1 justify-center'>
-                        <p className='font-bold text-sm mt-0.5'>Epoch {epoch.f_epoch?.toLocaleString()}</p>
+                        <Link
+                            href={{
+                                pathname: '/epoch/[id]',
+                                query: {
+                                    id: epoch.f_epoch,
+                                },
+                            }}
+                            passHref
+                            as={`/epoch/${epoch.f_epoch}`}
+                        >
+                            <p className='font-bold text-sm mt-0.5'>Epoch {epoch.f_epoch?.toLocaleString()}</p>
+                        </Link>
                     </div>
                     <div className='flex flex-col gap-x-4 w-full'>
                         <div className='flex gap-x-1 justify-center mb-1'>
