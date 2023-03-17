@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import Image from 'next/image';
-import styled from '@emotion/styled';
 import { useInView } from 'react-intersection-observer';
 
 // Axios
 import axiosClient from '../../config/axios';
 
 // Contexts
+import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 import StatusContext from '../../contexts/status/StatusContext';
 import BlocksContext from '../../contexts/blocks/BlocksContext';
 
@@ -18,22 +18,14 @@ import { TooltipContainer, TooltipContentContainerHeaders } from '../ui/Tooltips
 
 // Types
 import { Epoch, Block } from '../../types';
-
-// Styled
-const Card = styled.div`
-    box-shadow: inset -7px -7px 8px #f0c83a, inset 7px 7px 8px #f0c83a;
-`;
-
-const CardCalculating = styled.div`
-    box-shadow: inset -7px -7px 8px #ec903c, inset 7px 7px 8px #ec903c;
-`;
+import Link from 'next/link';
 
 // Constants
 const firstBlock: number = 1606824023000;
 
 const Statitstics = () => {
-    // Constants
-    const ETH_WEI = 1;
+    // Theme Mode Context
+    const { themeMode } = React.useContext(ThemeModeContext) || {};
 
     // Status Context
     const { setNotWorking } = React.useContext(StatusContext) || {};
@@ -44,7 +36,8 @@ const Statitstics = () => {
     // Intersection Observer
     const { ref, inView } = useInView();
 
-    const conainerRef = useRef<HTMLInputElement>(null);
+    // Refs
+    const containerRef = useRef<HTMLInputElement>(null);
 
     // States
     const [epochs, setEpochs] = useState<Epoch[]>([]);
@@ -120,14 +113,14 @@ const Statitstics = () => {
     }, []);
 
     const handleMouseMove = (e: any) => {
-        if (conainerRef.current) {
+        if (containerRef.current) {
             const x = e.pageX;
             const limit = 0.15;
 
-            if (x < conainerRef.current.clientWidth * limit) {
-                conainerRef.current.scrollLeft -= 10;
-            } else if (x > conainerRef.current.clientWidth * (1 - limit)) {
-                conainerRef.current.scrollLeft += 10;
+            if (x < containerRef.current.clientWidth * limit) {
+                containerRef.current.scrollLeft -= 10;
+            } else if (x > containerRef.current.clientWidth * (1 - limit)) {
+                containerRef.current.scrollLeft += 10;
             }
         }
     };
@@ -175,7 +168,7 @@ const Statitstics = () => {
         return arrayBlocks;
     };
 
-    const getCalculatingEpochDesktop = (f_slot: number, f_epoch: number, blocks: Block[]) => {
+    const getCalculatingEpochDesktop = (f_epoch: number, blocks: Block[]) => {
         const arrayBlocks = createArrayBlocks(blocks);
 
         if (!arrayBlocks) {
@@ -183,12 +176,33 @@ const Statitstics = () => {
         }
 
         return (
-            <CardCalculating className='flex gap-x-1 justify-around items-center text-[9px] text-black bg-[#FFC163] rounded-[22px] px-2 xl:px-8 py-3'>
+            <div
+                className='flex gap-x-1 justify-around items-center text-[9px] text-black rounded-[22px] px-2 xl:px-8 py-3'
+                style={{
+                    backgroundColor: themeMode?.darkMode ? 'var(--brown1)' : 'var(--blue3)',
+                    boxShadow: themeMode?.darkMode ? 'var(--boxShadowOrange1)' : 'var(--boxShadowBlue2)',
+                }}
+            >
                 <div className='flex flex-col w-[10%] pt-2.5 pb-2.5'>
                     <p>{new Date(firstBlock + f_epoch * 32 * 12000).toLocaleDateString()}</p>
                     <p>{new Date(firstBlock + f_epoch * 32 * 12000).toLocaleTimeString()}</p>
                 </div>
-                <p className='w-[11%]'>{f_epoch.toLocaleString()}</p>
+                <div className='w-[11%]'>
+                    <Link
+                        href={{
+                            pathname: '/epoch/[id]',
+                            query: {
+                                id: f_epoch,
+                            },
+                        }}
+                        passHref
+                        as={`/epoch/${f_epoch}`}
+                        className='flex gap-x-1 items-center w-fit mx-auto'
+                    >
+                        <p>{f_epoch.toLocaleString()}</p>
+                        <Image src='/static/images/link.svg' alt='Link icon' width={20} height={20} className='mb-1' />
+                    </Link>
+                </div>
                 <div className='w-[15%] pt-3.5 mb-6'>
                     <p className='uppercase'>blocks</p>
                     <ProgressTileBar
@@ -213,11 +227,11 @@ const Statitstics = () => {
                 <div className='w-[32%]'>
                     <p className='w-32 uppercase mx-auto text-start'>{calculatingText}</p>
                 </div>
-            </CardCalculating>
+            </div>
         );
     };
 
-    const getCalculatingEpochMobile = (f_slot: number, f_epoch: number, blocks: Block[]) => {
+    const getCalculatingEpochMobile = (f_epoch: number, blocks: Block[]) => {
         const arrayBlocks = createArrayBlocks(blocks);
 
         if (!arrayBlocks) {
@@ -225,9 +239,26 @@ const Statitstics = () => {
         }
 
         return (
-            <CardCalculating className='flex flex-col gap-y-4 justify-around items-center text-[10px] text-black bg-[#FFC163] rounded-[22px] px-3 py-4'>
+            <div
+                className='flex flex-col gap-y-4 justify-around items-center text-[10px] text-black rounded-[22px] px-3 py-4'
+                style={{
+                    backgroundColor: themeMode?.darkMode ? 'var(--brown1)' : 'var(--blue3)',
+                    boxShadow: themeMode?.darkMode ? 'var(--boxShadowOrange1)' : 'var(--boxShadowBlue2)',
+                }}
+            >
                 <div className='flex gap-x-1 justify-center'>
-                    <p className='font-bold text-sm mt-0.5'>Epoch {f_epoch.toLocaleString()}</p>
+                    <Link
+                        href={{
+                            pathname: '/epoch/[id]',
+                            query: {
+                                id: f_epoch,
+                            },
+                        }}
+                        passHref
+                        as={`/epoch/${f_epoch}`}
+                    >
+                        <p className='font-bold text-sm mt-0.5'>Epoch {f_epoch.toLocaleString()}</p>
+                    </Link>
                 </div>
                 <div className='flex flex-col gap-x-4 w-full'>
                     <div className='flex gap-x-1 justify-center mb-1'>
@@ -242,8 +273,8 @@ const Statitstics = () => {
                         </TooltipContainer>
                     </div>
                     <div>
-                        <p>{new Date(firstBlock + f_slot * 12000).toLocaleDateString()}</p>
-                        <p>{new Date(firstBlock + f_slot * 12000).toLocaleTimeString()}</p>
+                        <p>{new Date(firstBlock + f_epoch * 32 * 12000).toLocaleDateString()}</p>
+                        <p>{new Date(firstBlock + f_epoch * 32 * 12000).toLocaleTimeString()}</p>
                     </div>
                 </div>
                 <div className='flex flex-col w-full'>
@@ -324,23 +355,9 @@ const Statitstics = () => {
                         <p className='w-32 uppercase mx-auto text-start'>{calculatingText}</p>
                     </div>
                 </div>
-            </CardCalculating>
+            </div>
         );
     };
-
-    const getCalculatingEpochsDesktop = (f_slot: number, f_epoch: number, blocks: Record<number, Block[]>) => (
-        <>
-            {getCalculatingEpochDesktop(f_slot + 64, f_epoch + 2, blocks[f_epoch + 2])}
-            {getCalculatingEpochDesktop(f_slot + 32, f_epoch + 1, blocks[f_epoch + 1])}
-        </>
-    );
-
-    const getCalculatingEpochsMobile = (f_slot: number, f_epoch: number, blocks: Record<number, Block[]>) => (
-        <>
-            {getCalculatingEpochMobile(f_slot + 64, f_epoch + 2, blocks[f_epoch + 2])}
-            {getCalculatingEpochMobile(f_slot + 32, f_epoch + 1, blocks[f_epoch + 1])}
-        </>
-    );
 
     const getProposedBlocks = (totalBlock: Array<number>) => {
         return totalBlock?.filter(element => element === 1).length;
@@ -348,7 +365,7 @@ const Statitstics = () => {
 
     const getDesktopView = () => (
         <div
-            ref={conainerRef}
+            ref={containerRef}
             className='flex flex-col px-2 xl:px-20 overflow-x-scroll overflow-y-hidden scrollbar-thin'
             onMouseMove={handleMouseMove}
         >
@@ -418,22 +435,48 @@ const Statitstics = () => {
             </div>
 
             <div className='flex flex-col justify-center gap-y-4 min-w-[1150px]'>
-                {epochs.length > 0 &&
-                    blocks &&
-                    blocks.epochs &&
-                    getCalculatingEpochsDesktop(epochs[0].f_slot, epochs[0].f_epoch, blocks.epochs)}
+                {epochs.length > 0 && blocks && blocks.epochs && (
+                    <>
+                        {getCalculatingEpochDesktop(epochs[0].f_epoch + 2, blocks.epochs[epochs[0].f_epoch + 2])}
+                        {getCalculatingEpochDesktop(epochs[0].f_epoch + 1, blocks.epochs[epochs[0].f_epoch + 1])}
+                    </>
+                )}
                 {epochs.map((epoch: Epoch, idx: number) => (
-                    <Card
+                    <div
                         key={epoch.f_epoch}
                         ref={idx === epochs.length - 1 ? ref : undefined}
-                        className='flex gap-x-1 justify-around items-center text-[9px] text-black bg-[#FFF0A1] rounded-[22px] px-2 xl:px-8 py-3'
+                        className='flex gap-x-1 justify-around items-center text-[9px] text-black rounded-[22px] px-2 xl:px-8 py-3'
+                        style={{
+                            backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
+                            boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
+                        }}
                     >
                         <div className='flex flex-col w-[10%]'>
                             <p>{new Date(firstBlock + epoch.f_epoch * 32 * 12000).toLocaleDateString()}</p>
                             <p>{new Date(firstBlock + epoch.f_epoch * 32 * 12000).toLocaleTimeString()}</p>
                         </div>
-
-                        <p className='w-[11%]'>{epoch.f_epoch.toLocaleString()}</p>
+                        <div className='w-[11%]'>
+                            <Link
+                                href={{
+                                    pathname: '/epoch/[id]',
+                                    query: {
+                                        id: epoch.f_epoch,
+                                    },
+                                }}
+                                passHref
+                                as={`/epoch/${epoch.f_epoch}`}
+                                className='flex gap-x-1 items-center w-fit mx-auto'
+                            >
+                                <p>{epoch.f_epoch.toLocaleString()}</p>
+                                <Image
+                                    src='/static/images/link.svg'
+                                    alt='Link icon'
+                                    width={20}
+                                    height={20}
+                                    className='mb-1'
+                                />
+                            </Link>
+                        </div>
 
                         <div className='w-[15%] pt-3.5 mb-6'>
                             <p className='uppercase'>blocks</p>
@@ -517,7 +560,7 @@ const Statitstics = () => {
                                 }
                             />
                         </div>
-                    </Card>
+                    </div>
                 ))}
             </div>
         </div>
@@ -525,19 +568,36 @@ const Statitstics = () => {
 
     const getPhoneView = () => (
         <div className='flex flex-col gap-y-4 uppercase px-4 mt-3'>
-            {epochs.length > 0 &&
-                blocks &&
-                blocks.epochs &&
-                getCalculatingEpochsMobile(epochs[0].f_slot, epochs[0].f_epoch, blocks.epochs)}
+            {epochs.length > 0 && blocks && blocks.epochs && (
+                <>
+                    {getCalculatingEpochMobile(epochs[0].f_epoch + 2, blocks.epochs[epochs[0].f_epoch + 2])}
+                    {getCalculatingEpochMobile(epochs[0].f_epoch + 1, blocks.epochs[epochs[0].f_epoch + 1])}
+                </>
+            )}
 
             {epochs.map((epoch: Epoch, idx: number) => (
-                <Card
+                <div
                     key={epoch.f_epoch}
                     ref={idx === epochs.length - 1 ? ref : undefined}
-                    className='flex flex-col gap-y-4 justify-around items-center text-[10px] text-black bg-[#FFF0A2] rounded-[22px] px-3 py-4'
+                    className='flex flex-col gap-y-4 justify-around items-center text-[10px] text-black rounded-[22px] px-3 py-4'
+                    style={{
+                        backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
+                        boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
+                    }}
                 >
                     <div className='flex gap-x-1 justify-center'>
-                        <p className='font-bold text-sm mt-0.5'>Epoch {epoch.f_epoch?.toLocaleString()}</p>
+                        <Link
+                            href={{
+                                pathname: '/epoch/[id]',
+                                query: {
+                                    id: epoch.f_epoch,
+                                },
+                            }}
+                            passHref
+                            as={`/epoch/${epoch.f_epoch}`}
+                        >
+                            <p className='font-bold text-sm mt-0.5'>Epoch {epoch.f_epoch?.toLocaleString()}</p>
+                        </Link>
                     </div>
                     <div className='flex flex-col gap-x-4 w-full'>
                         <div className='flex gap-x-1 justify-center mb-1'>
@@ -685,7 +745,7 @@ const Statitstics = () => {
                             }
                         />
                     </div>
-                </Card>
+                </div>
             ))}
         </div>
     );

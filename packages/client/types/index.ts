@@ -8,9 +8,10 @@ export type Epoch = {
     f_missing_source: number;
     f_missing_target: number;
     f_missing_head: number;
-    reward_average: string;
-    max_reward_average: string;
+    reward_average?: string;
+    max_reward_average?: string;
     proposed_blocks: Array<number>;
+    f_slots?: Array<Slot>;
 };
 
 export type Block = {
@@ -33,4 +34,11 @@ export type Block = {
     f_sync_bits?: number;
     f_timestamp: number;
     f_voluntary_exits?: number;
+};
+
+export type Slot = {
+    f_proposer_slot: number;
+    f_pool_name: string;
+    f_val_idx: number;
+    f_proposed: boolean;
 };
