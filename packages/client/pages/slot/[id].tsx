@@ -66,10 +66,11 @@ type CardProps = {
     iconSize?: number;
     consensusLayer?: boolean;
     link?: string;
+    target?: string;
     darkMode?: boolean;
 };
 
-const Card = ({ title, content, icon, iconSize, consensusLayer, link, darkMode }: CardProps) => {
+const Card = ({ title, content, icon, iconSize, consensusLayer, link, darkMode, target }: CardProps) => {
     let backgroundColor;
     let letterColor;
 
@@ -104,7 +105,7 @@ const Card = ({ title, content, icon, iconSize, consensusLayer, link, darkMode }
                     {icon && (
                         <a
                             href={link || 'none'}
-                            target='_blank'
+                            target={target}
                             rel='noreferrer'
                             style={{ textDecoration: 'none', color: 'black' }}
                         >
@@ -193,7 +194,7 @@ const Slot = () => {
                             getBlock();
                         }
                     }, timeDifference + 2000);
-                } else {
+                } else if (timeDifference > -10000) {
                     setTimeout(() => {
                         if (Number(id) === slotRef.current) {
                             getBlock();
@@ -277,6 +278,8 @@ const Slot = () => {
             } else if (timeDifference > 1000) {
                 const seconds = Math.floor(timeDifference / 1000);
                 text = ` (in ${seconds} ${seconds > 1 ? 'seconds' : 'second'})`;
+            } else if (timeDifference < -10000) {
+                text = ' (data not saved)';
             } else {
                 text = ' (updating...)';
             }
@@ -301,6 +304,10 @@ const Slot = () => {
                         <Card
                             title='Epoch'
                             content={block.f_epoch.toLocaleString()}
+                            link={`/epoch/${block.f_epoch}`}
+                            icon='link'
+                            iconSize={25}
+                            target='_self'
                             consensusLayer
                             darkMode={themeMode?.darkMode}
                         />
@@ -355,6 +362,7 @@ const Slot = () => {
                                 iconSize={35}
                                 consensusLayer
                                 link={`https://beaconcha.in/validator/${block.f_proposer_index}`}
+                                target='_blank'
                                 darkMode={themeMode?.darkMode}
                             />
                         )}
@@ -451,6 +459,7 @@ const Slot = () => {
                                 }
                                 iconSize={35}
                                 link={`https://etherscan.io/block/${block.f_el_block_hash}`}
+                                target='_blank'
                                 darkMode={themeMode?.darkMode}
                             />
 
