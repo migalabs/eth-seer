@@ -21,7 +21,7 @@ import { Epoch, Block } from '../../types';
 import Link from 'next/link';
 
 // Constants
-const firstBlock: number = 1606824023000;
+const firstBlock: number = Number(process.env.NEXT_PUBLIC_NETWORK_GENESIS);
 
 const Statitstics = () => {
     // Theme Mode Context
