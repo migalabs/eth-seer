@@ -18,7 +18,7 @@ import { POOLS } from '../../constants';
 import { Epoch, Slot } from '../../types';
 
 // Constants
-const firstBlock: number = 1606824023000;
+const firstBlock: number = Number(process.env.NEXT_PUBLIC_NETWORK_GENESIS); // 1606824023000
 
 // Styled
 const Card = styled.div`
