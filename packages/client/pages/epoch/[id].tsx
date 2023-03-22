@@ -274,10 +274,10 @@ const EpochComponent = () => {
                         </div>
                         <div className='flex flex-col gap-y-2 w-64 md:w-fit'>
                             <CardContent
-                                    content={`Act. Balance: ${epoch?.f_total_effective_balance_eth?.toLocaleString()} ETH`}
-                                    bg='#0016D8'
-                                    color='#BDC4FF'
-                                />
+                                content={`Act. Balance: ${epoch?.f_total_effective_balance_eth?.toLocaleString()} ETH`}
+                                bg='#0016D8'
+                                color='#BDC4FF'
+                            />
                         </div>
                     </div>
                 </div>
