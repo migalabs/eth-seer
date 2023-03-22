@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React, { useEffect, useRef, useState, useCallback, useContext } from 'react';
 import Image from 'next/image';
 import { useInView } from 'react-intersection-observer';
 
@@ -25,13 +25,13 @@ const firstBlock: number = 1606824023000;
 
 const Statitstics = () => {
     // Theme Mode Context
-    const { themeMode } = React.useContext(ThemeModeContext) || {};
+    const { themeMode } = useContext(ThemeModeContext) || {};
 
     // Status Context
-    const { setNotWorking } = React.useContext(StatusContext) || {};
+    const { setNotWorking } = useContext(StatusContext) || {};
 
     // Blocks Context
-    const { blocks, startEventSource, closeEventSource, getBlocks } = React.useContext(BlocksContext) || {};
+    const { blocks, getBlocks } = useContext(BlocksContext) || {};
 
     // Intersection Observer
     const { ref, inView } = useInView();
@@ -45,7 +45,6 @@ const Statitstics = () => {
     const [currentPage, setCurrentPage] = useState(0);
     const [lastPageFetched, setLastPageFetched] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [eventSourceOpenened, setEventSourceOpenened] = useState(false);
     const [calculatingText, setCalculatingText] = useState('');
 
     useEffect(() => {
@@ -57,20 +56,6 @@ const Statitstics = () => {
 
         if (inView && !lastPageFetched) {
             getEpochs(currentPage + 1);
-        }
-
-        if (!eventSourceOpenened) {
-            const eventSource = new EventSource(
-                `${process.env.NEXT_PUBLIC_URL_API}/api/validator-rewards-summary/new-epoch-notification`
-            );
-            eventSource.addEventListener('new_epoch', function (e) {
-                getEpochs(0, 2);
-            });
-            setEventSourceOpenened(true);
-
-            return () => {
-                eventSource.close();
-            };
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -98,19 +83,6 @@ const Statitstics = () => {
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [blocks]);
-
-    useEffect(() => {
-        if (!eventSourceOpenened) {
-            startEventSource?.();
-            setEventSourceOpenened(true);
-        }
-
-        return () => {
-            closeEventSource?.();
-        };
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     const handleMouseMove = (e: any) => {
         if (containerRef.current) {
