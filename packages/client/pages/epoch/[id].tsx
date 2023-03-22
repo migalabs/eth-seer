@@ -34,7 +34,7 @@ type Props = {
 const CardContent = ({ content, bg, color }: Props) => {
     return (
         <span
-            className='block uppercase border-2 px-5 rounded-2xl font-bold leading-4 py-0.5 sm:py-1'
+            className='block uppercase border-2 px-5 rounded-2xl font-bold leading-5 py-0.5 sm:py-1'
             style={{ background: color, borderColor: bg, color: bg }}
         >
             {content}
@@ -198,7 +198,7 @@ const EpochComponent = () => {
                     </div>
                 </div>
                 <div className='flex flex-col md:flex-row gap-x-10 gap-y-2'>
-                    <div className='md:w-[260px]'>
+                    <div className='md:w-[265px]'>
                         <CardContent content={`Missing ${title}: ${value.toLocaleString()}`} bg={bg} color={color} />
                     </div>
                     <div className='flex-shrink'>
@@ -265,14 +265,14 @@ const EpochComponent = () => {
                                 }
                             />
                         </div>
-                        <div className='flex flex-col gap-y-2 w-64 md:w-fit'>
+                        <div className='flex flex-col gap-y-2 w-[270px] md:w-fit'>
                             <CardContent
                                 content={`Att. Balance: ${epoch?.f_att_effective_balance_eth?.toLocaleString()} ETH`}
                                 bg='#0016D8'
                                 color='#BDC4FF'
                             />
                         </div>
-                        <div className='flex flex-col gap-y-2 w-64 md:w-fit'>
+                        <div className='flex flex-col gap-y-2 w-[270px] md:w-fit'>
                             <CardContent
                                 content={`Act. Balance: ${epoch?.f_total_effective_balance_eth?.toLocaleString()} ETH`}
                                 bg='#0016D8'
