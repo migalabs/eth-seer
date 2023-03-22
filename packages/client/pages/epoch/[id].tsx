@@ -10,6 +10,7 @@ import axiosClient from '../../config/axios';
 // Components
 import Layout from '../../components/layouts/Layout';
 import ProgressSmoothBarEpoch from '../../components/ui/ProgressSmoothBarEpoch';
+import EpochAnimation from '../../components/layouts/EpochAnimation';
 
 // Constants
 import { POOLS } from '../../constants';
@@ -309,10 +310,14 @@ const EpochComponent = () => {
                 </Link>
             </div>
 
-            <div className='mx-auto max-w-[1100px]'>
-                <div>{epoch && epoch?.f_slots?.length !== 0 && getContentEpochStats()}</div>
-                <div>{epoch && epoch?.f_slots?.length !== 0 && getContentSlots()}</div>
-            </div>
+            {epoch && epoch.f_slots && epoch.f_slots.length > 0 ? (
+                <div className='mx-auto max-w-[1100px]'>
+                    <div>{getContentEpochStats()}</div>
+                    <div>{getContentSlots()}</div>
+                </div>
+            ) : (
+                <EpochAnimation />
+            )}
         </Layout>
     );
 };
