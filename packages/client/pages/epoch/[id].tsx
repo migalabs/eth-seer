@@ -145,7 +145,7 @@ const EpochComponent = () => {
                     <p className='mt-0.5 w-[18%]'>DateTime</p>
                 </div>
 
-                <Card className='flex flex-col gap-y-5 text-[#D1A128] min-w-[700px] text-2xs sm:text-xs bg-[#FFF0A1] rounded-[22px] px-4 xl:px-8 py-3'>
+                <Card className='flex flex-col gap-y-5 min-w-[700px] text-2xs sm:text-xs bg-[#FFF0A1] rounded-[22px] px-4 xl:px-8 py-3'>
                     {epoch?.f_slots?.map(element => (
                         <div
                             className='flex gap-x-4 py-3 uppercase text-center items-center'
@@ -198,7 +198,7 @@ const EpochComponent = () => {
                     </div>
                 </div>
                 <div className='flex flex-col md:flex-row gap-x-10 gap-y-2'>
-                    <div className='md:w-[244px]'>
+                    <div className='md:w-[260px]'>
                         <CardContent content={`Missing ${title}: ${value.toLocaleString()}`} bg={bg} color={color} />
                     </div>
                     <div className='flex-shrink'>
@@ -254,7 +254,7 @@ const EpochComponent = () => {
                 </div>
                 <div className='flex flex-col'>
                     <p>Voting Participation:</p>
-                    <div className='flex flex-col md:flex-row items-center md:items-start md:justify-center gap-x-10 gap-y-2'>
+                    <div className='flex flex-col md:flex-row gap-x-10 gap-y-2 items-center md:justify-end md:w-full mb-4 mt-2'>
                         <div className='w-64 text-center'>
                             <ProgressSmoothBarEpoch
                                 bg='#0016D8'
@@ -267,15 +267,17 @@ const EpochComponent = () => {
                         </div>
                         <div className='flex flex-col gap-y-2 w-64 md:w-fit'>
                             <CardContent
-                                content={`Attesting Balance: ${epoch?.f_att_effective_balance_eth?.toLocaleString()} ETH`}
+                                content={`Att. Balance: ${epoch?.f_att_effective_balance_eth?.toLocaleString()} ETH`}
                                 bg='#0016D8'
                                 color='#BDC4FF'
                             />
+                        </div>
+                        <div className='flex flex-col gap-y-2 w-64 md:w-fit'>
                             <CardContent
-                                content={`Total Active Balance: ${epoch?.f_total_effective_balance_eth?.toLocaleString()} ETH`}
-                                bg='#0016D8'
-                                color='#BDC4FF'
-                            />
+                                    content={`Act. Balance: ${epoch?.f_total_effective_balance_eth?.toLocaleString()} ETH`}
+                                    bg='#0016D8'
+                                    color='#BDC4FF'
+                                />
                         </div>
                     </div>
                 </div>
