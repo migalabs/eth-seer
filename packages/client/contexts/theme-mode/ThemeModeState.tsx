@@ -7,12 +7,29 @@ import { SET_DARK_MODE, SET_LIGHT_MODE } from './ThemeModeTypes';
 
 const ThemeModeState = (props: any) => {
     const initialState = {
-        darkMode: (typeof window !== 'undefined' && localStorage.getItem('themeMode') === 'dark') || false,
+        darkMode: false,
     };
 
     const [state, dispatch] = useReducer(ThemeModeReducer, initialState);
 
     useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const themeMode = localStorage.getItem('themeMode');
+
+            if (!themeMode) {
+                // First time user
+                if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    setDarkMode();
+                } else {
+                    setLightMode();
+                }
+            } else if (themeMode === 'dark') {
+                setDarkMode();
+            } else {
+                setLightMode();
+            }
+        }
+
         const body = document.querySelector('body');
 
         if (state.darkMode) {
