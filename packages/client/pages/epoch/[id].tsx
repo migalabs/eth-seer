@@ -150,10 +150,10 @@ const EpochComponent = () => {
                     <p className='mt-0.5 w-[18%]'>DateTime</p>
                 </div>
 
-                <Card className='flex flex-col gap-y-5 min-w-[700px] text-2xs sm:text-xs bg-[#FFF0A1] rounded-[22px] px-4 xl:px-8 py-3'>
+                <Card className='flex flex-col gap-y-2 min-w-[700px] text-2xs sm:text-xs bg-[#FFF0A1] rounded-[22px] px-4 xl:px-8 py-3'>
                     {epoch?.f_slots?.map(element => (
                         <div
-                            className='flex gap-x-4 py-3 uppercase text-center items-center'
+                            className='flex gap-x-4 py-1 uppercase text-center items-center'
                             key={element.f_proposer_slot}
                         >
                             <div className='flex items-center justify-center w-[10%]'>{getBlockImage(element)}</div>
