@@ -54,6 +54,7 @@ const EpochComponent = () => {
     const containerRef = useRef<HTMLInputElement>(null);
 
     const [epoch, setEpoch] = useState<Epoch | null>(null);
+    const [animation, setAnimation] = useState(false);
 
     // UseEffect
     useEffect(() => {
@@ -74,6 +75,10 @@ const EpochComponent = () => {
         setEpoch({
             ...response.data.epoch,
         });
+
+        if (Number(response.data.epoch.proposed_blocks) == 0 && response.data.epoch.f_slots.length == 0) {
+            setAnimation(true);
+        }
     };
 
     const handleMouseMove = (e: any) => {
@@ -318,7 +323,7 @@ const EpochComponent = () => {
                     <div>{getContentSlots()}</div>
                 </div>
             ) : (
-                <EpochAnimation />
+                animation && <EpochAnimation />
             )}
         </Layout>
     );
