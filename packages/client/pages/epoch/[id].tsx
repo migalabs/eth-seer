@@ -192,7 +192,7 @@ const EpochComponent = () => {
                                 </Link>
                             </div>
                             <p className='w-[18%]'>
-                                {new Date(firstBlock + Number(element.f_proposer_slot) * 12000).toLocaleString()}
+                                {new Date(firstBlock + Number(element.f_proposer_slot) * 12000).toLocaleString('ja-JP')}
                             </p>
                         </div>
                     ))}
@@ -235,7 +235,7 @@ const EpochComponent = () => {
             >
                 <div className='flex flex-row items-center gap-x-5'>
                     <p className='w-60'>DateTime (Local):</p>
-                    <p className='leading-3'>{new Date(firstBlock + Number(epoch?.f_slot) * 12000).toLocaleString()}</p>
+                    <p className='leading-3'>{new Date(firstBlock + Number(epoch?.f_slot) * 12000).toLocaleString('ja-JP')}</p>
                 </div>
                 <div className='flex flex-col sm:flex-row gap-x-5'>
                     <p className='w-60'>Blocks (out of 32):</p>
