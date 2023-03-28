@@ -83,7 +83,7 @@
         overflow: hidden;
     }
 
-    .panda-text{
+    .panda-text {
         position: relative;
         top: -10rem;
         left: 3rem;
@@ -151,7 +151,7 @@
     }
 
     @media (min-width: 640px) {
-        .panda-text{
+        .panda-text {
             position: relative;
             top: -15rem;
             left: 10rem;
@@ -201,15 +201,14 @@
     }
 
     @media (min-width: 768px) {
-        
-        .panda-text{
+        .panda-text {
             position: relative;
             top: -20rem;
             left: 17rem;
             width: 30rem;
             height: 7.5rem;
         }
-        
+
         .cloud.one {
             top: -4rem;
             left: calc(50% - 6.5rem);

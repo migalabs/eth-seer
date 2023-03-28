@@ -54,16 +54,18 @@ const EpochComponent = () => {
     const { themeMode } = useContext(ThemeModeContext) || {};
 
     // Refs
-    const slotRef = useRef(0);
+    const epochRef = useRef(0);
+    const existsEpochRef = useRef(true);
     const containerRef = useRef<HTMLInputElement>(null);
 
     const [epoch, setEpoch] = useState<Epoch | null>(null);
     const [animation, setAnimation] = useState(false);
+    const [existsEpoch, setExistsEpoch] = useState<boolean>(true);
 
     // UseEffect
     useEffect(() => {
         if (id) {
-            slotRef.current = Number(id);
+            epochRef.current = Number(id);
         }
 
         if ((id && !epoch) || (epoch && epoch.f_epoch !== Number(id))) {
@@ -74,14 +76,44 @@ const EpochComponent = () => {
     }, [id]);
 
     const getEpoch = async () => {
-        const response = await axiosClient.get(`/api/validator-rewards-summary/epoch/${id}`);
+        try {
+            const response = await axiosClient.get(`/api/validator-rewards-summary/epoch/${id}`);
 
-        setEpoch({
-            ...response.data.epoch,
-        });
+            setEpoch({
+                ...response.data.epoch,
+            });
 
-        if (Number(response.data.epoch.proposed_blocks) == 0 && response.data.epoch.f_slots.length == 0) {
-            setAnimation(true);
+            if (Number(response.data.epoch.proposed_blocks) == 0 && response.data.epoch.f_slots.length == 0) {
+                setAnimation(true);
+
+                const expectedTimestamp = (firstBlock + Number(id) * 12000 * 32 + 12000 * 64) / 1000;
+
+                setExistsEpoch(false);
+
+                existsEpochRef.current = false;
+
+                const timeDifference = new Date(expectedTimestamp * 1000).getTime() - new Date().getTime();
+
+                if (timeDifference > 0) {
+                    setTimeout(() => {
+                        if (Number(id) === epochRef.current) {
+                            getEpoch();
+                        }
+                    }, timeDifference + 2000);
+                } else if (timeDifference > -30000) {
+                    setTimeout(() => {
+                        if (Number(id) === epochRef.current) {
+                            getEpoch();
+                        }
+                    }, 1000);
+                }
+            } else {
+                setExistsEpoch(true);
+                setAnimation(false);
+                existsEpochRef.current = true;
+            }
+        } catch (error) {
+            console.log(error);
         }
     };
 
@@ -235,7 +267,9 @@ const EpochComponent = () => {
             >
                 <div className='flex flex-row items-center gap-x-5'>
                     <p className='w-60'>DateTime (Local):</p>
-                    <p className='leading-3'>{new Date(firstBlock + Number(epoch?.f_slot) * 12000).toLocaleString('ja-JP')}</p>
+                    <p className='leading-3'>
+                        {new Date(firstBlock + Number(epoch?.f_slot) * 12000).toLocaleString('ja-JP')}
+                    </p>
                 </div>
                 <div className='flex flex-col sm:flex-row gap-x-5'>
                     <p className='w-60'>Blocks (out of 32):</p>
@@ -339,7 +373,7 @@ const EpochComponent = () => {
                     <div>{getContentSlots()}</div>
                 </div>
             ) : (
-                animation && <EpochAnimation darkMode={themeMode?.darkMode as boolean}/>
+                animation && <EpochAnimation darkMode={themeMode?.darkMode as boolean} />
             )}
         </Layout>
     );
