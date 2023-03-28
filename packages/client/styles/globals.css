@@ -83,6 +83,14 @@
         overflow: hidden;
     }
 
+    .panda-text {
+        position: relative;
+        top: -10rem;
+        left: 3rem;
+        width: 20rem;
+        height: 5rem;
+    }
+
     .cloud {
         position: absolute;
         animation: slideUp 3s ease infinite both;
@@ -143,6 +151,14 @@
     }
 
     @media (min-width: 640px) {
+        .panda-text {
+            position: relative;
+            top: -15rem;
+            left: 10rem;
+            width: 25rem;
+            height: 5rem;
+        }
+
         .cloud.one {
             top: -3rem;
             left: calc(50% - 4.5rem);
@@ -185,6 +201,14 @@
     }
 
     @media (min-width: 768px) {
+        .panda-text {
+            position: relative;
+            top: -20rem;
+            left: 17rem;
+            width: 30rem;
+            height: 7.5rem;
+        }
+
         .cloud.one {
             top: -4rem;
             left: calc(50% - 6.5rem);
