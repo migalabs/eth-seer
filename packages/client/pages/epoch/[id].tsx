@@ -61,6 +61,7 @@ const EpochComponent = () => {
     const [epoch, setEpoch] = useState<Epoch | null>(null);
     const [animation, setAnimation] = useState(false);
     const [existsEpoch, setExistsEpoch] = useState<boolean>(true);
+    const [notEpoch, setNotEpoch] = useState<boolean>(false);
 
     // UseEffect
     useEffect(() => {
@@ -106,6 +107,8 @@ const EpochComponent = () => {
                             getEpoch();
                         }
                     }, 1000);
+                } else if (timeDifference < -30000) {
+                    setNotEpoch(true);
                 }
             } else {
                 setExistsEpoch(true);
@@ -373,7 +376,7 @@ const EpochComponent = () => {
                     <div>{getContentSlots()}</div>
                 </div>
             ) : (
-                animation && <EpochAnimation darkMode={themeMode?.darkMode as boolean} />
+                animation && <EpochAnimation darkMode={themeMode?.darkMode as boolean} notEpoch={notEpoch} />
             )}
         </Layout>
     );
