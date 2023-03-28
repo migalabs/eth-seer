@@ -339,7 +339,7 @@ const EpochComponent = () => {
                     <div>{getContentSlots()}</div>
                 </div>
             ) : (
-                animation && <EpochAnimation />
+                animation && <EpochAnimation darkMode={themeMode?.darkMode as boolean}/>
             )}
         </Layout>
     );
