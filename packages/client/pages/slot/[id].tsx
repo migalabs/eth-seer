@@ -242,9 +242,9 @@ const Slot = () => {
 
         if (block) {
             if (block.f_timestamp) {
-                text = new Date(block.f_timestamp * 1000).toLocaleString();
+                text = new Date(block.f_timestamp * 1000).toLocaleString('ja-JP');
             } else {
-                text = new Date(firstBlock + Number(id) * 12000).toLocaleString();
+                text = new Date(firstBlock + Number(id) * 12000).toLocaleString('ja-JP');
             }
         }
 

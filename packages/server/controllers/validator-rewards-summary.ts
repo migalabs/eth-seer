@@ -163,7 +163,7 @@ export const getBlock = async (req: Request, res: Response) => {
                 `)
             ]);
 
-        if (proposerDuties.rows.length > 0) {
+        if (proposerDuties.rows.length > 0 && block.rows[0] != undefined) {
             block.rows[0].f_proposed = proposerDuties.rows[0].f_proposed;
         }
 
