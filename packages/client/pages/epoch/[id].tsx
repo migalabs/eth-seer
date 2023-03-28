@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -17,6 +17,7 @@ import { POOLS } from '../../constants';
 
 // Types
 import { Epoch, Slot } from '../../types';
+import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
 // Constants
 const firstBlock: number = Number(process.env.NEXT_PUBLIC_NETWORK_GENESIS); // 1606824023000
@@ -49,16 +50,23 @@ const EpochComponent = () => {
         query: { id },
     } = router;
 
+    // Theme Mode Context
+    const { themeMode } = useContext(ThemeModeContext) || {};
+
     // Refs
-    const slotRef = useRef(0);
+    const epochRef = useRef(0);
+    const existsEpochRef = useRef(true);
     const containerRef = useRef<HTMLInputElement>(null);
 
     const [epoch, setEpoch] = useState<Epoch | null>(null);
+    const [animation, setAnimation] = useState(false);
+    const [existsEpoch, setExistsEpoch] = useState<boolean>(true);
+    const [notEpoch, setNotEpoch] = useState<boolean>(false);
 
     // UseEffect
     useEffect(() => {
         if (id) {
-            slotRef.current = Number(id);
+            epochRef.current = Number(id);
         }
 
         if ((id && !epoch) || (epoch && epoch.f_epoch !== Number(id))) {
@@ -69,11 +77,47 @@ const EpochComponent = () => {
     }, [id]);
 
     const getEpoch = async () => {
-        const response = await axiosClient.get(`/api/validator-rewards-summary/epoch/${id}`);
+        try {
+            const response = await axiosClient.get(`/api/validator-rewards-summary/epoch/${id}`);
 
-        setEpoch({
-            ...response.data.epoch,
-        });
+            setEpoch({
+                ...response.data.epoch,
+            });
+
+            if (Number(response.data.epoch.proposed_blocks) == 0 && response.data.epoch.f_slots.length == 0) {
+                setAnimation(true);
+
+                const expectedTimestamp = (firstBlock + Number(id) * 12000 * 32 + 12000 * 64) / 1000;
+
+                setExistsEpoch(false);
+
+                existsEpochRef.current = false;
+
+                const timeDifference = new Date(expectedTimestamp * 1000).getTime() - new Date().getTime();
+
+                if (timeDifference > 0) {
+                    setTimeout(() => {
+                        if (Number(id) === epochRef.current) {
+                            getEpoch();
+                        }
+                    }, timeDifference + 2000);
+                } else if (timeDifference > -30000) {
+                    setTimeout(() => {
+                        if (Number(id) === epochRef.current) {
+                            getEpoch();
+                        }
+                    }, 1000);
+                } else if (timeDifference < -30000) {
+                    setNotEpoch(true);
+                }
+            } else {
+                setExistsEpoch(true);
+                setAnimation(false);
+                existsEpochRef.current = true;
+            }
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     const handleMouseMove = (e: any) => {
@@ -145,10 +189,16 @@ const EpochComponent = () => {
                     <p className='mt-0.5 w-[18%]'>DateTime</p>
                 </div>
 
-                <Card className='flex flex-col gap-y-5 min-w-[700px] text-2xs sm:text-xs bg-[#FFF0A1] rounded-[22px] px-4 xl:px-8 py-3'>
+                <Card
+                    className='flex flex-col gap-y-2 min-w-[700px] text-2xs sm:text-xs rounded-[22px] px-4 xl:px-8 py-3'
+                    style={{
+                        backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
+                        boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
+                    }}
+                >
                     {epoch?.f_slots?.map(element => (
                         <div
-                            className='flex gap-x-4 py-3 uppercase text-center items-center'
+                            className='flex gap-x-4 py-1 uppercase text-center items-center'
                             key={element.f_proposer_slot}
                         >
                             <div className='flex items-center justify-center w-[10%]'>{getBlockImage(element)}</div>
@@ -177,7 +227,7 @@ const EpochComponent = () => {
                                 </Link>
                             </div>
                             <p className='w-[18%]'>
-                                {new Date(firstBlock + Number(element.f_proposer_slot) * 12000).toLocaleString()}
+                                {new Date(firstBlock + Number(element.f_proposer_slot) * 12000).toLocaleString('ja-JP')}
                             </p>
                         </div>
                     ))}
@@ -211,10 +261,18 @@ const EpochComponent = () => {
 
     const getContentEpochStats = () => {
         return (
-            <Card className='flex flex-col gap-y-2 mx-2 px-6 uppercase overflow-x-scroll overflow-y-hidden scrollbar-thin text-black text-xl text-[8px] sm:text-[10px] bg-[#FFF0A1] rounded-[22px] py-3'>
+            <Card
+                className='flex flex-col gap-y-2 mx-2 px-6 uppercase overflow-x-scroll overflow-y-hidden scrollbar-thin text-black text-xl text-[8px] sm:text-[10px]  rounded-[22px] py-3'
+                style={{
+                    backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
+                    boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
+                }}
+            >
                 <div className='flex flex-row items-center gap-x-5'>
                     <p className='w-60'>DateTime (Local):</p>
-                    <p className='leading-3'>{new Date(firstBlock + Number(epoch?.f_slot) * 12000).toLocaleString()}</p>
+                    <p className='leading-3'>
+                        {new Date(firstBlock + Number(epoch?.f_slot) * 12000).toLocaleString('ja-JP')}
+                    </p>
                 </div>
                 <div className='flex flex-col sm:flex-row gap-x-5'>
                     <p className='w-60'>Blocks (out of 32):</p>
@@ -318,7 +376,7 @@ const EpochComponent = () => {
                     <div>{getContentSlots()}</div>
                 </div>
             ) : (
-                <EpochAnimation />
+                animation && <EpochAnimation darkMode={themeMode?.darkMode as boolean} notEpoch={notEpoch} />
             )}
         </Layout>
     );

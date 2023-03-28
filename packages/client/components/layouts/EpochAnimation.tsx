@@ -1,6 +1,11 @@
 import React from 'react';
 
-const EpochAnimation = () => {
+type Props = {
+    darkMode: boolean;
+    notEpoch: boolean;
+};
+
+const EpochAnimation = ({ darkMode, notEpoch }: Props) => {
     return (
         <div className='animation-container'>
             <div className='panda-container'>
@@ -11,6 +16,19 @@ const EpochAnimation = () => {
                 <img src='/static/images/epoch_animation/4.png' alt='Image 5' className='panda-sleep-one' />
                 <img src='/static/images/epoch_animation/4.png' alt='Image 6' className='panda-sleep-two' />
                 <img src='/static/images/epoch_animation/3.png' alt='Image 7' className='panda-tumbleweed' />
+                <img
+                    src={
+                        notEpoch
+                            ? darkMode
+                                ? '/static/images/epoch_animation/text2-white.png'
+                                : '/static/images/epoch_animation/text2.png'
+                            : darkMode
+                            ? '/static/images/epoch_animation/text-white.png'
+                            : '/static/images/epoch_animation/text.png'
+                    }
+                    alt='Image 8'
+                    className='panda-text'
+                />
             </div>
         </div>
     );
