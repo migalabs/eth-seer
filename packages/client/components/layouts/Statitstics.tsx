@@ -18,7 +18,7 @@ import { Epoch, Block } from '../../types';
 import Link from 'next/link';
 
 // Constants
-const firstBlock: number = 1606824023000;
+const firstBlock: number = Number(process.env.NEXT_PUBLIC_NETWORK_GENESIS);
 
 const Statitstics = () => {
     // Theme Mode Context
@@ -115,8 +115,8 @@ const Statitstics = () => {
                 }}
             >
                 <div className='flex flex-col w-[10%] pt-2.5 pb-2.5'>
-                    <p>{new Date(firstBlock + f_epoch * 32 * 12000).toLocaleDateString()}</p>
-                    <p>{new Date(firstBlock + f_epoch * 32 * 12000).toLocaleTimeString()}</p>
+                    <p>{new Date(firstBlock + f_epoch * 32 * 12000).toLocaleDateString('ja-JP')}</p>
+                    <p>{new Date(firstBlock + f_epoch * 32 * 12000).toLocaleTimeString('ja-JP')}</p>
                 </div>
                 <div className='w-[11%]'>
                     <Link
@@ -204,8 +204,8 @@ const Statitstics = () => {
                         </TooltipContainer>
                     </div>
                     <div>
-                        <p>{new Date(firstBlock + f_epoch * 32 * 12000).toLocaleDateString()}</p>
-                        <p>{new Date(firstBlock + f_epoch * 32 * 12000).toLocaleTimeString()}</p>
+                        <p>{new Date(firstBlock + f_epoch * 32 * 12000).toLocaleDateString('ja-JP')}</p>
+                        <p>{new Date(firstBlock + f_epoch * 32 * 12000).toLocaleTimeString('ja-JP')}</p>
                     </div>
                 </div>
                 <div className='flex flex-col w-full'>
@@ -390,8 +390,8 @@ const Statitstics = () => {
                             }}
                         >
                             <div className='flex flex-col w-[10%]'>
-                                <p>{new Date(firstBlock + epoch.f_epoch * 32 * 12000).toLocaleDateString()}</p>
-                                <p>{new Date(firstBlock + epoch.f_epoch * 32 * 12000).toLocaleTimeString()}</p>
+                                <p>{new Date(firstBlock + epoch.f_epoch * 32 * 12000).toLocaleDateString('ja-JP')}</p>
+                                <p>{new Date(firstBlock + epoch.f_epoch * 32 * 12000).toLocaleTimeString('ja-JP')}</p>
                             </div>
                             <div className='w-[11%]'>
                                 <Link
@@ -567,8 +567,8 @@ const Statitstics = () => {
                                 </TooltipContainer>
                             </div>
                             <div>
-                                <p>{new Date(firstBlock + epoch.f_slot * 12000).toLocaleDateString()}</p>
-                                <p>{new Date(firstBlock + epoch.f_slot * 12000).toLocaleTimeString()}</p>
+                                <p>{new Date(firstBlock + epoch.f_slot * 12000).toLocaleDateString('ja-JP')}</p>
+                                <p>{new Date(firstBlock + epoch.f_slot * 12000).toLocaleTimeString('ja-JP')}</p>
                             </div>
                         </div>
 

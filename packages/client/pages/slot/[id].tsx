@@ -17,7 +17,7 @@ import { Block } from '../../types';
 
 // Constants
 import { POOLS } from '../../constants';
-const firstBlock: number = 1606824023000;
+const firstBlock: number = Number(process.env.NEXT_PUBLIC_NETWORK_GENESIS);
 const zeroAddress = '0x0000000000000000000000000000000000000000000000000000000000000000';
 const zeroAddressShort = '0x0000000000000000000000000000000000000000';
 
@@ -242,9 +242,9 @@ const Slot = () => {
 
         if (block) {
             if (block.f_timestamp) {
-                text = new Date(block.f_timestamp * 1000).toLocaleString();
+                text = new Date(block.f_timestamp * 1000).toLocaleString('ja-JP');
             } else {
-                text = new Date(firstBlock + Number(id) * 12000).toLocaleString();
+                text = new Date(firstBlock + Number(id) * 12000).toLocaleString('ja-JP');
             }
         }
 
