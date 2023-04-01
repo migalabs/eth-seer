@@ -84,11 +84,11 @@
     }
 
     .panda-text {
-        position: relative;
-        top: -10rem;
-        left: 3rem;
+        position: absolute;
+        top: 25%;
+        left: calc(50% - 10rem);
         width: 20rem;
-        height: 5rem;
+        height: 4.5rem;
     }
 
     .cloud {
@@ -144,7 +144,7 @@
         height: 2rem;
 
         position: absolute;
-        top: 75%;
+        top: 82%;
         left: 2%;
 
         animation: tumbleweedAnimation 6s linear infinite;
@@ -152,11 +152,9 @@
 
     @media (min-width: 640px) {
         .panda-text {
-            position: relative;
-            top: -15rem;
-            left: 10rem;
+            left: calc(50% - 12.5rem);
             width: 25rem;
-            height: 5rem;
+            height: 6.5rem;
         }
 
         .cloud.one {
@@ -202,9 +200,7 @@
 
     @media (min-width: 768px) {
         .panda-text {
-            position: relative;
-            top: -20rem;
-            left: 17rem;
+            left: calc(50% - 15rem);
             width: 30rem;
             height: 7.5rem;
         }
@@ -234,14 +230,14 @@
             width: 4rem;
             height: 4rem;
 
-            top: 62%;
+            top: 64%;
         }
 
         .panda-sleep-two {
             width: 6.6rem;
             height: 6.6rem;
 
-            top: 51%;
+            top: 52%;
         }
 
         .panda-tumbleweed {

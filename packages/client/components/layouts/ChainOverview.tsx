@@ -11,7 +11,7 @@ const ChainOverview = () => {
     const { themeMode } = React.useContext(ThemeModeContext) || {};
 
     // Blocks Context
-    const { blocks, startEventSource, closeEventSource, getBlocks } = React.useContext(BlocksContext) || {};
+    const { blocks, getBlocks } = React.useContext(BlocksContext) || {};
 
     // States
     const [lastEpoch, setLastEpoch] = useState(0);
@@ -20,7 +20,6 @@ const ChainOverview = () => {
     const [arrowLeftHidden, setArrowLeftHidden] = useState(false);
     const [currentPage, setCurrentPage] = useState(0);
     const [numberEpochsViewed, setNumberEpochsViewed] = useState(1);
-    const [eventSourceOpenened, setEventSourceOpenened] = useState(false);
 
     useEffect(() => {
         if (blocks && !blocks.epochs) {
@@ -49,17 +48,6 @@ const ChainOverview = () => {
             setLastEpoch(lastEpochAux || 0);
         }
     }, [blocks]);
-
-    useEffect(() => {
-        if (!eventSourceOpenened) {
-            startEventSource?.();
-            setEventSourceOpenened(true);
-        }
-
-        return () => {
-            closeEventSource?.();
-        };
-    }, []);
 
     const handleLeft = () => {
         if (blocks && blocks.epochs && Object.entries(blocks.epochs).length - numberEpochsViewed - count === 1) {
