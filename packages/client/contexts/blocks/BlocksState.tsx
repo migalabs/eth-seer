@@ -42,6 +42,7 @@ const BlocksState = (props: any) => {
             }
         } catch (error) {
             console.log(error);
+            setNotWorking?.();
         }
 
         return false;
