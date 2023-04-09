@@ -203,7 +203,28 @@ const EpochComponent = () => {
                         >
                             <div className='flex items-center justify-center w-[10%]'>{getBlockImage(element)}</div>
                             <p className='w-[35%]'>{element.f_pool_name || 'others'}</p>
-                            <p className='w-[18%]'>{element.f_val_idx.toLocaleString()}</p>
+                            <div className='w-[18%]'>
+                                <Link
+                                    href={{
+                                        pathname: '/validator/[id]',
+                                        query: {
+                                            id: element.f_val_idx,
+                                        },
+                                    }}
+                                    passHref
+                                    as={`/validator/${element.f_val_idx}`}
+                                    className='flex gap-x-1 items-center w-fit mx-auto'
+                                >
+                                    <p>{element.f_val_idx.toLocaleString()}</p>
+                                    <Image
+                                        src='/static/images/link.svg'
+                                        alt='Link icon'
+                                        width={20}
+                                        height={20}
+                                        className='mb-1'
+                                    />
+                                </Link>
+                            </div>
                             <div className='w-[18%]'>
                                 <Link
                                     href={{

@@ -221,6 +221,53 @@ export const getEpoch = async (req: Request, res: Response) => {
     }
 };
 
+export const getValidator = async (req: Request, res: Response) => {
+
+    try {
+
+        const { id } = req.params;
+
+        const [ validatorStats, blocksProposed ] = 
+            await Promise.all([
+                pgClient.query(`
+                SELECT 
+                    t_validator_last_status.f_val_idx,
+                    t_validator_last_status.f_epoch,
+                    t_validator_last_status.f_balance_eth,
+                    t_eth2_pubkeys.f_pool_name,
+                    t_status.f_status
+                FROM 
+                    t_validator_last_status
+                LEFT OUTER JOIN 
+                    t_eth2_pubkeys ON t_validator_last_status.f_val_idx = t_eth2_pubkeys.f_val_idx
+                LEFT OUTER JOIN
+                    t_status ON t_validator_last_status.f_status = t_status.f_id
+                WHERE 
+                    t_validator_last_status.f_val_idx = '${id}'
+                `),
+                pgClient.query(`
+                    SELECT t_proposer_duties.*, t_eth2_pubkeys.f_pool_name
+                    FROM t_proposer_duties
+                    LEFT OUTER JOIN t_eth2_pubkeys ON t_proposer_duties.f_val_idx = t_eth2_pubkeys.f_val_idx
+                    WHERE t_proposer_duties.f_val_idx = '${id}'
+                `)
+            ]);
+
+            const validator = {...validatorStats.rows[0], proposed_blocks: blocksProposed.rows}
+
+        res.json({
+            validator
+        });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            msg: 'An error occurred on the server'
+        });
+    }
+};
+
+
 export const listenBlockNotification = async (req: Request, res: Response) => {
 
     try {
