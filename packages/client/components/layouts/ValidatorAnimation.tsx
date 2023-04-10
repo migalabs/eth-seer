@@ -18,7 +18,7 @@ const ValidatorAnimation = ({ darkMode, notEpoch }: Props) => {
                 <img src='/static/images/epoch_animation/3.png' alt='Image 7' className='panda-tumbleweed' />
                 <img
                     src={
-                            darkMode
+                        darkMode
                             ? '/static/images/epoch_animation/text3-white.png'
                             : '/static/images/epoch_animation/text3.png'
                     }
