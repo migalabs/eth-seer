@@ -217,7 +217,7 @@ const EpochComponent = () => {
                                     className='flex gap-x-1 items-center w-fit mx-auto'
                                 >
                                     <p>{element.f_val_idx.toLocaleString()}</p>
-                                    <Image
+                                    <CustomImage
                                         src='/static/images/link.svg'
                                         alt='Link icon'
                                         width={20}
