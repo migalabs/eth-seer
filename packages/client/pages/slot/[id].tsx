@@ -359,11 +359,11 @@ const Slot = () => {
                             <Card
                                 title='Proposer Index'
                                 content={block.f_proposer_index?.toLocaleString()}
-                                icon='beacon-icon'
-                                iconSize={35}
+                                icon='link'
+                                iconSize={25}
                                 consensusLayer
-                                link={`https://beaconcha.in/validator/${block.f_proposer_index}`}
-                                target='_blank'
+                                link={`/validator/${block.f_proposer_index}`}
+                                target='_self'
                                 darkMode={themeMode?.darkMode}
                             />
                         )}

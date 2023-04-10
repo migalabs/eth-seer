@@ -56,10 +56,13 @@ const SearchEngine = () => {
                 });
             }
 
-            // if (searchContentNumber >= 0 && searchContentNumber <= 0) {
-            //     // It can be a validator
-            //     items.push(`Validator: ${searchContent}`);
-            // }
+            if (searchContentNumber >= 0 && searchContentNumber <= 2147483647) {
+                // It can be a validator
+                items.push({
+                    label: `Validator: ${searchContent}`,
+                    link: `/validator/${searchContent}`,
+                });
+            }
         }
 
         setSearchResults(items);
