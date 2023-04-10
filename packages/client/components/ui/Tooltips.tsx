@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
 
+const assetPrefix = process.env.NEXT_PUBLIC_ASSET_PREFIX || '';
+
 export const TooltipContainer = styled.div`
     position: relative;
 
@@ -54,7 +56,8 @@ export const TooltipContentContainerStats = styled(TooltipContentContainer)<Prop
     top: 20px;
     left: calc(50% - 115px);
     width: 230px;
-    background-image: ${({ tooltipColor }) => `url('/static/images/tooltips/tooltip_${tooltipColor}.svg')`};
+    background-image: ${({ tooltipColor }) =>
+        `url('${assetPrefix}/static/images/tooltips/tooltip_${tooltipColor}.svg')`};
 
     span {
         color: ${({ colorLetter }) => colorLetter};
@@ -66,13 +69,14 @@ export const TooltipContentContainerStats = styled(TooltipContentContainer)<Prop
         width: 235px;
         background-image: ${({ tooltipColor }) =>
             tooltipColor === 'pink'
-                ? `url('/static/images/tooltips/tooltip_${tooltipColor}_left.svg')`
-                : `url('/static/images/tooltips/tooltip_${tooltipColor}.svg')`};
+                ? `url('${assetPrefix}/static/images/tooltips/tooltip_${tooltipColor}_left.svg')`
+                : `url('${assetPrefix}/static/images/tooltips/tooltip_${tooltipColor}.svg')`};
     }
 
     @media (min-width: 1280px) {
         left: calc(50% - 117.5px);
-        background-image: ${({ tooltipColor }) => `url('/static/images/tooltips/tooltip_${tooltipColor}.svg')`};
+        background-image: ${({ tooltipColor }) =>
+            `url('${assetPrefix}/static/images/tooltips/tooltip_${tooltipColor}.svg')`};
     }
 `;
 
@@ -81,7 +85,7 @@ export const TooltipContentContainerBlocks = styled(TooltipContentContainer)`
     height: 115px;
     width: 220px;
     top: 40px;
-    background-image: url('/static/images/tooltips/tooltip_white.svg');
+    background-image: url('${assetPrefix}/static/images/tooltips/tooltip_white.svg')};
     width: 200px;
     left: calc(50% - 100px);
     padding-top: 30px;
@@ -108,10 +112,10 @@ export const TooltipContentContainerHeaders = styled(TooltipContentContainer)<Pr
     padding-top: 38px;
     background-image: ${({ rightSide, leftSide }) =>
         rightSide
-            ? "url('/static/images/tooltips/tooltip_white_left.svg')"
+            ? `url(${assetPrefix}/static/images/tooltips/tooltip_white_left.svg)`
             : leftSide
-            ? "url('/static/images/tooltips/tooltip_white_right.svg')"
-            : "url('/static/images/tooltips/tooltip_white.svg')"};
+            ? `url(${assetPrefix}/static/images/tooltips/tooltip_white_right.svg)`
+            : `url(${assetPrefix}/static/images/tooltips/tooltip_white.svg)`};
 
     @media (min-width: 768px) {
         padding-top: 32px;
@@ -129,6 +133,6 @@ export const TooltipContentContainerHeaders = styled(TooltipContentContainer)<Pr
 
     @media (min-width: 1280px) {
         left: calc(50% - 125px);
-        background-image: url('/static/images/tooltips/tooltip_white.svg');
+        background-image: url('${assetPrefix}/static/images/tooltips/tooltip_white.svg');
     }
 `;

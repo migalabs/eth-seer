@@ -1,8 +1,10 @@
 import React from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import Head from 'next/head';
 import styled from '@emotion/styled';
+
+// Components
+import CustomImage from '../components/ui/CustomImage';
 
 // Styled
 const Button = styled.div`
@@ -31,7 +33,7 @@ const NotFoundPage = () => {
             </Head>
 
             <div className='flex flex-col items-center justify-center h-screen gap-y-6 text-white uppercase'>
-                <Image
+                <CustomImage
                     src='/static/images/404.svg'
                     alt='404'
                     width={1920}
@@ -52,7 +54,7 @@ const NotFoundPage = () => {
                         </Button>
                     </Link>
 
-                    <Image
+                    <CustomImage
                         src='/static/images/ghost.svg'
                         alt='Ghost'
                         width={200}
