@@ -90,6 +90,7 @@ const ValidatorComponent = () => {
             }
         } catch (error) {
             console.log(error);
+            setAnimation(true);
         }
     };
 

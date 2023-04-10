@@ -117,6 +117,7 @@ const EpochComponent = () => {
             }
         } catch (error) {
             console.log(error);
+            setAnimation(true);
         }
     };
 
