@@ -1,6 +1,5 @@
 import { useEffect, useState, useRef, useCallback, useContext } from 'react';
 import { useRouter } from 'next/router';
-import Image from 'next/image';
 import Link from 'next/link';
 
 // Axios
@@ -11,12 +10,14 @@ import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
 // Components
 import Layout from '../../components/layouts/Layout';
+import CustomImage from '../../components/ui/CustomImage';
 
 // Types
 import { Block } from '../../types';
 
 // Constants
 import { POOLS } from '../../constants';
+
 const firstBlock: number = Number(process.env.NEXT_PUBLIC_NETWORK_GENESIS);
 const zeroAddress = '0x0000000000000000000000000000000000000000000000000000000000000000';
 const zeroAddressShort = '0x0000000000000000000000000000000000000000';
@@ -109,7 +110,7 @@ const Card = ({ title, content, icon, iconSize, consensusLayer, link, darkMode, 
                             rel='noreferrer'
                             style={{ textDecoration: 'none', color: 'black' }}
                         >
-                            <Image
+                            <CustomImage
                                 src={`/static/images/${icon}.svg`}
                                 width={iconSize || 35}
                                 height={iconSize || 35}
@@ -219,7 +220,7 @@ const Slot = () => {
         if (block.f_pool_name !== undefined) {
             if (block.f_pool_name && POOLS.includes(block.f_pool_name.toUpperCase())) {
                 return (
-                    <Image
+                    <CustomImage
                         src={`/static/gifs/block_${block.f_pool_name.toLowerCase()}.gif`}
                         alt='Logo'
                         width={400}
@@ -228,11 +229,11 @@ const Slot = () => {
                     />
                 );
             } else if (block.f_pool_name && block.f_pool_name.includes('lido')) {
-                return <Image src='/static/gifs/block_lido.gif' alt='Logo' width={400} height={400} priority />;
+                return <CustomImage src='/static/gifs/block_lido.gif' alt='Logo' width={400} height={400} priority />;
             } else if (block.f_pool_name && block.f_pool_name.includes('whale')) {
-                return <Image src='/static/gifs/block_whale.gif' alt='Logo' width={400} height={400} priority />;
+                return <CustomImage src='/static/gifs/block_whale.gif' alt='Logo' width={400} height={400} priority />;
             } else {
-                return <Image src='/static/gifs/block_others.gif' alt='Logo' width={400} height={400} priority />;
+                return <CustomImage src='/static/gifs/block_others.gif' alt='Logo' width={400} height={400} priority />;
             }
         }
     };
@@ -501,7 +502,7 @@ const Slot = () => {
         <Layout isMain={false}>
             <div className='flex gap-x-3 justify-center items-center mt-2 mb-5'>
                 <Link href={`/slot/${id && Number(id) - 1}`} passHref>
-                    <Image
+                    <CustomImage
                         src='/static/images/arrow-purple.svg'
                         alt='Left arrow'
                         width={15}
@@ -515,7 +516,7 @@ const Slot = () => {
                 </h1>
 
                 <Link href={`/slot/${id && Number(id) + 1}`} passHref>
-                    <Image
+                    <CustomImage
                         src='/static/images/arrow-purple.svg'
                         alt='Left arrow'
                         width={15}

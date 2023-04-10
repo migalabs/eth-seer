@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import Image from 'next/image';
-import EpochOverview from './EpochOverview';
 
 // Contexts
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 import BlocksContext from '../../contexts/blocks/BlocksContext';
+
+// Components
+import EpochOverview from './EpochOverview';
+import CustomImage from '../ui/CustomImage';
 
 const ChainOverview = () => {
     // Theme Mode Context
@@ -77,7 +79,7 @@ const ChainOverview = () => {
     return (
         <div className='flex flex-row justify-center space-x-4 md:space-x-5 px-7'>
             <div className='flex items-center mt-8'>
-                <Image
+                <CustomImage
                     src={themeMode?.darkMode ? '/static/images/arrow.svg' : '/static/images/arrow-blue.svg'}
                     alt='Left arrow'
                     width={30}
@@ -104,7 +106,7 @@ const ChainOverview = () => {
                     ))}
 
             <div className='flex items-center mt-8'>
-                <Image
+                <CustomImage
                     src={themeMode?.darkMode ? '/static/images/arrow.svg' : '/static/images/arrow-blue.svg'}
                     alt='Left arrow'
                     width={30}

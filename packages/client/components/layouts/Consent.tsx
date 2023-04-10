@@ -1,7 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { setCookie, hasCookie } from 'cookies-next';
-import Image from 'next/image';
 import styled from '@emotion/styled';
+
+// Components
+import CustomImage from '../ui/CustomImage';
 
 // Styled
 type Props = {
@@ -166,7 +168,7 @@ const Consent = () => {
                 <div className='flex flex-col justify-between h-full'>
                     <div>
                         <div className={generalVisisble ? 'flex' : 'hidden'}>
-                            <Image
+                            <CustomImage
                                 src='/static/images/pacman.svg'
                                 alt='Pacman'
                                 width={100}
@@ -175,21 +177,21 @@ const Consent = () => {
                             />
 
                             <div className='flex justify-around w-full'>
-                                <Image
+                                <CustomImage
                                     src='/static/images/cookie.svg'
                                     alt='Cookie'
                                     width={40}
                                     height={40}
                                     className='md:w-12'
                                 />
-                                <Image
+                                <CustomImage
                                     src='/static/images/cookie.svg'
                                     alt='Cookie'
                                     width={40}
                                     height={40}
                                     className='md:w-12'
                                 />
-                                <Image
+                                <CustomImage
                                     src='/static/images/cookie.svg'
                                     alt='Cookie'
                                     width={40}
@@ -200,23 +202,23 @@ const Consent = () => {
                         </div>
 
                         <div className={`relative w-fit mx-auto ${necessaryVisible ? 'block' : 'hidden'}`}>
-                            <Image src='/static/images/pacman-eating.svg' alt='Logo' width={150} height={150} />
+                            <CustomImage src='/static/images/pacman-eating.svg' alt='Logo' width={150} height={150} />
 
-                            <Image
+                            <CustomImage
                                 src='/static/images/cookie-bitten-right.svg'
                                 alt='Cookie bitten'
                                 width={50}
                                 height={50}
                                 className='absolute top-11 -left-9'
                             />
-                            <Image
+                            <CustomImage
                                 src='/static/images/cookie-bitten-left.svg'
                                 alt='Cookie bitten'
                                 width={65}
                                 height={65}
                                 className='absolute top-12 -right-10'
                             />
-                            <Image
+                            <CustomImage
                                 src='/static/images/cookie-crumbs.svg'
                                 alt='Cookie crumbs'
                                 width={50}
@@ -226,30 +228,35 @@ const Consent = () => {
                         </div>
 
                         <div className={`relative w-fit mx-auto ${allVisible ? 'block' : 'hidden'}`}>
-                            <Image src='/static/images/pacman-happy.svg' alt='Pacman happy' width={150} height={150} />
+                            <CustomImage
+                                src='/static/images/pacman-happy.svg'
+                                alt='Pacman happy'
+                                width={150}
+                                height={150}
+                            />
 
-                            <Image
+                            <CustomImage
                                 src='/static/images/heart.svg'
                                 alt='Heart'
                                 width={40}
                                 height={40}
                                 className='absolute -top-2 -left-2 rotate-6'
                             />
-                            <Image
+                            <CustomImage
                                 src='/static/images/heart.svg'
                                 alt='Heart'
                                 width={65}
                                 height={65}
                                 className='absolute top-9 -left-16 -rotate-12'
                             />
-                            <Image
+                            <CustomImage
                                 src='/static/images/heart.svg'
                                 alt='Heart'
                                 width={65}
                                 height={65}
                                 className='absolute top-0 -right-12 rotate-12'
                             />
-                            <Image
+                            <CustomImage
                                 src='/static/images/heart.svg'
                                 alt='Heart'
                                 width={40}

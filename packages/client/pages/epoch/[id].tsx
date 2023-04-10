@@ -1,6 +1,5 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
@@ -11,6 +10,7 @@ import axiosClient from '../../config/axios';
 import Layout from '../../components/layouts/Layout';
 import ProgressSmoothBarEpoch from '../../components/ui/ProgressSmoothBarEpoch';
 import EpochAnimation from '../../components/layouts/EpochAnimation';
+import CustomImage from '../../components/ui/CustomImage';
 
 // Constants
 import { POOLS } from '../../constants';
@@ -137,7 +137,7 @@ const EpochComponent = () => {
         const missedExtension = slot.f_proposed ? '' : '_missed';
         if (slot.f_pool_name && POOLS.includes(slot.f_pool_name.toUpperCase())) {
             return (
-                <Image
+                <CustomImage
                     src={`/static/images/blocks/block_${slot.f_pool_name.toLowerCase()}${missedExtension}.svg`}
                     alt='Logo'
                     width={60}
@@ -146,7 +146,7 @@ const EpochComponent = () => {
             );
         } else if (slot.f_pool_name && slot.f_pool_name.includes('lido')) {
             return (
-                <Image
+                <CustomImage
                     src={`/static/images/blocks/block_lido${missedExtension}.svg`}
                     alt='Logo'
                     width={60}
@@ -155,7 +155,7 @@ const EpochComponent = () => {
             );
         } else if (slot.f_pool_name && slot.f_pool_name.includes('whale')) {
             return (
-                <Image
+                <CustomImage
                     src={`/static/images/blocks/block_whale${missedExtension}.svg`}
                     alt='Logo'
                     width={60}
@@ -164,7 +164,7 @@ const EpochComponent = () => {
             );
         } else {
             return (
-                <Image
+                <CustomImage
                     src={`/static/images/blocks/block_others${missedExtension}.svg`}
                     alt='Logo'
                     width={60}
@@ -217,7 +217,7 @@ const EpochComponent = () => {
                                     className='flex gap-x-1 items-center w-fit mx-auto'
                                 >
                                     <p>{element.f_proposer_slot.toLocaleString()}</p>
-                                    <Image
+                                    <CustomImage
                                         src='/static/images/link.svg'
                                         alt='Link icon'
                                         width={20}
@@ -347,7 +347,7 @@ const EpochComponent = () => {
         <Layout isMain={false}>
             <div className='flex gap-x-3 justify-center items-center mt-2 mb-5'>
                 <Link href={`/epoch/${id && Number(id) - 1}`} passHref>
-                    <Image
+                    <CustomImage
                         src='/static/images/arrow-purple.svg'
                         alt='Left arrow'
                         width={15}
@@ -360,7 +360,7 @@ const EpochComponent = () => {
                     Epoch {Number(id)?.toLocaleString()}
                 </h1>
                 <Link href={`/epoch/${id && Number(id) + 1}`} passHref>
-                    <Image
+                    <CustomImage
                         src='/static/images/arrow-purple.svg'
                         alt='Left arrow'
                         width={15}
