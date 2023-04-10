@@ -19,7 +19,7 @@ const Layout = ({ children, isMain }: PropsWithChildren) => {
 
             <Header isMain={isMain} />
 
-            <main>{children}</main>
+            <main className='mt-4'>{children}</main>
 
             <footer className='text-center my-4'>
                 <p className='text-white hidden'>
