@@ -14,6 +14,14 @@ export type Epoch = {
     f_slots?: Array<Slot>;
 };
 
+export type Validator = {
+    f_val_idx: number;
+    f_pool_name: string;
+    f_balance_eth: number;
+    f_status: string;
+    proposed_blocks: Array<Slot>;
+};
+
 export type Block = {
     f_slot: number;
     f_pool_name?: string;
