@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState, useCallback, useContext } from 'react';
-import Image from 'next/image';
 import { useInView } from 'react-intersection-observer';
 
 // Contexts
@@ -12,6 +11,7 @@ import ProgressTileBar from '../ui/ProgressTileBar';
 import ProgressSmoothBar from '../ui/ProgressSmoothBar';
 import Loader from '../ui/Loader';
 import { TooltipContainer, TooltipContentContainerHeaders } from '../ui/Tooltips';
+import CustomImage from '../ui/CustomImage';
 
 // Types
 import { Epoch, Block } from '../../types';
@@ -131,7 +131,13 @@ const Statitstics = () => {
                         className='flex gap-x-1 items-center w-fit mx-auto'
                     >
                         <p>{f_epoch.toLocaleString()}</p>
-                        <Image src='/static/images/link.svg' alt='Link icon' width={20} height={20} className='mb-1' />
+                        <CustomImage
+                            src='/static/images/link.svg'
+                            alt='Link icon'
+                            width={20}
+                            height={20}
+                            className='mb-1'
+                        />
                     </Link>
                 </div>
                 <div className='w-[15%] pt-3.5 mb-6'>
@@ -195,7 +201,12 @@ const Statitstics = () => {
                     <div className='flex gap-x-1 justify-center mb-1'>
                         <p className='text-xs mt-1'>Time</p>
                         <TooltipContainer>
-                            <Image src='/static/images/information.svg' alt='Time information' width={24} height={24} />
+                            <CustomImage
+                                src='/static/images/information.svg'
+                                alt='Time information'
+                                width={24}
+                                height={24}
+                            />
                             <TooltipContentContainerHeaders>
                                 <span>Time at which the epoch</span>
                                 <span>should have started</span>
@@ -212,7 +223,7 @@ const Statitstics = () => {
                     <div className='flex gap-x-1 justify-center mb-1'>
                         <p className='text-xs mt-1'>Blocks</p>
                         <TooltipContainer>
-                            <Image
+                            <CustomImage
                                 src='/static/images/information.svg'
                                 alt='Blocks information'
                                 width={24}
@@ -247,7 +258,7 @@ const Statitstics = () => {
                     <div className='flex flex-col gap-x-1 items-center mb-1'>
                         <p className='text-xs mt-1'>Attestation Accuracy</p>
                         <TooltipContainer>
-                            <Image
+                            <CustomImage
                                 src='/static/images/information.svg'
                                 alt='Attestation Accuracy information'
                                 width={24}
@@ -268,7 +279,7 @@ const Statitstics = () => {
                     <div className='flex flex-col gap-x-1 items-center mb-1'>
                         <p className='text-xs mt-1'>Voting Participation</p>
                         <TooltipContainer>
-                            <Image
+                            <CustomImage
                                 src='/static/images/information.svg'
                                 alt='Attestation Accuracy information'
                                 width={24}
@@ -304,7 +315,12 @@ const Statitstics = () => {
                 <div className='flex w-[10%] items-center gap-x-1 justify-center'>
                     <p className='mt-0.5'>Time</p>
                     <TooltipContainer>
-                        <Image src='/static/images/information.svg' alt='Time information' width={24} height={24} />
+                        <CustomImage
+                            src='/static/images/information.svg'
+                            alt='Time information'
+                            width={24}
+                            height={24}
+                        />
                         <TooltipContentContainerHeaders leftSide>
                             <span>Time at which the epoch</span>
                             <span>should have started</span>
@@ -316,7 +332,12 @@ const Statitstics = () => {
                 <div className='flex w-[11%] items-center gap-x-1 justify-center'>
                     <p className='mt-0.5'>Epoch</p>
                     <TooltipContainer>
-                        <Image src='/static/images/information.svg' alt='Time information' width={24} height={24} />
+                        <CustomImage
+                            src='/static/images/information.svg'
+                            alt='Time information'
+                            width={24}
+                            height={24}
+                        />
                         <TooltipContentContainerHeaders epoch>
                             <span>Epoch number</span>
                         </TooltipContentContainerHeaders>
@@ -326,7 +347,12 @@ const Statitstics = () => {
                 <div className='flex w-[15%] items-center gap-x-1 justify-center'>
                     <p className='mt-0.5'>Blocks</p>
                     <TooltipContainer>
-                        <Image src='/static/images/information.svg' alt='Blocks information' width={24} height={24} />
+                        <CustomImage
+                            src='/static/images/information.svg'
+                            alt='Blocks information'
+                            width={24}
+                            height={24}
+                        />
                         <TooltipContentContainerHeaders>
                             <span>Proposed Blocks out of 32</span>
                             <span>vs</span>
@@ -338,7 +364,7 @@ const Statitstics = () => {
                 <div className='flex w-[32%] items-center gap-x-1 justify-center'>
                     <p className='mt-0.5'>Attestation Accuracy</p>
                     <TooltipContainer>
-                        <Image
+                        <CustomImage
                             src='/static/images/information.svg'
                             alt='Attestation Accuracy information'
                             width={24}
@@ -355,7 +381,12 @@ const Statitstics = () => {
                 <div className='flex w-[32%] items-center gap-x-1 justify-center'>
                     <p className='mt-0.5'>Voting Participation</p>
                     <TooltipContainer>
-                        <Image src='/static/images/information.svg' alt='Balance information' width={24} height={24} />
+                        <CustomImage
+                            src='/static/images/information.svg'
+                            alt='Balance information'
+                            width={24}
+                            height={24}
+                        />
                         <TooltipContentContainerHeaders rightSide>
                             <span>Attesting Balance</span>
                             <span>vs</span>
@@ -406,7 +437,7 @@ const Statitstics = () => {
                                     className='flex gap-x-1 items-center w-fit mx-auto'
                                 >
                                     <p>{epoch.f_epoch.toLocaleString()}</p>
-                                    <Image
+                                    <CustomImage
                                         src='/static/images/link.svg'
                                         alt='Link icon'
                                         width={20}
@@ -553,7 +584,7 @@ const Statitstics = () => {
                             <div className='flex gap-x-1 justify-center mb-1'>
                                 <p className='text-xs mt-1'>Time</p>
                                 <TooltipContainer>
-                                    <Image
+                                    <CustomImage
                                         src='/static/images/information.svg'
                                         alt='Time information'
                                         width={24}
@@ -576,7 +607,7 @@ const Statitstics = () => {
                             <div className='flex gap-x-1 justify-center mb-1'>
                                 <p className='text-xs mt-1'>Blocks</p>
                                 <TooltipContainer>
-                                    <Image
+                                    <CustomImage
                                         src='/static/images/information.svg'
                                         alt='Blocks information'
                                         width={24}
@@ -606,7 +637,7 @@ const Statitstics = () => {
                             <div className='flex flex-col gap-x-1 items-center mb-1'>
                                 <p className='text-xs mt-1'>Attestation Accuracy</p>
                                 <TooltipContainer>
-                                    <Image
+                                    <CustomImage
                                         src='/static/images/information.svg'
                                         alt='Attestation Accuracy information'
                                         width={24}
@@ -666,7 +697,7 @@ const Statitstics = () => {
                             <div className='flex flex-col gap-x-1 items-center mb-1'>
                                 <p className='text-xs mt-1'>Voting Participation</p>
                                 <TooltipContainer>
-                                    <Image
+                                    <CustomImage
                                         src='/static/images/information.svg'
                                         alt='Balance information'
                                         width={24}
