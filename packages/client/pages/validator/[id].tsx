@@ -1,22 +1,24 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 // Axios
 import axiosClient from '../../config/axios';
 
+// Contexts
+import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
+
 // Components
 import Layout from '../../components/layouts/Layout';
+import CustomImage from '../../components/ui/CustomImage';
+import ValidatorAnimation from '../../components/layouts/ValidatorAnimation';
 
 // Constants
 import { POOLS } from '../../constants';
 
 // Types
-import { Epoch, Slot, Validator } from '../../types';
-import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
-import ValidatorAnimation from '../../components/layouts/ValidatorAnimation';
+import { Slot, Validator } from '../../types';
 
 // Constants
 const firstBlock: number = Number(process.env.NEXT_PUBLIC_NETWORK_GENESIS); // 1606824023000
@@ -111,7 +113,7 @@ const ValidatorComponent = () => {
         const missedExtension = slot.f_proposed ? '' : '_missed';
         if (slot.f_pool_name && POOLS.includes(slot.f_pool_name.toUpperCase())) {
             return (
-                <Image
+                <CustomImage
                     src={`/static/images/blocks/block_${slot.f_pool_name.toLowerCase()}${missedExtension}.svg`}
                     alt='Logo'
                     width={60}
@@ -120,7 +122,7 @@ const ValidatorComponent = () => {
             );
         } else if (slot.f_pool_name && slot.f_pool_name.includes('lido')) {
             return (
-                <Image
+                <CustomImage
                     src={`/static/images/blocks/block_lido${missedExtension}.svg`}
                     alt='Logo'
                     width={60}
@@ -129,7 +131,7 @@ const ValidatorComponent = () => {
             );
         } else if (slot.f_pool_name && slot.f_pool_name.includes('whale')) {
             return (
-                <Image
+                <CustomImage
                     src={`/static/images/blocks/block_whale${missedExtension}.svg`}
                     alt='Logo'
                     width={60}
@@ -138,7 +140,7 @@ const ValidatorComponent = () => {
             );
         } else {
             return (
-                <Image
+                <CustomImage
                     src={`/static/images/blocks/block_others${missedExtension}.svg`}
                     alt='Logo'
                     width={60}
@@ -188,7 +190,7 @@ const ValidatorComponent = () => {
                                     className='flex gap-x-1 items-center w-fit mx-auto'
                                 >
                                     <p>{Math.floor(element.f_proposer_slot / 32).toLocaleString()}</p>
-                                    <Image
+                                    <CustomImage
                                         src='/static/images/link.svg'
                                         alt='Link icon'
                                         width={20}
@@ -210,7 +212,7 @@ const ValidatorComponent = () => {
                                     className='flex gap-x-1 items-center w-fit mx-auto'
                                 >
                                     <p>{element.f_proposer_slot.toLocaleString()}</p>
-                                    <Image
+                                    <CustomImage
                                         src='/static/images/link.svg'
                                         alt='Link icon'
                                         width={20}
@@ -282,7 +284,7 @@ const ValidatorComponent = () => {
                     <div>{getContentProposedBlocks()}</div>
                 </div>
             ) : (
-                animation && <ValidatorAnimation darkMode={themeMode?.darkMode as boolean} notEpoch={false} />
+                animation && <ValidatorAnimation darkMode={themeMode?.darkMode as boolean} />
             )}
         </Layout>
     );
