@@ -305,7 +305,7 @@ const Slot = () => {
                         <Card
                             title='Epoch'
                             content={block.f_epoch.toLocaleString()}
-                            link={`c/epoch/${block.f_epoch}`}
+                            link={`${process.env.NEXT_PUBLIC_ASSET_PREFIX || ''}/epoch/${block.f_epoch}`}
                             icon='link'
                             iconSize={25}
                             target='_self'
