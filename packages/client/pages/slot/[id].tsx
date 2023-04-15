@@ -126,6 +126,9 @@ const Card = ({ title, content, icon, iconSize, consensusLayer, link, darkMode, 
 };
 
 const Slot = () => {
+    // Asset prefix
+    const assetPrefix = process.env.NEXT_PUBLIC_ASSET_PREFIX || '';
+
     // Next router
     const router = useRouter();
     const {
@@ -305,7 +308,7 @@ const Slot = () => {
                         <Card
                             title='Epoch'
                             content={block.f_epoch.toLocaleString()}
-                            link={`${process.env.NEXT_PUBLIC_ASSET_PREFIX || ''}/epoch/${block.f_epoch}`}
+                            link={`${assetPrefix}/epoch/${block.f_epoch}`}
                             icon='link'
                             iconSize={25}
                             target='_self'
@@ -362,7 +365,7 @@ const Slot = () => {
                                 icon='link'
                                 iconSize={25}
                                 consensusLayer
-                                link={`${process.env.NEXT_PUBLIC_ASSET_PREFIX || ''}/validator/${block.f_proposer_index}`}
+                                link={`${assetPrefix}/validator/${block.f_proposer_index}`}
                                 target='_self'
                                 darkMode={themeMode?.darkMode}
                             />
