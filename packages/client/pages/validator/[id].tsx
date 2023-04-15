@@ -233,9 +233,9 @@ const ValidatorComponent = () => {
 
     const getCurrentStatus = (status: string) => {
         if (status === 'active') {
-            return <CardContent content='actived' bg='#00720B' color='#83E18C' />;
+            return <CardContent content={status} bg='#00720B' color='#83E18C' />;
         } else if (status === 'slashed') {
-            return <CardContent content={`${status}`} bg='#980E0E' color='#FF9090' />;
+            return <CardContent content={status} bg='#980E0E' color='#FF9090' />;
         } else if (status === 'exit') {
             return <CardContent content='exited' bg='#0016D8' color='#BDC4FF' />;
         } else if (status === 'in queue to activation') {
