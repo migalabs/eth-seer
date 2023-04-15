@@ -67,7 +67,7 @@ const ValidatorComponent = () => {
             validatorRef.current = Number(id);
         }
 
-        if (id && !validator) {
+        if ((id && !validator) || (validator && validator.f_val_idx !== Number(id))) {
             getValidator();
         }
 
@@ -78,14 +78,9 @@ const ValidatorComponent = () => {
         try {
             const response = await axiosClient.get(`/api/validator-rewards-summary/validator/${id}`);
 
-            setValidator({
-                ...response.data.validator,
-            });
+            setValidator(response.data.validator);
 
-            if (
-                response.data.validator.f_val_idx === undefined &&
-                response.data.validator.proposed_blocks.length === 0
-            ) {
+            if (!response.data.validator.f_val_idx) {
                 setAnimation(true);
             } else {
                 setAnimation(false);
@@ -278,10 +273,12 @@ const ValidatorComponent = () => {
                 </h1>
             </div>
 
-            {validator && validator.proposed_blocks.length > 0 ? (
+            {validator ? (
                 <div className='mx-auto max-w-[1100px]'>
                     <div>{getContentValidator()}</div>
-                    <div>{getContentProposedBlocks()}</div>
+                    {validator.proposed_blocks && validator.proposed_blocks.length > 0 && (
+                        <div>{getContentProposedBlocks()}</div>
+                    )}
                 </div>
             ) : (
                 animation && <ValidatorAnimation darkMode={themeMode?.darkMode as boolean} />
