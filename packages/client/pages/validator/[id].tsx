@@ -150,7 +150,7 @@ const ValidatorComponent = () => {
         return (
             <div
                 ref={containerRef}
-                className='flex flex-col px-2 mt-10 overflow-x-scroll overflow-y-hidden scrollbar-thin'
+                className='flex flex-col px-2 mt-5 overflow-x-scroll overflow-y-hidden scrollbar-thin'
                 onMouseMove={handleMouseMove}
             >
                 <div className='flex gap-x-4 justify-around px-4 xl:px-8 min-w-[700px] py-3 uppercase text-sm text-white text-center'>
@@ -277,7 +277,14 @@ const ValidatorComponent = () => {
                 <div className='mx-auto max-w-[1100px]'>
                     <div>{getContentValidator()}</div>
                     {validator?.proposed_blocks && validator?.proposed_blocks.length > 0 && (
+                        <>
+                        <div className='flex gap-x-3 justify-center items-center mt-6'>
+                            <h1 className='text-white text-center text-lg md:text-2xl uppercase'>
+                                Proposed Blocks
+                            </h1>
+                        </div>
                         <div>{getContentProposedBlocks()}</div>
+                        </>
                     )}
                 </div>
             ) : (
