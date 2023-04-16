@@ -80,7 +80,8 @@ const ValidatorComponent = () => {
 
             setValidator(response.data.validator);
 
-            if (!response.data.validator.f_val_idx) {
+            if (response.data.validator.f_val_idx === undefined) {
+                console.log("entra?")
                 setAnimation(true);
             } else {
                 setAnimation(false);
@@ -272,11 +273,10 @@ const ValidatorComponent = () => {
                     Validator {Number(id)?.toLocaleString()}
                 </h1>
             </div>
-
-            {validator ? (
+            {validator?.f_val_idx !== undefined ? (
                 <div className='mx-auto max-w-[1100px]'>
                     <div>{getContentValidator()}</div>
-                    {validator.proposed_blocks && validator.proposed_blocks.length > 0 && (
+                    {validator?.proposed_blocks && validator?.proposed_blocks.length > 0 && (
                         <div>{getContentProposedBlocks()}</div>
                     )}
                 </div>
