@@ -43,6 +43,10 @@ export default function Document() {
                         --purple4: #886ed280;
 
                         --boxShadowYellow1: inset -7px -7px 8px var(--yellow3), inset 7px 7px 8px var(--yellow3);
+                        --boxShadowYellow2: inset -2.8px -2.8px 3.2px var(--yellow4),
+                            inset 2.8px 2.8px 3.2px var(--yellow4);
+                        --boxShadowYellow3: inset -2.8px -2.8px 3.2px var(--yellow3),
+                            inset 2.8px 2.8px 3.2px var(--yellow3);
                         --boxShadowOrange1: inset -7px -7px 8px var(--orange1), inset 7px 7px 8px var(--orange1);
                         --boxShadowOrange2: inset -7px -7px 8px var(--orange2), inset 7px 7px 8px var(--orange2);
                         --boxShadowOrange3: inset -4px -4px 4px var(--orange3), inset 4px 4px 4px var(--orange3);

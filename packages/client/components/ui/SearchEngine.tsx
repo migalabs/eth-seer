@@ -95,7 +95,10 @@ const SearchEngine = () => {
     };
 
     return (
-        <div className='absolute flex top-4 left-[calc(50%-210px)] items-center w-[420px] h-10 border-2 border-[var(--yellow2)] rounded-3xl py-1 bg-[var(--yellow5)]'>
+        <div
+            className='absolute flex top-4 left-[calc(50%-210px)] items-center w-[420px] h-10 border-2 border-[var(--yellow4)] rounded-3xl py-1 bg-[var(--yellow2)]'
+            style={{ boxShadow: 'var(--boxShadowYellow2)' }}
+        >
             <CustomImage
                 src={'/static/images/magnifying-glass-pixel.svg'}
                 alt='Magnifying Glass Pixel'
@@ -106,14 +109,34 @@ const SearchEngine = () => {
 
             <input
                 type='text'
-                className='w-full h-full bg-transparent text-sm m-2 placeholder-[var(--yellow2)] text-[var(--yellow2)] outline-none'
-                placeholder='Search by Epoch / Slot'
+                className='w-full h-full bg-transparent text-sm m-2 placeholder-[var(--yellow4)] text-[var(--yellow4)] outline-none'
+                placeholder='Search'
                 value={search}
                 onChange={handleSearch}
             />
 
             {searchResults.length > 0 && (
-                <div className='absolute flex flex-col top-full left-0 gap-y-3 w-full border-2 border-[var(--yellow2)] rounded-xl p-5 bg-[var(--yellow6)] text-[var(--yellow2)] text-xs z-10'>
+                <div className='absolute flex flex-col top-full left-[5%] w-[90%]'>
+                    {searchResults.map((item, index) => (
+                        <div
+                            key={index}
+                            className='border-2 border-[var(--yellow3)] rounded-xl px-5 py-4 bg-[var(--yellow2)] text-[var(--yellow4)] text-xs z-10'
+                            style={{ boxShadow: 'var(--boxShadowYellow3)' }}
+                        >
+                            <Link href={item.link} passHref>
+                                <span>{item.label}</span>
+                            </Link>
+
+                            {index !== searchResults.length - 1 && (
+                                <div className='border-b border-[var(--yellow2)]'></div>
+                            )}
+                        </div>
+                    ))}
+                </div>
+            )}
+
+            {/* {searchResults.length > 0 && (
+                <div className='absolute flex flex-col top-full left-[5%] gap-y-3 w-[90%] border-2 border-[var(--yellow3)] rounded-xl px-5 py-4 bg-[var(--yellow2)] text-[var(--yellow4)] text-xs z-10' style={{ boxShadow: 'var(--boxShadowYellow3)'}}>
                     {searchResults.map((item, index) => (
                         <Fragment key={index}>
                             <Link href={item.link} passHref>
@@ -126,7 +149,7 @@ const SearchEngine = () => {
                         </Fragment>
                     ))}
                 </div>
-            )}
+            )} */}
         </div>
     );
 };
