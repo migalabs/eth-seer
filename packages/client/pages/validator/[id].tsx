@@ -81,7 +81,7 @@ const ValidatorComponent = () => {
             setValidator(response.data.validator);
 
             if (response.data.validator.f_val_idx === undefined) {
-                console.log("entra?")
+                console.log('entra?');
                 setAnimation(true);
             } else {
                 setAnimation(false);
@@ -278,12 +278,12 @@ const ValidatorComponent = () => {
                     <div>{getContentValidator()}</div>
                     {validator?.proposed_blocks && validator?.proposed_blocks.length > 0 && (
                         <>
-                        <div className='flex gap-x-3 justify-center items-center mt-6'>
-                            <h1 className='text-white text-center text-lg md:text-2xl uppercase'>
-                                Proposed Blocks
-                            </h1>
-                        </div>
-                        <div>{getContentProposedBlocks()}</div>
+                            <div className='flex gap-x-3 justify-center items-center mt-6'>
+                                <h1 className='text-white text-center text-lg md:text-2xl uppercase'>
+                                    Proposed Blocks
+                                </h1>
+                            </div>
+                            <div>{getContentProposedBlocks()}</div>
                         </>
                     )}
                 </div>
