@@ -62,6 +62,7 @@ const EpochComponent = () => {
     const [animation, setAnimation] = useState(false);
     const [existsEpoch, setExistsEpoch] = useState<boolean>(true);
     const [notEpoch, setNotEpoch] = useState<boolean>(false);
+    const [desktopView, setDesktopView] = useState(true);
 
     // UseEffect
     useEffect(() => {
@@ -72,6 +73,8 @@ const EpochComponent = () => {
         if ((id && !epoch) || (epoch && epoch.f_epoch !== Number(id))) {
             getEpoch();
         }
+
+        setDesktopView(window !== undefined && window.innerWidth > 768);
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id]);
@@ -258,6 +261,82 @@ const EpochComponent = () => {
         );
     };
 
+    const getContentSlotsMobile = () => {
+        return (
+            <Card
+                className='mt-5 flex flex-col gap-y-2 mx-2 px-6 uppercase overflow-x-scroll overflow-y-hidden scrollbar-thin text-black text-xl text-[8px] sm:text-[10px]  rounded-[22px] py-3'
+                style={{
+                    backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
+                    boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
+                }}
+            >
+                {epoch?.f_slots?.map(element => (
+                    <div className='flex flex-row gap-x-6 py-1 uppercase' key={element.f_proposer_slot}>
+                        <div className='flex items-center'>{getBlockImage(element)}</div>
+                        <div className='flex flex-col items-start '>
+                            <div>
+                                <Link
+                                    href={{
+                                        pathname: '/validator/[id]',
+                                        query: {
+                                            id: element.f_val_idx,
+                                        },
+                                    }}
+                                    passHref
+                                    as={`/validator/${element.f_val_idx}`}
+                                    className='flex gap-x-1 items-center w-fit mx-auto'
+                                >
+                                    <div className='flex flex-row items-center gap-x-8'>
+                                        <p className='w-20'>Proposer:</p>
+                                        <p className='leading-3'>{element.f_val_idx.toLocaleString()}</p>
+                                    </div>
+                                    <CustomImage
+                                        src='/static/images/link.svg'
+                                        alt='Link icon'
+                                        width={20}
+                                        height={20}
+                                        className='mb-1'
+                                    />
+                                </Link>
+                            </div>
+                            <div>
+                                <Link
+                                    href={{
+                                        pathname: '/slot/[id]',
+                                        query: {
+                                            id: element.f_proposer_slot,
+                                        },
+                                    }}
+                                    passHref
+                                    as={`/slot/${element.f_proposer_slot}`}
+                                    className='flex gap-x-1 items-center w-fit mx-auto'
+                                >
+                                    <div className='flex flex-row items-center gap-x-8'>
+                                        <p className='w-20'>Slot:</p>
+                                        <p className='leading-3'>{element.f_proposer_slot.toLocaleString()}</p>
+                                    </div>
+                                    <CustomImage
+                                        src='/static/images/link.svg'
+                                        alt='Link icon'
+                                        width={20}
+                                        height={20}
+                                        className='mb-1'
+                                    />
+                                </Link>
+                            </div>
+                            <div className='flex flex-row items-center gap-x-10'>
+                                <p className='w-20'>DateTime:</p>
+                                <p className='leading-3'>
+                                    {new Date(firstBlock + Number(epoch?.f_slot) * 12000).toLocaleString('ja-JP')}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </Card>
+        );
+    };
+
     const getAttestation = (title: string, bg: string, color: string, value: number, attestations: number) => {
         return (
             <div className='flex flex-col md:flex-row gap-x-10 gap-y-2 items-center md:justify-end md:w-full'>
@@ -395,7 +474,7 @@ const EpochComponent = () => {
             {epoch && epoch.f_slots && epoch.f_slots.length > 0 ? (
                 <div className='mx-auto max-w-[1100px]'>
                     <div>{getContentEpochStats()}</div>
-                    <div>{getContentSlots()}</div>
+                    <div>{desktopView ? getContentSlots() : getContentSlotsMobile()}</div>
                 </div>
             ) : (
                 animation && <EpochAnimation darkMode={themeMode?.darkMode as boolean} notEpoch={notEpoch} />

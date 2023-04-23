@@ -60,6 +60,7 @@ const ValidatorComponent = () => {
 
     const [validator, setValidator] = useState<Validator | null>(null);
     const [animation, setAnimation] = useState(false);
+    const [desktopView, setDesktopView] = useState(true);
 
     // UseEffect
     useEffect(() => {
@@ -70,6 +71,8 @@ const ValidatorComponent = () => {
         if ((id && !validator) || (validator && validator.f_val_idx !== Number(id))) {
             getValidator();
         }
+
+        setDesktopView(window !== undefined && window.innerWidth > 768);
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id]);
@@ -144,6 +147,86 @@ const ValidatorComponent = () => {
                 />
             );
         }
+    };
+
+    const getContentProposedBlocksMobile = () => {
+        return (
+            <Card
+                className='mt-5 flex flex-col gap-y-2 mx-2 px-6 uppercase overflow-x-scroll overflow-y-hidden scrollbar-thin text-black text-xl text-[8px] sm:text-[10px]  rounded-[22px] py-3'
+                style={{
+                    backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
+                    boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
+                }}
+            >
+                {validator?.proposed_blocks?.map(element => (
+                    <div className='flex flex-row gap-x-6 py-1 uppercase' key={element.f_proposer_slot}>
+                        <div className='flex items-center'>{getBlockImage(element)}</div>
+                        <div className='flex flex-col items-start '>
+                            <div>
+                                <Link
+                                    href={{
+                                        pathname: '/epoch/[id]',
+                                        query: {
+                                            id: Math.floor(element.f_proposer_slot / 32),
+                                        },
+                                    }}
+                                    passHref
+                                    as={`/epoch/${Math.floor(element.f_proposer_slot / 32)}`}
+                                    className='flex gap-x-1 items-center w-fit mx-auto'
+                                >
+                                    <div className='flex flex-row items-center gap-x-8'>
+                                        <p className='w-20'>Epoch:</p>
+                                        <p className='leading-3'>
+                                            <p>{Math.floor(element.f_proposer_slot / 32).toLocaleString()}</p>
+                                        </p>
+                                    </div>
+                                    <CustomImage
+                                        src='/static/images/link.svg'
+                                        alt='Link icon'
+                                        width={20}
+                                        height={20}
+                                        className='mb-1'
+                                    />
+                                </Link>
+                            </div>
+                            <div>
+                                <Link
+                                    href={{
+                                        pathname: '/slot/[id]',
+                                        query: {
+                                            id: element.f_proposer_slot,
+                                        },
+                                    }}
+                                    passHref
+                                    as={`/slot/${element.f_proposer_slot}`}
+                                    className='flex gap-x-1 items-center w-fit mx-auto'
+                                >
+                                    <div className='flex flex-row items-center gap-x-8'>
+                                        <p className='w-20'>Slot:</p>
+                                        <p className='leading-3'>{element.f_proposer_slot.toLocaleString()}</p>
+                                    </div>
+                                    <CustomImage
+                                        src='/static/images/link.svg'
+                                        alt='Link icon'
+                                        width={20}
+                                        height={20}
+                                        className='mb-1'
+                                    />
+                                </Link>
+                            </div>
+                            <div className='flex flex-row items-center gap-x-10'>
+                                <p className='w-20'>DateTime:</p>
+                                <p className='leading-3'>
+                                    {new Date(firstBlock + Number(element.f_proposer_slot) * 12000).toLocaleString(
+                                        'ja-JP'
+                                    )}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </Card>
+        );
     };
 
     const getContentProposedBlocks = () => {
@@ -283,7 +366,7 @@ const ValidatorComponent = () => {
                                     Proposed Blocks
                                 </h1>
                             </div>
-                            <div>{getContentProposedBlocks()}</div>
+                            <div>{desktopView ? getContentProposedBlocks() : getContentProposedBlocksMobile()}</div>
                         </>
                     )}
                 </div>
