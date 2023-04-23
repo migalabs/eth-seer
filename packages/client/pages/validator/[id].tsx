@@ -19,6 +19,7 @@ import { POOLS } from '../../constants';
 
 // Types
 import { Slot, Validator } from '../../types';
+import BlockImage from '../../components/ui/BlockImage';
 
 // Constants
 const firstBlock: number = Number(process.env.NEXT_PUBLIC_NETWORK_GENESIS); // 1606824023000
@@ -108,47 +109,6 @@ const ValidatorComponent = () => {
         }
     };
 
-    const getBlockImage = (slot: Slot) => {
-        const missedExtension = slot.f_proposed ? '' : '_missed';
-        if (slot.f_pool_name && POOLS.includes(slot.f_pool_name.toUpperCase())) {
-            return (
-                <CustomImage
-                    src={`/static/images/blocks/block_${slot.f_pool_name.toLowerCase()}${missedExtension}.svg`}
-                    alt='Logo'
-                    width={60}
-                    height={60}
-                />
-            );
-        } else if (slot.f_pool_name && slot.f_pool_name.includes('lido')) {
-            return (
-                <CustomImage
-                    src={`/static/images/blocks/block_lido${missedExtension}.svg`}
-                    alt='Logo'
-                    width={60}
-                    height={60}
-                />
-            );
-        } else if (slot.f_pool_name && slot.f_pool_name.includes('whale')) {
-            return (
-                <CustomImage
-                    src={`/static/images/blocks/block_whale${missedExtension}.svg`}
-                    alt='Logo'
-                    width={60}
-                    height={60}
-                />
-            );
-        } else {
-            return (
-                <CustomImage
-                    src={`/static/images/blocks/block_others${missedExtension}.svg`}
-                    alt='Logo'
-                    width={60}
-                    height={60}
-                />
-            );
-        }
-    };
-
     const getContentProposedBlocksMobile = () => {
         return (
             <Card
@@ -160,7 +120,9 @@ const ValidatorComponent = () => {
             >
                 {validator?.proposed_blocks?.map(element => (
                     <div className='flex flex-row gap-x-6 py-1 uppercase' key={element.f_proposer_slot}>
-                        <div className='flex items-center'>{getBlockImage(element)}</div>
+                        <div className='flex items-center'>
+                            <BlockImage slot={element} />
+                        </div>
                         <div className='flex flex-col items-start '>
                             <div>
                                 <Link
@@ -255,7 +217,9 @@ const ValidatorComponent = () => {
                             className='flex gap-x-4 py-1 uppercase text-center items-center'
                             key={element.f_proposer_slot}
                         >
-                            <div className='flex items-center justify-center w-[25%]'>{getBlockImage(element)}</div>
+                            <div className='flex items-center justify-center w-[25%]'>
+                                <BlockImage slot={element} />
+                            </div>
                             <div className='w-[25%]'>
                                 <Link
                                     href={{

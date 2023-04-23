@@ -18,6 +18,7 @@ import { POOLS } from '../../constants';
 // Types
 import { Epoch, Slot } from '../../types';
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
+import BlockImage from '../../components/ui/BlockImage';
 
 // Constants
 const firstBlock: number = Number(process.env.NEXT_PUBLIC_NETWORK_GENESIS); // 1606824023000
@@ -137,47 +138,6 @@ const EpochComponent = () => {
         }
     };
 
-    const getBlockImage = (slot: Slot) => {
-        const missedExtension = slot.f_proposed ? '' : '_missed';
-        if (slot.f_pool_name && POOLS.includes(slot.f_pool_name.toUpperCase())) {
-            return (
-                <CustomImage
-                    src={`/static/images/blocks/block_${slot.f_pool_name.toLowerCase()}${missedExtension}.svg`}
-                    alt='Logo'
-                    width={60}
-                    height={60}
-                />
-            );
-        } else if (slot.f_pool_name && slot.f_pool_name.includes('lido')) {
-            return (
-                <CustomImage
-                    src={`/static/images/blocks/block_lido${missedExtension}.svg`}
-                    alt='Logo'
-                    width={60}
-                    height={60}
-                />
-            );
-        } else if (slot.f_pool_name && slot.f_pool_name.includes('whale')) {
-            return (
-                <CustomImage
-                    src={`/static/images/blocks/block_whale${missedExtension}.svg`}
-                    alt='Logo'
-                    width={60}
-                    height={60}
-                />
-            );
-        } else {
-            return (
-                <CustomImage
-                    src={`/static/images/blocks/block_others${missedExtension}.svg`}
-                    alt='Logo'
-                    width={60}
-                    height={60}
-                />
-            );
-        }
-    };
-
     const getContentSlots = () => {
         return (
             <div
@@ -205,7 +165,9 @@ const EpochComponent = () => {
                             className='flex gap-x-4 py-1 uppercase text-center items-center'
                             key={element.f_proposer_slot}
                         >
-                            <div className='flex items-center justify-center w-[10%]'>{getBlockImage(element)}</div>
+                            <div className='flex items-center justify-center w-[10%]'>
+                                <BlockImage slot={element} />
+                            </div>
                             <p className='w-[35%]'>{element.f_pool_name || 'others'}</p>
                             <div className='w-[18%]'>
                                 <Link
@@ -272,7 +234,9 @@ const EpochComponent = () => {
             >
                 {epoch?.f_slots?.map(element => (
                     <div className='flex flex-row gap-x-6 py-1 uppercase' key={element.f_proposer_slot}>
-                        <div className='flex items-center'>{getBlockImage(element)}</div>
+                        <div className='flex items-center'>
+                            <BlockImage slot={element} />
+                        </div>
                         <div className='flex flex-col items-start '>
                             <div>
                                 <Link
