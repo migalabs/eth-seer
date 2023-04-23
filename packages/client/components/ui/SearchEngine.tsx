@@ -1,7 +1,8 @@
-import React, { useState, Fragment, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import Link from 'next/link';
 
 // Context
+import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 import BlocksContext from '../../contexts/blocks/BlocksContext';
 import EpochsContext from '../../contexts/epochs/EpochsContext';
 
@@ -15,15 +16,18 @@ type SearchEngineItem = {
 };
 
 const SearchEngine = () => {
-    // States
-    const [search, setSearch] = useState('');
-    const [searchResults, setSearchResults] = useState<SearchEngineItem[]>([]);
+    // Theme Mode Context
+    const { themeMode } = React.useContext(ThemeModeContext) || {};
 
     // Blocks Context
     const { blocks } = useContext(BlocksContext) || {};
 
     // Epochs Context
     const { epochs } = useContext(EpochsContext) || {};
+
+    // States
+    const [search, setSearch] = useState('');
+    const [searchResults, setSearchResults] = useState<SearchEngineItem[]>([]);
 
     const loadResults = (searchContent: string) => {
         if (searchContent.length === 0) {
@@ -96,8 +100,12 @@ const SearchEngine = () => {
 
     return (
         <div
-            className='absolute flex top-4 left-[calc(50%-210px)] items-center w-[420px] h-10 border-2 border-[var(--yellow4)] rounded-3xl py-1 bg-[var(--yellow2)]'
-            style={{ boxShadow: 'var(--boxShadowYellow2)' }}
+            className='absolute flex top-4 left-[calc(50%-210px)] items-center w-[420px] h-10 border-2 rounded-3xl py-1'
+            style={{
+                boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow3)' : 'var(--boxShadowBlue5)',
+                backgroundColor: themeMode?.darkMode ? 'var(--yellow5)' : 'var(--blue9)',
+                borderColor: themeMode?.darkMode ? 'var(--yellow4)' : 'var(--blue2)',
+            }}
         >
             <CustomImage
                 src={'/static/images/magnifying-glass-pixel.svg'}
@@ -109,7 +117,8 @@ const SearchEngine = () => {
 
             <input
                 type='text'
-                className='w-full h-full bg-transparent text-sm m-2 placeholder-[var(--yellow4)] text-[var(--yellow4)] outline-none'
+                className='w-full h-full bg-transparent text-sm m-2 outline-none'
+                style={{ color: themeMode?.darkMode ? 'var(--yellow4)' : 'var(--blue2)' }}
                 placeholder='Search'
                 value={search}
                 onChange={handleSearch}
@@ -120,36 +129,21 @@ const SearchEngine = () => {
                     {searchResults.map((item, index) => (
                         <div
                             key={index}
-                            className='border-2 border-[var(--yellow3)] rounded-xl px-5 py-4 bg-[var(--yellow2)] text-[var(--yellow4)] text-xs z-10'
-                            style={{ boxShadow: 'var(--boxShadowYellow3)' }}
+                            className='border-2 rounded-xl px-5 py-4 text-xs z-10'
+                            style={{
+                                boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow3)' : 'var(--boxShadowBlue5)',
+                                backgroundColor: themeMode?.darkMode ? 'var(--yellow5)' : 'var(--blue9)',
+                                borderColor: themeMode?.darkMode ? 'var(--yellow4)' : 'var(--blue2)',
+                                color: themeMode?.darkMode ? 'var(--yellow4)' : 'var(--blue2)',
+                            }}
                         >
                             <Link href={item.link} passHref>
                                 <span>{item.label}</span>
                             </Link>
-
-                            {index !== searchResults.length - 1 && (
-                                <div className='border-b border-[var(--yellow2)]'></div>
-                            )}
                         </div>
                     ))}
                 </div>
             )}
-
-            {/* {searchResults.length > 0 && (
-                <div className='absolute flex flex-col top-full left-[5%] gap-y-3 w-[90%] border-2 border-[var(--yellow3)] rounded-xl px-5 py-4 bg-[var(--yellow2)] text-[var(--yellow4)] text-xs z-10' style={{ boxShadow: 'var(--boxShadowYellow3)'}}>
-                    {searchResults.map((item, index) => (
-                        <Fragment key={index}>
-                            <Link href={item.link} passHref>
-                                <span>{item.label}</span>
-                            </Link>
-
-                            {index !== searchResults.length - 1 && (
-                                <div className='border-b border-[var(--yellow2)]'></div>
-                            )}
-                        </Fragment>
-                    ))}
-                </div>
-            )} */}
         </div>
     );
 };
