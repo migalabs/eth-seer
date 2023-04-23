@@ -314,7 +314,7 @@ const Statitstics = () => {
     const getDesktopView = () => (
         <div
             ref={containerRef}
-            className='flex flex-col px-2 xl:px-20 overflow-x-scroll overflow-y-hidden scrollbar-thin py-20'
+            className='flex flex-col px-2 xl:px-20 overflow-x-scroll overflow-y-hidden scrollbar-thin pb-4'
             onMouseMove={handleMouseMove}
         >
             <div className='flex gap-x-1 justify-around px-2 xl:px-8 py-3 uppercase text-sm min-w-[1150px]'>
@@ -542,6 +542,17 @@ const Statitstics = () => {
                             </div>
                         </div>
                     ))}
+
+                <button
+                    className='cursor-pointer mx-auto w-fit text-[10px] text-black rounded-[22px] px-3 py-4'
+                    onClick={handleClick}
+                    style={{
+                        backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
+                        boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
+                    }}
+                >
+                    VIEW MORE
+                </button>
             </div>
         </div>
     );
@@ -736,6 +747,17 @@ const Statitstics = () => {
                         </div>
                     </div>
                 ))}
+
+            <button
+                className='cursor-pointer mx-auto w-fit text-[10px] text-black rounded-[22px] px-3 py-4'
+                onClick={handleClick}
+                style={{
+                    backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
+                    boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
+                }}
+            >
+                VIEW MORE
+            </button>
         </div>
     );
 
@@ -744,17 +766,6 @@ const Statitstics = () => {
             <h1 className='text-lg md:text-3xl uppercase'>Epoch Statistics</h1>
 
             {desktopView ? getDesktopView() : getPhoneView()}
-
-            <div
-                className=' cursor-pointer inline-block gap-y-4 w-fit text-[10px] text-black rounded-[22px] px-3 py-4 '
-                onClick={handleClick}
-                style={{
-                    backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
-                    boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
-                }}
-            >
-                <p>VIEW MORE</p>
-            </div>
 
             {loadingEpochs && (
                 <div className='mt-6'>
