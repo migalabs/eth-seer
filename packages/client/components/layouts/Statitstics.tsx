@@ -544,7 +544,7 @@ const Statitstics = () => {
                     ))}
 
                 <button
-                    className='cursor-pointer mx-auto w-fit text-[10px] text-black rounded-[22px] px-3 py-4'
+                    className='cursor-pointer mx-auto w-fit text-[10px] text-black rounded-[22px] px-6 py-4'
                     onClick={handleClick}
                     style={{
                         backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
@@ -749,7 +749,7 @@ const Statitstics = () => {
                 ))}
 
             <button
-                className='cursor-pointer mx-auto w-fit text-[10px] text-black rounded-[22px] px-3 py-4'
+                className='cursor-pointer mx-auto w-fit text-[10px] text-black rounded-[22px] px-6 py-4'
                 onClick={handleClick}
                 style={{
                     backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
