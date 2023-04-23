@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
 import Link from 'next/link';
+import styled from '@emotion/styled';
 
 // Context
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
@@ -8,6 +9,29 @@ import EpochsContext from '../../contexts/epochs/EpochsContext';
 
 // Components
 import CustomImage from './CustomImage';
+
+// Styled
+type PropsInput = {
+    darkMode: boolean;
+};
+
+const SearchEngineInput = styled.input<PropsInput>`
+    ::placeholder {
+        /* Chrome, Firefox, Opera, Safari 10.1+ */
+        color: ${props => (props.darkMode ? 'var(--yellow4)' : 'var(--blue2)')};
+        opacity: 1; /* Firefox */
+    }
+
+    :-ms-input-placeholder {
+        /* Internet Explorer 10-11 */
+        color: ${props => (props.darkMode ? 'var(--yellow4)' : 'var(--blue2)')};
+    }
+
+    ::-ms-input-placeholder {
+        /* Microsoft Edge */
+        color: ${props => (props.darkMode ? 'var(--yellow4)' : 'var(--blue2)')};
+    }
+`;
 
 // Types
 type SearchEngineItem = {
@@ -100,7 +124,7 @@ const SearchEngine = () => {
 
     return (
         <div
-            className='absolute flex top-4 left-[calc(50%-210px)] items-center w-[420px] h-10 border-2 rounded-3xl py-1'
+            className='absolute flex top-20 md:top-4 left-4 md:left-[calc(50%-210px)] items-center w-[calc(100%-2rem)] md:w-[400px] h-10 border-2 rounded-3xl py-1'
             style={{
                 boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow3)' : 'var(--boxShadowBlue5)',
                 backgroundColor: themeMode?.darkMode ? 'var(--yellow5)' : 'var(--blue9)',
@@ -115,13 +139,14 @@ const SearchEngine = () => {
                 className='ml-2 mt-1'
             />
 
-            <input
+            <SearchEngineInput
                 type='text'
                 className='w-full h-full bg-transparent text-sm m-2 outline-none'
                 style={{ color: themeMode?.darkMode ? 'var(--yellow4)' : 'var(--blue2)' }}
                 placeholder='Search'
                 value={search}
                 onChange={handleSearch}
+                darkMode={themeMode?.darkMode || false}
             />
 
             {searchResults.length > 0 && (

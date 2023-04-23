@@ -8,7 +8,6 @@ const ThemeModeSwitch = () => {
     const { themeMode, switchMode } = useContext(ThemeModeContext) || {};
 
     const handleChange = () => {
-        console.log('handleChange');
         switchMode?.();
     };
 
