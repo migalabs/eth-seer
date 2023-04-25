@@ -1,11 +1,13 @@
 import React, { useEffect } from 'react';
-import Image from 'next/image';
 
 // Axios
 import axiosClient from '../../config/axios';
 
 // Contexts
 import StatusContext from '../../contexts/status/StatusContext';
+
+// Components
+import CustomImage from '../ui/CustomImage';
 
 const Problems = () => {
     // Contexts
@@ -44,7 +46,7 @@ const Problems = () => {
 
     return (
         <div className='flex flex-col gap-y-6 px-4 sm:px-14 max-w-[1200px] mx-auto h-screen justify-center'>
-            <Image
+            <CustomImage
                 src='/static/images/big-logo.svg'
                 alt='Big logo of Ethseer'
                 width={700}

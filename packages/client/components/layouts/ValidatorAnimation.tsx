@@ -2,27 +2,10 @@ import React from 'react';
 
 type Props = {
     darkMode: boolean;
-    notEpoch: boolean;
 };
 
-const EpochAnimation = ({ darkMode, notEpoch }: Props) => {
+const ValidatorAnimation = ({ darkMode }: Props) => {
     const assetPrefix = process.env.NEXT_PUBLIC_ASSET_PREFIX || '';
-
-    const getTextImageName = () => {
-        if (notEpoch) {
-            if (darkMode) {
-                return 'text2-white.png';
-            } else {
-                return 'text2.png';
-            }
-        } else {
-            if (darkMode) {
-                return 'text-white.png';
-            } else {
-                return 'text.png';
-            }
-        }
-    };
 
     return (
         <div className='animation-container'>
@@ -47,7 +30,11 @@ const EpochAnimation = ({ darkMode, notEpoch }: Props) => {
                     className='panda-tumbleweed'
                 />
                 <img
-                    src={`${assetPrefix}/static/images/epoch_animation/${getTextImageName()}`}
+                    src={
+                        darkMode
+                            ? `${assetPrefix}/static/images/epoch_animation/text3-white.png`
+                            : `${assetPrefix}/static/images/epoch_animation/text3.png`
+                    }
                     alt='Image 8'
                     className='panda-text'
                 />
@@ -56,4 +43,4 @@ const EpochAnimation = ({ darkMode, notEpoch }: Props) => {
     );
 };
 
-export default EpochAnimation;
+export default ValidatorAnimation;

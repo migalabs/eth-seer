@@ -1,5 +1,4 @@
 import React from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 
 // Contexts
@@ -7,6 +6,7 @@ import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
 // Components
 import { TooltipContainer, TooltipContentContainerBlocks } from '../ui/Tooltips';
+import CustomImage from '../ui/CustomImage';
 
 // Constants
 import { POOLS } from '../../constants';
@@ -28,7 +28,7 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
         const missedExtension = block.f_proposed ? '' : '_missed';
         if (block.f_pool_name && POOLS.includes(block.f_pool_name.toUpperCase())) {
             return (
-                <Image
+                <CustomImage
                     src={`/static/images/blocks/block_${block.f_pool_name.toLowerCase()}${missedExtension}.svg`}
                     alt='Logo'
                     width={50}
@@ -37,7 +37,7 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
             );
         } else if (block.f_pool_name && block.f_pool_name.includes('lido')) {
             return (
-                <Image
+                <CustomImage
                     src={`/static/images/blocks/block_lido${missedExtension}.svg`}
                     alt='Logo'
                     width={50}
@@ -46,7 +46,7 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
             );
         } else if (block.f_pool_name && block.f_pool_name.includes('whale')) {
             return (
-                <Image
+                <CustomImage
                     src={`/static/images/blocks/block_whale${missedExtension}.svg`}
                     alt='Logo'
                     width={50}
@@ -55,7 +55,7 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
             );
         } else {
             return (
-                <Image
+                <CustomImage
                     src={`/static/images/blocks/block_others${missedExtension}.svg`}
                     alt='Logo'
                     width={50}
@@ -89,7 +89,7 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
                 }}
             >
                 <div
-                    className='grid grid-cols-4 md:grid-cols-8 w-fit  md:max-h-full  mx-auto gap-2 rounded-2xl bg-[#FFF0A1] p-4'
+                    className='grid grid-cols-4 md:grid-cols-8 w-fit  md:max-h-full  mx-auto gap-2 rounded-2xl bg-[var(--yellow2)] p-4'
                     style={{
                         backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
                         boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
@@ -121,10 +121,15 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
 
                     {blocks.length < 32 && (
                         <>
-                            <Image src='/static/gifs/block_mining5.gif' alt='Mining block' width={50} height={50} />
+                            <CustomImage
+                                src='/static/gifs/block_mining5.gif'
+                                alt='Mining block'
+                                width={50}
+                                height={50}
+                            />
 
                             {Array.from(Array(32 - blocks.length - 1)).map((_, idx) => (
-                                <Image
+                                <CustomImage
                                     key={idx}
                                     src='/static/gifs/block_awaiting.gif'
                                     alt='Awaiting block'
