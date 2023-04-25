@@ -37,10 +37,15 @@ const BlocksState = (props: any) => {
                 eventSourceBlock.addEventListener('new_block', function (e) {
                     getBlocks(0, 32, true);
                 });
+
+                return true;
             }
         } catch (error) {
             console.log(error);
+            setNotWorking?.();
         }
+
+        return false;
     };
 
     // Close event source

@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import Image from 'next/image';
-import EpochOverview from './EpochOverview';
 
 // Contexts
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 import BlocksContext from '../../contexts/blocks/BlocksContext';
+
+// Components
+import EpochOverview from './EpochOverview';
+import CustomImage from '../ui/CustomImage';
 
 const ChainOverview = () => {
     // Theme Mode Context
     const { themeMode } = React.useContext(ThemeModeContext) || {};
 
     // Blocks Context
-    const { blocks, startEventSource, closeEventSource, getBlocks } = React.useContext(BlocksContext) || {};
+    const { blocks, getBlocks } = React.useContext(BlocksContext) || {};
 
     // States
     const [lastEpoch, setLastEpoch] = useState(0);
@@ -20,7 +22,6 @@ const ChainOverview = () => {
     const [arrowLeftHidden, setArrowLeftHidden] = useState(false);
     const [currentPage, setCurrentPage] = useState(0);
     const [numberEpochsViewed, setNumberEpochsViewed] = useState(1);
-    const [eventSourceOpenened, setEventSourceOpenened] = useState(false);
 
     useEffect(() => {
         if (blocks && !blocks.epochs) {
@@ -50,17 +51,6 @@ const ChainOverview = () => {
         }
     }, [blocks]);
 
-    useEffect(() => {
-        if (!eventSourceOpenened) {
-            startEventSource?.();
-            setEventSourceOpenened(true);
-        }
-
-        return () => {
-            closeEventSource?.();
-        };
-    }, []);
-
     const handleLeft = () => {
         if (blocks && blocks.epochs && Object.entries(blocks.epochs).length - numberEpochsViewed - count === 1) {
             getBlocks?.(currentPage + 1);
@@ -89,7 +79,7 @@ const ChainOverview = () => {
     return (
         <div className='flex flex-row justify-center space-x-4 md:space-x-5 px-7'>
             <div className='flex items-center mt-8'>
-                <Image
+                <CustomImage
                     src={themeMode?.darkMode ? '/static/images/arrow.svg' : '/static/images/arrow-blue.svg'}
                     alt='Left arrow'
                     width={30}
@@ -116,7 +106,7 @@ const ChainOverview = () => {
                     ))}
 
             <div className='flex items-center mt-8'>
-                <Image
+                <CustomImage
                     src={themeMode?.darkMode ? '/static/images/arrow.svg' : '/static/images/arrow-blue.svg'}
                     alt='Left arrow'
                     width={30}
