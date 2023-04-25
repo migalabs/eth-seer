@@ -1,12 +1,37 @@
-import React, { useState, Fragment, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import Link from 'next/link';
+import styled from '@emotion/styled';
 
 // Context
+import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 import BlocksContext from '../../contexts/blocks/BlocksContext';
 import EpochsContext from '../../contexts/epochs/EpochsContext';
 
 // Components
 import CustomImage from './CustomImage';
+
+// Styled
+type PropsInput = {
+    darkMode: boolean;
+};
+
+const SearchEngineInput = styled.input<PropsInput>`
+    ::placeholder {
+        /* Chrome, Firefox, Opera, Safari 10.1+ */
+        color: ${props => (props.darkMode ? 'var(--yellow4)' : 'var(--blue2)')};
+        opacity: 1; /* Firefox */
+    }
+
+    :-ms-input-placeholder {
+        /* Internet Explorer 10-11 */
+        color: ${props => (props.darkMode ? 'var(--yellow4)' : 'var(--blue2)')};
+    }
+
+    ::-ms-input-placeholder {
+        /* Microsoft Edge */
+        color: ${props => (props.darkMode ? 'var(--yellow4)' : 'var(--blue2)')};
+    }
+`;
 
 // Types
 type SearchEngineItem = {
@@ -15,15 +40,18 @@ type SearchEngineItem = {
 };
 
 const SearchEngine = () => {
-    // States
-    const [search, setSearch] = useState('');
-    const [searchResults, setSearchResults] = useState<SearchEngineItem[]>([]);
+    // Theme Mode Context
+    const { themeMode } = React.useContext(ThemeModeContext) || {};
 
     // Blocks Context
     const { blocks } = useContext(BlocksContext) || {};
 
     // Epochs Context
     const { epochs } = useContext(EpochsContext) || {};
+
+    // States
+    const [search, setSearch] = useState('');
+    const [searchResults, setSearchResults] = useState<SearchEngineItem[]>([]);
 
     const loadResults = (searchContent: string) => {
         if (searchContent.length === 0) {
@@ -95,7 +123,14 @@ const SearchEngine = () => {
     };
 
     return (
-        <div className='absolute flex top-4 left-[calc(50%-210px)] items-center w-[420px] h-10 border-2 border-[var(--yellow2)] rounded-3xl py-1 bg-[var(--yellow5)]'>
+        <div
+            className='absolute flex top-20 md:top-4 left-4 md:left-[calc(50%-210px)] items-center w-[calc(100%-2rem)] md:w-[400px] h-10 border-2 rounded-3xl py-1'
+            style={{
+                boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow3)' : 'var(--boxShadowBlue5)',
+                backgroundColor: themeMode?.darkMode ? 'var(--yellow5)' : 'var(--blue9)',
+                borderColor: themeMode?.darkMode ? 'var(--yellow4)' : 'var(--blue2)',
+            }}
+        >
             <CustomImage
                 src={'/static/images/magnifying-glass-pixel.svg'}
                 alt='Magnifying Glass Pixel'
@@ -104,26 +139,33 @@ const SearchEngine = () => {
                 className='ml-2 mt-1'
             />
 
-            <input
+            <SearchEngineInput
                 type='text'
-                className='w-full h-full bg-transparent text-sm m-2 placeholder-[var(--yellow2)] text-[var(--yellow2)] outline-none'
-                placeholder='Search by Epoch / Slot'
+                className='w-full h-full bg-transparent text-sm m-2 outline-none'
+                style={{ color: themeMode?.darkMode ? 'var(--yellow4)' : 'var(--blue2)' }}
+                placeholder='Search'
                 value={search}
                 onChange={handleSearch}
+                darkMode={themeMode?.darkMode || false}
             />
 
             {searchResults.length > 0 && (
-                <div className='absolute flex flex-col top-full left-0 gap-y-3 w-full border-2 border-[var(--yellow2)] rounded-xl p-5 bg-[var(--yellow6)] text-[var(--yellow2)] text-xs z-10'>
+                <div className='absolute flex flex-col top-full left-[5%] w-[90%]'>
                     {searchResults.map((item, index) => (
-                        <Fragment key={index}>
+                        <div
+                            key={index}
+                            className='border-2 rounded-xl px-5 py-4 text-xs z-10'
+                            style={{
+                                boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow3)' : 'var(--boxShadowBlue5)',
+                                backgroundColor: themeMode?.darkMode ? 'var(--yellow5)' : 'var(--blue9)',
+                                borderColor: themeMode?.darkMode ? 'var(--yellow4)' : 'var(--blue2)',
+                                color: themeMode?.darkMode ? 'var(--yellow4)' : 'var(--blue2)',
+                            }}
+                        >
                             <Link href={item.link} passHref>
                                 <span>{item.label}</span>
                             </Link>
-
-                            {index !== searchResults.length - 1 && (
-                                <div className='border-b border-[var(--yellow2)]'></div>
-                            )}
-                        </Fragment>
+                        </div>
                     ))}
                 </div>
             )}
