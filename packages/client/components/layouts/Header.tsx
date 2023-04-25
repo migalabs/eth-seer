@@ -4,6 +4,7 @@ import Link from 'next/link';
 // Components
 import ThemeModeSwitch from '../ui/ThemeModeSwitch';
 import CustomImage from '../ui/CustomImage';
+import Networks from './Networks';
 
 type Props = {
     isMain?: boolean;
@@ -29,8 +30,10 @@ const Header = ({ isMain }: Props) => {
                     </div>
                 </Link>
             </div>
-
-            <ThemeModeSwitch />
+            <div className='flex flex-row gap-x-5 items-start mt-2.5'>
+                <Networks />
+                <ThemeModeSwitch />
+            </div>
         </div>
     );
 };

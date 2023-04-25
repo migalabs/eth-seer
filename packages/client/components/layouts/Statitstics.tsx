@@ -42,6 +42,7 @@ const Statitstics = () => {
     const [loadingBlocks, setLoadingBlocks] = useState(false);
     const [loadingEpochs, setLoadingEpochs] = useState(false);
     const [calculatingText, setCalculatingText] = useState('');
+    const [viewMore, setViewMore] = useState(false);
 
     useEffect(() => {
         // Fetching blocks
@@ -52,19 +53,20 @@ const Statitstics = () => {
 
         // Fetching epochs
         if (epochs && epochs.epochs.length === 0 && !loadingEpochs) {
-            setLoadingEpochs(true);
+            // setLoadingEpochs(true);
             getEpochs?.(0);
         }
 
         setDesktopView(window !== undefined && window.innerWidth > 768);
 
-        if (inView && epochs && !epochs.lastPageFetched) {
+        if (viewMore && epochs && !epochs.lastPageFetched) {
             getEpochs?.(currentPage + 1);
             setCurrentPage(prevState => prevState + 1);
+            setViewMore(false);
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [inView, blocks, epochs]);
+    }, [viewMore, blocks, epochs]);
 
     const shuffle = useCallback(() => {
         setCalculatingText(prevState => {
@@ -92,6 +94,10 @@ const Statitstics = () => {
                 containerRef.current.scrollLeft += 10;
             }
         }
+    };
+
+    const handleClick = () => {
+        setViewMore(true);
     };
 
     const createArrayBlocks = (blocks: Block[]) => {
@@ -308,7 +314,7 @@ const Statitstics = () => {
     const getDesktopView = () => (
         <div
             ref={containerRef}
-            className='flex flex-col px-2 xl:px-20 overflow-x-scroll overflow-y-hidden scrollbar-thin'
+            className='flex flex-col px-2 xl:px-20 overflow-x-scroll overflow-y-hidden scrollbar-thin pb-4'
             onMouseMove={handleMouseMove}
         >
             <div className='flex gap-x-1 justify-around px-2 xl:px-8 py-3 uppercase text-sm min-w-[1150px]'>
@@ -536,6 +542,17 @@ const Statitstics = () => {
                             </div>
                         </div>
                     ))}
+
+                <button
+                    className='cursor-pointer mx-auto w-fit text-[10px] text-black rounded-[22px] px-6 py-4'
+                    onClick={handleClick}
+                    style={{
+                        backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
+                        boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
+                    }}
+                >
+                    VIEW MORE
+                </button>
             </div>
         </div>
     );
@@ -730,6 +747,17 @@ const Statitstics = () => {
                         </div>
                     </div>
                 ))}
+
+            <button
+                className='cursor-pointer mx-auto w-fit text-[10px] text-black rounded-[22px] px-6 py-4'
+                onClick={handleClick}
+                style={{
+                    backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
+                    boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
+                }}
+            >
+                VIEW MORE
+            </button>
         </div>
     );
 

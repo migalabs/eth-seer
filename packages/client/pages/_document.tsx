@@ -19,8 +19,7 @@ export default function Document() {
                         --yellow2: #fff0a1;
                         --yellow3: #edbf4a;
                         --yellow4: #f0c83a;
-                        --yellow5: #ffe6a75e;
-                        --yellow6: #736a73;
+                        --yellow5: #9a7b2d;
                         --orange1: #ec903c;
                         --orange2: #ffcea1;
                         --orange3: #f18d30;
@@ -33,6 +32,8 @@ export default function Document() {
                         --blue6: #4089a080;
                         --blue7: #0080a9;
                         --blue8: #0080a94d;
+                        --blue9: #2b6d83;
+                        --blue10: #209198;
                         --green1: #a7eed466;
                         --green2: #a7eed4;
                         --green3: #29c68e;
@@ -43,6 +44,10 @@ export default function Document() {
                         --purple4: #886ed280;
 
                         --boxShadowYellow1: inset -7px -7px 8px var(--yellow3), inset 7px 7px 8px var(--yellow3);
+                        --boxShadowYellow2: inset -2.8px -2.8px 3.2px var(--yellow4),
+                            inset 2.8px 2.8px 3.2px var(--yellow4);
+                        --boxShadowYellow3: inset -2.76px -2.76px 3.15px var(--yellow3),
+                            inset 2.76px 2.76px 3.15px var(--yellow3);
                         --boxShadowOrange1: inset -7px -7px 8px var(--orange1), inset 7px 7px 8px var(--orange1);
                         --boxShadowOrange2: inset -7px -7px 8px var(--orange2), inset 7px 7px 8px var(--orange2);
                         --boxShadowOrange3: inset -4px -4px 4px var(--orange3), inset 4px 4px 4px var(--orange3);
@@ -50,6 +55,8 @@ export default function Document() {
                         --boxShadowBlue2: inset -5px -5px 4px var(--blue6), inset 5px 5px 4px var(--blue6);
                         --boxShadowBlue3: inset -7px -7px 8px var(--blue3), inset 7px 7px 8px var(--blue3);
                         --boxShadowBlue4: inset 4px 4px 4px var(--blue8), inset -4px -4px 4px var(--blue8);
+                        --boxShadowBlue5: inset -2.76px -2.76px 3.15px var(--blue10),
+                            inset 2.76px 2.76px 3.15px var(--blue10);
                         --boxShadowGreen1: inset -7px -7px 8px var(--green2), inset 7px 7px 8px var(--green2);
                         --boxShadowGreen2: inset -7px -7px 8px var(--green3), inset 7px 7px 8px var(--green3);
                         --boxShadowGreen3: inset 4px 4px 4px var(--green3), inset -4px -4px 4px var(--green3);
