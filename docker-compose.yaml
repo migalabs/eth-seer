@@ -2,25 +2,40 @@ version: '3.7'
 
 services:
           ethseer-client:
-                image: ethseer-client-image:1.0.0
+                image: ethseer-client:0.2.0
                 build:
-                        context: ./
-                        dockerfile: Dockerfile-client
-                container_name: ethseer-client-container
+                        context: ./packages/client
+                        dockerfile: Dockerfile
                 init: true
-                network_mode: 'host'
+                networks: [ cluster ]
+                ports:
+                  - "${CLIENT_PORT:-3000}:3000"
                 restart: unless-stopped
-                volumes:
-                        - ${MYFOLDER}/packages/client/.env:/app/.env
+                environment:
+                  - NEXT_PUBLIC_URL_API=${NEXT_PUBLIC_URL_API}
+                  - NEXT_PUBLIC_GOOGLE_ANALYTICS=${NEXT_PUBLIC_GOOGLE_ANALYTICS}
+                  - NEXT_PUBLIC_TAG_MANAGER=${NEXT_PUBLIC_TAG_MANAGER}
+                  - NEXT_PUBLIC_NETWORK_GENESIS=${NEXT_PUBLIC_NETWORK_GENESIS}
+                  - NEXT_PUBLIC_NETWORK_URL=${NEXT_PUBLIC_NETWORK_URL}
 
           ethseer-server:
-                image: ethseer-server-image:1.0.0
+                image: ethseer-server:0.2.0
                 build:
-                        context: ./
-                        dockerfile: Dockerfile-server
-                container_name: ethseer-server-container
+                        context: ./packages/server
+                        dockerfile: Dockerfile
                 init: true
-                network_mode: 'host'
+                environment:
+                  - API_LISTEN_PORT=${API_LISTEN_PORT}
+                  - API_LISTEN_IP=${API_LISTEN_IP}
+                  - DB_USER=${DB_USER}
+                  - DB_HOST=${DB_HOST}
+                  - DB_NAME=${DB_NAME}
+                  - DB_PORT=${DB_PORT}
+                  - DB_PASSWORD=${DB_PASSWORD}
+                networks: [ cluster ]
+                ports:
+                  - "${API_LISTEN_PORT}:3020"
                 restart: unless-stopped
-                volumes:
-                        - ${MYFOLDER}/packages/server/.env:/app/.env
+
+networks:
+  cluster:
