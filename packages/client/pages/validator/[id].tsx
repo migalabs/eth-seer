@@ -13,10 +13,11 @@ import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 import Layout from '../../components/layouts/Layout';
 import ValidatorAnimation from '../../components/layouts/ValidatorAnimation';
 import LinkIcon from '../../components/ui/LinkIcon';
+import BlockImage from '../../components/ui/BlockImage';
+import BlockGif from '../../components/ui/BlockGif';
 
 // Types
 import { Validator } from '../../types';
-import BlockImage from '../../components/ui/BlockImage';
 
 // Constants
 const firstBlock: number = Number(process.env.NEXT_PUBLIC_NETWORK_GENESIS); // 1606824023000
@@ -262,26 +263,32 @@ const ValidatorComponent = () => {
     const getContentValidator = () => {
         return (
             <Card
-                className='flex flex-col gap-y-2 mx-2 px-6 uppercase overflow-x-scroll overflow-y-hidden scrollbar-thin text-black text-xl text-[8px] sm:text-[10px]  rounded-[22px] py-3'
+                className='flex mx-2 px-10 py-5 rounded-[22px] justify-between gap-x-5'
                 style={{
                     backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
                     boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
                 }}
             >
-                <div className='flex flex-row items-center gap-x-5'>
-                    <p className='w-60'>Entity:</p>
-                    <p className='leading-3'>{validator?.f_pool_name !== null ? validator?.f_pool_name : 'others'}</p>
-                </div>
-                <div className='flex flex-row items-center gap-x-5'>
-                    <p className='w-60'>Current balance:</p>
-                    <p className='leading-3'>{validator?.f_balance_eth}</p>
-                </div>
-                <div className='flex flex-col sm:flex-row gap-x-5'>
-                    <p className='w-60'>Current status:</p>
-                    <div className='flex justify-center gap-x-4 '>
-                        {validator?.f_status && getCurrentStatus(validator?.f_status)}
+                <div className='flex flex-col gap-y-2 uppercase text-black text-xl text-[8px] sm:text-[10px]'>
+                    <div className='flex flex-row items-center gap-x-5'>
+                        <p className='w-60'>Entity:</p>
+                        <p className='leading-3'>{validator?.f_pool_name ? validator.f_pool_name : 'others'}</p>
+                    </div>
+
+                    <div className='flex flex-row items-center gap-x-5'>
+                        <p className='w-60'>Current balance:</p>
+                        <p className='leading-3'>{validator?.f_balance_eth}</p>
+                    </div>
+
+                    <div className='flex flex-col sm:flex-row gap-x-5'>
+                        <p className='w-60'>Current status:</p>
+                        <div className='flex justify-center gap-x-4 '>
+                            {validator?.f_status && getCurrentStatus(validator?.f_status)}
+                        </div>
                     </div>
                 </div>
+
+                <BlockGif poolName={validator?.f_pool_name || ''} width={200} height={200} />
             </Card>
         );
     };
