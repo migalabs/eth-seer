@@ -11,14 +11,11 @@ import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
 // Components
 import Layout from '../../components/layouts/Layout';
-import CustomImage from '../../components/ui/CustomImage';
 import ValidatorAnimation from '../../components/layouts/ValidatorAnimation';
-
-// Constants
-import { POOLS } from '../../constants';
+import LinkIcon from '../../components/ui/LinkIcon';
 
 // Types
-import { Slot, Validator } from '../../types';
+import { Validator } from '../../types';
 import BlockImage from '../../components/ui/BlockImage';
 
 // Constants
@@ -142,13 +139,7 @@ const ValidatorComponent = () => {
                                             <p>{Math.floor(element.f_proposer_slot / 32).toLocaleString()}</p>
                                         </p>
                                     </div>
-                                    <CustomImage
-                                        src='/static/images/link.svg'
-                                        alt='Link icon'
-                                        width={20}
-                                        height={20}
-                                        className='mb-1'
-                                    />
+                                    <LinkIcon />
                                 </Link>
                             </div>
                             <div>
@@ -167,13 +158,7 @@ const ValidatorComponent = () => {
                                         <p className='w-20'>Slot:</p>
                                         <p className='leading-3'>{element.f_proposer_slot.toLocaleString()}</p>
                                     </div>
-                                    <CustomImage
-                                        src='/static/images/link.svg'
-                                        alt='Link icon'
-                                        width={20}
-                                        height={20}
-                                        className='mb-1'
-                                    />
+                                    <LinkIcon />
                                 </Link>
                             </div>
                             <div className='flex flex-row items-center gap-x-10'>
@@ -233,13 +218,7 @@ const ValidatorComponent = () => {
                                     className='flex gap-x-1 items-center w-fit mx-auto'
                                 >
                                     <p>{Math.floor(element.f_proposer_slot / 32).toLocaleString()}</p>
-                                    <CustomImage
-                                        src='/static/images/link.svg'
-                                        alt='Link icon'
-                                        width={20}
-                                        height={20}
-                                        className='mb-1'
-                                    />
+                                    <LinkIcon />
                                 </Link>
                             </div>
                             <div className='w-[25%]'>
@@ -255,13 +234,7 @@ const ValidatorComponent = () => {
                                     className='flex gap-x-1 items-center w-fit mx-auto'
                                 >
                                     <p>{element.f_proposer_slot.toLocaleString()}</p>
-                                    <CustomImage
-                                        src='/static/images/link.svg'
-                                        alt='Link icon'
-                                        width={20}
-                                        height={20}
-                                        className='mb-1'
-                                    />
+                                    <LinkIcon />
                                 </Link>
                             </div>
                             <p className='w-[25%]'>

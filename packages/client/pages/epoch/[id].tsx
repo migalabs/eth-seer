@@ -11,12 +11,10 @@ import Layout from '../../components/layouts/Layout';
 import ProgressSmoothBarEpoch from '../../components/ui/ProgressSmoothBarEpoch';
 import EpochAnimation from '../../components/layouts/EpochAnimation';
 import CustomImage from '../../components/ui/CustomImage';
-
-// Constants
-import { POOLS } from '../../constants';
+import LinkIcon from '../../components/ui/LinkIcon';
 
 // Types
-import { Epoch, Slot } from '../../types';
+import { Epoch } from '../../types';
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 import BlockImage from '../../components/ui/BlockImage';
 
@@ -182,13 +180,7 @@ const EpochComponent = () => {
                                     className='flex gap-x-1 items-center w-fit mx-auto'
                                 >
                                     <p>{element.f_val_idx.toLocaleString()}</p>
-                                    <CustomImage
-                                        src='/static/images/link.svg'
-                                        alt='Link icon'
-                                        width={20}
-                                        height={20}
-                                        className='mb-1'
-                                    />
+                                    <LinkIcon />
                                 </Link>
                             </div>
                             <div className='w-[18%]'>
@@ -204,13 +196,7 @@ const EpochComponent = () => {
                                     className='flex gap-x-1 items-center w-fit mx-auto'
                                 >
                                     <p>{element.f_proposer_slot.toLocaleString()}</p>
-                                    <CustomImage
-                                        src='/static/images/link.svg'
-                                        alt='Link icon'
-                                        width={20}
-                                        height={20}
-                                        className='mb-1'
-                                    />
+                                    <LinkIcon />
                                 </Link>
                             </div>
                             <p className='w-[18%]'>
@@ -254,13 +240,7 @@ const EpochComponent = () => {
                                         <p className='w-20'>Proposer:</p>
                                         <p className='leading-3'>{element.f_val_idx.toLocaleString()}</p>
                                     </div>
-                                    <CustomImage
-                                        src='/static/images/link.svg'
-                                        alt='Link icon'
-                                        width={20}
-                                        height={20}
-                                        className='mb-1'
-                                    />
+                                    <LinkIcon />
                                 </Link>
                             </div>
                             <div>
@@ -279,13 +259,7 @@ const EpochComponent = () => {
                                         <p className='w-20'>Slot:</p>
                                         <p className='leading-3'>{element.f_proposer_slot.toLocaleString()}</p>
                                     </div>
-                                    <CustomImage
-                                        src='/static/images/link.svg'
-                                        alt='Link icon'
-                                        width={20}
-                                        height={20}
-                                        className='mb-1'
-                                    />
+                                    <LinkIcon />
                                 </Link>
                             </div>
                             <div className='flex flex-row items-center gap-x-10'>
