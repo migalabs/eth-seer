@@ -110,7 +110,7 @@ const Card = ({ title, content, icon, iconSize, consensusLayer, link, darkMode, 
                             style={{ textDecoration: 'none', color: 'black' }}
                         >
                             {icon === 'link' ? (
-                                <LinkIcon />
+                                <LinkIcon forceOrange />
                             ) : (
                                 <CustomImage
                                     src={`/static/images/${icon}.svg`}
