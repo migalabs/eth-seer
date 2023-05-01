@@ -6,7 +6,8 @@
     "scripts": {
         "app": "cd packages/client && npm run dev",
         "server": "cd packages/server && npm run dev",
-        "ci": "cd packages/client && npm ci && cd ../server && npm ci"
+        "ci": "cd packages/client && npm ci && cd ../server && npm ci",
+        "format": "cd packages/client && npm run format"
     },
     "repository": {
         "type": "git",

@@ -11,6 +11,7 @@ import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 // Components
 import Layout from '../../components/layouts/Layout';
 import CustomImage from '../../components/ui/CustomImage';
+import LinkIcon from '../../components/ui/LinkIcon';
 
 // Types
 import { Block } from '../../types';
@@ -110,13 +111,17 @@ const Card = ({ title, content, icon, iconSize, consensusLayer, link, darkMode, 
                             rel='noreferrer'
                             style={{ textDecoration: 'none', color: 'black' }}
                         >
-                            <CustomImage
-                                src={`/static/images/${icon}.svg`}
-                                width={iconSize || 35}
-                                height={iconSize || 35}
-                                alt='Icon'
-                                className={link && 'cursor-pointer'}
-                            />
+                            {icon === 'link' ? (
+                                <LinkIcon />
+                            ) : (
+                                <CustomImage
+                                    src={`/static/images/${icon}.svg`}
+                                    width={iconSize || 35}
+                                    height={iconSize || 35}
+                                    alt='Icon'
+                                    className={link && 'cursor-pointer'}
+                                />
+                            )}
                         </a>
                     )}
                 </div>
