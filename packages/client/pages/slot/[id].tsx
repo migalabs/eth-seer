@@ -12,12 +12,10 @@ import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 import Layout from '../../components/layouts/Layout';
 import CustomImage from '../../components/ui/CustomImage';
 import LinkIcon from '../../components/ui/LinkIcon';
+import BlockGif from '../../components/ui/BlockGif';
 
 // Types
 import { Block } from '../../types';
-
-// Constants
-import { POOLS } from '../../constants';
 
 const firstBlock: number = Number(process.env.NEXT_PUBLIC_NETWORK_GENESIS);
 const zeroAddress = '0x0000000000000000000000000000000000000000000000000000000000000000';
@@ -224,28 +222,6 @@ const Slot = () => {
         return address && `${address.slice(0, 6)}...${address.slice(address.length - 6, address.length)}`;
     };
 
-    const getBlockGif = (block: Block) => {
-        if (block.f_pool_name !== undefined) {
-            if (block.f_pool_name && POOLS.includes(block.f_pool_name.toUpperCase())) {
-                return (
-                    <CustomImage
-                        src={`/static/gifs/block_${block.f_pool_name.toLowerCase()}.gif`}
-                        alt='Logo'
-                        width={400}
-                        height={400}
-                        priority
-                    />
-                );
-            } else if (block.f_pool_name && block.f_pool_name.includes('lido')) {
-                return <CustomImage src='/static/gifs/block_lido.gif' alt='Logo' width={400} height={400} priority />;
-            } else if (block.f_pool_name && block.f_pool_name.includes('whale')) {
-                return <CustomImage src='/static/gifs/block_whale.gif' alt='Logo' width={400} height={400} priority />;
-            } else {
-                return <CustomImage src='/static/gifs/block_others.gif' alt='Logo' width={400} height={400} priority />;
-            }
-        }
-    };
-
     const getTimeBlock = () => {
         let text;
 
@@ -443,7 +419,9 @@ const Slot = () => {
 
                 {existsBlock && (
                     <div className='flex flex-col xl:self-end items-center'>
-                        <div className='hidden xl:block'>{getBlockGif(block)}</div>
+                        <div className='hidden xl:block'>
+                            <BlockGif poolName={block?.f_pool_name || ''} width={400} height={400} />
+                        </div>
 
                         <Title text='Execution Layer' darkMode={themeMode?.darkMode} />
 
