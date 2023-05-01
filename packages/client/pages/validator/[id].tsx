@@ -263,7 +263,7 @@ const ValidatorComponent = () => {
     const getContentValidator = () => {
         return (
             <Card
-                className='flex mx-2 px-10 py-5 rounded-[22px] justify-between gap-x-5'
+                className='flex mx-2 px-10 py-5 rounded-[22px] justify-between items-center gap-x-5'
                 style={{
                     backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
                     boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
@@ -288,7 +288,9 @@ const ValidatorComponent = () => {
                     </div>
                 </div>
 
-                <BlockGif poolName={validator?.f_pool_name || ''} width={200} height={200} />
+                <div className='hidden md:block'>
+                    <BlockGif poolName={validator?.f_pool_name || ''} width={150} height={150} />
+                </div>
             </Card>
         );
     };
