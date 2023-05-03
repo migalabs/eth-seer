@@ -289,7 +289,7 @@ const ValidatorComponent = () => {
                 </div>
 
                 <div className='hidden md:block'>
-                    <BlockGif poolName={validator?.f_pool_name || ''} width={150} height={150} />
+                    <BlockGif poolName={validator?.f_pool_name || 'others'} width={150} height={150} />
                 </div>
             </Card>
         );
