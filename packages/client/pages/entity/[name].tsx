@@ -51,7 +51,7 @@ const Entity = () => {
                         boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
                     }}
                 >
-                    <div className='flex flex-col gap-y-2 uppercase text-black text-xl text-[8px] sm:text-[10px]'>
+                    <div className='flex flex-col gap-y-2 uppercase text-black text-xl text-[8px] sm:text-[10px] mx-auto md:mx-0'>
                         <div className='flex flex-row items-center gap-x-5'>
                             <p className='w-60'>Aggregate Balance:</p>
                             <p className='leading-3'>10000</p>
@@ -67,7 +67,7 @@ const Entity = () => {
 
                         <div className='flex flex-col gap-y-5'>
                             <p className='w-60'>Number of Validators:</p>
-                            <div className='flex justify-center gap-x-4 '>
+                            <div className='flex flex-col md:flex-row items-center md:justify-center gap-x-4 gap-y-2'>
                                 <CardContent content={`Deposited: ${20}`} bg='#98D3E6' color='#0080A9' />
                                 <CardContent content={`Active: ${20}`} bg='#9BD8A1' color='#00720B' />
                                 <CardContent content={`Slashed: ${20}`} bg='#EFB0B0' color='#980E0E' />
