@@ -267,6 +267,25 @@ export const getValidator = async (req: Request, res: Response) => {
     }
 };
 
+export const getEntity = async (req: Request, res: Response) => {
+
+    try {
+
+        const { name } = req.params;
+
+        res.json({
+            entity: {
+                name
+            }
+        });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            msg: 'An error occurred on the server'
+        });
+    }
+};
 
 export const listenBlockNotification = async (req: Request, res: Response) => {
 
