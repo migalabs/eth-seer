@@ -9,6 +9,7 @@ import {
     listenEpochNotification,
     getEpoch,
     getValidator,
+    getEntity,
 } from '../controllers/validator-rewards-summary';
 
 import { checkFields } from '../middlewares/check-fields';
@@ -33,6 +34,10 @@ router.get('/validator/:id', [
     check('id').isInt({ min: 0, max: 2147483647 }),
     checkFields,
 ], getValidator);
+
+router.get('/entity/:name', [
+    checkFields,
+], getEntity);
 
 router.get('/new-block-notification', listenBlockNotification);
 

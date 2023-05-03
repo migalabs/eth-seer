@@ -6,17 +6,19 @@ import { useRouter } from 'next/router';
 // Axios
 import axiosClient from '../../config/axios';
 
+// Contexts
+import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
+
 // Components
 import Layout from '../../components/layouts/Layout';
 import ProgressSmoothBarEpoch from '../../components/ui/ProgressSmoothBarEpoch';
 import EpochAnimation from '../../components/layouts/EpochAnimation';
 import CustomImage from '../../components/ui/CustomImage';
 import LinkIcon from '../../components/ui/LinkIcon';
+import BlockImage from '../../components/ui/BlockImage';
 
 // Types
 import { Epoch } from '../../types';
-import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
-import BlockImage from '../../components/ui/BlockImage';
 
 // Constants
 const firstBlock: number = Number(process.env.NEXT_PUBLIC_NETWORK_GENESIS); // 1606824023000
