@@ -103,6 +103,12 @@ const SearchEngineBlack = () => {
                     link: `/validator/${searchContent}`,
                 });
             }
+        } else {
+            // It can be an entity
+            items.push({
+                label: `Entity: ${searchContent}`,
+                link: `/entity/${searchContent}`,
+            });
         }
 
         setSearchResults(items);
