@@ -299,12 +299,20 @@ export const listenBlockNotification = async (req: Request, res: Response) => {
 
         pgClient.query('LISTEN new_head');
 
+        let isProcessing = false;
+        
         pgClient.on('notification', async (msg) => {
             if (msg.channel === 'new_head') {
+                if(isProcessing){
+                    return;
+                }
+                isProcessing = true;
                 res.write('event: new_block\n');
                 res.write(`data: ${msg.payload}`);
-                res.write('\n\n');
-                res.end();
+                res.write('\n\n', () => {
+                        res.end();
+                        isProcessing = false;
+                });
             }
         });
 
