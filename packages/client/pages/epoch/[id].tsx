@@ -6,19 +6,19 @@ import { useRouter } from 'next/router';
 // Axios
 import axiosClient from '../../config/axios';
 
+// Contexts
+import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
+
 // Components
 import Layout from '../../components/layouts/Layout';
 import ProgressSmoothBarEpoch from '../../components/ui/ProgressSmoothBarEpoch';
 import EpochAnimation from '../../components/layouts/EpochAnimation';
 import CustomImage from '../../components/ui/CustomImage';
-
-// Constants
-import { POOLS } from '../../constants';
+import LinkIcon from '../../components/ui/LinkIcon';
+import BlockImage from '../../components/ui/BlockImage';
 
 // Types
-import { Epoch, Slot } from '../../types';
-import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
-import BlockImage from '../../components/ui/BlockImage';
+import { Epoch } from '../../types';
 
 // Constants
 const firstBlock: number = Number(process.env.NEXT_PUBLIC_NETWORK_GENESIS); // 1606824023000
@@ -168,7 +168,22 @@ const EpochComponent = () => {
                             <div className='flex items-center justify-center w-[10%]'>
                                 <BlockImage slot={element} />
                             </div>
-                            <p className='w-[35%]'>{element.f_pool_name || 'others'}</p>
+                            <div className='w-[35%]'>
+                                <Link
+                                    href={{
+                                        pathname: '/entity/[name]',
+                                        query: {
+                                            name: element.f_pool_name || 'others',
+                                        },
+                                    }}
+                                    passHref
+                                    as={`/entity/${element.f_pool_name || 'others'}`}
+                                    className='flex gap-x-1 items-center w-fit mx-auto'
+                                >
+                                    <p>{element.f_pool_name || 'others'}</p>
+                                    <LinkIcon />
+                                </Link>
+                            </div>
                             <div className='w-[18%]'>
                                 <Link
                                     href={{
@@ -182,13 +197,7 @@ const EpochComponent = () => {
                                     className='flex gap-x-1 items-center w-fit mx-auto'
                                 >
                                     <p>{element.f_val_idx.toLocaleString()}</p>
-                                    <CustomImage
-                                        src='/static/images/link.svg'
-                                        alt='Link icon'
-                                        width={20}
-                                        height={20}
-                                        className='mb-1'
-                                    />
+                                    <LinkIcon />
                                 </Link>
                             </div>
                             <div className='w-[18%]'>
@@ -204,13 +213,7 @@ const EpochComponent = () => {
                                     className='flex gap-x-1 items-center w-fit mx-auto'
                                 >
                                     <p>{element.f_proposer_slot.toLocaleString()}</p>
-                                    <CustomImage
-                                        src='/static/images/link.svg'
-                                        alt='Link icon'
-                                        width={20}
-                                        height={20}
-                                        className='mb-1'
-                                    />
+                                    <LinkIcon />
                                 </Link>
                             </div>
                             <p className='w-[18%]'>
@@ -254,13 +257,7 @@ const EpochComponent = () => {
                                         <p className='w-20'>Proposer:</p>
                                         <p className='leading-3'>{element.f_val_idx.toLocaleString()}</p>
                                     </div>
-                                    <CustomImage
-                                        src='/static/images/link.svg'
-                                        alt='Link icon'
-                                        width={20}
-                                        height={20}
-                                        className='mb-1'
-                                    />
+                                    <LinkIcon />
                                 </Link>
                             </div>
                             <div>
@@ -279,13 +276,7 @@ const EpochComponent = () => {
                                         <p className='w-20'>Slot:</p>
                                         <p className='leading-3'>{element.f_proposer_slot.toLocaleString()}</p>
                                     </div>
-                                    <CustomImage
-                                        src='/static/images/link.svg'
-                                        alt='Link icon'
-                                        width={20}
-                                        height={20}
-                                        className='mb-1'
-                                    />
+                                    <LinkIcon />
                                 </Link>
                             </div>
                             <div className='flex flex-row items-center gap-x-10'>
