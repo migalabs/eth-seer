@@ -50,3 +50,11 @@ export type Slot = {
     f_val_idx: number;
     f_proposed: boolean;
 };
+
+export type Entity = {
+    aggregate_balance: number;
+    deposited: number;
+    active: number;
+    slashed: number;
+    exited: number;
+};

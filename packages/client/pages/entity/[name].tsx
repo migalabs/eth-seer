@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
 // Contexts
@@ -7,6 +7,8 @@ import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 // Components
 import Layout from '../../components/layouts/Layout';
 import BlockGif from '../../components/ui/BlockGif';
+import axiosClient from '../../config/axios';
+import { Entity } from '../../types';
 
 type Props = {
     content: string;
@@ -37,6 +39,29 @@ const Entity = () => {
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) || {};
 
+    const [entity, setEntity] = useState<Entity | null>(null);
+
+     // UseEffect
+     useEffect(() => {
+    
+        if ((name && !entity)) {
+            getEntity();
+        }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [name]);
+
+    const getEntity = async () => {
+        try {
+            const response = await axiosClient.get(`/api/validator-rewards-summary/entity/${name}`);
+
+            setEntity(response.data.entity);
+
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     return (
         <Layout isMain={false}>
             <div className='flex gap-x-3 justify-center items-center mt-2 mb-5'>
@@ -54,11 +79,11 @@ const Entity = () => {
                     <div className='flex flex-col gap-y-2 uppercase text-black text-xl text-[8px] sm:text-[10px] mx-auto md:mx-0'>
                         <div className='flex flex-row items-center gap-x-5'>
                             <p className='w-60'>Aggregate Balance:</p>
-                            <p className='leading-3'>10000</p>
+                            <p className='leading-3'>{entity && entity.aggregate_balance} ETH</p>
                         </div>
 
                         <div className='flex flex-col sm:flex-row gap-x-5'>
-                            <p className='w-60'>Blocks (out of 32):</p>
+                            <p className='w-60'>Blocks:</p>
                             <div className='flex justify-center gap-x-4 '>
                                 <CardContent content={`Proposed: ${30}`} bg='#83E18C' color='#00720B' rounded />
                                 <CardContent content={`Missed: ${32 - 30}`} bg='#FF9090' color='#980E0E' rounded />
@@ -68,10 +93,10 @@ const Entity = () => {
                         <div className='flex flex-col gap-y-5'>
                             <p className='w-60'>Number of Validators:</p>
                             <div className='flex flex-col md:flex-row items-center md:justify-center gap-x-4 gap-y-2'>
-                                <CardContent content={`Deposited: ${20}`} bg='#98D3E6' color='#0080A9' />
-                                <CardContent content={`Active: ${20}`} bg='#9BD8A1' color='#00720B' />
-                                <CardContent content={`Slashed: ${20}`} bg='#EFB0B0' color='#980E0E' />
-                                <CardContent content={`Exited: ${20}`} bg='#CDA4DC' color='#5D3BBD' />
+                                <CardContent content={`Deposited: ${entity && entity.deposited}`} bg='#98D3E6' color='#0080A9' />
+                                <CardContent content={`Active: ${entity && entity.active}`} bg='#9BD8A1' color='#00720B' />
+                                <CardContent content={`Slashed: ${entity && entity.slashed}`} bg='#EFB0B0' color='#980E0E' />
+                                <CardContent content={`Exited: ${entity && entity.exited}`} bg='#CDA4DC' color='#5D3BBD' />
                             </div>
                         </div>
                     </div>

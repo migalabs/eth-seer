@@ -309,6 +309,10 @@ const Slot = () => {
                                 title='Entity'
                                 content={block.f_pool_name?.toLocaleString() || 'others'}
                                 consensusLayer
+                                icon='link'
+                                iconSize={25}
+                                link={`${assetPrefix}/entity/${block.f_pool_name?.toLocaleString() || 'others'}`}
+                                target='_self'
                                 darkMode={themeMode?.darkMode}
                             />
                         )}

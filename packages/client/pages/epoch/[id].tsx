@@ -168,7 +168,22 @@ const EpochComponent = () => {
                             <div className='flex items-center justify-center w-[10%]'>
                                 <BlockImage slot={element} />
                             </div>
-                            <p className='w-[35%]'>{element.f_pool_name || 'others'}</p>
+                            <div className='w-[35%]'>
+                                <Link
+                                    href={{
+                                        pathname: '/entity/[name]',
+                                        query: {
+                                            name: element.f_pool_name || 'others',
+                                        },
+                                    }}
+                                    passHref
+                                    as={`/entity/${element.f_pool_name || 'others'}`}
+                                    className='flex gap-x-1 items-center w-fit mx-auto'
+                                >
+                                    <p>{element.f_pool_name || 'others'}</p>
+                                    <LinkIcon />
+                                </Link>
+                            </div>
                             <div className='w-[18%]'>
                                 <Link
                                     href={{

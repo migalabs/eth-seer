@@ -273,10 +273,27 @@ export const getEntity = async (req: Request, res: Response) => {
 
         const { name } = req.params;
 
+        const [ entityStats ] = 
+            await Promise.all([
+                pgClient.query(`
+                SELECT sum(f_balance_eth) as aggregate_balance, 
+                    COUNT(CASE  f_status WHEN 0 THEN 1 ELSE null END) AS deposited,
+                    COUNT(CASE  f_status WHEN 1 THEN 1 ELSE null END) AS active,
+                    COUNT(CASE  f_status WHEN 2 THEN 1 ELSE null END) AS exited,
+                    COUNT(CASE  f_status WHEN 3 THEN 1 ELSE null END) AS slashed
+                FROM 
+                    t_validator_last_status
+                LEFT OUTER JOIN 
+                    t_eth2_pubkeys ON t_validator_last_status.f_val_idx = t_eth2_pubkeys.f_val_idx
+                WHERE 
+                    f_pool_name = '${name}'
+                `),
+            ]);
+
+            const entity = {...entityStats.rows[0] }
+
         res.json({
-            entity: {
-                name
-            }
+            entity
         });
 
     } catch (error) {
