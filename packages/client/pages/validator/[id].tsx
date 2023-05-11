@@ -11,15 +11,13 @@ import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
 // Components
 import Layout from '../../components/layouts/Layout';
-import CustomImage from '../../components/ui/CustomImage';
 import ValidatorAnimation from '../../components/layouts/ValidatorAnimation';
-
-// Constants
-import { POOLS } from '../../constants';
+import LinkIcon from '../../components/ui/LinkIcon';
+import BlockImage from '../../components/ui/BlockImage';
+import BlockGif from '../../components/ui/BlockGif';
 
 // Types
-import { Slot, Validator } from '../../types';
-import BlockImage from '../../components/ui/BlockImage';
+import { Validator } from '../../types';
 
 // Constants
 const firstBlock: number = Number(process.env.NEXT_PUBLIC_NETWORK_GENESIS); // 1606824023000
@@ -142,13 +140,7 @@ const ValidatorComponent = () => {
                                             <p>{Math.floor(element.f_proposer_slot / 32).toLocaleString()}</p>
                                         </p>
                                     </div>
-                                    <CustomImage
-                                        src='/static/images/link.svg'
-                                        alt='Link icon'
-                                        width={20}
-                                        height={20}
-                                        className='mb-1'
-                                    />
+                                    <LinkIcon />
                                 </Link>
                             </div>
                             <div>
@@ -167,13 +159,7 @@ const ValidatorComponent = () => {
                                         <p className='w-20'>Slot:</p>
                                         <p className='leading-3'>{element.f_proposer_slot.toLocaleString()}</p>
                                     </div>
-                                    <CustomImage
-                                        src='/static/images/link.svg'
-                                        alt='Link icon'
-                                        width={20}
-                                        height={20}
-                                        className='mb-1'
-                                    />
+                                    <LinkIcon />
                                 </Link>
                             </div>
                             <div className='flex flex-row items-center gap-x-10'>
@@ -233,13 +219,7 @@ const ValidatorComponent = () => {
                                     className='flex gap-x-1 items-center w-fit mx-auto'
                                 >
                                     <p>{Math.floor(element.f_proposer_slot / 32).toLocaleString()}</p>
-                                    <CustomImage
-                                        src='/static/images/link.svg'
-                                        alt='Link icon'
-                                        width={20}
-                                        height={20}
-                                        className='mb-1'
-                                    />
+                                    <LinkIcon />
                                 </Link>
                             </div>
                             <div className='w-[25%]'>
@@ -255,13 +235,7 @@ const ValidatorComponent = () => {
                                     className='flex gap-x-1 items-center w-fit mx-auto'
                                 >
                                     <p>{element.f_proposer_slot.toLocaleString()}</p>
-                                    <CustomImage
-                                        src='/static/images/link.svg'
-                                        alt='Link icon'
-                                        width={20}
-                                        height={20}
-                                        className='mb-1'
-                                    />
+                                    <LinkIcon />
                                 </Link>
                             </div>
                             <p className='w-[25%]'>
@@ -289,25 +263,48 @@ const ValidatorComponent = () => {
     const getContentValidator = () => {
         return (
             <Card
-                className='flex flex-col gap-y-2 mx-2 px-6 uppercase overflow-x-scroll overflow-y-hidden scrollbar-thin text-black text-xl text-[8px] sm:text-[10px]  rounded-[22px] py-3'
+                className='flex mx-2 px-10 py-5 rounded-[22px] justify-between items-center gap-x-5'
                 style={{
                     backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
                     boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
                 }}
             >
-                <div className='flex flex-row items-center gap-x-5'>
-                    <p className='w-60'>Entity:</p>
-                    <p className='leading-3'>{validator?.f_pool_name !== null ? validator?.f_pool_name : 'others'}</p>
-                </div>
-                <div className='flex flex-row items-center gap-x-5'>
-                    <p className='w-60'>Current balance:</p>
-                    <p className='leading-3'>{validator?.f_balance_eth}</p>
-                </div>
-                <div className='flex flex-col sm:flex-row gap-x-5'>
-                    <p className='w-60'>Current status:</p>
-                    <div className='flex justify-center gap-x-4 '>
-                        {validator?.f_status && getCurrentStatus(validator?.f_status)}
+                <div className='flex flex-col gap-y-2 uppercase text-black text-xl text-[8px] sm:text-[10px]'>
+                    <div className='flex flex-row items-center gap-x-5'>
+                        <p className='w-60'>Entity:</p>
+                        <div className='w-[35%]'>
+                                <Link
+                                    href={{
+                                        pathname: '/entity/[name]',
+                                        query: {
+                                            name: validator?.f_pool_name ? validator.f_pool_name : 'others',
+                                        },
+                                    }}
+                                    passHref
+                                    as={`/entity/${validator?.f_pool_name ? validator.f_pool_name : 'others'}`}
+                                    className='flex gap-x-1 items-center w-fit mx-auto'
+                                >
+                                    <p className='leading-3'>{validator?.f_pool_name ? validator.f_pool_name : 'others'}</p>
+                                    <LinkIcon />
+                                </Link>
+                        </div>
                     </div>
+
+                    <div className='flex flex-row items-center gap-x-5'>
+                        <p className='w-60'>Current balance:</p>
+                        <p className='leading-3'>{validator?.f_balance_eth}</p>
+                    </div>
+
+                    <div className='flex flex-col sm:flex-row gap-x-5'>
+                        <p className='w-60'>Current status:</p>
+                        <div className='flex justify-center gap-x-4 '>
+                            {validator?.f_status && getCurrentStatus(validator?.f_status)}
+                        </div>
+                    </div>
+                </div>
+
+                <div className='hidden md:block'>
+                    <BlockGif poolName={validator?.f_pool_name || 'others'} width={150} height={150} />
                 </div>
             </Card>
         );

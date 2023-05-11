@@ -11,12 +11,11 @@ import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 // Components
 import Layout from '../../components/layouts/Layout';
 import CustomImage from '../../components/ui/CustomImage';
+import LinkIcon from '../../components/ui/LinkIcon';
+import BlockGif from '../../components/ui/BlockGif';
 
 // Types
 import { Block } from '../../types';
-
-// Constants
-import { POOLS } from '../../constants';
 
 const firstBlock: number = Number(process.env.NEXT_PUBLIC_NETWORK_GENESIS);
 const zeroAddress = '0x0000000000000000000000000000000000000000000000000000000000000000';
@@ -110,13 +109,17 @@ const Card = ({ title, content, icon, iconSize, consensusLayer, link, darkMode, 
                             rel='noreferrer'
                             style={{ textDecoration: 'none', color: 'black' }}
                         >
-                            <CustomImage
-                                src={`/static/images/${icon}.svg`}
-                                width={iconSize || 35}
-                                height={iconSize || 35}
-                                alt='Icon'
-                                className={link && 'cursor-pointer'}
-                            />
+                            {icon === 'link' ? (
+                                <LinkIcon forceOrange />
+                            ) : (
+                                <CustomImage
+                                    src={`/static/images/${icon}.svg`}
+                                    width={iconSize || 35}
+                                    height={iconSize || 35}
+                                    alt='Icon'
+                                    className={link && 'cursor-pointer'}
+                                />
+                            )}
                         </a>
                     )}
                 </div>
@@ -219,28 +222,6 @@ const Slot = () => {
         return address && `${address.slice(0, 6)}...${address.slice(address.length - 6, address.length)}`;
     };
 
-    const getBlockGif = (block: Block) => {
-        if (block.f_pool_name !== undefined) {
-            if (block.f_pool_name && POOLS.includes(block.f_pool_name.toUpperCase())) {
-                return (
-                    <CustomImage
-                        src={`/static/gifs/block_${block.f_pool_name.toLowerCase()}.gif`}
-                        alt='Logo'
-                        width={400}
-                        height={400}
-                        priority
-                    />
-                );
-            } else if (block.f_pool_name && block.f_pool_name.includes('lido')) {
-                return <CustomImage src='/static/gifs/block_lido.gif' alt='Logo' width={400} height={400} priority />;
-            } else if (block.f_pool_name && block.f_pool_name.includes('whale')) {
-                return <CustomImage src='/static/gifs/block_whale.gif' alt='Logo' width={400} height={400} priority />;
-            } else {
-                return <CustomImage src='/static/gifs/block_others.gif' alt='Logo' width={400} height={400} priority />;
-            }
-        }
-    };
-
     const getTimeBlock = () => {
         let text;
 
@@ -328,6 +309,10 @@ const Slot = () => {
                                 title='Entity'
                                 content={block.f_pool_name?.toLocaleString() || 'others'}
                                 consensusLayer
+                                icon='link'
+                                iconSize={25}
+                                link={`${assetPrefix}/entity/${block.f_pool_name?.toLocaleString() || 'others'}`}
+                                target='_self'
                                 darkMode={themeMode?.darkMode}
                             />
                         )}
@@ -438,7 +423,9 @@ const Slot = () => {
 
                 {existsBlock && (
                     <div className='flex flex-col xl:self-end items-center'>
-                        <div className='hidden xl:block'>{getBlockGif(block)}</div>
+                        <div className='hidden xl:block'>
+                            <BlockGif poolName={block?.f_pool_name || 'others'} width={400} height={400} />
+                        </div>
 
                         <Title text='Execution Layer' darkMode={themeMode?.darkMode} />
 

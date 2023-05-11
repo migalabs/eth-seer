@@ -12,6 +12,7 @@ import ProgressSmoothBar from '../ui/ProgressSmoothBar';
 import Loader from '../ui/Loader';
 import { TooltipContainer, TooltipContentContainerHeaders } from '../ui/Tooltips';
 import CustomImage from '../ui/CustomImage';
+import LinkIcon from '../ui/LinkIcon';
 
 // Types
 import { Epoch, Block } from '../../types';
@@ -137,13 +138,7 @@ const Statitstics = () => {
                         className='flex gap-x-1 items-center w-fit mx-auto'
                     >
                         <p>{f_epoch.toLocaleString()}</p>
-                        <CustomImage
-                            src='/static/images/link.svg'
-                            alt='Link icon'
-                            width={20}
-                            height={20}
-                            className='mb-1'
-                        />
+                        <LinkIcon />
                     </Link>
                 </div>
                 <div className='w-[15%] pt-3.5 mb-6'>
@@ -443,13 +438,7 @@ const Statitstics = () => {
                                     className='flex gap-x-1 items-center w-fit mx-auto'
                                 >
                                     <p>{epoch.f_epoch.toLocaleString()}</p>
-                                    <CustomImage
-                                        src='/static/images/link.svg'
-                                        alt='Link icon'
-                                        width={20}
-                                        height={20}
-                                        className='mb-1'
-                                    />
+                                    <LinkIcon />
                                 </Link>
                             </div>
 
