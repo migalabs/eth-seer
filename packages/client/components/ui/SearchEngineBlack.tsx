@@ -1,4 +1,4 @@
-import React, { useState, Fragment, useContext } from 'react';
+import React, { useState, Fragment, useContext, useRef } from 'react';
 import Link from 'next/link';
 import styled from '@emotion/styled';
 
@@ -6,6 +6,9 @@ import styled from '@emotion/styled';
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 import BlocksContext from '../../contexts/blocks/BlocksContext';
 import EpochsContext from '../../contexts/epochs/EpochsContext';
+
+// Hooks
+import useOutsideClick from '../../hooks/useOutsideClick';
 
 // Components
 import CustomImage from './CustomImage';
@@ -51,9 +54,16 @@ const SearchEngineBlack = () => {
     // Epochs Context
     const { epochs } = useContext(EpochsContext) || {};
 
+    // Refs
+    const popUpRef = useRef<HTMLDivElement>(null);
+
+    // Hook Outside Click
+    useOutsideClick(popUpRef, () => setShowResults(false));
+
     // States
     const [search, setSearch] = useState('');
     const [searchResults, setSearchResults] = useState<SearchEngineItem[]>([]);
+    const [showResults, setShowResults] = useState(true);
 
     const loadResults = (searchContent: string) => {
         if (searchContent.length === 0) {
@@ -122,6 +132,13 @@ const SearchEngineBlack = () => {
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearch(e.target.value);
         loadResults(e.target.value.trim());
+        setShowResults(true);
+    };
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Escape') {
+            setShowResults(false);
+        }
     };
 
     return (
@@ -131,6 +148,7 @@ const SearchEngineBlack = () => {
                 borderColor: themeMode?.darkMode ? 'var(--yellow4)' : 'var(--blue2)',
                 color: themeMode?.darkMode ? 'var(--yellow4)' : 'var(--blue2)',
             }}
+            ref={popUpRef}
         >
             <CustomImage
                 src={'/static/images/magnifying-glass-pixel.svg'}
@@ -147,9 +165,10 @@ const SearchEngineBlack = () => {
                 value={search}
                 onChange={handleSearch}
                 darkMode={themeMode?.darkMode || false}
+                onKeyDown={handleKeyDown}
             />
 
-            {searchResults.length > 0 && (
+            {searchResults.length > 0 && showResults && (
                 <div
                     className='absolute flex flex-col top-full left-0 gap-y-3 w-full border-2 rounded-xl p-5 bg-[#736a73] text-xs z-10'
                     style={{
