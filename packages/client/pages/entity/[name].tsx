@@ -77,7 +77,7 @@ const Entity = () => {
                     </div>
 
                     <div className='hidden md:block'>
-                        <BlockGif poolName={name?.toString() || ''} width={150} height={150} />
+                        <BlockGif poolName={name?.toString() || 'others'} width={150} height={150} />
                     </div>
                 </div>
             </div>

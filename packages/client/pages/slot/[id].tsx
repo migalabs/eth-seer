@@ -420,7 +420,7 @@ const Slot = () => {
                 {existsBlock && (
                     <div className='flex flex-col xl:self-end items-center'>
                         <div className='hidden xl:block'>
-                            <BlockGif poolName={block?.f_pool_name || ''} width={400} height={400} />
+                            <BlockGif poolName={block?.f_pool_name || 'others'} width={400} height={400} />
                         </div>
 
                         <Title text='Execution Layer' darkMode={themeMode?.darkMode} />
