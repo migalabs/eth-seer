@@ -51,10 +51,16 @@ export type Slot = {
     f_proposed: boolean;
 };
 
+export type Proposed = {
+    f_proposed: number;
+    f_missed: number;
+};
+
 export type Entity = {
     aggregate_balance: number;
     deposited: number;
     active: number;
     slashed: number;
     exited: number;
+    proposed_blocks: Proposed;
 };
