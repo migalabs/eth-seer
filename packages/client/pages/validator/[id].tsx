@@ -273,20 +273,20 @@ const ValidatorComponent = () => {
                     <div className='flex flex-row items-center gap-x-5'>
                         <p className='w-60'>Entity:</p>
                         <div className='w-[35%]'>
-                                <Link
-                                    href={{
-                                        pathname: '/entity/[name]',
-                                        query: {
-                                            name: validator?.f_pool_name ? validator.f_pool_name : 'others',
-                                        },
-                                    }}
-                                    passHref
-                                    as={`/entity/${validator?.f_pool_name ? validator.f_pool_name : 'others'}`}
-                                    className='flex gap-x-1 items-center w-fit mx-auto'
-                                >
-                                    <p className='leading-3'>{validator?.f_pool_name ? validator.f_pool_name : 'others'}</p>
-                                    <LinkIcon />
-                                </Link>
+                            <Link
+                                href={{
+                                    pathname: '/entity/[name]',
+                                    query: {
+                                        name: validator?.f_pool_name ? validator.f_pool_name : 'others',
+                                    },
+                                }}
+                                passHref
+                                as={`/entity/${validator?.f_pool_name ? validator.f_pool_name : 'others'}`}
+                                className='flex gap-x-1 items-center w-fit mx-auto'
+                            >
+                                <p className='leading-3'>{validator?.f_pool_name ? validator.f_pool_name : 'others'}</p>
+                                <LinkIcon />
+                            </Link>
                         </div>
                     </div>
 

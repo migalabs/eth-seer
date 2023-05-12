@@ -41,10 +41,9 @@ const Entity = () => {
 
     const [entity, setEntity] = useState<Entity | null>(null);
 
-     // UseEffect
-     useEffect(() => {
-    
-        if ((name && !entity)) {
+    // UseEffect
+    useEffect(() => {
+        if (name && !entity) {
             getEntity();
         }
 
@@ -57,6 +56,7 @@ const Entity = () => {
 
             setEntity(response.data.entity);
 
+            console.log(response.data.entity);
         } catch (error) {
             console.log(error);
         }
@@ -67,45 +67,72 @@ const Entity = () => {
             <div className='flex gap-x-3 justify-center items-center mt-2 mb-5'>
                 <h1 className='text-white text-center text-xl md:text-3xl uppercase'>{name}</h1>
             </div>
+            {entity && (
+                <div className='mx-auto max-w-[1100px]'>
+                    <div
+                        className='flex mx-2 px-10 py-5 rounded-[22px] justify-between items-center gap-x-5'
+                        style={{
+                            backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
+                            boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
+                        }}
+                    >
+                        <div className='flex flex-col gap-y-2 uppercase text-black text-xl text-[8px] sm:text-[10px] mx-auto md:mx-0'>
+                            <div className='flex flex-row items-center gap-x-5'>
+                                <p className='w-60'>Aggregate Balance:</p>
+                                <p className='leading-3'>{entity && entity.aggregate_balance} ETH</p>
+                            </div>
 
-            <div className='mx-auto max-w-[1100px]'>
-                <div
-                    className='flex mx-2 px-10 py-5 rounded-[22px] justify-between items-center gap-x-5'
-                    style={{
-                        backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
-                        boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
-                    }}
-                >
-                    <div className='flex flex-col gap-y-2 uppercase text-black text-xl text-[8px] sm:text-[10px] mx-auto md:mx-0'>
-                        <div className='flex flex-row items-center gap-x-5'>
-                            <p className='w-60'>Aggregate Balance:</p>
-                            <p className='leading-3'>{entity && entity.aggregate_balance} ETH</p>
-                        </div>
+                            <div className='flex flex-col sm:flex-row gap-x-5'>
+                                <p className='w-60'>Blocks:</p>
+                                <div className='flex justify-center gap-x-4 '>
+                                    <CardContent
+                                        content={`Proposed: ${entity && entity.proposed_blocks.f_proposed}`}
+                                        bg='#83E18C'
+                                        color='#00720B'
+                                        rounded
+                                    />
+                                    <CardContent
+                                        content={`Missed: ${entity && entity.proposed_blocks.f_missed}`}
+                                        bg='#FF9090'
+                                        color='#980E0E'
+                                        rounded
+                                    />
+                                </div>
+                            </div>
 
-                        <div className='flex flex-col sm:flex-row gap-x-5'>
-                            <p className='w-60'>Blocks:</p>
-                            <div className='flex justify-center gap-x-4 '>
-                                <CardContent content={`Proposed: ${30}`} bg='#83E18C' color='#00720B' rounded />
-                                <CardContent content={`Missed: ${32 - 30}`} bg='#FF9090' color='#980E0E' rounded />
+                            <div className='flex flex-col gap-y-5'>
+                                <p className='w-60'>Number of Validators:</p>
+                                <div className='flex flex-col md:flex-row items-center md:justify-center gap-x-4 gap-y-2'>
+                                    <CardContent
+                                        content={`Deposited: ${entity && entity.deposited}`}
+                                        bg='#98D3E6'
+                                        color='#0080A9'
+                                    />
+                                    <CardContent
+                                        content={`Active: ${entity && entity.active}`}
+                                        bg='#9BD8A1'
+                                        color='#00720B'
+                                    />
+                                    <CardContent
+                                        content={`Slashed: ${entity && entity.slashed}`}
+                                        bg='#EFB0B0'
+                                        color='#980E0E'
+                                    />
+                                    <CardContent
+                                        content={`Exited: ${entity && entity.exited}`}
+                                        bg='#CDA4DC'
+                                        color='#5D3BBD'
+                                    />
+                                </div>
                             </div>
                         </div>
 
-                        <div className='flex flex-col gap-y-5'>
-                            <p className='w-60'>Number of Validators:</p>
-                            <div className='flex flex-col md:flex-row items-center md:justify-center gap-x-4 gap-y-2'>
-                                <CardContent content={`Deposited: ${entity && entity.deposited}`} bg='#98D3E6' color='#0080A9' />
-                                <CardContent content={`Active: ${entity && entity.active}`} bg='#9BD8A1' color='#00720B' />
-                                <CardContent content={`Slashed: ${entity && entity.slashed}`} bg='#EFB0B0' color='#980E0E' />
-                                <CardContent content={`Exited: ${entity && entity.exited}`} bg='#CDA4DC' color='#5D3BBD' />
-                            </div>
+                        <div className='hidden md:block'>
+                            <BlockGif poolName={name?.toString() || 'others'} width={150} height={150} />
                         </div>
-                    </div>
-
-                    <div className='hidden md:block'>
-                        <BlockGif poolName={name?.toString() || 'others'} width={150} height={150} />
                     </div>
                 </div>
-            </div>
+            )}
         </Layout>
     );
 };
