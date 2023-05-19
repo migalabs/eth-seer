@@ -173,6 +173,11 @@ const ValidatorComponent = () => {
                         </div>
                     </div>
                 ))}
+                {validator?.proposed_blocks.length == 0 && (
+                    <div className='flex justify-center p-2'>
+                        <p className='uppercase'>No proposed blocks</p>
+                    </div>
+                )}
             </Card>
         );
     };
@@ -243,6 +248,11 @@ const ValidatorComponent = () => {
                             </p>
                         </div>
                     ))}
+                    {validator?.proposed_blocks.length == 0 && (
+                        <div className='flex justify-center p-2'>
+                            <p className='uppercase'>No proposed blocks</p>
+                        </div>
+                    )}
                 </Card>
             </div>
         );
@@ -320,16 +330,10 @@ const ValidatorComponent = () => {
             {validator?.f_val_idx !== undefined ? (
                 <div className='mx-auto max-w-[1100px]'>
                     <div>{getContentValidator()}</div>
-                    {validator?.proposed_blocks && validator?.proposed_blocks.length > 0 && (
-                        <>
-                            <div className='flex gap-x-3 justify-center items-center mt-6'>
-                                <h1 className='text-white text-center text-lg md:text-2xl uppercase'>
-                                    Proposed Blocks
-                                </h1>
-                            </div>
-                            <div>{desktopView ? getContentProposedBlocks() : getContentProposedBlocksMobile()}</div>
-                        </>
-                    )}
+                    <div className='flex gap-x-3 justify-center items-center mt-6'>
+                        <h1 className='text-white text-center text-lg md:text-2xl uppercase'>Proposed Blocks</h1>
+                    </div>
+                    <div>{desktopView ? getContentProposedBlocks() : getContentProposedBlocksMobile()}</div>
                 </div>
             ) : (
                 animation && <ValidatorAnimation darkMode={themeMode?.darkMode as boolean} />
