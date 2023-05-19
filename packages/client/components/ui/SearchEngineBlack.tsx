@@ -13,6 +13,9 @@ import useOutsideClick from '../../hooks/useOutsideClick';
 // Components
 import CustomImage from './CustomImage';
 
+// Constants
+import { POOLS_EXTENDED } from '../../constants';
+
 // Styled
 type PropsInput = {
     darkMode: boolean;
@@ -105,10 +108,17 @@ const SearchEngineBlack = () => {
             }
         } else {
             // It can be an entity
-            items.push({
-                label: `Entity: ${searchContent}`,
-                link: `/entity/${searchContent}`,
-            });
+            const expression = new RegExp(searchContent, 'i');
+
+            items.push(
+                ...POOLS_EXTENDED.sort((a, b) => (a > b ? 1 : -1))
+                    .filter(pool => pool.toUpperCase().startsWith(searchContent.toUpperCase()))
+                    .slice(0, 10)
+                    .map(pool => ({
+                        label: `Entity: ${pool}`,
+                        link: `/entity/${pool.toLowerCase()}`,
+                    }))
+            );
         }
 
         setSearchResults(items);
@@ -149,7 +159,7 @@ const SearchEngineBlack = () => {
 
     return (
         <div
-            className='absolute flex top-20 md:top-4 left-4 md:left-[calc(50%-210px)] items-center w-[calc(100%-2rem)] md:w-[400px] h-10 border-2 rounded-3xl py-1 bg-[#736a73]'
+            className='absolute flex top-20 md:top-4 left-4 md:left-[calc(50%-210px)] items-center w-[calc(100%-2rem)] md:w-[420px] h-10 border-2 rounded-3xl py-1 bg-[#736a73]'
             style={{
                 borderColor: themeMode?.darkMode ? 'var(--yellow4)' : 'var(--blue2)',
                 color: themeMode?.darkMode ? 'var(--yellow4)' : 'var(--blue2)',
