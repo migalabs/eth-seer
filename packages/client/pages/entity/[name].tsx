@@ -55,8 +55,6 @@ const Entity = () => {
             const response = await axiosClient.get(`/api/validator-rewards-summary/entity/${name}`);
 
             setEntity(response.data.entity);
-
-            console.log(response.data.entity);
         } catch (error) {
             console.log(error);
         }
@@ -79,20 +77,24 @@ const Entity = () => {
                         <div className='flex flex-col gap-y-2 uppercase text-black text-xl text-[8px] sm:text-[10px] mx-auto md:mx-0'>
                             <div className='flex flex-row items-center gap-x-5'>
                                 <p className='w-60'>Aggregate Balance:</p>
-                                <p className='leading-3'>{entity && entity.aggregate_balance} ETH</p>
+                                <p className='leading-3'>{entity && entity.aggregate_balance.toLocaleString()} ETH</p>
                             </div>
 
                             <div className='flex flex-col sm:flex-row gap-x-5'>
                                 <p className='w-60'>Blocks:</p>
                                 <div className='flex justify-center gap-x-4 '>
                                     <CardContent
-                                        content={`Proposed: ${entity && entity.proposed_blocks.f_proposed}`}
+                                        content={`Proposed: ${
+                                            entity && entity.proposed_blocks.f_proposed.toLocaleString()
+                                        }`}
                                         bg='#83E18C'
                                         color='#00720B'
                                         rounded
                                     />
                                     <CardContent
-                                        content={`Missed: ${entity && entity.proposed_blocks.f_missed}`}
+                                        content={`Missed: ${
+                                            entity && entity.proposed_blocks.f_missed.toLocaleString()
+                                        }`}
                                         bg='#FF9090'
                                         color='#980E0E'
                                         rounded
@@ -104,22 +106,22 @@ const Entity = () => {
                                 <p className='w-60'>Number of Validators:</p>
                                 <div className='flex flex-col md:flex-row items-center md:justify-center gap-x-4 gap-y-2'>
                                     <CardContent
-                                        content={`Deposited: ${entity && entity.deposited}`}
+                                        content={`Deposited: ${entity && entity.deposited.toLocaleString()}`}
                                         bg='#98D3E6'
                                         color='#0080A9'
                                     />
                                     <CardContent
-                                        content={`Active: ${entity && entity.active}`}
+                                        content={`Active: ${entity && entity.active.toLocaleString()}`}
                                         bg='#9BD8A1'
                                         color='#00720B'
                                     />
                                     <CardContent
-                                        content={`Slashed: ${entity && entity.slashed}`}
+                                        content={`Slashed: ${entity && entity.slashed.toLocaleString()}`}
                                         bg='#EFB0B0'
                                         color='#980E0E'
                                     />
                                     <CardContent
-                                        content={`Exited: ${entity && entity.exited}`}
+                                        content={`Exited: ${entity && entity.exited.toLocaleString()}`}
                                         bg='#CDA4DC'
                                         color='#5D3BBD'
                                     />
