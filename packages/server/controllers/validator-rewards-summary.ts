@@ -257,7 +257,8 @@ export const getValidator = async (req: Request, res: Response) => {
                     COUNT(CASE WHEN f_in_sync_committee = TRUE THEN 1 ELSE null END) as count_sync_committee,
                     COUNT(CASE WHEN f_missing_source = TRUE THEN 1 ELSE null END) as count_missing_source,
                     COUNT(CASE WHEN f_missing_target = TRUE THEN 1 ELSE null END) as count_missing_target,
-                    COUNT(CASE WHEN f_missing_head = TRUE THEN 1 ELSE null END) as count_missing_head
+                    COUNT(CASE WHEN f_missing_head = TRUE THEN 1 ELSE null END) as count_missing_head,
+                    COUNT(*) as count_attestations
                     FROM t_validator_rewards_summary
                     WHERE f_val_idx = '${id}'
                 `)

@@ -319,7 +319,7 @@ const ValidatorComponent = () => {
                             <div className='flex flex-col md:flex-row gap-x-3 justify-between w-full md:w-auto flex-grow max-w-[350px] min-w-[200px]'>
                                 <p className='w-20'>Rewards</p>
                                 <div className='flex-grow mx-6 md:mx-0'>
-                                    <ProgressSmoothBarEpoch bg={'#E86506'} color={'#FFC163'} percent={1} />
+                                    {validator && <ProgressSmoothBarEpoch bg={'#E86506'} color={'#FFC163'} percent={1} />}
                                 </div>
                             </div>
                             <div className='flex flex-col md:flex-row gap-x-10 gap-y-2'>
@@ -346,7 +346,7 @@ const ValidatorComponent = () => {
                             <div className='flex flex-col md:flex-row gap-x-5 gap-y-2'>
                                 <div className='md:w-[240px]'>
                                     <CardContent
-                                        content={`Sync committee: ${validator?.count_missing_source}`}
+                                        content={`Sync commit.: ${validator?.count_missing_source}`}
                                         bg={'#E86506'}
                                         color={'#FFC163'}
                                     />
@@ -354,7 +354,7 @@ const ValidatorComponent = () => {
 
                                 <div className='md:w-[240px]'>
                                     <CardContent
-                                        content={`Sync committee: ${validator?.count_missing_source}`}
+                                        content={`T. Sync commit.: ${validator?.count_missing_source}`}
                                         bg={'#E86506'}
                                         color={'#FFC163'}
                                     />
@@ -372,7 +372,7 @@ const ValidatorComponent = () => {
                                             title='Target'
                                             bg='#E86506'
                                             color='#FFC163'
-                                            percent={1 - validator.count_missing_target / 4}
+                                            percent={1 - validator.count_missing_target / validator.count_attestations}
                                             tooltipColor='orange'
                                             tooltipContent={
                                                 <>
@@ -380,7 +380,7 @@ const ValidatorComponent = () => {
                                                         Missing Target:{' '}
                                                         {validator.count_missing_target.toLocaleString()}
                                                     </span>
-                                                    <span>Attestations: {4}</span>
+                                                    <span>Attestations: {validator.count_attestations.toLocaleString()}</span>
                                                 </>
                                             }
                                         />
@@ -392,7 +392,7 @@ const ValidatorComponent = () => {
                                             title='Source'
                                             bg='#14946e'
                                             color='#BDFFEB'
-                                            percent={1 - validator.count_missing_source / 4}
+                                            percent={1 - validator.count_missing_source / validator.count_attestations}
                                             tooltipColor='blue'
                                             tooltipContent={
                                                 <>
@@ -400,7 +400,7 @@ const ValidatorComponent = () => {
                                                         Missing Source:{' '}
                                                         {validator.count_missing_source.toLocaleString()}
                                                     </span>
-                                                    <span>Attestations: {4}</span>
+                                                     <span>Attestations: {validator.count_attestations.toLocaleString()}</span>
                                                 </>
                                             }
                                         />
@@ -412,14 +412,14 @@ const ValidatorComponent = () => {
                                             title='Head'
                                             bg='#532BC5'
                                             color='#E6DDFF'
-                                            percent={1 - validator.count_missing_head / 4}
+                                            percent={1 - validator.count_missing_head / validator.count_attestations}
                                             tooltipColor='purple'
                                             tooltipContent={
                                                 <>
                                                     <span>
                                                         Missing Head: {validator.count_missing_head.toLocaleString()}
                                                     </span>
-                                                    <span>Attestations: {4}</span>
+                                                    <span>Attestations: {validator.count_attestations.toLocaleString()}</span>
                                                 </>
                                             }
                                         />
