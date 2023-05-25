@@ -227,7 +227,7 @@ export const getValidator = async (req: Request, res: Response) => {
 
         const { id } = req.params;
 
-        const [ validatorStats, blocksProposed ] = 
+        const [ validatorStats, blocksProposed, validatorPerformance ] = 
             await Promise.all([
                 pgClient.query(`
                 SELECT 
@@ -250,10 +250,21 @@ export const getValidator = async (req: Request, res: Response) => {
                     FROM t_proposer_duties
                     LEFT OUTER JOIN t_eth2_pubkeys ON t_proposer_duties.f_val_idx = t_eth2_pubkeys.f_val_idx
                     WHERE t_proposer_duties.f_val_idx = '${id}'
+                `),
+                pgClient.query(`
+                    SELECT SUM(f_reward) as aggregated_rewards, 
+                    SUM(f_max_reward) as aggregated_max_rewards,
+                    COUNT(CASE WHEN f_in_sync_committee = TRUE THEN 1 ELSE null END) as count_sync_committee,
+                    COUNT(CASE WHEN f_missing_source = TRUE THEN 1 ELSE null END) as count_missing_source,
+                    COUNT(CASE WHEN f_missing_target = TRUE THEN 1 ELSE null END) as count_missing_target,
+                    COUNT(CASE WHEN f_missing_head = TRUE THEN 1 ELSE null END) as count_missing_head,
+                    COUNT(*) as count_attestations
+                    FROM t_validator_rewards_summary
+                    WHERE f_val_idx = '${id}'
                 `)
             ]);
 
-            const validator = {...validatorStats.rows[0], proposed_blocks: blocksProposed.rows}
+            const validator = {...validatorStats.rows[0], proposed_blocks: blocksProposed.rows, ...validatorPerformance.rows[0]}
 
         res.json({
             validator

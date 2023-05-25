@@ -18,6 +18,8 @@ import BlockGif from '../../components/ui/BlockGif';
 
 // Types
 import { Validator } from '../../types';
+import ProgressSmoothBarEpoch from '../../components/ui/ProgressSmoothBarEpoch';
+import ProgressSmoothBar from '../../components/ui/ProgressSmoothBar';
 
 // Constants
 const firstBlock: number = Number(process.env.NEXT_PUBLIC_NETWORK_GENESIS); // 1606824023000
@@ -285,7 +287,7 @@ const ValidatorComponent = () => {
     const getContentValidator = () => {
         return (
             <Card
-                className='flex mx-2 px-10 py-5 rounded-[22px] justify-between items-center gap-x-5'
+                className='flex mx-2 px-10 py-5 rounded-[22px] justify-between gap-x-5'
                 style={{
                     backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
                     boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
@@ -294,7 +296,7 @@ const ValidatorComponent = () => {
                 <div className='flex flex-col gap-y-2 uppercase text-black text-xl text-[8px] sm:text-[10px]'>
                     <div className='flex flex-row items-center gap-x-5'>
                         <p className='w-60'>Entity:</p>
-                        <div className='w-[35%]'>
+                        <div>
                             <Link
                                 href={{
                                     pathname: '/entity/[name]',
@@ -321,6 +323,121 @@ const ValidatorComponent = () => {
                         <p className='w-60'>Current status:</p>
                         <div className='flex justify-center gap-x-4 '>
                             {validator?.f_status && getCurrentStatus(validator?.f_status)}
+                        </div>
+                    </div>
+                    <div className='flex flex-col gap-y-4'>
+                        <p className='items-start'>Validator performance:</p>
+                        <div className='flex flex-col md:flex-row gap-x-10 gap-y-2 items-center md:justify-end md:w-full ml-10'>
+                            <div className='flex flex-col md:flex-row gap-x-3 justify-between w-full md:w-auto flex-grow max-w-[350px] min-w-[200px]'>
+                                <p className='w-20'>Rewards</p>
+                                <div className='flex-grow mx-6 md:mx-0'>
+                                    {validator && <ProgressSmoothBarEpoch bg={'#E86506'} color={'#FFC163'} percent={1} />}
+                                </div>
+                            </div>
+                            <div className='flex flex-col md:flex-row gap-x-10 gap-y-2'>
+                                <div className='md:w-[275px]'>
+                                    <CardContent
+                                        content={`Agg. Rewards: ${validator?.aggregated_rewards}`}
+                                        bg={'#E86506'}
+                                        color={'#FFC163'}
+                                    />
+                                </div>
+                                <div className='flex-shrink'>
+                                    <CardContent
+                                        content={`Max. Rewards: ${validator?.aggregated_max_rewards}`}
+                                        bg={'#E86506'}
+                                        color={'#FFC163'}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <div className='flex flex-col md:flex-row gap-x-10 gap-y-2 items-center md:w-full ml-10'>
+                            <div className='flex flex-col md:flex-row gap-x-3 justify-between w-full md:w-auto flex-grow max-w-[350px] min-w-[200px]'>
+                                <p className=''>sync committee participation</p>
+                            </div>
+                            <div className='flex flex-col md:flex-row gap-x-5 gap-y-2'>
+                                <div className='md:w-[240px]'>
+                                    <CardContent
+                                        content={`Sync commit.: ${validator?.count_missing_source}`}
+                                        bg={'#E86506'}
+                                        color={'#FFC163'}
+                                    />
+                                </div>
+
+                                <div className='md:w-[240px]'>
+                                    <CardContent
+                                        content={`T. Sync commit.: ${validator?.count_missing_source}`}
+                                        bg={'#E86506'}
+                                        color={'#FFC163'}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <div className='flex flex-col md:flex-row gap-x-10 gap-y-2 items-center md:w-full ml-10'>
+                            <div className='flex flex-col md:flex-row gap-x-3 justify-between w-full md:w-auto flex-grow max-w-[350px] min-w-[200px]'>
+                                <p className=''>Missing attestation flags</p>
+                            </div>
+                            <div className='flex flex-col md:flex-row gap-x-4 gap-y-2 text-[9px] text-center leading-3'>
+                                <div className='w-32'>
+                                    {validator && (
+                                        <ProgressSmoothBar
+                                            title='Target'
+                                            bg='#E86506'
+                                            color='#FFC163'
+                                            percent={1 - validator.count_missing_target / validator.count_attestations}
+                                            tooltipColor='orange'
+                                            tooltipContent={
+                                                <>
+                                                    <span>
+                                                        Missing Target:{' '}
+                                                        {validator.count_missing_target.toLocaleString()}
+                                                    </span>
+                                                    <span>Attestations: {validator.count_attestations.toLocaleString()}</span>
+                                                </>
+                                            }
+                                        />
+                                    )}
+                                </div>
+                                <div className='w-32'>
+                                    {validator && (
+                                        <ProgressSmoothBar
+                                            title='Source'
+                                            bg='#14946e'
+                                            color='#BDFFEB'
+                                            percent={1 - validator.count_missing_source / validator.count_attestations}
+                                            tooltipColor='blue'
+                                            tooltipContent={
+                                                <>
+                                                    <span>
+                                                        Missing Source:{' '}
+                                                        {validator.count_missing_source.toLocaleString()}
+                                                    </span>
+                                                     <span>Attestations: {validator.count_attestations.toLocaleString()}</span>
+                                                </>
+                                            }
+                                        />
+                                    )}
+                                </div>
+                                <div className='w-32'>
+                                    {validator && (
+                                        <ProgressSmoothBar
+                                            title='Head'
+                                            bg='#532BC5'
+                                            color='#E6DDFF'
+                                            percent={1 - validator.count_missing_head / validator.count_attestations}
+                                            tooltipColor='purple'
+                                            tooltipContent={
+                                                <>
+                                                    <span>
+                                                        Missing Head: {validator.count_missing_head.toLocaleString()}
+                                                    </span>
+                                                    <span>Attestations: {validator.count_attestations.toLocaleString()}</span>
+                                                </>
+                                            }
+                                        />
+                                    )}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

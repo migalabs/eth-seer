@@ -19,6 +19,13 @@ export type Validator = {
     f_pool_name: string;
     f_balance_eth: number;
     f_status: string;
+    aggregated_rewards: number;
+    aggregated_max_rewards: number;
+    count_sync_committee: number;
+    count_missing_source: number;
+    count_missing_target: number;
+    count_missing_head: number;
+    count_attestations: number;
     proposed_blocks: Array<Slot>;
 };
 
