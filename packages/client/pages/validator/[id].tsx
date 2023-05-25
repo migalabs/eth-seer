@@ -19,6 +19,7 @@ import BlockGif from '../../components/ui/BlockGif';
 // Types
 import { Validator } from '../../types';
 import ProgressSmoothBarEpoch from '../../components/ui/ProgressSmoothBarEpoch';
+import ProgressSmoothBar from '../../components/ui/ProgressSmoothBar';
 
 // Constants
 const firstBlock: number = Number(process.env.NEXT_PUBLIC_NETWORK_GENESIS); // 1606824023000
@@ -274,7 +275,7 @@ const ValidatorComponent = () => {
     const getContentValidator = () => {
         return (
             <Card
-                className='flex mx-2 px-10 py-5 rounded-[22px] justify-between items-center gap-x-5'
+                className='flex mx-2 px-10 py-5 rounded-[22px] justify-between gap-x-5'
                 style={{
                     backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
                     boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
@@ -353,13 +354,55 @@ const ValidatorComponent = () => {
                             </div>
                             <div className='flex flex-col md:flex-row gap-x-10 gap-y-2'>
                                 <div className='md:w-[275px]'>
-                                    <CardContent content={`Source: ${validator?.count_missing_source}`} bg={"#E86506"} color={"#FFC163"} />
+                                    {validator &&
+                                        <ProgressSmoothBar
+                                        title='Target'
+                                        bg='#E86506'
+                                        color='#FFC163'
+                                        percent={1 - validator.count_missing_target / 4}
+                                        tooltipColor='orange'
+                                        tooltipContent={
+                                            <>
+                                                <span>Missing Target: {validator.count_missing_target.toLocaleString()}</span>
+                                                <span>Attestations: {4}</span>
+                                            </>
+                                        }
+                                    />
+                                    }
                                 </div>
                                 <div className='flex-shrink'>
-                                    <CardContent content={`Target: ${validator?.count_missing_target}`} bg={"#E86506"} color={"#FFC163"} />
+                                    {validator &&
+                                        <ProgressSmoothBar
+                                        title='Source'
+                                        bg='#14946e'
+                                        color='#BDFFEB'
+                                        percent={1 - validator.count_missing_source / 4}
+                                        tooltipColor='blue'
+                                        tooltipContent={
+                                            <>
+                                                <span>Missing Source: {validator.count_missing_source.toLocaleString()}</span>
+                                                <span>Attestations: {4}</span>
+                                            </>
+                                        }
+                                        />
+                                    }
                                 </div>
                                 <div className='flex-shrink'>
-                                    <CardContent content={`Head: ${validator?.count_missing_head}`} bg={"#E86506"} color={"#FFC163"} />
+                                    {validator &&
+                                        <ProgressSmoothBar
+                                        title='Head'
+                                        bg='#532BC5'
+                                        color='#E6DDFF'
+                                        percent={1 - validator.count_missing_head / 4}
+                                        tooltipColor='purple'
+                                        tooltipContent={
+                                            <>
+                                                <span>Missing Head: {validator.count_missing_head.toLocaleString()}</span>
+                                                <span>Attestations: {4}</span>
+                                            </>
+                                        }
+                                    />
+                                    }
                                 </div>
                             </div>
                         </div>
