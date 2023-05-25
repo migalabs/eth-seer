@@ -166,7 +166,13 @@ const EpochComponent = () => {
                             key={element.f_proposer_slot}
                         >
                             <div className='flex items-center justify-center w-[10%]'>
-                                <BlockImage slot={element} />
+                                <BlockImage
+                                    poolName={element.f_pool_name}
+                                    proposed={element.f_proposed}
+                                    width={60}
+                                    height={60}
+                                    showCheck
+                                />
                             </div>
                             <div className='w-[35%]'>
                                 <Link
@@ -238,7 +244,13 @@ const EpochComponent = () => {
                 {epoch?.f_slots?.map(element => (
                     <div className='flex flex-row gap-x-6 py-1 uppercase' key={element.f_proposer_slot}>
                         <div className='flex items-center'>
-                            <BlockImage slot={element} />
+                            <BlockImage
+                                poolName={element.f_pool_name}
+                                proposed={element.f_proposed}
+                                width={60}
+                                height={60}
+                                showCheck
+                            />
                         </div>
                         <div className='flex flex-col items-start '>
                             <div>

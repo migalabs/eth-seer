@@ -7,7 +7,7 @@ import Consent from './Consent';
 
 type PropsWithChildren = {
     children?: React.ReactNode;
-    isMain: boolean;
+    isMain?: boolean;
 };
 
 const Layout = ({ children, isMain }: PropsWithChildren) => {
