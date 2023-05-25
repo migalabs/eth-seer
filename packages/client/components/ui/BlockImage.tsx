@@ -10,13 +10,17 @@ import { Slot } from '../../types';
 import { POOLS } from '../../constants';
 
 type Props = {
-    slot: Slot;
+    poolName: string;
+    proposed?: boolean;
+    width: number;
+    height: number;
+    showCheck?: boolean;
 };
 
-const BlockImage = ({ slot }: Props) => {
-    const missedExtension = slot.f_proposed ? '' : '_missed';
+const BlockImage = ({ poolName, proposed = true, width, height, showCheck }: Props) => {
+    const missedExtension = proposed ? '' : '_missed';
 
-    const getUrl = (poolName: string) => {
+    const getUrl = () => {
         if (poolName && POOLS.includes(poolName.toUpperCase())) {
             return `/static/images/blocks/block_${poolName.toLowerCase()}${missedExtension}.svg`;
         } else if (poolName && poolName.includes('lido')) {
@@ -30,9 +34,9 @@ const BlockImage = ({ slot }: Props) => {
 
     return (
         <div className='relative'>
-            <CustomImage src={getUrl(slot.f_pool_name)} alt='Logo' width={60} height={60} />
+            <CustomImage src={getUrl()} alt='Logo' width={width} height={height} />
 
-            {slot.f_proposed && (
+            {proposed && showCheck && (
                 <CustomImage
                     src='/static/images/check.svg'
                     alt='Check'
