@@ -27,6 +27,7 @@ export type Validator = {
     count_missing_head: number;
     count_attestations: number;
     proposed_blocks: Array<Slot>;
+    withdrawals: Array<Withdrawal>;
 };
 
 export type Block = {
@@ -56,6 +57,13 @@ export type Slot = {
     f_pool_name: string;
     f_val_idx: number;
     f_proposed: boolean;
+};
+
+export type Withdrawal = {
+    f_epoch: number;
+    f_slot: number;
+    f_val_idx: number;
+    f_amount: number;
 };
 
 export type Proposed = {

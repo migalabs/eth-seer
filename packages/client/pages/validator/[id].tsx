@@ -62,6 +62,8 @@ const ValidatorComponent = () => {
     const [validator, setValidator] = useState<Validator | null>(null);
     const [animation, setAnimation] = useState(false);
     const [desktopView, setDesktopView] = useState(true);
+    const [blocks, setBlocks] = useState(true);
+    const [withdrawals, setWithdrawals] = useState(false);
 
     // UseEffect
     useEffect(() => {
@@ -85,7 +87,6 @@ const ValidatorComponent = () => {
             setValidator(response.data.validator);
 
             if (response.data.validator.f_val_idx === undefined) {
-                console.log('entra?');
                 setAnimation(true);
             } else {
                 setAnimation(false);
@@ -107,6 +108,16 @@ const ValidatorComponent = () => {
                 containerRef.current.scrollLeft += 10;
             }
         }
+    };
+
+    const handleBlocks = () => {
+        setBlocks(true);
+        setWithdrawals(false);
+    };
+
+    const handleWithdrawals = () => {
+        setWithdrawals(true);
+        setBlocks(false);
     };
 
     const getContentProposedBlocksMobile = () => {
@@ -269,6 +280,151 @@ const ValidatorComponent = () => {
                     )}
                 </Card>
             </div>
+        );
+    };
+
+    const getContentWithdrawals = () => {
+        return (
+            <div
+                ref={containerRef}
+                className='flex flex-col px-2 mt-2.5 overflow-x-scroll overflow-y-hidden scrollbar-thin'
+                onMouseMove={handleMouseMove}
+            >
+                <div className='flex gap-x-4 justify-around px-4 xl:px-8 min-w-[700px] py-3 uppercase text-sm text-white text-center'>
+                    <p className='mt-0.5 w-[25%]'>Epoch</p>
+                    <p className='mt-0.5 w-[25%]'>Slot</p>
+                    <p className='mt-0.5 w-[25%]'>Datetime</p>
+                    <p className='mt-0.5 w-[25%]'>Amount</p>
+                </div>
+
+                <Card
+                    className='flex flex-col gap-y-2 min-w-[700px] text-2xs sm:text-xs rounded-[22px] px-4 xl:px-8 py-3'
+                    style={{
+                        backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
+                        boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
+                    }}
+                >
+                    {validator?.withdrawals?.map(element => (
+                        <div className='flex gap-x-4 py-1 uppercase text-center items-center' key={element.f_val_idx}>
+                            <div className='w-[25%]'>
+                                <Link
+                                    href={{
+                                        pathname: '/epoch/[id]',
+                                        query: {
+                                            id: Math.floor(element.f_epoch),
+                                        },
+                                    }}
+                                    passHref
+                                    as={`/epoch/${Math.floor(element.f_epoch)}`}
+                                    className='flex gap-x-1 items-center w-fit mx-auto'
+                                >
+                                    <p>{Math.floor(element.f_epoch).toLocaleString()}</p>
+                                    <LinkIcon />
+                                </Link>
+                            </div>
+                            <div className='w-[25%]'>
+                                <Link
+                                    href={{
+                                        pathname: '/slot/[id]',
+                                        query: {
+                                            id: element.f_slot,
+                                        },
+                                    }}
+                                    passHref
+                                    as={`/slot/${element.f_slot}`}
+                                    className='flex gap-x-1 items-center w-fit mx-auto'
+                                >
+                                    <p>{element.f_slot.toLocaleString()}</p>
+                                    <LinkIcon />
+                                </Link>
+                            </div>
+                            <p className='w-[25%]'>
+                                {new Date(firstBlock + Number(element.f_slot) * 12000).toLocaleString('ja-JP')}
+                            </p>
+                            <p className='w-[25%]'>{element.f_amount}</p>
+                        </div>
+                    ))}
+                    {validator?.withdrawals.length == 0 && (
+                        <div className='flex justify-center p-2'>
+                            <p className='uppercase'>No withdrawals</p>
+                        </div>
+                    )}
+                </Card>
+            </div>
+        );
+    };
+
+    const getContentWithdrawalsMobile = () => {
+        return (
+            <Card
+                className='mt-5 flex flex-col gap-y-2 mx-2 px-6 uppercase overflow-x-scroll overflow-y-hidden scrollbar-thin text-black text-xl text-[8px] sm:text-[10px]  rounded-[22px] py-3'
+                style={{
+                    backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
+                    boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
+                }}
+            >
+                {validator?.withdrawals?.map(element => (
+                    <div className='flex flex-row gap-x-6 py-1 uppercase' key={element.f_val_idx}>
+                        <div className='flex flex-col items-start '>
+                            <div>
+                                <Link
+                                    href={{
+                                        pathname: '/epoch/[id]',
+                                        query: {
+                                            id: Math.floor(element.f_epoch),
+                                        },
+                                    }}
+                                    passHref
+                                    as={`/epoch/${Math.floor(element.f_epoch)}`}
+                                    className='flex gap-x-1 items-center w-fit mx-auto'
+                                >
+                                    <div className='flex flex-row items-center gap-x-8'>
+                                        <p className='w-20'>Epoch:</p>
+                                        <p className='leading-3'>
+                                            <p>{Math.floor(element.f_epoch).toLocaleString()}</p>
+                                        </p>
+                                    </div>
+                                    <LinkIcon />
+                                </Link>
+                            </div>
+                            <div>
+                                <Link
+                                    href={{
+                                        pathname: '/slot/[id]',
+                                        query: {
+                                            id: element.f_slot,
+                                        },
+                                    }}
+                                    passHref
+                                    as={`/slot/${element.f_slot}`}
+                                    className='flex gap-x-1 items-center w-fit mx-auto'
+                                >
+                                    <div className='flex flex-row items-center gap-x-8'>
+                                        <p className='w-20'>Slot:</p>
+                                        <p className='leading-3'>{element.f_slot.toLocaleString()}</p>
+                                    </div>
+                                    <LinkIcon />
+                                </Link>
+                            </div>
+                            <div className='flex flex-row items-center gap-x-10'>
+                                <p className='w-20'>DateTime:</p>
+                                <p className='leading-3'>
+                                    {new Date(firstBlock + Number(element.f_slot) * 12000).toLocaleString('ja-JP')}
+                                </p>
+                            </div>
+                            <div className='flex flex-row items-center gap-x-10'>
+                                <p className='w-20'>Amount:</p>
+                                <p className='leading-3'>{element.f_amount}</p>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+                {validator?.proposed_blocks.length == 0 && (
+                    <div className='flex justify-center p-2'>
+                        <p className='uppercase'>No proposed blocks</p>
+                    </div>
+                )}
+            </Card>
         );
     };
 
@@ -474,6 +630,7 @@ const ValidatorComponent = () => {
                                 backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
                                 boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
                             }}
+                            onClick={handleBlocks}
                         >
                             <p className='text-black text-center uppercase text-xs'>Blocks</p>
                         </div>
@@ -483,11 +640,13 @@ const ValidatorComponent = () => {
                                 backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
                                 boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
                             }}
+                            onClick={handleWithdrawals}
                         >
                             <p className='text-black text-center uppercase text-xs'>Withdrawals</p>
                         </div>
                     </div>
-                    <div>{desktopView ? getContentProposedBlocks() : getContentProposedBlocksMobile()}</div>
+                    <div>{blocks && (desktopView ? getContentProposedBlocks() : getContentProposedBlocksMobile())}</div>
+                    <div>{withdrawals && (desktopView ? getContentWithdrawals() : getContentWithdrawalsMobile())}</div>
                 </div>
             ) : (
                 animation && <ValidatorAnimation darkMode={themeMode?.darkMode as boolean} />
