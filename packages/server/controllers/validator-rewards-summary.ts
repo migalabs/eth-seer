@@ -227,7 +227,7 @@ export const getValidator = async (req: Request, res: Response) => {
 
         const { id } = req.params;
 
-        const [ validatorStats, blocksProposed, validatorPerformance ] = 
+        const [ validatorStats, blocksProposed, validatorPerformance, withdrawals ] = 
             await Promise.all([
                 pgClient.query(`
                 SELECT 
@@ -261,10 +261,16 @@ export const getValidator = async (req: Request, res: Response) => {
                     COUNT(*) as count_attestations
                     FROM t_validator_rewards_summary
                     WHERE f_val_idx = '${id}'
+                `),
+                pgClient.query(`
+                    SELECT f_val_idx, f_slot/32 as f_epoch, f_slot, f_address, f_amount
+                    FROM t_withdrawals
+                    WHERE f_val_idx = '${id}'
+                    ORDER BY f_slot DESC
                 `)
             ]);
 
-            const validator = {...validatorStats.rows[0], proposed_blocks: blocksProposed.rows, ...validatorPerformance.rows[0]}
+            const validator = {...validatorStats.rows[0], proposed_blocks: blocksProposed.rows, ...validatorPerformance.rows[0], withdrawals: withdrawals.rows}
 
         res.json({
             validator
