@@ -12,6 +12,7 @@ export type Epoch = {
     max_reward_average?: string;
     proposed_blocks: Array<number>;
     f_slots?: Array<Slot>;
+    withdrawals?: number;
 };
 
 export type Validator = {

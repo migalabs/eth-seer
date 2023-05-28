@@ -406,6 +406,10 @@ const EpochComponent = () => {
                             />
                         </div>
                     </div>
+                    <div className='flex flex-row items-center gap-x-5'>
+                        <p className='w-60'>Withdrawals:</p>
+                        <p className='leading-3'>{((epoch?.withdrawals ?? 0) / 10 ** 9).toLocaleString()} ETH</p>
+                    </div>
                 </div>
             </Card>
         );
