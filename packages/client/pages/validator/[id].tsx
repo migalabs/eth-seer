@@ -194,7 +194,7 @@ const ValidatorComponent = () => {
         return (
             <div
                 ref={containerRef}
-                className='flex flex-col px-2 mt-5 overflow-x-scroll overflow-y-hidden scrollbar-thin'
+                className='flex flex-col px-2 mt-2.5 overflow-x-scroll overflow-y-hidden scrollbar-thin'
                 onMouseMove={handleMouseMove}
             >
                 <div className='flex gap-x-4 justify-around px-4 xl:px-8 min-w-[700px] py-3 uppercase text-sm text-white text-center'>
@@ -331,7 +331,9 @@ const ValidatorComponent = () => {
                             <div className='flex flex-col md:flex-row gap-x-3 justify-between w-full md:w-auto flex-grow max-w-[350px] min-w-[200px]'>
                                 <p className='w-20'>Rewards</p>
                                 <div className='flex-grow mx-6 md:mx-0'>
-                                    {validator && <ProgressSmoothBarEpoch bg={'#E86506'} color={'#FFC163'} percent={1} />}
+                                    {validator && (
+                                        <ProgressSmoothBarEpoch bg={'#E86506'} color={'#FFC163'} percent={1} />
+                                    )}
                                 </div>
                             </div>
                             <div className='flex flex-col md:flex-row gap-x-10 gap-y-2'>
@@ -392,7 +394,9 @@ const ValidatorComponent = () => {
                                                         Missing Target:{' '}
                                                         {validator.count_missing_target.toLocaleString()}
                                                     </span>
-                                                    <span>Attestations: {validator.count_attestations.toLocaleString()}</span>
+                                                    <span>
+                                                        Attestations: {validator.count_attestations.toLocaleString()}
+                                                    </span>
                                                 </>
                                             }
                                         />
@@ -412,7 +416,9 @@ const ValidatorComponent = () => {
                                                         Missing Source:{' '}
                                                         {validator.count_missing_source.toLocaleString()}
                                                     </span>
-                                                     <span>Attestations: {validator.count_attestations.toLocaleString()}</span>
+                                                    <span>
+                                                        Attestations: {validator.count_attestations.toLocaleString()}
+                                                    </span>
                                                 </>
                                             }
                                         />
@@ -431,7 +437,9 @@ const ValidatorComponent = () => {
                                                     <span>
                                                         Missing Head: {validator.count_missing_head.toLocaleString()}
                                                     </span>
-                                                    <span>Attestations: {validator.count_attestations.toLocaleString()}</span>
+                                                    <span>
+                                                        Attestations: {validator.count_attestations.toLocaleString()}
+                                                    </span>
                                                 </>
                                             }
                                         />
@@ -459,8 +467,25 @@ const ValidatorComponent = () => {
             {validator?.f_val_idx !== undefined ? (
                 <div className='mx-auto max-w-[1100px]'>
                     <div>{getContentValidator()}</div>
-                    <div className='flex gap-x-3 justify-center items-center mt-6'>
-                        <h1 className='text-white text-center text-lg md:text-2xl uppercase'>Proposed Blocks</h1>
+                    <div className='flex flex-row'>
+                        <div
+                            className='flex w-fit justify-start p-2 bg-[#D9D9D94D] rounded-2xl mt-5 ml-2 hover:bg-[#202021e3] cursor-pointer'
+                            style={{
+                                backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
+                                boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
+                            }}
+                        >
+                            <p className='text-black text-center uppercase text-xs'>Blocks</p>
+                        </div>
+                        <div
+                            className='flex flex-row w-fit justify-start p-2 bg-[#D9D9D94D] rounded-2xl   mt-5 ml-2 hover:bg-[#202021e3] cursor-pointer'
+                            style={{
+                                backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
+                                boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
+                            }}
+                        >
+                            <p className='text-black text-center uppercase text-xs'>Withdrawals</p>
+                        </div>
                     </div>
                     <div>{desktopView ? getContentProposedBlocks() : getContentProposedBlocksMobile()}</div>
                 </div>
