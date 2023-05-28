@@ -13,6 +13,7 @@ import Layout from '../../components/layouts/Layout';
 import CustomImage from '../../components/ui/CustomImage';
 import LinkIcon from '../../components/ui/LinkIcon';
 import BlockGif from '../../components/ui/BlockGif';
+import TabHeader from '../../components/ui/TabHeader';
 
 // Types
 import { Block } from '../../types';
@@ -21,101 +22,36 @@ const firstBlock: number = Number(process.env.NEXT_PUBLIC_NETWORK_GENESIS);
 const zeroAddress = '0x0000000000000000000000000000000000000000000000000000000000000000';
 const zeroAddressShort = '0x0000000000000000000000000000000000000000';
 
-type TitleProps = {
-    text: string;
-    consensusLayer?: boolean;
-    darkMode?: boolean;
-};
-
-const Title = ({ text, consensusLayer, darkMode }: TitleProps) => {
-    let backgroundColor;
-    let letterColor;
-    let boxShadow;
-
-    if (consensusLayer) {
-        backgroundColor = darkMode ? 'var(--green2)' : 'var(--blue3)';
-        letterColor = darkMode ? 'var(--green3)' : 'var(--blue7)';
-        boxShadow = darkMode ? 'var(--boxShadowGreen3)' : 'var(--boxShadowBlue4)';
-    } else {
-        backgroundColor = darkMode ? 'var(--orange2)' : 'var(--purple3)';
-        letterColor = darkMode ? 'var(--orange3)' : 'var(--purple2)';
-        boxShadow = darkMode ? 'var(--boxShadowOrange3)' : 'var(--boxShadowPurple2)';
-    }
-
-    return (
-        <div className='flex gap-3 items-center'>
-            <div
-                className='rounded-2xl px-2 py-3 w-60 sm:w-[21rem]'
-                style={{
-                    boxShadow,
-                    backgroundColor,
-                }}
-            >
-                <p className='uppercase text-center text-[12px] sm:text-[14px]' style={{ color: letterColor }}>
-                    {text}
-                </p>
-            </div>
-        </div>
-    );
-};
-
 type CardProps = {
     title: string;
-    content: string | number | boolean | any;
+    content: any;
     icon?: string;
     iconSize?: number;
-    consensusLayer?: boolean;
     link?: string;
     target?: string;
-    darkMode?: boolean;
 };
 
-const Card = ({ title, content, icon, iconSize, consensusLayer, link, darkMode, target }: CardProps) => {
-    let backgroundColor;
-    let letterColor;
-
-    if (consensusLayer) {
-        backgroundColor = darkMode ? 'var(--green2)' : 'var(--blue3)';
-        letterColor = darkMode ? 'var(--green3)' : 'var(--blue7)';
-    } else {
-        backgroundColor = darkMode ? 'var(--orange2)' : 'var(--purple3)';
-        letterColor = darkMode ? 'var(--orange3)' : 'var(--purple2)';
-    }
-
+const Card = ({ title, content, icon, iconSize, link, target }: CardProps) => {
     return (
         <>
             <div className='flex gap-3 items-center'>
-                <div
-                    className='flex-shrink-0 rounded-2xl px-2 py-3 w-40 md:w-[15rem]'
-                    style={{
-                        background: backgroundColor,
-                    }}
-                >
-                    <p
-                        className={'uppercase text-center text-[10px] md:text-[10px]'}
-                        style={{
-                            color: letterColor,
-                        }}
-                    >
-                        {title}
-                    </p>
-                </div>
+                <p className={'uppercase text-[8px] md:text-[10px] text-black w-40 md:w-[15rem]'}>{title}</p>
                 <div className='flex gap-2 items-center'>
-                    <p className='uppercase text-white text-[8px] md:text-[10px]'>{content}</p>
+                    <p className='uppercase text-black text-[8px] md:text-[10px]'>{content}</p>
                     {icon && (
                         <a
-                            href={link || 'none'}
+                            href={link ?? 'none'}
                             target={target}
                             rel='noreferrer'
                             style={{ textDecoration: 'none', color: 'black' }}
                         >
                             {icon === 'link' ? (
-                                <LinkIcon forceOrange />
+                                <LinkIcon />
                             ) : (
                                 <CustomImage
                                     src={`/static/images/${icon}.svg`}
-                                    width={iconSize || 35}
-                                    height={iconSize || 35}
+                                    width={iconSize ?? 35}
+                                    height={iconSize ?? 35}
                                     alt='Icon'
                                     className={link && 'cursor-pointer'}
                                 />
@@ -144,11 +80,13 @@ const Slot = () => {
     // Refs
     const slotRef = useRef(0);
     const existsBlockRef = useRef(true);
+    const containerRef = useRef<HTMLInputElement>(null);
 
     // States
     const [block, setBlock] = useState<Block | null>(null);
     const [existsBlock, setExistsBlock] = useState<boolean>(true);
     const [countdownText, setCountdownText] = useState<string>('');
+    const [tabPageIndex, setTabPageIndex] = useState<number>(0);
 
     // UseEffect
     useEffect(() => {
@@ -188,6 +126,7 @@ const Slot = () => {
                     f_epoch: Math.floor(Number(id) / 32),
                     f_slot: Number(id),
                     f_timestamp: expectedTimestamp,
+                    withdrawals: [],
                 });
 
                 setExistsBlock(false);
@@ -273,217 +212,258 @@ const Slot = () => {
         return text;
     };
 
-    const getInformationView = (block: Block) => {
+    const handleMouseMove = (e: any) => {
+        if (containerRef.current) {
+            const x = e.pageX;
+            const limit = 0.15;
+
+            if (x < containerRef.current.clientWidth * limit) {
+                containerRef.current.scrollLeft -= 10;
+            } else if (x > containerRef.current.clientWidth * (1 - limit)) {
+                containerRef.current.scrollLeft += 10;
+            }
+        }
+    };
+
+    const getSelectedTab = () => {
+        switch (tabPageIndex) {
+            case 0:
+                return getConsensusLayerView();
+
+            case 1:
+                return getExecutionLayerView();
+
+            case 2:
+                return getWithdrawlsView();
+        }
+    };
+
+    const getInformationView = () => {
         return (
-            <div className='flex flex-col xl:flex-row xl:gap-5 2xl:gap-28 xl:justify-center max-w-full px-4'>
-                <div className='flex flex-col items-center'>
-                    <Title text='Consensus Layer' consensusLayer darkMode={themeMode?.darkMode} />
-
-                    <div
-                        className='flex flex-col w-full md:w-[650px] 2xl:w-[750px] md:max-h-full md:mx-auto mt-4 mb-10 gap-y-5 rounded-[22px] p-4 md:p-8'
-                        style={{
-                            backgroundColor: themeMode?.darkMode ? 'var(--green1)' : 'var(--blue4)',
-                            boxShadow: themeMode?.darkMode ? 'var(--boxShadowGreen1)' : 'var(--boxShadowBlue3)',
-                        }}
-                    >
-                        <Card
-                            title='Epoch'
-                            content={block.f_epoch.toLocaleString()}
-                            link={`${assetPrefix}/epoch/${block.f_epoch}`}
-                            icon='link'
-                            iconSize={25}
-                            target='_self'
-                            consensusLayer
-                            darkMode={themeMode?.darkMode}
-                        />
-
-                        <Card
-                            title='Slot'
-                            content={block.f_slot.toLocaleString()}
-                            consensusLayer
-                            darkMode={themeMode?.darkMode}
-                        />
-
-                        {existsBlock && (
-                            <Card
-                                title='Entity'
-                                content={block.f_pool_name?.toLocaleString() || 'others'}
-                                consensusLayer
-                                icon='link'
-                                iconSize={25}
-                                link={`${assetPrefix}/entity/${block.f_pool_name?.toLocaleString() || 'others'}`}
-                                target='_self'
-                                darkMode={themeMode?.darkMode}
-                            />
-                        )}
-
-                        {existsBlock && (
-                            <Card
-                                title='Status'
-                                content={
-                                    block.f_proposed ? (
-                                        <span className='uppercase bg-[#83E18C] border-2 border-[#00720B] text-[#00720B] px-5 py-1.5 rounded-2xl font-bold'>
-                                            Proposed
-                                        </span>
-                                    ) : (
-                                        <span className='uppercase bg-[#FF9090] border-2 border-[#980E0E] text-[#980E0E] px-5 py-1.5 rounded-2xl font-bold'>
-                                            Missed
-                                        </span>
-                                    )
-                                }
-                                consensusLayer
-                                darkMode={themeMode?.darkMode}
-                            />
-                        )}
-
-                        <Card
-                            title='Date Time (Local)'
-                            content={getTimeBlock()}
-                            consensusLayer
-                            darkMode={themeMode?.darkMode}
-                        />
-
-                        {existsBlock && (
-                            <Card
-                                title='Proposer Index'
-                                content={block.f_proposer_index?.toLocaleString()}
-                                icon='link'
-                                iconSize={25}
-                                consensusLayer
-                                link={`${assetPrefix}/validator/${block.f_proposer_index}`}
-                                target='_self'
-                                darkMode={themeMode?.darkMode}
-                            />
-                        )}
-
-                        {existsBlock && (
-                            <Card
-                                title='Graffiti'
-                                content={block.f_proposed ? block.f_graffiti : '---'}
-                                consensusLayer
-                                darkMode={themeMode?.darkMode}
-                            />
-                        )}
-
-                        {existsBlock && (
-                            <Card
-                                title='Sync bits'
-                                content={block.f_proposed ? block.f_sync_bits?.toLocaleString() : '---'}
-                                consensusLayer
-                                darkMode={themeMode?.darkMode}
-                            />
-                        )}
-
-                        {existsBlock && (
-                            <Card
-                                title='Attestations'
-                                content={block.f_proposed ? block.f_attestations?.toLocaleString() : '---'}
-                                consensusLayer
-                                darkMode={themeMode?.darkMode}
-                            />
-                        )}
-
-                        {existsBlock && (
-                            <Card
-                                title='Voluntary exits'
-                                content={block.f_proposed ? block.f_voluntary_exits?.toLocaleString() : '---'}
-                                consensusLayer
-                                darkMode={themeMode?.darkMode}
-                            />
-                        )}
-
-                        {existsBlock && (
-                            <Card
-                                title='Proposer slashings'
-                                content={block.f_proposed ? block.f_proposer_slashings?.toLocaleString() : '---'}
-                                consensusLayer
-                                darkMode={themeMode?.darkMode}
-                            />
-                        )}
-
-                        {existsBlock && (
-                            <Card
-                                title='Attestation Slashing'
-                                content={block.f_proposed ? block.f_att_slashings?.toLocaleString() : '---'}
-                                consensusLayer
-                                darkMode={themeMode?.darkMode}
-                            />
-                        )}
-
-                        {existsBlock && (
-                            <Card
-                                title='Deposits'
-                                content={block.f_proposed ? block.f_deposits?.toLocaleString() : '---'}
-                                consensusLayer
-                                darkMode={themeMode?.darkMode}
-                            />
-                        )}
-                    </div>
+            <div className='flex flex-col px-8 max-w-[1200px] mx-auto'>
+                <div className='flex flex-col sm:flex-row gap-4'>
+                    <TabHeader
+                        header='Consensus Layer'
+                        isSelected={tabPageIndex === 0}
+                        onClick={() => setTabPageIndex(0)}
+                    />
+                    <TabHeader
+                        header='Execution Layer'
+                        isSelected={tabPageIndex === 1}
+                        onClick={() => setTabPageIndex(1)}
+                    />
+                    <TabHeader header='Withdrawls' isSelected={tabPageIndex === 2} onClick={() => setTabPageIndex(2)} />
                 </div>
 
+                {getSelectedTab()}
+            </div>
+        );
+    };
+
+    const getConsensusLayerView = () => {
+        return (
+            <div
+                className='flex flex-col mt-4 mb-10 gap-y-5 rounded-[22px] p-4 md:p-8'
+                style={{
+                    backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue4)',
+                    boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow3)' : 'var(--boxShadowBlue3)',
+                }}
+            >
+                <Card
+                    title='Epoch'
+                    content={block?.f_epoch.toLocaleString()}
+                    link={`${assetPrefix}/epoch/${block?.f_epoch}`}
+                    icon='link'
+                    iconSize={25}
+                    target='_self'
+                />
+
+                <Card title='Slot' content={block?.f_slot.toLocaleString()} />
+
                 {existsBlock && (
-                    <div className='flex flex-col xl:self-end items-center'>
-                        <div className='hidden xl:block'>
-                            <BlockGif poolName={block?.f_pool_name || 'others'} width={400} height={400} />
-                        </div>
-
-                        <Title text='Execution Layer' darkMode={themeMode?.darkMode} />
-
-                        <div
-                            className='flex flex-col xl:self-end w-full md:w-fit h-fit md:max-h-full mx-2 md:mx-auto mt-4 mb-10 gap-y-5 rounded-[22px] p-4 md:p-8'
-                            style={{
-                                backgroundColor: themeMode?.darkMode ? 'var(--orange4)' : 'var(--purple1)',
-                                boxShadow: themeMode?.darkMode ? 'var(--boxShadowOrange2)' : 'var(--boxShadowPurple1)',
-                            }}
-                        >
-                            <Card
-                                title='Block hash'
-                                content={
-                                    block.f_proposed && block.f_el_block_hash !== zeroAddress
-                                        ? getShortAddress(block.f_el_block_hash)
-                                        : '---'
-                                }
-                                icon={
-                                    block.f_proposed && block.f_el_block_hash !== zeroAddress
-                                        ? 'etherscan-icon'
-                                        : undefined
-                                }
-                                iconSize={35}
-                                link={`https://etherscan.io/block/${block.f_el_block_hash}`}
-                                target='_blank'
-                                darkMode={themeMode?.darkMode}
-                            />
-
-                            <Card
-                                title='Fee Recipient'
-                                content={
-                                    block.f_proposed && block.f_el_fee_recp !== zeroAddressShort
-                                        ? getShortAddress(block.f_el_fee_recp)
-                                        : '---'
-                                }
-                                darkMode={themeMode?.darkMode}
-                            />
-
-                            <Card
-                                title='Gas used'
-                                content={block.f_proposed ? block.f_el_gas_used?.toLocaleString() : '---'}
-                                darkMode={themeMode?.darkMode || false}
-                            />
-
-                            <Card
-                                title='Gas limit'
-                                content={block.f_proposed ? block.f_el_gas_limit?.toLocaleString() : '---'}
-                                darkMode={themeMode?.darkMode || false}
-                            />
-
-                            <Card
-                                title='Transactions'
-                                content={block.f_proposed ? block.f_el_transactions?.toLocaleString() : '---'}
-                                darkMode={themeMode?.darkMode || false}
-                            />
-                        </div>
-                    </div>
+                    <Card
+                        title='Entity'
+                        content={block?.f_pool_name?.toLocaleString() ?? 'others'}
+                        icon='link'
+                        iconSize={25}
+                        link={`${assetPrefix}/entity/${block?.f_pool_name?.toLocaleString() ?? 'others'}`}
+                        target='_self'
+                    />
                 )}
+
+                {existsBlock && (
+                    <Card
+                        title='Status'
+                        content={
+                            block?.f_proposed ? (
+                                <span className='uppercase bg-[#83E18C] border-2 border-[#00720B] text-[#00720B] px-5 py-1.5 rounded-2xl font-bold'>
+                                    Proposed
+                                </span>
+                            ) : (
+                                <span className='uppercase bg-[#FF9090] border-2 border-[#980E0E] text-[#980E0E] px-5 py-1.5 rounded-2xl font-bold'>
+                                    Missed
+                                </span>
+                            )
+                        }
+                    />
+                )}
+
+                <Card title='Date Time (Local)' content={getTimeBlock()} />
+
+                {existsBlock && (
+                    <Card
+                        title='Proposer Index'
+                        content={block?.f_proposer_index?.toLocaleString()}
+                        icon='link'
+                        iconSize={25}
+                        link={`${assetPrefix}/validator/${block?.f_proposer_index}`}
+                        target='_self'
+                    />
+                )}
+
+                {existsBlock && <Card title='Graffiti' content={block?.f_proposed ? block?.f_graffiti : '---'} />}
+
+                {existsBlock && (
+                    <Card
+                        title='Sync bits'
+                        content={block?.f_proposed ? block?.f_sync_bits?.toLocaleString() : '---'}
+                    />
+                )}
+
+                {existsBlock && (
+                    <Card
+                        title='Attestations'
+                        content={block?.f_proposed ? block?.f_attestations?.toLocaleString() : '---'}
+                    />
+                )}
+
+                {existsBlock && (
+                    <Card
+                        title='Voluntary exits'
+                        content={block?.f_proposed ? block?.f_voluntary_exits?.toLocaleString() : '---'}
+                    />
+                )}
+
+                {existsBlock && (
+                    <Card
+                        title='Proposer slashings'
+                        content={block?.f_proposed ? block?.f_proposer_slashings?.toLocaleString() : '---'}
+                    />
+                )}
+
+                {existsBlock && (
+                    <Card
+                        title='Attestation Slashing'
+                        content={block?.f_proposed ? block?.f_att_slashings?.toLocaleString() : '---'}
+                    />
+                )}
+
+                {existsBlock && (
+                    <Card title='Deposits' content={block?.f_proposed ? block?.f_deposits?.toLocaleString() : '---'} />
+                )}
+
+                {/* <div className='hidden xl:block'>
+                    <BlockGif poolName={block?.f_pool_name ?? 'others'} width={400} height={400} />
+                </div> */}
+            </div>
+        );
+    };
+
+    const getExecutionLayerView = () => {
+        return (
+            <div
+                className='flex flex-col mt-4 mb-10 gap-y-5 rounded-[22px] p-4 md:p-8'
+                style={{
+                    backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue4)',
+                    boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow3)' : 'var(--boxShadowBlue3)',
+                }}
+            >
+                <Card
+                    title='Block hash'
+                    content={
+                        block?.f_proposed && block?.f_el_block_hash !== zeroAddress
+                            ? getShortAddress(block?.f_el_block_hash)
+                            : '---'
+                    }
+                    icon={block?.f_proposed && block?.f_el_block_hash !== zeroAddress ? 'etherscan-icon' : undefined}
+                    iconSize={35}
+                    link={`https://etherscan.io/block/${block?.f_el_block_hash}`}
+                    target='_blank'
+                />
+
+                <Card
+                    title='Fee Recipient'
+                    content={
+                        block?.f_proposed && block?.f_el_fee_recp !== zeroAddressShort
+                            ? getShortAddress(block?.f_el_fee_recp)
+                            : '---'
+                    }
+                />
+
+                <Card title='Gas used' content={block?.f_proposed ? block?.f_el_gas_used?.toLocaleString() : '---'} />
+
+                <Card title='Gas limit' content={block?.f_proposed ? block?.f_el_gas_limit?.toLocaleString() : '---'} />
+
+                <Card
+                    title='Transactions'
+                    content={block?.f_proposed ? block?.f_el_transactions?.toLocaleString() : '---'}
+                />
+            </div>
+        );
+    };
+
+    const getWithdrawlsView = () => {
+        return (
+            // f_val_idx, f_address, f_amount
+            <div
+                ref={containerRef}
+                className='flex flex-col px-2 mt-2.5 overflow-x-scroll overflow-y-hidden scrollbar-thin'
+                onMouseMove={handleMouseMove}
+            >
+                <div className='flex gap-x-4 justify-around px-4 xl:px-8 min-w-[700px] py-3 uppercase text-sm text-white text-center'>
+                    <p className='mt-0.5 w-1/3'>Validator</p>
+                    <p className='mt-0.5 w-1/3'>Address</p>
+                    <p className='mt-0.5 w-1/3'>Amount</p>
+                </div>
+
+                <div
+                    className='flex flex-col gap-y-2 min-w-[700px] text-2xs sm:text-xs rounded-[22px] px-4 xl:px-8 py-3'
+                    style={{
+                        backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
+                        boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
+                    }}
+                >
+                    {block?.withdrawals?.map(element => (
+                        <div className='flex gap-x-4 py-1 uppercase text-center items-center' key={element.f_val_idx}>
+                            <div className='w-1/3'>
+                                <Link
+                                    href={{
+                                        pathname: '/validator/[id]',
+                                        query: {
+                                            id: element.f_val_idx,
+                                        },
+                                    }}
+                                    passHref
+                                    as={`/validator/${element.f_val_idx}`}
+                                    className='flex gap-x-1 items-center w-fit mx-auto'
+                                >
+                                    <p>{element.f_val_idx}</p>
+                                    <LinkIcon />
+                                </Link>
+                            </div>
+                            <div className='w-1/3'>
+                                <p>{getShortAddress(element?.f_address)}</p>
+                            </div>
+                            <p className='w-1/3'>{(element.f_amount / 10 ** 9).toLocaleString()} ETH</p>
+                        </div>
+                    ))}
+
+                    {block?.withdrawals.length == 0 && (
+                        <div className='flex justify-center p-2'>
+                            <p className='uppercase'>No withdrawals</p>
+                        </div>
+                    )}
+                </div>
             </div>
         );
     };
@@ -516,7 +496,7 @@ const Slot = () => {
                 </Link>
             </div>
 
-            {block && getInformationView(block)}
+            {block && getInformationView()}
         </Layout>
     );
 };

@@ -15,6 +15,7 @@ import ValidatorAnimation from '../../components/layouts/ValidatorAnimation';
 import LinkIcon from '../../components/ui/LinkIcon';
 import BlockImage from '../../components/ui/BlockImage';
 import BlockGif from '../../components/ui/BlockGif';
+import TabHeader from '../../components/ui/TabHeader';
 
 // Types
 import { Validator } from '../../types';
@@ -62,8 +63,7 @@ const ValidatorComponent = () => {
     const [validator, setValidator] = useState<Validator | null>(null);
     const [animation, setAnimation] = useState(false);
     const [desktopView, setDesktopView] = useState(true);
-    const [blocks, setBlocks] = useState(true);
-    const [withdrawals, setWithdrawals] = useState(false);
+    const [tabPageIndex, setTabPageIndex] = useState(0);
 
     // UseEffect
     useEffect(() => {
@@ -108,16 +108,6 @@ const ValidatorComponent = () => {
                 containerRef.current.scrollLeft += 10;
             }
         }
-    };
-
-    const handleBlocks = () => {
-        setBlocks(true);
-        setWithdrawals(false);
-    };
-
-    const handleWithdrawals = () => {
-        setWithdrawals(true);
-        setBlocks(false);
     };
 
     const getContentProposedBlocksMobile = () => {
@@ -304,21 +294,21 @@ const ValidatorComponent = () => {
                         boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
                     }}
                 >
-                    {validator?.withdrawals?.map(element => (
-                        <div className='flex gap-x-4 py-1 uppercase text-center items-center' key={element.f_val_idx}>
+                    {validator?.withdrawals?.map((element, idx) => (
+                        <div className='flex gap-x-4 py-1 uppercase text-center items-center' key={idx}>
                             <div className='w-[25%]'>
                                 <Link
                                     href={{
                                         pathname: '/epoch/[id]',
                                         query: {
-                                            id: Math.floor(element.f_epoch),
+                                            id: Math.floor(element.f_epoch ?? 0),
                                         },
                                     }}
                                     passHref
-                                    as={`/epoch/${Math.floor(element.f_epoch)}`}
+                                    as={`/epoch/${Math.floor(element.f_epoch ?? 0)}`}
                                     className='flex gap-x-1 items-center w-fit mx-auto'
                                 >
-                                    <p>{Math.floor(element.f_epoch).toLocaleString()}</p>
+                                    <p>{Math.floor(element.f_epoch ?? 0).toLocaleString()}</p>
                                     <LinkIcon />
                                 </Link>
                             </div>
@@ -334,14 +324,14 @@ const ValidatorComponent = () => {
                                     as={`/slot/${element.f_slot}`}
                                     className='flex gap-x-1 items-center w-fit mx-auto'
                                 >
-                                    <p>{element.f_slot.toLocaleString()}</p>
+                                    <p>{element?.f_slot?.toLocaleString()}</p>
                                     <LinkIcon />
                                 </Link>
                             </div>
                             <p className='w-[25%]'>
                                 {new Date(firstBlock + Number(element.f_slot) * 12000).toLocaleString('ja-JP')}
                             </p>
-                            <p className='w-[25%]'>{element.f_amount}</p>
+                            <p className='w-[25%]'>{(element.f_amount / 10 ** 9).toLocaleString()} ETH</p>
                         </div>
                     ))}
                     {validator?.withdrawals.length == 0 && (
@@ -371,17 +361,17 @@ const ValidatorComponent = () => {
                                     href={{
                                         pathname: '/epoch/[id]',
                                         query: {
-                                            id: Math.floor(element.f_epoch),
+                                            id: Math.floor(element.f_epoch ?? 0),
                                         },
                                     }}
                                     passHref
-                                    as={`/epoch/${Math.floor(element.f_epoch)}`}
+                                    as={`/epoch/${Math.floor(element.f_epoch ?? 0)}`}
                                     className='flex gap-x-1 items-center w-fit mx-auto'
                                 >
                                     <div className='flex flex-row items-center gap-x-8'>
                                         <p className='w-20'>Epoch:</p>
                                         <p className='leading-3'>
-                                            <p>{Math.floor(element.f_epoch).toLocaleString()}</p>
+                                            <p>{Math.floor(element.f_epoch ?? 0).toLocaleString()}</p>
                                         </p>
                                     </div>
                                     <LinkIcon />
@@ -401,7 +391,7 @@ const ValidatorComponent = () => {
                                 >
                                     <div className='flex flex-row items-center gap-x-8'>
                                         <p className='w-20'>Slot:</p>
-                                        <p className='leading-3'>{element.f_slot.toLocaleString()}</p>
+                                        <p className='leading-3'>{element?.f_slot?.toLocaleString()}</p>
                                     </div>
                                     <LinkIcon />
                                 </Link>
@@ -414,7 +404,7 @@ const ValidatorComponent = () => {
                             </div>
                             <div className='flex flex-row items-center gap-x-10'>
                                 <p className='w-20'>Amount:</p>
-                                <p className='leading-3'>{element.f_amount}</p>
+                                <p className='leading-3'>{(element.f_amount / 10 ** 9).toLocaleString()} ETH</p>
                             </div>
                         </div>
                     </div>
@@ -613,6 +603,16 @@ const ValidatorComponent = () => {
         );
     };
 
+    const getSelectedTab = () => {
+        switch (tabPageIndex) {
+            case 0:
+                return desktopView ? getContentProposedBlocks() : getContentProposedBlocksMobile();
+
+            case 1:
+                return desktopView ? getContentWithdrawals() : getContentWithdrawalsMobile();
+        }
+    };
+
     return (
         <Layout isMain={false}>
             <div className='flex gap-x-3 justify-center items-center mt-2 mb-5'>
@@ -621,32 +621,19 @@ const ValidatorComponent = () => {
                 </h1>
             </div>
             {validator?.f_val_idx !== undefined ? (
-                <div className='mx-auto max-w-[1100px]'>
+                <div className='flex flex-col gap-4 mx-auto max-w-[1100px]'>
                     <div>{getContentValidator()}</div>
-                    <div className='flex flex-row'>
-                        <div
-                            className='flex w-fit justify-start p-2 bg-[#D9D9D94D] rounded-2xl mt-5 ml-2 hover:bg-[#202021e3] cursor-pointer'
-                            style={{
-                                backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
-                                boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
-                            }}
-                            onClick={handleBlocks}
-                        >
-                            <p className='text-black text-center uppercase text-xs'>Blocks</p>
-                        </div>
-                        <div
-                            className='flex flex-row w-fit justify-start p-2 bg-[#D9D9D94D] rounded-2xl   mt-5 ml-2 hover:bg-[#202021e3] cursor-pointer'
-                            style={{
-                                backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
-                                boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
-                            }}
-                            onClick={handleWithdrawals}
-                        >
-                            <p className='text-black text-center uppercase text-xs'>Withdrawals</p>
-                        </div>
+
+                    <div className='flex flex-col sm:flex-row gap-4'>
+                        <TabHeader header='Blocks' isSelected={tabPageIndex === 0} onClick={() => setTabPageIndex(0)} />
+                        <TabHeader
+                            header='Withdrawls'
+                            isSelected={tabPageIndex === 1}
+                            onClick={() => setTabPageIndex(1)}
+                        />
                     </div>
-                    <div>{blocks && (desktopView ? getContentProposedBlocks() : getContentProposedBlocksMobile())}</div>
-                    <div>{withdrawals && (desktopView ? getContentWithdrawals() : getContentWithdrawalsMobile())}</div>
+
+                    {getSelectedTab()}
                 </div>
             ) : (
                 animation && <ValidatorAnimation darkMode={themeMode?.darkMode as boolean} />
