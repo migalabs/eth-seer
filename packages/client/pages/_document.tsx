@@ -20,6 +20,7 @@ export default function Document() {
                         --yellow3: #edbf4a;
                         --yellow4: #f0c83a;
                         --yellow5: #9a7b2d;
+                        --yellow6: #fff0a1b3;
                         --orange1: #ec903c;
                         --orange2: #ffcea1;
                         --orange3: #f18d30;

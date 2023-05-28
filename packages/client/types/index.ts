@@ -50,6 +50,7 @@ export type Block = {
     f_sync_bits?: number;
     f_timestamp: number;
     f_voluntary_exits?: number;
+    withdrawals: Array<Withdrawal>;
 };
 
 export type Slot = {
@@ -60,10 +61,11 @@ export type Slot = {
 };
 
 export type Withdrawal = {
-    f_epoch: number;
-    f_slot: number;
+    f_epoch?: number;
+    f_slot?: number;
     f_val_idx: number;
     f_amount: number;
+    f_address?: string;
 };
 
 export type Proposed = {

@@ -148,7 +148,7 @@ export const getBlock = async (req: Request, res: Response) => {
 
         const { id } = req.params;
 
-        const [ block, proposerDuties ] = 
+        const [ block, proposerDuties, withdrawals ] = 
             await Promise.all([
                 pgClient.query(`
                     SELECT t_block_metrics.*, t_eth2_pubkeys.f_pool_name
@@ -160,7 +160,12 @@ export const getBlock = async (req: Request, res: Response) => {
                     SELECT f_proposed
                     FROM t_proposer_duties
                     WHERE f_proposer_slot = '${id}'
-                `)
+                `),
+                pgClient.query(`
+                    SELECT f_val_idx, f_address, f_amount
+                    FROM t_withdrawals
+                    WHERE f_slot = '${id}'
+                `),                
             ]);
 
         if (proposerDuties.rows.length > 0 && block.rows[0] != undefined) {
@@ -168,7 +173,10 @@ export const getBlock = async (req: Request, res: Response) => {
         }
 
         res.json({
-            block: block.rows[0],
+            block: {
+                ...block.rows[0],
+                withdrawals: withdrawals.rows,
+            },
         });
 
     } catch (error) {
