@@ -112,7 +112,7 @@ const SearchEngineBlack = () => {
 
             items.push(
                 ...POOLS_EXTENDED.sort((a, b) => (a > b ? 1 : -1))
-                    .filter(pool => pool.toUpperCase().startsWith(searchContent.toUpperCase()))
+                    .filter(pool => pool.search(expression) !== -1)
                     .slice(0, 10)
                     .map(pool => ({
                         label: `Entity: ${pool}`,
