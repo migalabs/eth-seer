@@ -233,7 +233,7 @@ export const getEpoch = async (req: Request, res: Response) => {
 
         let sumWithdrawals = 0;
         withdrawals.rows.forEach((withdrawal: any) => {
-            sumWithdrawals += withdrawal.f_amount;
+            sumWithdrawals += Number(withdrawal.f_amount);
         });
 
         res.json({
