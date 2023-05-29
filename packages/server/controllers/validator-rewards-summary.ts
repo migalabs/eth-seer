@@ -212,18 +212,37 @@ export const getEpoch = async (req: Request, res: Response) => {
                     FROM t_proposer_duties
                     LEFT OUTER JOIN t_eth2_pubkeys ON t_proposer_duties.f_val_idx = t_eth2_pubkeys.f_val_idx
                     WHERE f_proposer_slot/32 = '${id}'
+                    ORDER BY f_proposer_slot DESC
                 `),
                 pgClient.query(`
-                    SELECT sum(f_amount) as withdrawals
+                    SELECT f_slot, f_amount
                     FROM t_withdrawals
                     WHERE f_slot/32 = '${id}'
                 `)
             ]);
 
-            const epoch = {...epochStats.rows[0],...blocksProposed.rows[0], f_slots: slotsEpoch.rows, ...withdrawals.rows[0]}
+        const f_slots = slotsEpoch.rows.map((slot: any) => {
+            return {
+                ...slot,
+                withdrawals: 
+                    withdrawals.rows
+                        .filter((withdrawal: any) => withdrawal.f_slot === slot.f_proposer_slot)
+                        .reduce((acc: number, withdrawal: any) => acc + Number(withdrawal.f_amount), 0),
+            };
+        });
+
+        let sumWithdrawals = 0;
+        withdrawals.rows.forEach((withdrawal: any) => {
+            sumWithdrawals += withdrawal.f_amount;
+        });
 
         res.json({
-            epoch
+            epoch: {
+                ...epochStats.rows[0],
+                ...blocksProposed.rows[0], 
+                f_slots,
+                withdrawals: sumWithdrawals
+            }
         });
 
     } catch (error) {
