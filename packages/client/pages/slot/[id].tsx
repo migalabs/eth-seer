@@ -35,7 +35,7 @@ const Card = ({ title, content, icon, iconSize, link, target }: CardProps) => {
     return (
         <>
             <div className='flex gap-3 items-center'>
-                <p className={'uppercase text-[8px] md:text-[10px] text-black w-40 md:w-[15rem]'}>{title}</p>
+                <p className={`uppercase text-[8px] md:text-[10px] text-black w-28 md:w-[15rem]`}>{title}:</p>
                 <div className='flex gap-2 items-center'>
                     <p className='uppercase text-black text-[8px] md:text-[10px]'>{content}</p>
                     {icon && (
@@ -265,8 +265,8 @@ const Slot = () => {
             <div
                 className='flex flex-col mt-4 mb-10 gap-y-5 rounded-[22px] p-4 md:p-8'
                 style={{
-                    backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue4)',
-                    boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow3)' : 'var(--boxShadowBlue3)',
+                    backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
+                    boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow3)' : 'var(--boxShadowBlue1)',
                 }}
             >
                 <Card
@@ -374,8 +374,8 @@ const Slot = () => {
             <div
                 className='flex flex-col mt-4 mb-10 gap-y-5 rounded-[22px] p-4 md:p-8'
                 style={{
-                    backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue4)',
-                    boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow3)' : 'var(--boxShadowBlue3)',
+                    backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
+                    boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow3)' : 'var(--boxShadowBlue1)',
                 }}
             >
                 <Card
@@ -414,20 +414,19 @@ const Slot = () => {
 
     const getWithdrawlsView = () => {
         return (
-            // f_val_idx, f_address, f_amount
             <div
                 ref={containerRef}
                 className='flex flex-col px-2 mt-2.5 overflow-x-scroll overflow-y-hidden scrollbar-thin'
                 onMouseMove={handleMouseMove}
             >
-                <div className='flex gap-x-4 justify-around px-4 xl:px-8 min-w-[700px] py-3 uppercase text-sm text-white text-center'>
+                <div className='flex gap-x-4 justify-around px-4 xl:px-8 min-w-[400px] sm:min-w-[500px] py-3 uppercase text-sm text-[12px] sm:text-[14px] text-white text-center'>
                     <p className='mt-0.5 w-1/3'>Validator</p>
                     <p className='mt-0.5 w-1/3'>Address</p>
                     <p className='mt-0.5 w-1/3'>Amount</p>
                 </div>
 
                 <div
-                    className='flex flex-col gap-y-2 min-w-[700px] text-2xs sm:text-xs rounded-[22px] px-4 xl:px-8 py-3'
+                    className='flex flex-col gap-y-2 min-w-[400px] sm:min-w-[500px] text-sm text-[8px] sm:text-[10px] rounded-[22px] px-4 xl:px-8 py-3'
                     style={{
                         backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
                         boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',

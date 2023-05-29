@@ -145,16 +145,17 @@ const EpochComponent = () => {
                 className='flex flex-col px-2 mt-10 overflow-x-scroll overflow-y-hidden scrollbar-thin'
                 onMouseMove={handleMouseMove}
             >
-                <div className='flex gap-x-4 justify-around px-4 xl:px-8 min-w-[700px] py-3 uppercase text-sm text-white text-center'>
-                    <p className='mt-0.5 w-[10%]'>Block</p>
-                    <p className='mt-0.5 w-[35%]'>Entity</p>
-                    <p className='mt-0.5 w-[18%]'>Proposer</p>
-                    <p className='mt-0.5 w-[18%]'>Slot</p>
-                    <p className='mt-0.5 w-[18%]'>DateTime</p>
+                <div className='flex gap-x-4 justify-around px-4 xl:px-8 min-w-[1050px] py-3 uppercase text-sm text-white text-center'>
+                    <p className='mt-0.5 w-[7%]'>Block</p>
+                    <p className='mt-0.5 w-[32%]'>Entity</p>
+                    <p className='mt-0.5 w-[14%]'>Proposer</p>
+                    <p className='mt-0.5 w-[15%]'>Slot</p>
+                    <p className='mt-0.5 w-[14%]'>DateTime</p>
+                    <p className='mt-0.5 w-[18%]'>Withdrawals</p>
                 </div>
 
                 <Card
-                    className='flex flex-col gap-y-2 min-w-[700px] text-2xs sm:text-xs rounded-[22px] px-4 xl:px-8 py-3'
+                    className='flex flex-col gap-y-2 min-w-[1050px] text-2xs sm:text-xs rounded-[22px] px-4 xl:px-8 py-3'
                     style={{
                         backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
                         boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
@@ -165,7 +166,7 @@ const EpochComponent = () => {
                             className='flex gap-x-4 py-1 uppercase text-center items-center'
                             key={element.f_proposer_slot}
                         >
-                            <div className='flex items-center justify-center w-[10%]'>
+                            <div className='flex items-center justify-center w-[7%]'>
                                 <BlockImage
                                     poolName={element.f_pool_name}
                                     proposed={element.f_proposed}
@@ -174,7 +175,7 @@ const EpochComponent = () => {
                                     showCheck
                                 />
                             </div>
-                            <div className='w-[35%]'>
+                            <div className='w-[32%]'>
                                 <Link
                                     href={{
                                         pathname: '/entity/[name]',
@@ -190,7 +191,7 @@ const EpochComponent = () => {
                                     <LinkIcon />
                                 </Link>
                             </div>
-                            <div className='w-[18%]'>
+                            <div className='w-[14%]'>
                                 <Link
                                     href={{
                                         pathname: '/validator/[id]',
@@ -206,7 +207,7 @@ const EpochComponent = () => {
                                     <LinkIcon />
                                 </Link>
                             </div>
-                            <div className='w-[18%]'>
+                            <div className='w-[15%]'>
                                 <Link
                                     href={{
                                         pathname: '/slot/[id]',
@@ -222,9 +223,10 @@ const EpochComponent = () => {
                                     <LinkIcon />
                                 </Link>
                             </div>
-                            <p className='w-[18%]'>
+                            <p className='w-[14%]'>
                                 {new Date(firstBlock + Number(element.f_proposer_slot) * 12000).toLocaleString('ja-JP')}
                             </p>
+                            <p className='w-[18%]'>{(element.withdrawals / 10 ** 9).toLocaleString()} ETH</p>
                         </div>
                     ))}
                 </Card>
@@ -266,7 +268,7 @@ const EpochComponent = () => {
                                     className='flex gap-x-1 items-center w-fit mx-auto'
                                 >
                                     <div className='flex flex-row items-center gap-x-8'>
-                                        <p className='w-20'>Proposer:</p>
+                                        <p className='w-24'>Proposer:</p>
                                         <p className='leading-3'>{element.f_val_idx.toLocaleString()}</p>
                                     </div>
                                     <LinkIcon />
@@ -285,17 +287,21 @@ const EpochComponent = () => {
                                     className='flex gap-x-1 items-center w-fit mx-auto'
                                 >
                                     <div className='flex flex-row items-center gap-x-8'>
-                                        <p className='w-20'>Slot:</p>
+                                        <p className='w-24'>Slot:</p>
                                         <p className='leading-3'>{element.f_proposer_slot.toLocaleString()}</p>
                                     </div>
                                     <LinkIcon />
                                 </Link>
                             </div>
-                            <div className='flex flex-row items-center gap-x-10'>
-                                <p className='w-20'>DateTime:</p>
+                            <div className='flex flex-row items-center gap-x-8'>
+                                <p className='w-24'>DateTime:</p>
                                 <p className='leading-3'>
                                     {new Date(firstBlock + Number(epoch?.f_slot) * 12000).toLocaleString('ja-JP')}
                                 </p>
+                            </div>
+                            <div className='flex flex-row items-center gap-x-8'>
+                                <p className='w-24'>Withdrawals:</p>
+                                <p className='leading-3'>{(element.withdrawals / 10 ** 9).toLocaleString()} ETH</p>
                             </div>
                         </div>
                     </div>
