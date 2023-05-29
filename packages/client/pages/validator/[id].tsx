@@ -146,7 +146,7 @@ const ValidatorComponent = () => {
                                     <div className='flex flex-row items-center gap-x-8'>
                                         <p className='w-20'>Epoch:</p>
                                         <p className='leading-3'>
-                                            <p>{Math.floor(element.f_proposer_slot / 32).toLocaleString()}</p>
+                                            {Math.floor(element.f_proposer_slot / 32).toLocaleString()}
                                         </p>
                                     </div>
                                     <LinkIcon />
@@ -353,8 +353,8 @@ const ValidatorComponent = () => {
                     boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
                 }}
             >
-                {validator?.withdrawals?.map(element => (
-                    <div className='flex flex-row gap-x-6 py-1 uppercase' key={element.f_val_idx}>
+                {validator?.withdrawals?.map((element, idx) => (
+                    <div className='flex flex-row gap-x-6 py-1 uppercase' key={idx}>
                         <div className='flex flex-col items-start '>
                             <div>
                                 <Link
@@ -370,9 +370,7 @@ const ValidatorComponent = () => {
                                 >
                                     <div className='flex flex-row items-center gap-x-8'>
                                         <p className='w-20'>Epoch:</p>
-                                        <p className='leading-3'>
-                                            <p>{Math.floor(element.f_epoch ?? 0).toLocaleString()}</p>
-                                        </p>
+                                        <p className='leading-3'>{Math.floor(element.f_epoch ?? 0).toLocaleString()}</p>
                                     </div>
                                     <LinkIcon />
                                 </Link>
@@ -396,13 +394,13 @@ const ValidatorComponent = () => {
                                     <LinkIcon />
                                 </Link>
                             </div>
-                            <div className='flex flex-row items-center gap-x-10'>
+                            <div className='flex flex-row items-center gap-x-8'>
                                 <p className='w-20'>DateTime:</p>
                                 <p className='leading-3'>
                                     {new Date(firstBlock + Number(element.f_slot) * 12000).toLocaleString('ja-JP')}
                                 </p>
                             </div>
-                            <div className='flex flex-row items-center gap-x-10'>
+                            <div className='flex flex-row items-center gap-x-8'>
                                 <p className='w-20'>Amount:</p>
                                 <p className='leading-3'>{(element.f_amount / 10 ** 9).toLocaleString()} ETH</p>
                             </div>
