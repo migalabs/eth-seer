@@ -110,15 +110,26 @@ const SearchEngineBlack = () => {
             // It can be an entity
             const expression = new RegExp(searchContent, 'i');
 
-            items.push(
-                ...POOLS_EXTENDED.sort((a, b) => (a > b ? 1 : -1))
-                    .filter(pool => pool.search(expression) !== -1)
-                    .slice(0, 10)
-                    .map(pool => ({
-                        label: `Entity: ${pool}`,
-                        link: `/entity/${pool.toLowerCase()}`,
-                    }))
-            );
+            if (process.env.NEXT_PUBLIC_ASSET_PREFIX?.toUpperCase() === 'GOERLI') {
+                items.push(
+                    ...['OTHERS']
+                        .filter(pool => pool.search(expression) !== -1)
+                        .map(pool => ({
+                            label: `Entity: ${pool}`,
+                            link: `/entity/${pool.toLowerCase()}`,
+                        }))
+                );
+            } else {
+                items.push(
+                    ...POOLS_EXTENDED.sort((a, b) => (a > b ? 1 : -1))
+                        .filter(pool => pool.search(expression) !== -1)
+                        .slice(0, 10)
+                        .map(pool => ({
+                            label: `Entity: ${pool}`,
+                            link: `/entity/${pool.toLowerCase()}`,
+                        }))
+                );
+            }
         }
 
         setSearchResults(items);
