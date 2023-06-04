@@ -9,6 +9,7 @@ import Layout from '../../components/layouts/Layout';
 import BlockGif from '../../components/ui/BlockGif';
 import axiosClient from '../../config/axios';
 import { Entity } from '../../types';
+import EntityAnimation from '../../components/layouts/EntityAnimation';
 
 type Props = {
     content: string;
@@ -40,7 +41,9 @@ const Entity = () => {
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) || {};
 
+    // States
     const [entity, setEntity] = useState<Entity | null>(null);
+    const [showAnimation, setShowAnimation] = useState<boolean>(false);
 
     // UseEffect
     useEffect(() => {
@@ -57,7 +60,11 @@ const Entity = () => {
                 `/api/validator-rewards-summary/entity/${(name as string).toLowerCase()}`
             );
 
-            setEntity(response.data.entity);
+            if (response.data.entity) {
+                setEntity(response.data.entity);
+            } else {
+                setShowAnimation(true);
+            }
         } catch (error) {
             console.log(error);
         }
@@ -68,7 +75,7 @@ const Entity = () => {
             <div className='flex gap-x-3 justify-center items-center mt-2 mb-5'>
                 <h1 className='text-white text-center text-xl md:text-3xl uppercase'>{name}</h1>
             </div>
-            {entity && (
+            {entity ? (
                 <div className='mx-auto max-w-[1100px]'>
                     <div
                         className='flex mx-2 px-4 sm:px-10 py-5 rounded-[22px] justify-between items-center gap-x-5'
@@ -137,10 +144,12 @@ const Entity = () => {
                         </div>
 
                         <div className='hidden md:block'>
-                            <BlockGif poolName={name?.toString() || 'others'} width={150} height={150} />
+                            <BlockGif poolName={name?.toString() ?? 'others'} width={150} height={150} />
                         </div>
                     </div>
                 </div>
+            ) : (
+                showAnimation && <EntityAnimation />
             )}
         </Layout>
     );

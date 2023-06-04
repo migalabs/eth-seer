@@ -54,7 +54,7 @@ const ValidatorComponent = () => {
     } = router;
 
     // Theme Mode Context
-    const { themeMode } = useContext(ThemeModeContext) || {};
+    const { themeMode } = useContext(ThemeModeContext) ?? {};
 
     // Refs
     const validatorRef = useRef(0);
@@ -574,7 +574,6 @@ const ValidatorComponent = () => {
                                     )}
                                 </div>
                             </div>
-                            
                         </div>
                         <div className='flex flex-col md:flex-row gap-x-10 gap-y-2 items-center md:w-full ml-10'>
                             <div className='flex flex-col md:flex-row gap-x-3 justify-between w-full md:w-auto flex-grow max-w-[350px] min-w-[200px]'>
@@ -641,7 +640,7 @@ const ValidatorComponent = () => {
                     {getSelectedTab()}
                 </div>
             ) : (
-                animation && <ValidatorAnimation darkMode={themeMode?.darkMode as boolean} />
+                animation && <ValidatorAnimation />
             )}
         </Layout>
     );

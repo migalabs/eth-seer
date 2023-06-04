@@ -52,7 +52,7 @@ const EpochComponent = () => {
     } = router;
 
     // Theme Mode Context
-    const { themeMode } = useContext(ThemeModeContext) || {};
+    const { themeMode } = useContext(ThemeModeContext) ?? {};
 
     // Refs
     const epochRef = useRef(0);
@@ -454,7 +454,7 @@ const EpochComponent = () => {
                     <div>{desktopView ? getContentSlots() : getContentSlotsMobile()}</div>
                 </div>
             ) : (
-                animation && <EpochAnimation darkMode={themeMode?.darkMode as boolean} notEpoch={notEpoch} />
+                animation && <EpochAnimation notEpoch={notEpoch} />
             )}
         </Layout>
     );

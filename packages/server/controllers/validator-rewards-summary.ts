@@ -335,7 +335,7 @@ export const getEntity = async (req: Request, res: Response) => {
 
         const { name } = req.params;
 
-        const [ entityStats, blocksProposed ] = 
+        const [ entityStats, blocksProposed, existsEntity ] = 
             await Promise.all([
                 pgClient.query(`
                 SELECT sum(f_balance_eth) as aggregate_balance, 
@@ -354,20 +354,32 @@ export const getEntity = async (req: Request, res: Response) => {
                     SELECT 
                         COUNT(CASE  f_proposed WHEN true THEN 1 ELSE null END) AS f_proposed,
                         COUNT(CASE  f_proposed WHEN false THEN 1 ELSE null END) AS f_missed
-                    FROM 
+                    FROM
                         t_proposer_duties
                     LEFT OUTER JOIN 
                         t_eth2_pubkeys ON t_proposer_duties.f_val_idx = t_eth2_pubkeys.f_val_idx
                     WHERE 
                         f_pool_name = '${name}'
+                `),
+                pgClient.query(`
+                    SELECT f_pool_name
+                    FROM t_eth2_pubkeys
+                    WHERE f_pool_name = '${name}'
                 `)
             ]);
 
-            const entity = {...entityStats.rows[0] , proposed_blocks: blocksProposed.rows[0]}
-
-        res.json({
-            entity
-        });
+        if (existsEntity.rows.length === 0) {
+            res.json({
+                entity: null
+            });
+        } else {
+            res.json({
+                entity: {
+                    ...entityStats.rows[0],
+                    proposed_blocks: blocksProposed.rows[0]
+                }
+            });
+        }
 
     } catch (error) {
         console.log(error);
