@@ -413,12 +413,20 @@ export const listenEpochNotification = async (req: Request, res: Response) => {
 
         pgClient.query('LISTEN new_epoch_finalized');
 
+        let isProcessing = false;
+
         pgClient.on('notification', async (msg) => {
             if (msg.channel === 'new_epoch_finalized') {
+                if(isProcessing){
+                    return;
+                }
+                isProcessing = true;
                 res.write('event: new_epoch\n');
                 res.write(`data: ${msg.payload}`);
-                res.write('\n\n');
-                res.end();
+                res.write('\n\n', () => {
+                    res.end();
+                    isProcessing = false;
+                });
             }
         });
 
