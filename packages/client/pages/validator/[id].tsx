@@ -498,25 +498,9 @@ const ValidatorComponent = () => {
                             </div>
                         </div>
                         <div className='flex flex-col md:flex-row gap-x-10 gap-y-2 items-center md:w-full ml-10'>
-                            <div className='flex flex-col md:flex-row gap-x-3 justify-between w-full md:w-auto flex-grow max-w-[350px] min-w-[200px]'>
-                                <p className=''>sync committee participation</p>
-                            </div>
-                            <div className='flex flex-col md:flex-row gap-x-5 gap-y-2'>
-                                <div className='md:w-[240px]'>
-                                    <CardContent
-                                        content={`Sync commit.: ${validator?.count_missing_source}`}
-                                        bg={'#E86506'}
-                                        color={'#FFC163'}
-                                    />
-                                </div>
-
-                                <div className='md:w-[240px]'>
-                                    <CardContent
-                                        content={`T. Sync commit.: ${validator?.count_missing_source}`}
-                                        bg={'#E86506'}
-                                        color={'#FFC163'}
-                                    />
-                                </div>
+                            <div className='flex flex-row items-center gap-x-5'>
+                                <p className=''>sync committee participation:</p>
+                                <p className='leading-3'>{validator?.count_missing_source}</p>
                             </div>
                         </div>
                         <div className='flex flex-col md:flex-row gap-x-10 gap-y-2 items-center md:w-full ml-10'>
@@ -588,6 +572,29 @@ const ValidatorComponent = () => {
                                             }
                                         />
                                     )}
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <div className='flex flex-col md:flex-row gap-x-10 gap-y-2 items-center md:w-full ml-10'>
+                            <div className='flex flex-col md:flex-row gap-x-3 justify-between w-full md:w-auto flex-grow max-w-[350px] min-w-[200px]'>
+                                <p className=''>blocks</p>
+                            </div>
+                            <div className='flex flex-col md:flex-row gap-x-5 gap-y-2'>
+                                <div className='md:w-[240px]'>
+                                    <CardContent
+                                        content={`Proposed: ${validator?.proposed_blocks_performance}`}
+                                        bg={'#00720B'}
+                                        color={'#83E18C'}
+                                    />
+                                </div>
+
+                                <div className='md:w-[240px]'>
+                                    <CardContent
+                                        content={`Missed: ${validator?.missed_blocks_performance}`}
+                                        bg={'#980E0E'}
+                                        color={'#FF9090'}
+                                    />
                                 </div>
                             </div>
                         </div>

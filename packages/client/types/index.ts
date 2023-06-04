@@ -27,6 +27,8 @@ export type Validator = {
     count_missing_target: number;
     count_missing_head: number;
     count_attestations: number;
+    proposed_blocks_performance: number;
+    missed_blocks_performance: number;
     proposed_blocks: Array<Slot>;
     withdrawals: Array<Withdrawal>;
 };
