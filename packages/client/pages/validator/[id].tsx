@@ -21,6 +21,9 @@ import TabHeader from '../../components/ui/TabHeader';
 import { Validator } from '../../types';
 import ProgressSmoothBarEpoch from '../../components/ui/ProgressSmoothBarEpoch';
 import ProgressSmoothBar from '../../components/ui/ProgressSmoothBar';
+import { TooltipContainer } from '../../components/ui/Tooltips';
+import CustomImage from '../../components/ui/CustomImage';
+import { TooltipContentContainerHeaders } from '../../components/ui/Tooltips';
 
 // Constants
 const firstBlock: number = Number(process.env.NEXT_PUBLIC_NETWORK_GENESIS); // 1606824023000
@@ -428,6 +431,11 @@ const ValidatorComponent = () => {
         }
     };
 
+    const convertToHours = (epochs: number) => {
+        let minutes = epochs * 6.4;
+        return Math.floor(minutes / 60);
+    };
+
     const getContentValidator = () => {
         return (
             <Card
@@ -470,30 +478,41 @@ const ValidatorComponent = () => {
                         </div>
                     </div>
                     <div className='flex flex-col gap-y-4'>
-                        <p className='items-start'>Validator performance:</p>
-                        <div className='flex flex-col md:flex-row gap-x-10 gap-y-2 items-center md:justify-end md:w-full ml-10'>
-                            <div className='flex flex-col md:flex-row gap-x-3 justify-between w-full md:w-auto flex-grow max-w-[350px] min-w-[200px]'>
-                                <p className='w-20'>Rewards</p>
-                                <div className='flex-grow mx-6 md:mx-0'>
+                        <div className='flex flex-row'>
+                            <p className='items-start'>Validator performance:</p>
+                            <TooltipContainer>
+                                <CustomImage
+                                    src='/static/images/information.svg'
+                                    alt='Time information'
+                                    width={24}
+                                    height={24}
+                                />
+                                <TooltipContentContainerHeaders epoch>
+                                    <span>
+                                        Data from last {convertToHours(validator?.count_attestations || 0)} hour!!
+                                    </span>
+                                </TooltipContentContainerHeaders>
+                            </TooltipContainer>
+                        </div>
+                        <div className='flex flex-col md:flex-row gap-x-10 gap-y-2 items-center md:w-full ml-10'>
+                            <div className='flex flex-col md:flex-row gap-x-60 justify-between w-full md:w-auto flex-grow '>
+                                <p className=''>Rewards:</p>
+                                <div className='w-80 text-[9px] text-center leading-3'>
                                     {validator && (
-                                        <ProgressSmoothBarEpoch bg={'#E86506'} color={'#FFC163'} percent={1} />
+                                        <ProgressSmoothBar
+                                            title='Rewards'
+                                            bg='#1194BD'
+                                            color='#BDFFEB'
+                                            percent={1}
+                                            tooltipColor='blue'
+                                            tooltipContent={
+                                                <>
+                                                    <span>Agg. Rewards: {validator?.aggregated_rewards}</span>
+                                                    <span>Max. Rewards: {validator?.aggregated_max_rewards}</span>
+                                                </>
+                                            }
+                                        />
                                     )}
-                                </div>
-                            </div>
-                            <div className='flex flex-col md:flex-row gap-x-10 gap-y-2'>
-                                <div className='md:w-[275px]'>
-                                    <CardContent
-                                        content={`Agg. Rewards: ${validator?.aggregated_rewards}`}
-                                        bg={'#E86506'}
-                                        color={'#FFC163'}
-                                    />
-                                </div>
-                                <div className='flex-shrink'>
-                                    <CardContent
-                                        content={`Max. Rewards: ${validator?.aggregated_max_rewards}`}
-                                        bg={'#E86506'}
-                                        color={'#FFC163'}
-                                    />
                                 </div>
                             </div>
                         </div>
