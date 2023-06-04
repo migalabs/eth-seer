@@ -52,7 +52,9 @@ const Entity = () => {
 
     const getEntity = async () => {
         try {
-            const response = await axiosClient.get(`/api/validator-rewards-summary/entity/${name}`);
+            const response = await axiosClient.get(
+                `/api/validator-rewards-summary/entity/${(name as string).toLowerCase()}`
+            );
 
             setEntity(response.data.entity);
         } catch (error) {
