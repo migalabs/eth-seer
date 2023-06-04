@@ -284,13 +284,26 @@ export const getValidator = async (req: Request, res: Response) => {
                     WHERE t_proposer_duties.f_val_idx = '${id}'
                 `),
                 pgClient.query(`
-                    SELECT SUM(f_reward) as aggregated_rewards, 
+                    SELECT
+                    SUM(f_reward) as aggregated_rewards, 
                     SUM(f_max_reward) as aggregated_max_rewards,
                     COUNT(CASE WHEN f_in_sync_committee = TRUE THEN 1 ELSE null END) as count_sync_committee,
                     COUNT(CASE WHEN f_missing_source = TRUE THEN 1 ELSE null END) as count_missing_source,
                     COUNT(CASE WHEN f_missing_target = TRUE THEN 1 ELSE null END) as count_missing_target,
                     COUNT(CASE WHEN f_missing_head = TRUE THEN 1 ELSE null END) as count_missing_head,
-                    COUNT(*) as count_attestations
+                    COUNT(*) as count_attestations,
+                    (
+                    SELECT COUNT(CASE WHEN t_proposer_duties.f_proposed = TRUE THEN 1 ELSE null END)
+                    FROM t_proposer_duties
+                    WHERE t_proposer_duties.f_val_idx = '${id}'
+                        AND t_proposer_duties.f_proposer_slot/32 BETWEEN MIN(t_validator_rewards_summary.f_epoch) AND MAX(t_validator_rewards_summary.f_epoch)
+                    ) as proposed_blocks,
+                    (
+                    SELECT COUNT(CASE WHEN t_proposer_duties.f_proposed = FALSE THEN 1 ELSE null END)
+                    FROM t_proposer_duties
+                    WHERE t_proposer_duties.f_val_idx = '${id}'
+                        AND t_proposer_duties.f_proposer_slot/32 BETWEEN MIN(t_validator_rewards_summary.f_epoch) AND MAX(t_validator_rewards_summary.f_epoch)
+                    ) as missed_blocks
                     FROM t_validator_rewards_summary
                     WHERE f_val_idx = '${id}'
                 `),
