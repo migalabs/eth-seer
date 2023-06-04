@@ -410,11 +410,6 @@ const ValidatorComponent = () => {
                         </div>
                     </div>
                 ))}
-                {validator?.proposed_blocks.length == 0 && (
-                    <div className='flex justify-center p-2'>
-                        <p className='uppercase'>No proposed blocks</p>
-                    </div>
-                )}
             </Card>
         );
     };
@@ -650,7 +645,7 @@ const ValidatorComponent = () => {
                     <div className='flex flex-col sm:flex-row gap-4'>
                         <TabHeader header='Blocks' isSelected={tabPageIndex === 0} onClick={() => setTabPageIndex(0)} />
                         <TabHeader
-                            header='Withdrawls'
+                            header='Withdrawals'
                             isSelected={tabPageIndex === 1}
                             onClick={() => setTabPageIndex(1)}
                         />
