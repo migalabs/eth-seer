@@ -297,13 +297,13 @@ export const getValidator = async (req: Request, res: Response) => {
                     FROM t_proposer_duties
                     WHERE t_proposer_duties.f_val_idx = '${id}'
                         AND t_proposer_duties.f_proposer_slot/32 BETWEEN MIN(t_validator_rewards_summary.f_epoch) AND MAX(t_validator_rewards_summary.f_epoch)
-                    ) as proposed_blocks,
+                    ) as proposed_blocks_performance,
                     (
                     SELECT COUNT(CASE WHEN t_proposer_duties.f_proposed = FALSE THEN 1 ELSE null END)
                     FROM t_proposer_duties
                     WHERE t_proposer_duties.f_val_idx = '${id}'
                         AND t_proposer_duties.f_proposer_slot/32 BETWEEN MIN(t_validator_rewards_summary.f_epoch) AND MAX(t_validator_rewards_summary.f_epoch)
-                    ) as missed_blocks
+                    ) as missed_blocks_performance
                     FROM t_validator_rewards_summary
                     WHERE f_val_idx = '${id}'
                 `),
