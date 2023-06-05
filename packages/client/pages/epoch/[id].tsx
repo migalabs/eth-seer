@@ -295,9 +295,20 @@ const EpochComponent = () => {
                             </div>
                             <div className='flex flex-row items-center gap-x-8'>
                                 <p className='w-24'>DateTime:</p>
-                                <p className='leading-3'>
-                                    {new Date(firstBlock + Number(epoch?.f_slot) * 12000).toLocaleString('ja-JP')}
-                                </p>
+                                <div className='flex flex-col gap-y-0.5'>
+                                    <p className='leading-3'>
+                                        {new Date(firstBlock + Number(epoch?.f_slot) * 12000).toLocaleDateString(
+                                            'ja-JP',
+                                            { year: 'numeric', month: 'numeric', day: 'numeric' }
+                                        )}
+                                    </p>
+                                    <p className='leading-3'>
+                                        {new Date(firstBlock + Number(epoch?.f_slot) * 12000).toLocaleTimeString(
+                                            'ja-JP',
+                                            { hour: 'numeric', minute: 'numeric', second: 'numeric' }
+                                        )}
+                                    </p>
+                                </div>
                             </div>
                             <div className='flex flex-row items-center gap-x-8'>
                                 <p className='w-24'>Withdrawals:</p>
