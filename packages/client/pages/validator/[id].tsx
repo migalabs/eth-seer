@@ -472,9 +472,11 @@ const ValidatorComponent = () => {
                             {validator?.f_status && getCurrentStatus(validator?.f_status)}
                         </div>
                     </div>
+
                     <div className='flex flex-col gap-y-4'>
-                        <div className='flex flex-row'>
-                            <p className='items-start'>Validator performance:</p>
+                        <div className='flex flex-row items-center'>
+                            <p>Validator performance:</p>
+
                             <TooltipContainer>
                                 <CustomImage
                                     src='/static/images/information.svg'
@@ -484,14 +486,16 @@ const ValidatorComponent = () => {
                                 />
                                 <TooltipContentContainerHeaders epoch>
                                     <span>
-                                        Data from last {convertToHours(validator?.count_attestations || 0)} hour!!
+                                        Data from last {convertToHours(validator?.count_attestations ?? 0)} hour!!
                                     </span>
                                 </TooltipContentContainerHeaders>
                             </TooltipContainer>
                         </div>
+
                         <div className='flex flex-col md:flex-row gap-x-10 gap-y-2 items-center md:w-full ml-10'>
                             <div className='flex flex-col md:flex-row gap-x-60 justify-between w-full md:w-auto flex-grow '>
                                 <p className=''>Rewards:</p>
+
                                 <div className='w-80 text-[9px] text-center leading-3'>
                                     {validator && (
                                         <ProgressSmoothBar
@@ -511,16 +515,19 @@ const ValidatorComponent = () => {
                                 </div>
                             </div>
                         </div>
+
                         <div className='flex flex-col md:flex-row gap-x-10 gap-y-2 items-center md:w-full ml-10'>
                             <div className='flex flex-row items-center gap-x-5'>
                                 <p className=''>sync committee participation:</p>
                                 <p className='leading-3'>{validator?.count_missing_source}</p>
                             </div>
                         </div>
+
                         <div className='flex flex-col md:flex-row gap-x-10 gap-y-2 items-center md:w-full ml-10'>
                             <div className='flex flex-col md:flex-row gap-x-3 justify-between w-full md:w-auto flex-grow max-w-[350px] min-w-[200px]'>
                                 <p className=''>Missing attestation flags</p>
                             </div>
+
                             <div className='flex flex-col md:flex-row gap-x-4 gap-y-2 text-[9px] text-center leading-3'>
                                 <div className='w-32'>
                                     {validator && (
@@ -544,6 +551,7 @@ const ValidatorComponent = () => {
                                         />
                                     )}
                                 </div>
+
                                 <div className='w-32'>
                                     {validator && (
                                         <ProgressSmoothBar
@@ -566,6 +574,7 @@ const ValidatorComponent = () => {
                                         />
                                     )}
                                 </div>
+
                                 <div className='w-32'>
                                     {validator && (
                                         <ProgressSmoothBar
@@ -589,10 +598,12 @@ const ValidatorComponent = () => {
                                 </div>
                             </div>
                         </div>
+
                         <div className='flex flex-col md:flex-row gap-x-10 gap-y-2 items-center md:w-full ml-10'>
                             <div className='flex flex-col md:flex-row gap-x-3 justify-between w-full md:w-auto flex-grow max-w-[350px] min-w-[200px]'>
                                 <p className=''>blocks</p>
                             </div>
+
                             <div className='flex flex-col md:flex-row gap-x-5 gap-y-2'>
                                 <div className='md:w-[240px]'>
                                     <CardContent
@@ -638,6 +649,7 @@ const ValidatorComponent = () => {
                     Validator {Number(id)?.toLocaleString()}
                 </h1>
             </div>
+
             {validator?.f_val_idx !== undefined ? (
                 <div className='flex flex-col gap-4 mx-auto max-w-[1100px]'>
                     <div>{getContentValidator()}</div>

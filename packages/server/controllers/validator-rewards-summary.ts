@@ -18,7 +18,7 @@ export const getEpochsStatistics = async (req: Request, res: Response) => {
                 FROM t_epoch_metrics_summary
                 ORDER BY f_epoch DESC
                 OFFSET ${skip}
-                LIMIT ${limit}
+                LIMIT ${Number(limit)}
             `),
             pgClient.query(`
                 SELECT AVG(f_reward) AS reward_average, AVG(f_max_reward) AS max_reward_average, f_epoch
@@ -30,7 +30,7 @@ export const getEpochsStatistics = async (req: Request, res: Response) => {
                         FROM t_epoch_metrics_summary
                         ORDER BY f_epoch DESC
                         OFFSET ${skip}
-                        LIMIT ${limit}
+                        LIMIT ${Number(limit)}
                     )
                     ORDER BY f_epoch DESC
                 ) t1
@@ -46,7 +46,7 @@ export const getEpochsStatistics = async (req: Request, res: Response) => {
                 GROUP BY epoch
                 ORDER BY epoch DESC
                 OFFSET ${skip}
-                LIMIT ${limit}
+                LIMIT ${Number(limit)}
             `)
         ]);
 
@@ -92,7 +92,7 @@ export const getBlocks = async (req: Request, res: Response) => {
                 LEFT OUTER JOIN t_eth2_pubkeys ON t_proposer_duties.f_val_idx = t_eth2_pubkeys.f_val_idx
                 ORDER BY f_proposer_slot DESC
                 OFFSET ${skip}
-                LIMIT ${limit}
+                LIMIT ${Number(limit)}
             `);
 
             res.json({
@@ -109,7 +109,7 @@ export const getBlocks = async (req: Request, res: Response) => {
                     LEFT OUTER JOIN t_eth2_pubkeys ON t_proposer_duties.f_val_idx = t_eth2_pubkeys.f_val_idx
                     ORDER BY f_proposer_slot DESC
                     OFFSET ${skip}
-                    LIMIT ${limit}
+                    LIMIT ${Number(limit)}
                 `),
                 pgClient.query(`
                     SELECT t_block_metrics.f_epoch, t_block_metrics.f_slot, t_eth2_pubkeys.f_pool_name, t_block_metrics.f_proposed, t_block_metrics.f_proposer_index,
@@ -399,11 +399,11 @@ export const listenBlockNotification = async (req: Request, res: Response) => {
             'Connection': 'keep-alive'
         });
 
-        pgClient.query('LISTEN new_head');
+        await pgClient.query('LISTEN new_head');
 
         let isProcessing = false;
         
-        pgClient.on('notification', async (msg) => {
+        pgClient.on('notification', (msg) => {
             if (msg.channel === 'new_head') {
                 if(isProcessing){
                     return;
@@ -412,8 +412,8 @@ export const listenBlockNotification = async (req: Request, res: Response) => {
                 res.write('event: new_block\n');
                 res.write(`data: ${msg.payload}`);
                 res.write('\n\n', () => {
-                        res.end();
-                        isProcessing = false;
+                    res.end();
+                    isProcessing = false;
                 });
             }
         });
@@ -436,15 +436,16 @@ export const listenEpochNotification = async (req: Request, res: Response) => {
             'Connection': 'keep-alive'
         });
 
-        pgClient.query('LISTEN new_epoch_finalized');
+        await pgClient.query('LISTEN new_epoch_finalized');
 
         let isProcessing = false;
 
-        pgClient.on('notification', async (msg) => {
+        pgClient.on('notification', (msg) => {
             if (msg.channel === 'new_epoch_finalized') {
-                if(isProcessing){
+                if (isProcessing) {
                     return;
                 }
+
                 isProcessing = true;
                 res.write('event: new_epoch\n');
                 res.write(`data: ${msg.payload}`);
