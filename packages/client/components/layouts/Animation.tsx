@@ -3,7 +3,11 @@ import React, { useContext } from 'react';
 // Contexts
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
-const ValidatorAnimation = () => {
+type Props = {
+    text: string;
+};
+
+const Animation = ({ text }: Props) => {
     const assetPrefix = process.env.NEXT_PUBLIC_ASSET_PREFIX ?? '';
 
     // Theme Mode Context
@@ -31,12 +35,10 @@ const ValidatorAnimation = () => {
                     alt='Image 7'
                     className='panda-tumbleweed'
                 />
-                <p className={`panda-text ${themeMode?.darkMode ? 'text-white' : 'text-black'}`}>
-                    Validator doesn't exists yet
-                </p>
+                <p className={`panda-text ${themeMode?.darkMode ? 'text-white' : 'text-black'}`}>{text}</p>
             </div>
         </div>
     );
 };
 
-export default ValidatorAnimation;
+export default Animation;

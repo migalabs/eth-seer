@@ -13,6 +13,7 @@ import Layout from '../../../components/layouts/Layout';
 
 // Types
 import { Block } from '../../../types';
+import Graffitis from '../../../components/layouts/Graffitis';
 
 const SlotGraffitiSearch = () => {
     // Router
@@ -42,34 +43,7 @@ const SlotGraffitiSearch = () => {
 
     return (
         <Layout>
-            <h1 className='text-center text-white'>Graffiti Search Result</h1>
-
-            <div className='flex flex-col justify-center gap-y-4 max-w-[700px] mx-auto mt-8'>
-                {blocks.map(block => (
-                    <Link
-                        key={block.f_slot}
-                        href={{
-                            pathname: '/slot/[id]',
-                            query: {
-                                id: block.f_slot,
-                            },
-                        }}
-                        passHref
-                        as={`/slot/${block.f_slot}`}
-                    >
-                        <div
-                            className='flex flex-col gap-x-1 justify-around items-center text-xs text-black rounded-[22px] px-2 xl:px-8 py-3 cursor-pointer'
-                            style={{
-                                backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
-                                boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
-                            }}
-                        >
-                            <p>Block: {block.f_slot}</p>
-                            <p>Graffiti: {block.f_graffiti}</p>
-                        </div>
-                    </Link>
-                ))}
-            </div>
+            <Graffitis />
         </Layout>
     );
 };

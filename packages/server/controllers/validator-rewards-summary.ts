@@ -145,7 +145,10 @@ export const getBlocks = async (req: Request, res: Response) => {
 export const getBlocksByGraffiti = async (req: Request, res: Response) => {
 
     try {
+        const { page = 0, limit = 10 } = req.query;
 
+        const skip = Number(page) * Number(limit);
+        
         const { id } = req.params;
 
         const blocks = 
@@ -155,7 +158,8 @@ export const getBlocksByGraffiti = async (req: Request, res: Response) => {
                 LEFT OUTER JOIN t_eth2_pubkeys ON t_block_metrics.f_proposer_index = t_eth2_pubkeys.f_val_idx
                 WHERE f_graffiti LIKE '%${id}%'
                 ORDER BY f_slot DESC
-                LIMIT 50
+                OFFSET ${skip}
+                LIMIT ${Number(limit)}
             `);
 
         res.json({
