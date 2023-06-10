@@ -11,7 +11,6 @@ import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
 // Components
 import Layout from '../../components/layouts/Layout';
-import ValidatorAnimation from '../../components/layouts/ValidatorAnimation';
 import LinkIcon from '../../components/ui/LinkIcon';
 import BlockImage from '../../components/ui/BlockImage';
 import BlockGif from '../../components/ui/BlockGif';
@@ -24,6 +23,7 @@ import ProgressSmoothBar from '../../components/ui/ProgressSmoothBar';
 import { TooltipContainer } from '../../components/ui/Tooltips';
 import CustomImage from '../../components/ui/CustomImage';
 import { TooltipContentContainerHeaders } from '../../components/ui/Tooltips';
+import Animation from '../../components/layouts/Animation';
 
 // Constants
 const firstBlock: number = Number(process.env.NEXT_PUBLIC_NETWORK_GENESIS); // 1606824023000
@@ -666,7 +666,7 @@ const ValidatorComponent = () => {
                     {getSelectedTab()}
                 </div>
             ) : (
-                animation && <ValidatorAnimation />
+                animation && <Animation text={`Validator doesn't exists yet`} />
             )}
         </Layout>
     );

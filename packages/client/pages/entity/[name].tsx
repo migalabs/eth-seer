@@ -9,7 +9,7 @@ import Layout from '../../components/layouts/Layout';
 import BlockGif from '../../components/ui/BlockGif';
 import axiosClient from '../../config/axios';
 import { Entity } from '../../types';
-import EntityAnimation from '../../components/layouts/EntityAnimation';
+import Animation from '../../components/layouts/Animation';
 
 type Props = {
     content: string;
@@ -149,7 +149,7 @@ const Entity = () => {
                     </div>
                 </div>
             ) : (
-                showAnimation && <EntityAnimation />
+                showAnimation && <Animation text={`We're not there yet`} />
             )}
         </Layout>
     );
