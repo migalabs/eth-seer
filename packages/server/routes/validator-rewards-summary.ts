@@ -4,7 +4,8 @@ import { check } from 'express-validator';
 import {
     getEpochsStatistics,
     getBlocks,
-    getBlock,
+    getBlocksByGraffiti,
+    getBlockById,
     listenBlockNotification,
     listenEpochNotification,
     getEpoch,
@@ -20,10 +21,15 @@ router.get('/', getEpochsStatistics);
 
 router.get('/blocks', getBlocks);
 
+router.get('/blocks/graffiti/:id', [
+    check('id').notEmpty().withMessage('Graffiti is required'),
+    checkFields,
+], getBlocksByGraffiti);
+
 router.get('/block/:id', [
     check('id').isInt({ min: 0, max: 2147483647 }),
     checkFields,
-], getBlock);
+], getBlockById);
 
 router.get('/epoch/:id', [
     check('id').isInt({ min: 0, max: 2147483647 }),
