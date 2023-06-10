@@ -100,10 +100,10 @@ const Graffitis = () => {
     const getDesktopView = () => (
         <div
             ref={containerRef}
-            className='flex flex-col px-2 xl:px-20 overflow-x-scroll overflow-y-hidden scrollbar-thin pb-4'
+            className='flex flex-col px-2 xl:px-20 overflow-x-scroll overflow-y-hidden scrollbar-thin pb-4 max-w-[1200px] mx-auto'
             onMouseMove={handleMouseMove}
         >
-            <div className='flex gap-x-1 justify-around px-2 xl:px-8 py-3 uppercase text-sm min-w-[1150px]'>
+            <div className='flex gap-x-1 justify-around px-2 xl:px-8 py-3 uppercase text-sm min-w-[700px]'>
                 <div className='flex w-[20%] items-center gap-x-1 justify-center'>
                     <p className='mt-0.5'>Time</p>
                     <TooltipContainer>
@@ -169,7 +169,7 @@ const Graffitis = () => {
                 </div>
             </div>
 
-            <div className='flex flex-col justify-center gap-y-4 min-w-[1150px]'>
+            <div className='flex flex-col justify-center gap-y-4 min-w-[700px]'>
                 {blocks &&
                     blocks.map((block: Block, idx: number) => (
                         <div
@@ -185,6 +185,7 @@ const Graffitis = () => {
                                 <p>{new Date(firstBlock + block.f_slot * 12000).toLocaleDateString('ja-JP')}</p>
                                 <p>{new Date(firstBlock + block.f_slot * 12000).toLocaleTimeString('ja-JP')}</p>
                             </div>
+
                             <div className='w-[20%]'>
                                 <Link
                                     href={{
