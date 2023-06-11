@@ -18,12 +18,13 @@ type Props = {
     rounded?: boolean;
     isFixedWidth?: boolean;
 };
+
 const CardContent = ({ content, bg, color, rounded, isFixedWidth }: Props) => {
     return (
         <span
             className={`block uppercase border-2 px-5 ${
                 rounded ? 'rounded-2xl' : 'rounded-lg'
-            } font-bold leading-5 py-0.5 sm:py-1 ${isFixedWidth ? 'w-36 sm:w-44' : ''}`}
+            } font-bold leading-5 py-0.5 sm:py-1 ${isFixedWidth ? 'w-40 sm:w-48' : ''}`}
             style={{ background: bg, borderColor: color, color: color }}
         >
             {content}
@@ -31,7 +32,7 @@ const CardContent = ({ content, bg, color, rounded, isFixedWidth }: Props) => {
     );
 };
 
-const Entity = () => {
+const EntityComponent = () => {
     // Next router
     const router = useRouter();
     const {
@@ -39,7 +40,7 @@ const Entity = () => {
     } = router;
 
     // Theme Mode Context
-    const { themeMode } = useContext(ThemeModeContext) || {};
+    const { themeMode } = useContext(ThemeModeContext) ?? {};
 
     // States
     const [entity, setEntity] = useState<Entity | null>(null);
@@ -92,7 +93,7 @@ const Entity = () => {
 
                             <div className='flex flex-col sm:flex-row gap-x-5 gap-y-1'>
                                 <p className='w-44 sm:w-60'>Blocks:</p>
-                                <div className='flex justify-center gap-x-4 '>
+                                <div className='flex flex-col sm:flex-row sm:justify-center gap-x-4 gap-y-2'>
                                     <CardContent
                                         content={`Proposed: ${
                                             entity && entity.proposed_blocks.f_proposed?.toLocaleString()
@@ -155,4 +156,4 @@ const Entity = () => {
     );
 };
 
-export default Entity;
+export default EntityComponent;

@@ -19,6 +19,7 @@ import BlockImage from '../../components/ui/BlockImage';
 
 // Types
 import { Epoch } from '../../types';
+import ProgressSmoothBar from '../../components/ui/ProgressSmoothBar';
 
 // Constants
 const firstBlock: number = Number(process.env.NEXT_PUBLIC_NETWORK_GENESIS); // 1606824023000
@@ -332,6 +333,7 @@ const EpochComponent = () => {
                         <ProgressSmoothBarEpoch bg={bg} color={color} percent={1 - value / attestations} />
                     </div>
                 </div>
+
                 <div className='flex flex-col md:flex-row gap-x-10 gap-y-2'>
                     <div className='md:w-[275px]'>
                         <CardContent content={`Missing ${title}: ${value.toLocaleString()}`} bg={bg} color={color} />
@@ -354,13 +356,13 @@ const EpochComponent = () => {
                 }}
             >
                 <div className='flex flex-row items-center gap-x-5'>
-                    <p className='w-60'>DateTime (Local):</p>
+                    <p className='w-40 sm:w-60'>DateTime (Local):</p>
                     <p className='leading-3'>
                         {new Date(firstBlock + Number(epoch?.f_slot) * 12000).toLocaleString('ja-JP')}
                     </p>
                 </div>
                 <div className='flex flex-col sm:flex-row gap-x-5'>
-                    <p className='w-60'>Blocks (out of 32):</p>
+                    <p className='w-40 sm:w-60'>Blocks (out of 32):</p>
                     <div className='flex justify-center gap-x-4 '>
                         <CardContent content={`Proposed: ${epoch?.proposed_blocks}`} bg='#00720B' color='#83E18C' />
                         <CardContent
@@ -398,14 +400,16 @@ const EpochComponent = () => {
                 <div className='flex flex-col'>
                     <p>Voting Participation:</p>
                     <div className='flex flex-col md:flex-row gap-x-10 gap-y-2 items-center md:justify-end md:w-full mb-4 mt-2'>
-                        <div className='w-64 text-center'>
-                            <ProgressSmoothBarEpoch
-                                bg='#0016D8'
-                                color='#BDC4FF'
+                        <div>
+                            <ProgressSmoothBar
+                                title=''
                                 percent={
                                     Number(epoch?.f_att_effective_balance_eth) /
                                     Number(epoch?.f_total_effective_balance_eth)
                                 }
+                                bg='#0016D8'
+                                color='#BDC4FF'
+                                width={170}
                             />
                         </div>
                         <div className='flex flex-col gap-y-2 w-[270px] md:w-fit'>
@@ -424,7 +428,7 @@ const EpochComponent = () => {
                         </div>
                     </div>
                     <div className='flex flex-row items-center gap-x-5'>
-                        <p className='w-60'>Withdrawals:</p>
+                        <p className='w-40 sm:w-60'>Withdrawals:</p>
                         <p className='leading-3'>{((epoch?.withdrawals ?? 0) / 10 ** 9).toLocaleString()} ETH</p>
                     </div>
                 </div>

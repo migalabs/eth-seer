@@ -5,7 +5,7 @@ import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
 const ThemeModeSwitch = () => {
     // Theme Mode Context
-    const { themeMode, switchMode } = useContext(ThemeModeContext) || {};
+    const { themeMode, switchMode } = useContext(ThemeModeContext) ?? {};
 
     const handleChange = () => {
         switchMode?.();
@@ -19,10 +19,10 @@ const ThemeModeSwitch = () => {
                     className='theme__toggle'
                     type='checkbox'
                     name='theme'
-                    checked={themeMode?.darkMode || false}
+                    checked={themeMode?.darkMode ?? false}
                     onChange={handleChange}
                 />
-                {/* <span className='theme__fill'></span> */}
+
                 <span className='theme__icon'>
                     <span className='theme__icon-part'></span>
                     <span className='theme__icon-part'></span>

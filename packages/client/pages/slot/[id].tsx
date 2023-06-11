@@ -240,7 +240,7 @@ const Slot = () => {
 
     const getInformationView = () => {
         return (
-            <div className='flex flex-col px-8 max-w-[1200px] mx-auto'>
+            <div className='flex flex-col px-8 max-w-[1000px] mx-auto'>
                 <div className='flex flex-col sm:flex-row gap-4'>
                     <TabHeader
                         header='Consensus Layer'
@@ -263,108 +263,113 @@ const Slot = () => {
     const getConsensusLayerView = () => {
         return (
             <div
-                className='flex flex-col mt-4 mb-10 gap-y-5 rounded-[22px] p-4 md:p-8'
+                className='flex justify-between mb-10 rounded-[22px] mt-4 p-4 md:p-8'
                 style={{
                     backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
                     boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow3)' : 'var(--boxShadowBlue1)',
                 }}
             >
-                <Card
-                    title='Epoch'
-                    content={block?.f_epoch.toLocaleString()}
-                    link={`${assetPrefix}/epoch/${block?.f_epoch}`}
-                    icon='link'
-                    iconSize={25}
-                    target='_self'
-                />
-
-                <Card title='Slot' content={block?.f_slot.toLocaleString()} />
-
-                {existsBlock && (
+                <div className='flex flex-col gap-y-5'>
                     <Card
-                        title='Entity'
-                        content={block?.f_pool_name?.toLocaleString() ?? 'others'}
+                        title='Epoch'
+                        content={block?.f_epoch.toLocaleString()}
+                        link={`${assetPrefix}/epoch/${block?.f_epoch}`}
                         icon='link'
                         iconSize={25}
-                        link={`${assetPrefix}/entity/${block?.f_pool_name?.toLocaleString() ?? 'others'}`}
                         target='_self'
                     />
-                )}
 
-                {existsBlock && (
-                    <Card
-                        title='Status'
-                        content={
-                            block?.f_proposed ? (
-                                <span className='uppercase bg-[#83E18C] border-2 border-[#00720B] text-[#00720B] px-5 py-1.5 rounded-2xl font-bold'>
-                                    Proposed
-                                </span>
-                            ) : (
-                                <span className='uppercase bg-[#FF9090] border-2 border-[#980E0E] text-[#980E0E] px-5 py-1.5 rounded-2xl font-bold'>
-                                    Missed
-                                </span>
-                            )
-                        }
-                    />
-                )}
+                    <Card title='Slot' content={block?.f_slot.toLocaleString()} />
 
-                <Card title='Date Time (Local)' content={getTimeBlock()} />
+                    {existsBlock && (
+                        <Card
+                            title='Entity'
+                            content={block?.f_pool_name?.toLocaleString() ?? 'others'}
+                            icon='link'
+                            iconSize={25}
+                            link={`${assetPrefix}/entity/${block?.f_pool_name?.toLocaleString() ?? 'others'}`}
+                            target='_self'
+                        />
+                    )}
 
-                {existsBlock && (
-                    <Card
-                        title='Proposer Index'
-                        content={block?.f_proposer_index?.toLocaleString()}
-                        icon='link'
-                        iconSize={25}
-                        link={`${assetPrefix}/validator/${block?.f_proposer_index}`}
-                        target='_self'
-                    />
-                )}
+                    {existsBlock && (
+                        <Card
+                            title='Status'
+                            content={
+                                block?.f_proposed ? (
+                                    <span className='uppercase bg-[#83E18C] border-2 border-[#00720B] text-[#00720B] px-5 py-1.5 rounded-2xl font-bold'>
+                                        Proposed
+                                    </span>
+                                ) : (
+                                    <span className='uppercase bg-[#FF9090] border-2 border-[#980E0E] text-[#980E0E] px-5 py-1.5 rounded-2xl font-bold'>
+                                        Missed
+                                    </span>
+                                )
+                            }
+                        />
+                    )}
 
-                {existsBlock && <Card title='Graffiti' content={block?.f_proposed ? block?.f_graffiti : '---'} />}
+                    <Card title='Date Time (Local)' content={getTimeBlock()} />
 
-                {existsBlock && (
-                    <Card
-                        title='Sync bits'
-                        content={block?.f_proposed ? block?.f_sync_bits?.toLocaleString() : '---'}
-                    />
-                )}
+                    {existsBlock && (
+                        <Card
+                            title='Proposer Index'
+                            content={block?.f_proposer_index?.toLocaleString()}
+                            icon='link'
+                            iconSize={25}
+                            link={`${assetPrefix}/validator/${block?.f_proposer_index}`}
+                            target='_self'
+                        />
+                    )}
 
-                {existsBlock && (
-                    <Card
-                        title='Attestations'
-                        content={block?.f_proposed ? block?.f_attestations?.toLocaleString() : '---'}
-                    />
-                )}
+                    {existsBlock && <Card title='Graffiti' content={block?.f_proposed ? block?.f_graffiti : '---'} />}
 
-                {existsBlock && (
-                    <Card
-                        title='Voluntary exits'
-                        content={block?.f_proposed ? block?.f_voluntary_exits?.toLocaleString() : '---'}
-                    />
-                )}
+                    {existsBlock && (
+                        <Card
+                            title='Sync bits'
+                            content={block?.f_proposed ? block?.f_sync_bits?.toLocaleString() : '---'}
+                        />
+                    )}
 
-                {existsBlock && (
-                    <Card
-                        title='Proposer slashings'
-                        content={block?.f_proposed ? block?.f_proposer_slashings?.toLocaleString() : '---'}
-                    />
-                )}
+                    {existsBlock && (
+                        <Card
+                            title='Attestations'
+                            content={block?.f_proposed ? block?.f_attestations?.toLocaleString() : '---'}
+                        />
+                    )}
 
-                {existsBlock && (
-                    <Card
-                        title='Attestation Slashing'
-                        content={block?.f_proposed ? block?.f_att_slashings?.toLocaleString() : '---'}
-                    />
-                )}
+                    {existsBlock && (
+                        <Card
+                            title='Voluntary exits'
+                            content={block?.f_proposed ? block?.f_voluntary_exits?.toLocaleString() : '---'}
+                        />
+                    )}
 
-                {existsBlock && (
-                    <Card title='Deposits' content={block?.f_proposed ? block?.f_deposits?.toLocaleString() : '---'} />
-                )}
+                    {existsBlock && (
+                        <Card
+                            title='Proposer slashings'
+                            content={block?.f_proposed ? block?.f_proposer_slashings?.toLocaleString() : '---'}
+                        />
+                    )}
 
-                {/* <div className='hidden xl:block'>
-                    <BlockGif poolName={block?.f_pool_name ?? 'others'} width={400} height={400} />
-                </div> */}
+                    {existsBlock && (
+                        <Card
+                            title='Attestation Slashing'
+                            content={block?.f_proposed ? block?.f_att_slashings?.toLocaleString() : '---'}
+                        />
+                    )}
+
+                    {existsBlock && (
+                        <Card
+                            title='Deposits'
+                            content={block?.f_proposed ? block?.f_deposits?.toLocaleString() : '---'}
+                        />
+                    )}
+                </div>
+
+                <div className='hidden md:block flex-shrink'>
+                    <BlockGif poolName={block?.f_pool_name ?? 'others'} width={200} height={200} />
+                </div>
             </div>
         );
     };
