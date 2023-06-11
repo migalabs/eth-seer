@@ -11,11 +11,11 @@ import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
 // Components
 import Layout from '../../components/layouts/Layout';
-import ValidatorAnimation from '../../components/layouts/ValidatorAnimation';
 import LinkIcon from '../../components/ui/LinkIcon';
 import BlockImage from '../../components/ui/BlockImage';
 import BlockGif from '../../components/ui/BlockGif';
 import TabHeader from '../../components/ui/TabHeader';
+import Animation from '../../components/layouts/Animation';
 
 // Types
 import { Validator } from '../../types';
@@ -652,7 +652,7 @@ const ValidatorComponent = () => {
                     {getSelectedTab()}
                 </div>
             ) : (
-                animation && <ValidatorAnimation />
+                animation && <Animation text={`Validator doesn't exists yet`} />
             )}
         </Layout>
     );
