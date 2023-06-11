@@ -59,6 +59,8 @@ const SearchEngineBlack = () => {
 
     // Refs
     const popUpRef = useRef<HTMLDivElement>(null);
+    
+    const assetPrefix = process.env.NEXT_PUBLIC_ASSET_PREFIX || '';
 
     // Hook Outside Click
     useOutsideClick(popUpRef, () => setShowResults(false));
@@ -126,7 +128,7 @@ const SearchEngineBlack = () => {
             // It can be an entity
             const expression = new RegExp(searchContent, 'i');
 
-            if (process.env.NEXT_PUBLIC_ASSET_PREFIX?.toUpperCase() === 'GOERLI') {
+            if (assetPrefix === '/goerli') {
                 items.push(
                     ...['OTHERS']
                         .filter(pool => pool.search(expression) !== -1)

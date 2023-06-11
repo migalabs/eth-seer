@@ -70,7 +70,8 @@ const Graffitis = () => {
             setBlocks([...blocks, ...response.data.blocks]);
             if (response.data.blocks.length == 0) {
                 setAnimation(true);
-            } else if (response.data.blocks.length < limit) {
+            } 
+            if (response.data.blocks.length < limit) {
                 setDisableViewMore(true);
             } else {
                 setDisableViewMore(false);
@@ -160,10 +161,8 @@ const Graffitis = () => {
                             width={24}
                             height={24}
                         />
-                        <TooltipContentContainerHeaders>
-                            <span>Correctly Attested Flag Count</span>
-                            <span>vs</span>
-                            <span>Expected Attesting Flag Count</span>
+                        <TooltipContentContainerHeaders epoch>
+                            <span>Graffiti text</span>
                         </TooltipContentContainerHeaders>
                     </TooltipContainer>
                 </div>
@@ -319,7 +318,7 @@ const Graffitis = () => {
                                         height={24}
                                     />
                                     <TooltipContentContainerHeaders epoch>
-                                        <span>Graffiti</span>
+                                        <span>Graffiti text</span>
                                     </TooltipContentContainerHeaders>
                                 </TooltipContainer>
                             </div>
