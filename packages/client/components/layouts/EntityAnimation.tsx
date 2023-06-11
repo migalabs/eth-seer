@@ -3,23 +3,11 @@ import React, { useContext } from 'react';
 // Contexts
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
-type Props = {
-    notEpoch: boolean;
-};
-
-const EpochAnimation = ({ notEpoch }: Props) => {
+const EntityAnimation = () => {
     const assetPrefix = process.env.NEXT_PUBLIC_ASSET_PREFIX ?? '';
 
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
-
-    const getText = () => {
-        if (notEpoch) {
-            return 'Epoch not saved yet';
-        } else {
-            return "We're not there yet";
-        }
-    };
 
     return (
         <div className='animation-container'>
@@ -43,10 +31,10 @@ const EpochAnimation = ({ notEpoch }: Props) => {
                     alt='Image 7'
                     className='panda-tumbleweed'
                 />
-                <p className={`panda-text ${themeMode?.darkMode ? 'text-white' : 'text-black'}`}>{getText()}</p>
+                <p className={`panda-text ${themeMode?.darkMode ? 'text-white' : 'text-black'}`}>We're not there yet</p>
             </div>
         </div>
     );
 };
 
-export default EpochAnimation;
+export default EntityAnimation;

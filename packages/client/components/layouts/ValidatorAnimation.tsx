@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
-type Props = {
-    darkMode: boolean;
-};
+// Contexts
+import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
-const ValidatorAnimation = ({ darkMode }: Props) => {
-    const assetPrefix = process.env.NEXT_PUBLIC_ASSET_PREFIX || '';
+const ValidatorAnimation = () => {
+    const assetPrefix = process.env.NEXT_PUBLIC_ASSET_PREFIX ?? '';
+
+    // Theme Mode Context
+    const { themeMode } = useContext(ThemeModeContext) ?? {};
 
     return (
         <div className='animation-container'>
@@ -29,15 +31,9 @@ const ValidatorAnimation = ({ darkMode }: Props) => {
                     alt='Image 7'
                     className='panda-tumbleweed'
                 />
-                <img
-                    src={
-                        darkMode
-                            ? `${assetPrefix}/static/images/epoch_animation/text3-white.png`
-                            : `${assetPrefix}/static/images/epoch_animation/text3.png`
-                    }
-                    alt='Image 8'
-                    className='panda-text'
-                />
+                <p className={`panda-text ${themeMode?.darkMode ? 'text-white' : 'text-black'}`}>
+                    Validator doesn't exists yet
+                </p>
             </div>
         </div>
     );

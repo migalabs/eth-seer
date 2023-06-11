@@ -12,6 +12,7 @@ export type Epoch = {
     max_reward_average?: string;
     proposed_blocks: Array<number>;
     f_slots?: Array<Slot>;
+    withdrawals?: number;
 };
 
 export type Validator = {
@@ -26,7 +27,10 @@ export type Validator = {
     count_missing_target: number;
     count_missing_head: number;
     count_attestations: number;
+    proposed_blocks_performance: number;
+    missed_blocks_performance: number;
     proposed_blocks: Array<Slot>;
+    withdrawals: Array<Withdrawal>;
 };
 
 export type Block = {
@@ -49,6 +53,7 @@ export type Block = {
     f_sync_bits?: number;
     f_timestamp: number;
     f_voluntary_exits?: number;
+    withdrawals: Array<Withdrawal>;
 };
 
 export type Slot = {
@@ -56,6 +61,15 @@ export type Slot = {
     f_pool_name: string;
     f_val_idx: number;
     f_proposed: boolean;
+    withdrawals: number;
+};
+
+export type Withdrawal = {
+    f_epoch?: number;
+    f_slot?: number;
+    f_val_idx: number;
+    f_amount: number;
+    f_address?: string;
 };
 
 export type Proposed = {
