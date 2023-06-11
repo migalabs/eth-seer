@@ -604,8 +604,8 @@ const Statitstics = () => {
                                 </TooltipContainer>
                             </div>
                             <div>
-                                <p>{new Date(firstBlock + epoch.f_slot * 12000).toLocaleDateString('ja-JP')}</p>
-                                <p>{new Date(firstBlock + epoch.f_slot * 12000).toLocaleTimeString('ja-JP')}</p>
+                                <p>{new Date(firstBlock + epoch.f_epoch * 32 * 12000).toLocaleDateString('ja-JP')}</p>
+                                <p>{new Date(firstBlock + epoch.f_epoch * 32 * 12000).toLocaleTimeString('ja-JP')}</p>
                             </div>
                         </div>
 

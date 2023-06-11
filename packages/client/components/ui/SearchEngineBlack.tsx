@@ -106,7 +106,23 @@ const SearchEngineBlack = () => {
                     link: `/validator/${searchContent}`,
                 });
             }
+
+            if (searchContent.length >= 3) {
+                // It can be a graffiti
+                items.push({
+                    label: `Graffiti: ${searchContent}`,
+                    link: `/slot/graffiti/${searchContent}`,
+                });
+            }
         } else {
+            if (searchContent.length >= 3) {
+                // It can be a graffiti
+                items.push({
+                    label: `Graffiti: ${searchContent}`,
+                    link: `/slot/graffiti/${searchContent}`,
+                });
+            }
+
             // It can be an entity
             const expression = new RegExp(searchContent, 'i');
 
