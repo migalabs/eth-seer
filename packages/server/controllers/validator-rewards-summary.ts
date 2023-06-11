@@ -148,7 +148,7 @@ export const getBlock = async (req: Request, res: Response) => {
 
         const { id } = req.params;
 
-        const [ block, proposerDuties ] = 
+        const [ block, proposerDuties, withdrawals ] = 
             await Promise.all([
                 pgClient.query(`
                     SELECT t_block_metrics.*, t_eth2_pubkeys.f_pool_name
@@ -160,7 +160,12 @@ export const getBlock = async (req: Request, res: Response) => {
                     SELECT f_proposed
                     FROM t_proposer_duties
                     WHERE f_proposer_slot = '${id}'
-                `)
+                `),
+                pgClient.query(`
+                    SELECT f_val_idx, f_address, f_amount
+                    FROM t_withdrawals
+                    WHERE f_slot = '${id}'
+                `),                
             ]);
 
         if (proposerDuties.rows.length > 0 && block.rows[0] != undefined) {
@@ -168,7 +173,10 @@ export const getBlock = async (req: Request, res: Response) => {
         }
 
         res.json({
-            block: block.rows[0],
+            block: {
+                ...block.rows[0],
+                withdrawals: withdrawals.rows,
+            },
         });
 
     } catch (error) {
@@ -185,7 +193,7 @@ export const getEpoch = async (req: Request, res: Response) => {
 
         const { id } = req.params;
 
-        const [ epochStats, blocksProposed, slotsEpoch ] = 
+        const [ epochStats, blocksProposed, slotsEpoch, withdrawals ] = 
             await Promise.all([
                 pgClient.query(`
                     SELECT f_epoch, f_slot, f_num_att_vals, f_num_vals, 
@@ -204,13 +212,37 @@ export const getEpoch = async (req: Request, res: Response) => {
                     FROM t_proposer_duties
                     LEFT OUTER JOIN t_eth2_pubkeys ON t_proposer_duties.f_val_idx = t_eth2_pubkeys.f_val_idx
                     WHERE f_proposer_slot/32 = '${id}'
+                    ORDER BY f_proposer_slot DESC
+                `),
+                pgClient.query(`
+                    SELECT f_slot, f_amount
+                    FROM t_withdrawals
+                    WHERE f_slot/32 = '${id}'
                 `)
             ]);
 
-            const epoch = {...epochStats.rows[0],...blocksProposed.rows[0], f_slots: slotsEpoch.rows}
+        const f_slots = slotsEpoch.rows.map((slot: any) => {
+            return {
+                ...slot,
+                withdrawals: 
+                    withdrawals.rows
+                        .filter((withdrawal: any) => withdrawal.f_slot === slot.f_proposer_slot)
+                        .reduce((acc: number, withdrawal: any) => acc + Number(withdrawal.f_amount), 0),
+            };
+        });
+
+        let sumWithdrawals = 0;
+        withdrawals.rows.forEach((withdrawal: any) => {
+            sumWithdrawals += Number(withdrawal.f_amount);
+        });
 
         res.json({
-            epoch
+            epoch: {
+                ...epochStats.rows[0],
+                ...blocksProposed.rows[0], 
+                f_slots,
+                withdrawals: sumWithdrawals
+            }
         });
 
     } catch (error) {
@@ -227,7 +259,7 @@ export const getValidator = async (req: Request, res: Response) => {
 
         const { id } = req.params;
 
-        const [ validatorStats, blocksProposed, validatorPerformance ] = 
+        const [ validatorStats, blocksProposed, validatorPerformance, withdrawals ] = 
             await Promise.all([
                 pgClient.query(`
                 SELECT 
@@ -252,19 +284,38 @@ export const getValidator = async (req: Request, res: Response) => {
                     WHERE t_proposer_duties.f_val_idx = '${id}'
                 `),
                 pgClient.query(`
-                    SELECT SUM(f_reward) as aggregated_rewards, 
+                    SELECT
+                    SUM(f_reward) as aggregated_rewards, 
                     SUM(f_max_reward) as aggregated_max_rewards,
                     COUNT(CASE WHEN f_in_sync_committee = TRUE THEN 1 ELSE null END) as count_sync_committee,
                     COUNT(CASE WHEN f_missing_source = TRUE THEN 1 ELSE null END) as count_missing_source,
                     COUNT(CASE WHEN f_missing_target = TRUE THEN 1 ELSE null END) as count_missing_target,
                     COUNT(CASE WHEN f_missing_head = TRUE THEN 1 ELSE null END) as count_missing_head,
-                    COUNT(*) as count_attestations
+                    COUNT(*) as count_attestations,
+                    (
+                    SELECT COUNT(CASE WHEN t_proposer_duties.f_proposed = TRUE THEN 1 ELSE null END)
+                    FROM t_proposer_duties
+                    WHERE t_proposer_duties.f_val_idx = '${id}'
+                        AND t_proposer_duties.f_proposer_slot/32 BETWEEN MIN(t_validator_rewards_summary.f_epoch) AND MAX(t_validator_rewards_summary.f_epoch)
+                    ) as proposed_blocks_performance,
+                    (
+                    SELECT COUNT(CASE WHEN t_proposer_duties.f_proposed = FALSE THEN 1 ELSE null END)
+                    FROM t_proposer_duties
+                    WHERE t_proposer_duties.f_val_idx = '${id}'
+                        AND t_proposer_duties.f_proposer_slot/32 BETWEEN MIN(t_validator_rewards_summary.f_epoch) AND MAX(t_validator_rewards_summary.f_epoch)
+                    ) as missed_blocks_performance
                     FROM t_validator_rewards_summary
                     WHERE f_val_idx = '${id}'
+                `),
+                pgClient.query(`
+                    SELECT f_val_idx, f_slot/32 as f_epoch, f_slot, f_address, f_amount
+                    FROM t_withdrawals
+                    WHERE f_val_idx = '${id}'
+                    ORDER BY f_slot DESC
                 `)
             ]);
 
-            const validator = {...validatorStats.rows[0], proposed_blocks: blocksProposed.rows, ...validatorPerformance.rows[0]}
+            const validator = {...validatorStats.rows[0], proposed_blocks: blocksProposed.rows, ...validatorPerformance.rows[0], withdrawals: withdrawals.rows}
 
         res.json({
             validator
@@ -284,7 +335,7 @@ export const getEntity = async (req: Request, res: Response) => {
 
         const { name } = req.params;
 
-        const [ entityStats, blocksProposed ] = 
+        const [ entityStats, blocksProposed, existsEntity ] = 
             await Promise.all([
                 pgClient.query(`
                 SELECT sum(f_balance_eth) as aggregate_balance, 
@@ -303,20 +354,32 @@ export const getEntity = async (req: Request, res: Response) => {
                     SELECT 
                         COUNT(CASE  f_proposed WHEN true THEN 1 ELSE null END) AS f_proposed,
                         COUNT(CASE  f_proposed WHEN false THEN 1 ELSE null END) AS f_missed
-                    FROM 
+                    FROM
                         t_proposer_duties
                     LEFT OUTER JOIN 
                         t_eth2_pubkeys ON t_proposer_duties.f_val_idx = t_eth2_pubkeys.f_val_idx
                     WHERE 
                         f_pool_name = '${name}'
+                `),
+                pgClient.query(`
+                    SELECT f_pool_name
+                    FROM t_eth2_pubkeys
+                    WHERE f_pool_name = '${name}'
                 `)
             ]);
 
-            const entity = {...entityStats.rows[0] , proposed_blocks: blocksProposed.rows[0]}
-
-        res.json({
-            entity
-        });
+        if (existsEntity.rows.length === 0) {
+            res.json({
+                entity: null
+            });
+        } else {
+            res.json({
+                entity: {
+                    ...entityStats.rows[0],
+                    proposed_blocks: blocksProposed.rows[0]
+                }
+            });
+        }
 
     } catch (error) {
         console.log(error);
@@ -375,12 +438,20 @@ export const listenEpochNotification = async (req: Request, res: Response) => {
 
         pgClient.query('LISTEN new_epoch_finalized');
 
+        let isProcessing = false;
+
         pgClient.on('notification', async (msg) => {
             if (msg.channel === 'new_epoch_finalized') {
+                if(isProcessing){
+                    return;
+                }
+                isProcessing = true;
                 res.write('event: new_epoch\n');
                 res.write(`data: ${msg.payload}`);
-                res.write('\n\n');
-                res.end();
+                res.write('\n\n', () => {
+                    res.end();
+                    isProcessing = false;
+                });
             }
         });
 

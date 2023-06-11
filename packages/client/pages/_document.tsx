@@ -20,6 +20,7 @@ export default function Document() {
                         --yellow3: #edbf4a;
                         --yellow4: #f0c83a;
                         --yellow5: #9a7b2d;
+                        --yellow6: #fff0a1b3;
                         --orange1: #ec903c;
                         --orange2: #ffcea1;
                         --orange3: #f18d30;
@@ -34,6 +35,7 @@ export default function Document() {
                         --blue8: #0080a94d;
                         --blue9: #2b6d83;
                         --blue10: #209198;
+                        --blue11: #c6ecf8b3;
                         --green1: #a7eed466;
                         --green2: #a7eed4;
                         --green3: #29c68e;
@@ -108,7 +110,6 @@ export default function Document() {
                     content="Ethereum's network latest epochs and blocks live data and statistics are shown on Ethseer"
                 />
                 <meta property='og:image' content='http://ethseer.com/static/images/ethseer_metadata.png' />
-                <meta httpEquiv='Content-Security-Policy' content='upgrade-insecure-requests' />
                 <link href={`${assetPrefix}/static/css/theme-mode-switch.css`} rel='stylesheet' />
             </Head>
 
