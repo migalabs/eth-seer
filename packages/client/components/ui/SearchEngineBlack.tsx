@@ -59,7 +59,7 @@ const SearchEngineBlack = () => {
 
     // Refs
     const popUpRef = useRef<HTMLDivElement>(null);
-    
+
     const assetPrefix = process.env.NEXT_PUBLIC_ASSET_PREFIX || '';
 
     // Hook Outside Click
@@ -141,7 +141,6 @@ const SearchEngineBlack = () => {
                 items.push(
                     ...POOLS_EXTENDED.sort((a, b) => (a > b ? 1 : -1))
                         .filter(pool => pool.search(expression) !== -1)
-                        .slice(0, 10)
                         .map(pool => ({
                             label: `Entity: ${pool}`,
                             link: `/entity/${pool.toLowerCase()}`,
@@ -209,34 +208,40 @@ const SearchEngineBlack = () => {
                 placeholder='Search'
                 value={search}
                 onChange={handleSearch}
-                darkMode={themeMode?.darkMode || false}
+                darkMode={themeMode?.darkMode ?? false}
                 onKeyDown={handleKeyDown}
             />
 
             {searchResults.length > 0 && showResults && (
                 <div
-                    className='absolute flex flex-col top-full left-0 gap-y-3 w-full border-2 rounded-xl p-5 bg-[#736a73] text-xs z-10'
+                    className='absolute top-full left-0 border-2 rounded-xl p-1 bg-[#736a73] z-10 w-full'
                     style={{
                         borderColor: themeMode?.darkMode ? 'var(--yellow4)' : 'var(--blue2)',
                         color: themeMode?.darkMode ? 'var(--yellow4)' : 'var(--blue2)',
                     }}
                 >
-                    {searchResults.map((item, index) => (
-                        <Fragment key={index}>
-                            <Link href={item.link} passHref>
-                                <span>{item.label}</span>
-                            </Link>
+                    <div
+                        className={`flex flex-col gap-y-3 w-full px-4 py-4 text-xs max-h-[400px] overflow-y-scroll scrollbar-thin scrollbar-thumb-[${
+                            themeMode?.darkMode ? '#f0c83a' : '#6cc4e0'
+                        }] scrollbar-track-[#736a73] scrollbar-thumb-rounded`}
+                    >
+                        {searchResults.map((item, index) => (
+                            <Fragment key={index}>
+                                <Link href={item.link} passHref>
+                                    <span>{item.label}</span>
+                                </Link>
 
-                            {index !== searchResults.length - 1 && (
-                                <div
-                                    className='border-b'
-                                    style={{
-                                        borderColor: themeMode?.darkMode ? 'var(--yellow4)' : 'var(--blue2)',
-                                    }}
-                                ></div>
-                            )}
-                        </Fragment>
-                    ))}
+                                {index !== searchResults.length - 1 && (
+                                    <div
+                                        className='border-b'
+                                        style={{
+                                            borderColor: themeMode?.darkMode ? 'var(--yellow4)' : 'var(--blue2)',
+                                        }}
+                                    ></div>
+                                )}
+                            </Fragment>
+                        ))}
+                    </div>
                 </div>
             )}
         </div>
