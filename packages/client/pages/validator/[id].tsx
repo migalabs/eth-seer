@@ -506,7 +506,7 @@ const ValidatorComponent = () => {
                                         title=''
                                         bg='#1194BD'
                                         color='#BDFFEB'
-                                        percent={(validator.aggregated_rewards / validator.aggregated_max_rewards) || 0}
+                                        percent={validator.aggregated_rewards / validator.aggregated_max_rewards || 0}
                                         tooltipColor='blue'
                                         tooltipContent={
                                             <>
