@@ -221,9 +221,9 @@ const SearchEngineBlack = () => {
                     }}
                 >
                     <div
-                        className={`flex flex-col gap-y-3 w-full px-4 py-4 text-xs max-h-[400px] overflow-y-scroll scrollbar-thin scrollbar-thumb-[${
-                            themeMode?.darkMode ? '#f0c83a' : '#6cc4e0'
-                        }] scrollbar-track-[#736a73] scrollbar-thumb-rounded`}
+                        className={`flex flex-col gap-y-3 w-full px-4 py-4 text-xs max-h-[400px] overflow-y-scroll scrollbar-thin ${
+                            themeMode?.darkMode ? 'scrollbar-thumb-[#f0c83a]' : 'scrollbar-thumb-[#6cc4e0]'
+                        } scrollbar-track-[#736a73] scrollbar-thumb-rounded`}
                     >
                         {searchResults.map((item, index) => (
                             <Fragment key={index}>
