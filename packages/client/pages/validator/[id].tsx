@@ -481,7 +481,10 @@ const ValidatorComponent = () => {
 
                     <div className='flex flex-col gap-y-4'>
                         <div className='flex flex-row'>
-                            <p>Validator performance (Data from last {convertToHours(validator?.count_attestations ?? 0)} hour):</p>
+                            <p>
+                                Validator performance (Data from last{' '}
+                                {convertToHours(validator?.count_attestations ?? 0)} hour):
+                            </p>
                         </div>
 
                         <div className='flex flex-col md:flex-row gap-x-4 ml-4 md:ml-10'>
@@ -492,7 +495,7 @@ const ValidatorComponent = () => {
                                         title=''
                                         bg='#1194BD'
                                         color='#BDFFEB'
-                                        percent={(validator.aggregated_rewards / validator.aggregated_max_rewards) || 0}
+                                        percent={validator.aggregated_rewards / validator.aggregated_max_rewards || 0}
                                         tooltipColor='blue'
                                         tooltipContent={
                                             <>

@@ -70,7 +70,7 @@ const Graffitis = () => {
             setBlocks([...blocks, ...response.data.blocks]);
             if (response.data.blocks.length == 0) {
                 setAnimation(true);
-            } 
+            }
             if (response.data.blocks.length < limit) {
                 setDisableViewMore(true);
             } else {

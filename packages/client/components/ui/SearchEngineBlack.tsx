@@ -59,7 +59,7 @@ const SearchEngineBlack = () => {
 
     // Refs
     const popUpRef = useRef<HTMLDivElement>(null);
-    
+
     const assetPrefix = process.env.NEXT_PUBLIC_ASSET_PREFIX || '';
 
     // Hook Outside Click
