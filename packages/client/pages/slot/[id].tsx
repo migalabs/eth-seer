@@ -253,12 +253,20 @@ const Slot = () => {
                         isSelected={tabPageIndex === 0}
                         onClick={() => setTabPageIndex(0)}
                     />
-                    <TabHeader
-                        header='Execution Layer'
-                        isSelected={tabPageIndex === 1}
-                        onClick={() => setTabPageIndex(1)}
-                    />
-                    <TabHeader header='Withdrawls' isSelected={tabPageIndex === 2} onClick={() => setTabPageIndex(2)} />
+                    {existsBlock && (
+                        <>
+                            <TabHeader
+                                header='Execution Layer'
+                                isSelected={tabPageIndex === 1}
+                                onClick={() => setTabPageIndex(1)}
+                            />
+                            <TabHeader
+                                header='Withdrawls'
+                                isSelected={tabPageIndex === 2}
+                                onClick={() => setTabPageIndex(2)}
+                            />
+                        </>
+                    )}
                 </div>
 
                 {getSelectedTab()}
