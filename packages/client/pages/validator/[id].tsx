@@ -494,8 +494,8 @@ const ValidatorComponent = () => {
                                 {validator && (
                                     <ProgressSmoothBar
                                         title=''
-                                        bg='#1194BD'
-                                        color='#BDFFEB'
+                                        color='#1194BD'
+                                        backgroundColor='#BDFFEB'
                                         percent={validator.aggregated_rewards / validator.aggregated_max_rewards || 0}
                                         tooltipColor='blue'
                                         tooltipContent={
@@ -504,6 +504,7 @@ const ValidatorComponent = () => {
                                                 <span>Max. Rewards: {validator?.aggregated_max_rewards}</span>
                                             </>
                                         }
+                                        widthTooltip={220}
                                     />
                                 )}
                             </div>
@@ -521,8 +522,8 @@ const ValidatorComponent = () => {
                                 <div className='flex flex-col md:flex-row items-center gap-x-4 gap-y-2 text-[9px]'>
                                     <ProgressSmoothBar
                                         title='Target'
-                                        bg='#E86506'
-                                        color='#FFC163'
+                                        color='#E86506'
+                                        backgroundColor='#FFC163'
                                         percent={1 - validator.count_missing_target / validator.count_attestations}
                                         width={150}
                                         tooltipColor='orange'
@@ -536,12 +537,13 @@ const ValidatorComponent = () => {
                                                 </span>
                                             </>
                                         }
+                                        widthTooltip={220}
                                     />
 
                                     <ProgressSmoothBar
                                         title='Source'
-                                        bg='#14946e'
-                                        color='#BDFFEB'
+                                        color='#14946e'
+                                        backgroundColor='#BDFFEB'
                                         percent={1 - validator.count_missing_source / validator.count_attestations}
                                         width={150}
                                         tooltipColor='blue'
@@ -555,12 +557,13 @@ const ValidatorComponent = () => {
                                                 </span>
                                             </>
                                         }
+                                        widthTooltip={220}
                                     />
 
                                     <ProgressSmoothBar
                                         title='Head'
-                                        bg='#532BC5'
-                                        color='#E6DDFF'
+                                        color='#532BC5'
+                                        backgroundColor='#E6DDFF'
                                         percent={1 - validator.count_missing_head / validator.count_attestations}
                                         width={150}
                                         tooltipColor='purple'
@@ -574,6 +577,7 @@ const ValidatorComponent = () => {
                                                 </span>
                                             </>
                                         }
+                                        widthTooltip={220}
                                     />
                                 </div>
                             )}

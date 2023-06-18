@@ -5,8 +5,9 @@ import Link from 'next/link';
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
 // Components
-import { TooltipContainer, TooltipContentContainerBlocks } from '../ui/Tooltips';
+import { TooltipContainer } from '../ui/Tooltips';
 import CustomImage from '../ui/CustomImage';
+import TooltipResponsive from '../ui/TooltipResponsive';
 
 // Constants
 import { POOLS } from '../../constants';
@@ -77,6 +78,14 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
         }
     };
 
+    // const getTopWidthTooltip = () => {
+    //     if (window.innerWidth > 1150) {
+    //         return 60;
+    //     } else if (window.innerWidth > 768) {
+    //         return 50;
+    //     }
+    // };
+
     return (
         <div className='flex flex-col'>
             <h3 className='uppercase text-white text-center text-sm mb-2'>Epoch {epoch?.toLocaleString()}</h3>
@@ -109,11 +118,22 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
                             >
                                 <TooltipContainer>
                                     {getBlockImage(block)}
-                                    <TooltipContentContainerBlocks>
-                                        <span>Entity: {getEntityName(block.f_pool_name as string)}</span>
-                                        <span>Proposer: {Number(block.f_proposer_index)?.toLocaleString()}</span>
-                                        <span>Slot: {Number(block.f_slot)?.toLocaleString()}</span>
-                                    </TooltipContentContainerBlocks>
+
+                                    <TooltipResponsive
+                                        width={200}
+                                        colorLetter='black'
+                                        backgroundColor='white'
+                                        content={
+                                            <div className='flex flex-col gap-y-1 items-center'>
+                                                <span>Entity: {getEntityName(block.f_pool_name as string)}</span>
+                                                <span>
+                                                    Proposer: {Number(block.f_proposer_index)?.toLocaleString()}
+                                                </span>
+                                                <span>Slot: {Number(block.f_slot)?.toLocaleString()}</span>
+                                            </div>
+                                        }
+                                        top='120%'
+                                    />
                                 </TooltipContainer>
                             </Link>
                         </div>
