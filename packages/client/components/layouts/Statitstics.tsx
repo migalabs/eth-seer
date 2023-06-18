@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback, useContext } from 'react';
-import { useInView } from 'react-intersection-observer';
+import Link from 'next/link';
 
 // Contexts
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
@@ -16,23 +16,19 @@ import LinkIcon from '../ui/LinkIcon';
 
 // Types
 import { Epoch, Block } from '../../types';
-import Link from 'next/link';
 
 // Constants
 const firstBlock: number = Number(process.env.NEXT_PUBLIC_NETWORK_GENESIS);
 
 const Statitstics = () => {
     // Theme Mode Context
-    const { themeMode } = useContext(ThemeModeContext) || {};
+    const { themeMode } = useContext(ThemeModeContext) ?? {};
 
     // Blocks Context
-    const { blocks, getBlocks } = useContext(BlocksContext) || {};
+    const { blocks, getBlocks } = useContext(BlocksContext) ?? {};
 
     // Epochs Context
-    const { epochs, getEpochs } = useContext(EpochsContext) || {};
-
-    // Intersection Observer
-    const { ref, inView } = useInView();
+    const { epochs, getEpochs } = useContext(EpochsContext) ?? {};
 
     // Refs
     const containerRef = useRef<HTMLInputElement>(null);
@@ -43,7 +39,6 @@ const Statitstics = () => {
     const [loadingBlocks, setLoadingBlocks] = useState(false);
     const [loadingEpochs, setLoadingEpochs] = useState(false);
     const [calculatingText, setCalculatingText] = useState('');
-    const [viewMore, setViewMore] = useState(false);
 
     useEffect(() => {
         // Fetching blocks
@@ -54,20 +49,18 @@ const Statitstics = () => {
 
         // Fetching epochs
         if (epochs && epochs.epochs.length === 0 && !loadingEpochs) {
-            // setLoadingEpochs(true);
+            setLoadingEpochs(true);
             getEpochs?.(0);
+        }
+
+        if (epochs && epochs.epochs.length > 0 && loadingEpochs) {
+            setLoadingEpochs(false);
         }
 
         setDesktopView(window !== undefined && window.innerWidth > 768);
 
-        if (viewMore && epochs && !epochs.lastPageFetched) {
-            getEpochs?.(currentPage + 1);
-            setCurrentPage(prevState => prevState + 1);
-            setViewMore(false);
-        }
-
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [viewMore, blocks, epochs]);
+    }, [blocks, epochs]);
 
     const shuffle = useCallback(() => {
         setCalculatingText(prevState => {
@@ -97,8 +90,11 @@ const Statitstics = () => {
         }
     };
 
-    const handleClick = () => {
-        setViewMore(true);
+    const handleViewMore = async () => {
+        setLoadingEpochs(true);
+        await getEpochs?.(currentPage + 1);
+        setCurrentPage(prevState => prevState + 1);
+        // setLoadingEpochs(false); -> No need to set it to false because it will be set to false in the useEffect
     };
 
     const createArrayBlocks = (blocks: Block[]) => {
@@ -137,7 +133,7 @@ const Statitstics = () => {
                         as={`/epoch/${f_epoch}`}
                         className='flex gap-x-1 items-center w-fit mx-auto'
                     >
-                        <p>{f_epoch.toLocaleString()}</p>
+                        <p>{f_epoch?.toLocaleString()}</p>
                         <LinkIcon />
                     </Link>
                 </div>
@@ -195,7 +191,7 @@ const Statitstics = () => {
                         passHref
                         as={`/epoch/${f_epoch}`}
                     >
-                        <p className='font-bold text-sm mt-0.5'>Epoch {f_epoch.toLocaleString()}</p>
+                        <p className='font-bold text-sm mt-0.5'>Epoch {f_epoch?.toLocaleString()}</p>
                     </Link>
                 </div>
                 <div className='flex flex-col gap-x-4 w-full'>
@@ -410,11 +406,11 @@ const Statitstics = () => {
                         )}
                     </>
                 )}
+
                 {epochs &&
-                    epochs.epochs.map((epoch: Epoch, idx: number) => (
+                    epochs.epochs.map((epoch: Epoch) => (
                         <div
                             key={epoch.f_epoch}
-                            ref={idx === epochs.epochs.length - 1 ? ref : undefined}
                             className='flex gap-x-1 justify-around items-center text-[9px] text-black rounded-[22px] px-2 xl:px-8 py-3'
                             style={{
                                 backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
@@ -437,7 +433,7 @@ const Statitstics = () => {
                                     as={`/epoch/${epoch.f_epoch}`}
                                     className='flex gap-x-1 items-center w-fit mx-auto'
                                 >
-                                    <p>{epoch.f_epoch.toLocaleString()}</p>
+                                    <p>{epoch?.f_epoch?.toLocaleString()}</p>
                                     <LinkIcon />
                                 </Link>
                             </div>
@@ -532,9 +528,15 @@ const Statitstics = () => {
                         </div>
                     ))}
 
+                {loadingEpochs && (
+                    <div className='mt-6'>
+                        <Loader />
+                    </div>
+                )}
+
                 <button
                     className='cursor-pointer mx-auto w-fit text-[10px] text-black rounded-[22px] px-6 py-4'
-                    onClick={handleClick}
+                    onClick={handleViewMore}
                     style={{
                         backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
                         boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
@@ -562,10 +564,9 @@ const Statitstics = () => {
             )}
 
             {epochs &&
-                epochs.epochs.map((epoch: Epoch, idx: number) => (
+                epochs.epochs.map((epoch: Epoch) => (
                     <div
                         key={epoch.f_epoch}
-                        ref={idx === epochs.epochs.length - 1 ? ref : undefined}
                         className='flex flex-col gap-y-4 justify-around items-center text-[10px] text-black rounded-[22px] px-3 py-4'
                         style={{
                             backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
@@ -737,9 +738,15 @@ const Statitstics = () => {
                     </div>
                 ))}
 
+            {loadingEpochs && (
+                <div className='mt-6'>
+                    <Loader />
+                </div>
+            )}
+
             <button
                 className='cursor-pointer mx-auto w-fit text-[10px] text-black rounded-[22px] px-6 py-4'
-                onClick={handleClick}
+                onClick={handleViewMore}
                 style={{
                     backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
                     boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
@@ -755,12 +762,6 @@ const Statitstics = () => {
             <h1 className='text-lg md:text-3xl uppercase'>Epoch Statistics</h1>
 
             {desktopView ? getDesktopView() : getPhoneView()}
-
-            {loadingEpochs && (
-                <div className='mt-6'>
-                    <Loader />
-                </div>
-            )}
         </div>
     );
 };

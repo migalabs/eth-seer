@@ -30,5 +30,5 @@ module.exports = {
             '3xl': ['1.875rem', { lineHeight: '2.25rem' }],
         },
     },
-    plugins: [require('tailwind-scrollbar')],
+    plugins: [require('tailwind-scrollbar')({ nocompatible: true })],
 };
