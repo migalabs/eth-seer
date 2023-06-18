@@ -1,5 +1,9 @@
-import React, { useEffect, useRef, useState, useCallback, useContext } from 'react';
-import { useInView } from 'react-intersection-observer';
+import React, { useEffect, useRef, useState, useContext } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+
+// Axios
+import axiosClient from '../../config/axios';
 
 // Contexts
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
@@ -8,31 +12,16 @@ import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 import { TooltipContainer, TooltipContentContainerHeaders } from '../ui/Tooltips';
 import CustomImage from '../ui/CustomImage';
 import LinkIcon from '../ui/LinkIcon';
+import Animation from './Animation';
+import Loader from '../ui/Loader';
 
 // Types
 import { Block } from '../../types';
-import Link from 'next/link';
-import axiosClient from '../../config/axios';
-import { useRouter } from 'next/router';
-import Animation from './Animation';
 
 // Constants
 const firstBlock: number = Number(process.env.NEXT_PUBLIC_NETWORK_GENESIS);
 
 const Graffitis = () => {
-    // Intersection Observer
-    const { ref, inView } = useInView();
-
-    // Refs
-    const containerRef = useRef<HTMLInputElement>(null);
-
-    // States
-    const [desktopView, setDesktopView] = useState(true);
-    const [currentPage, setCurrentPage] = useState(0);
-    const [viewMore, setViewMore] = useState(false);
-    const [disableViewMore, setDisableViewMore] = useState(true);
-    const [animation, setAnimation] = useState(false);
-
     // Router
     const router = useRouter();
     const { graffiti } = router.query;
@@ -40,27 +29,31 @@ const Graffitis = () => {
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
 
+    // Refs
+    const containerRef = useRef<HTMLInputElement>(null);
+
     // States
+    const [desktopView, setDesktopView] = useState(true);
+    const [currentPage, setCurrentPage] = useState(0);
+    const [disableViewMore, setDisableViewMore] = useState(true);
+    const [animation, setAnimation] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [blocks, setBlocks] = useState<Block[]>([]);
 
     useEffect(() => {
         setDesktopView(window !== undefined && window.innerWidth > 768);
 
         if (graffiti && blocks.length === 0) {
-            getBlocks(0);
-        }
-
-        if (viewMore && blocks) {
-            getBlocks?.(currentPage + 1);
-            setCurrentPage(prevState => prevState + 1);
-            setViewMore(false);
+            getGraffities(0);
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [graffiti, viewMore]);
+    }, [graffiti]);
 
-    const getBlocks = async (page: number, limit: number = 10) => {
+    const getGraffities = async (page: number, limit: number = 10) => {
         try {
+            setLoading(true);
+
             const response = await axiosClient.get(`/api/validator-rewards-summary/blocks/graffiti/${graffiti}`, {
                 params: {
                     limit,
@@ -78,6 +71,8 @@ const Graffitis = () => {
             }
         } catch (error) {
             console.log(error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -94,8 +89,9 @@ const Graffitis = () => {
         }
     };
 
-    const handleClick = () => {
-        setViewMore(true);
+    const handleViewMore = () => {
+        getGraffities(currentPage + 1);
+        setCurrentPage(prevState => prevState + 1);
     };
 
     const getDesktopView = () => (
@@ -173,7 +169,6 @@ const Graffitis = () => {
                     blocks.map((block: Block, idx: number) => (
                         <div
                             key={block.f_epoch}
-                            ref={idx === blocks.length - 1 ? ref : undefined}
                             className='flex gap-x-1 justify-around items-center text-[9px] text-black rounded-[22px] px-2 xl:px-8 py-9'
                             style={{
                                 backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
@@ -197,7 +192,7 @@ const Graffitis = () => {
                                     as={`/slot/${block.f_slot}`}
                                     className='flex gap-x-1 items-center w-fit mx-auto'
                                 >
-                                    <p>{block.f_slot.toLocaleString()}</p>
+                                    <p>{block?.f_slot?.toLocaleString()}</p>
                                     <LinkIcon />
                                 </Link>
                             </div>
@@ -223,10 +218,17 @@ const Graffitis = () => {
                             </div>
                         </div>
                     ))}
+
+                {loading && (
+                    <div className='mt-6'>
+                        <Loader />
+                    </div>
+                )}
+
                 {!disableViewMore && (
                     <button
                         className='cursor-pointer mx-auto w-fit text-[10px] text-black rounded-[22px] px-6 py-4'
-                        onClick={handleClick}
+                        onClick={handleViewMore}
                         style={{
                             backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
                             boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
@@ -245,7 +247,6 @@ const Graffitis = () => {
                 blocks.map((block: Block, idx: number) => (
                     <div
                         key={block.f_epoch}
-                        ref={idx === blocks.length - 1 ? ref : undefined}
                         className='flex flex-col gap-y-4 justify-around items-center text-[10px] text-black rounded-[22px] px-3 py-7'
                         style={{
                             backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
@@ -329,9 +330,15 @@ const Graffitis = () => {
                     </div>
                 ))}
 
+            {loading && (
+                <div className='mt-6'>
+                    <Loader />
+                </div>
+            )}
+
             <button
                 className='cursor-pointer mx-auto w-fit text-[10px] text-black rounded-[22px] px-6 py-4'
-                onClick={handleClick}
+                onClick={handleViewMore}
                 style={{
                     backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
                     boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
@@ -345,11 +352,14 @@ const Graffitis = () => {
     return (
         <div className='text-center text-white'>
             <h1 className='text-lg md:text-3xl uppercase'>Graffiti &quot;{graffiti}&quot; Search Result</h1>
-            {blocks.length !== 0
-                ? desktopView
-                    ? getDesktopView()
-                    : getPhoneView()
-                : animation && <Animation text={`Graffiti  "${graffiti}" is not found`} />}
+
+            <div className='mt-6'>
+                {blocks.length === 0 && loading && <Loader />}
+
+                {blocks.length !== 0 && (desktopView ? getDesktopView() : getPhoneView())}
+
+                {animation && <Animation text={`Graffiti "${graffiti}" is not found`} />}
+            </div>
         </div>
     );
 };
