@@ -200,16 +200,20 @@ export const getBlockById = async (req: Request, res: Response) => {
                 `),                
             ]);
 
-        if (proposerDuties.rows.length > 0 && block.rows[0] != undefined) {
-            block.rows[0].f_proposed = proposerDuties.rows[0].f_proposed;
+        if (block.rows[0]) {
+            if (proposerDuties.rows.length > 0) {
+                block.rows[0].f_proposed = proposerDuties.rows[0].f_proposed;
+            }
+    
+            res.json({
+                block: {
+                    ...block.rows[0],
+                    withdrawals: withdrawals.rows,
+                },
+            });
+        } else {
+            res.json({});
         }
-
-        res.json({
-            block: {
-                ...block.rows[0],
-                withdrawals: withdrawals.rows,
-            },
-        });
 
     } catch (error) {
         console.log(error);

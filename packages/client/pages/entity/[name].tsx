@@ -1,15 +1,20 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
+// Axios
+import axiosClient from '../../config/axios';
+
 // Contexts
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
 // Components
 import Layout from '../../components/layouts/Layout';
 import BlockGif from '../../components/ui/BlockGif';
-import axiosClient from '../../config/axios';
-import { Entity } from '../../types';
 import Animation from '../../components/layouts/Animation';
+import Loader from '../../components/ui/Loader';
+
+// Types
+import { Entity } from '../../types';
 
 type Props = {
     content: string;
@@ -45,6 +50,7 @@ const EntityComponent = () => {
     // States
     const [entity, setEntity] = useState<Entity | null>(null);
     const [showAnimation, setShowAnimation] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
 
     // UseEffect
     useEffect(() => {
@@ -57,6 +63,8 @@ const EntityComponent = () => {
 
     const getEntity = async () => {
         try {
+            setLoading(true);
+
             const response = await axiosClient.get(
                 `/api/validator-rewards-summary/entity/${(name as string).toLowerCase()}`
             );
@@ -68,6 +76,8 @@ const EntityComponent = () => {
             }
         } catch (error) {
             console.log(error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -76,7 +86,14 @@ const EntityComponent = () => {
             <div className='flex gap-x-3 justify-center items-center mt-2 mb-5'>
                 <h1 className='text-white text-center text-xl md:text-3xl uppercase'>{name}</h1>
             </div>
-            {entity ? (
+
+            {loading && (
+                <div className='mt-6'>
+                    <Loader />
+                </div>
+            )}
+
+            {entity && (
                 <div className='mx-auto max-w-[1100px]'>
                     <div
                         className='flex mx-2 px-4 sm:px-10 py-5 rounded-[22px] justify-between items-center gap-x-5'
@@ -149,9 +166,9 @@ const EntityComponent = () => {
                         </div>
                     </div>
                 </div>
-            ) : (
-                showAnimation && <Animation text={`We're not there yet`} />
             )}
+
+            {showAnimation && <Animation text={`We're not there yet`} />}
         </Layout>
     );
 };
