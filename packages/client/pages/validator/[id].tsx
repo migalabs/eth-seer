@@ -1,5 +1,4 @@
 import { useContext, useEffect, useRef, useState } from 'react';
-import styled from '@emotion/styled';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
@@ -16,20 +15,16 @@ import BlockImage from '../../components/ui/BlockImage';
 import BlockGif from '../../components/ui/BlockGif';
 import TabHeader from '../../components/ui/TabHeader';
 import Animation from '../../components/layouts/Animation';
-
-// Types
-import { Validator } from '../../types';
 import ProgressSmoothBar from '../../components/ui/ProgressSmoothBar';
 import { TooltipContainer, TooltipContentContainerHeaders } from '../../components/ui/Tooltips';
 import CustomImage from '../../components/ui/CustomImage';
+import Loader from '../../components/ui/Loader';
+
+// Types
+import { Validator } from '../../types';
 
 // Constants
 const firstBlock: number = Number(process.env.NEXT_PUBLIC_NETWORK_GENESIS); // 1606824023000
-
-// Styled
-const Card = styled.div`
-    box-shadow: inset -7px -7px 8px #f0c83a, inset 7px 7px 8px #f0c83a;
-`;
 
 type Props = {
     content: string;
@@ -62,10 +57,12 @@ const ValidatorComponent = () => {
     const validatorRef = useRef(0);
     const containerRef = useRef<HTMLInputElement>(null);
 
+    // States
     const [validator, setValidator] = useState<Validator | null>(null);
     const [animation, setAnimation] = useState(false);
     const [desktopView, setDesktopView] = useState(true);
     const [tabPageIndex, setTabPageIndex] = useState(0);
+    const [loading, setLoading] = useState(true);
 
     // UseEffect
     useEffect(() => {
@@ -84,6 +81,8 @@ const ValidatorComponent = () => {
 
     const getValidator = async () => {
         try {
+            setLoading(true);
+
             const response = await axiosClient.get(`/api/validator-rewards-summary/validator/${id}`);
 
             setValidator(response.data.validator);
@@ -96,6 +95,8 @@ const ValidatorComponent = () => {
         } catch (error) {
             console.log(error);
             setAnimation(true);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -114,7 +115,7 @@ const ValidatorComponent = () => {
 
     const getContentProposedBlocksMobile = () => {
         return (
-            <Card
+            <div
                 className='mt-5 flex flex-col gap-y-2 mx-2 px-6 uppercase overflow-x-scroll overflow-y-hidden scrollbar-thin text-black text-xl text-[8px] md:text-[10px]  rounded-[22px] py-3'
                 style={{
                     backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
@@ -168,7 +169,7 @@ const ValidatorComponent = () => {
                                 >
                                     <div className='flex flex-row items-center gap-x-8'>
                                         <p className='w-20'>Slot:</p>
-                                        <p className='leading-3'>{element.f_proposer_slot.toLocaleString()}</p>
+                                        <p className='leading-3'>{element.f_proposer_slot?.toLocaleString()}</p>
                                     </div>
                                     <LinkIcon />
                                 </Link>
@@ -190,7 +191,7 @@ const ValidatorComponent = () => {
                         <p className='uppercase'>No proposed blocks</p>
                     </div>
                 )}
-            </Card>
+            </div>
         );
     };
 
@@ -208,7 +209,7 @@ const ValidatorComponent = () => {
                     <p className='mt-0.5 w-[25%]'>Datetime</p>
                 </div>
 
-                <Card
+                <div
                     className='flex flex-col gap-y-2 min-w-[700px] text-2xs md:text-xs rounded-[22px] px-4 xl:px-8 py-3'
                     style={{
                         backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
@@ -257,7 +258,7 @@ const ValidatorComponent = () => {
                                     as={`/slot/${element.f_proposer_slot}`}
                                     className='flex gap-x-1 items-center w-fit mx-auto'
                                 >
-                                    <p>{element.f_proposer_slot.toLocaleString()}</p>
+                                    <p>{element.f_proposer_slot?.toLocaleString()}</p>
                                     <LinkIcon />
                                 </Link>
                             </div>
@@ -272,7 +273,7 @@ const ValidatorComponent = () => {
                             <p className='uppercase'>No proposed blocks</p>
                         </div>
                     )}
-                </Card>
+                </div>
             </div>
         );
     };
@@ -291,7 +292,7 @@ const ValidatorComponent = () => {
                     <p className='mt-0.5 w-[25%]'>Amount</p>
                 </div>
 
-                <Card
+                <div
                     className='flex flex-col gap-y-2 min-w-[700px] text-2xs md:text-xs rounded-[22px] px-4 xl:px-8 py-3'
                     style={{
                         backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
@@ -344,14 +345,14 @@ const ValidatorComponent = () => {
                             <p className='uppercase'>No withdrawals</p>
                         </div>
                     )}
-                </Card>
+                </div>
             </div>
         );
     };
 
     const getContentWithdrawalsMobile = () => {
         return (
-            <Card
+            <div
                 className='mt-5 flex flex-col gap-y-2 mx-2 px-6 uppercase overflow-x-scroll overflow-y-hidden scrollbar-thin text-black text-xl text-[8px] md:text-[10px]  rounded-[22px] py-3'
                 style={{
                     backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
@@ -418,7 +419,7 @@ const ValidatorComponent = () => {
                         <p className='uppercase'>No withdrawals</p>
                     </div>
                 )}
-            </Card>
+            </div>
         );
     };
 
@@ -441,7 +442,7 @@ const ValidatorComponent = () => {
 
     const getContentValidator = () => {
         return (
-            <Card
+            <div
                 className='flex mx-2 px-4 xs:px-10 py-5 rounded-[22px] justify-between gap-x-5'
                 style={{
                     backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
@@ -539,10 +540,10 @@ const ValidatorComponent = () => {
                                         tooltipContent={
                                             <>
                                                 <span>
-                                                    Missing Target: {validator.count_missing_target.toLocaleString()}
+                                                    Missing Target: {validator.count_missing_target?.toLocaleString()}
                                                 </span>
                                                 <span>
-                                                    Attestations: {validator.count_attestations.toLocaleString()}
+                                                    Attestations: {validator.count_attestations?.toLocaleString()}
                                                 </span>
                                             </>
                                         }
@@ -558,10 +559,10 @@ const ValidatorComponent = () => {
                                         tooltipContent={
                                             <>
                                                 <span>
-                                                    Missing Source: {validator.count_missing_source.toLocaleString()}
+                                                    Missing Source: {validator.count_missing_source?.toLocaleString()}
                                                 </span>
                                                 <span>
-                                                    Attestations: {validator.count_attestations.toLocaleString()}
+                                                    Attestations: {validator.count_attestations?.toLocaleString()}
                                                 </span>
                                             </>
                                         }
@@ -577,10 +578,10 @@ const ValidatorComponent = () => {
                                         tooltipContent={
                                             <>
                                                 <span>
-                                                    Missing Head: {validator.count_missing_head.toLocaleString()}
+                                                    Missing Head: {validator.count_missing_head?.toLocaleString()}
                                                 </span>
                                                 <span>
-                                                    Attestations: {validator.count_attestations.toLocaleString()}
+                                                    Attestations: {validator.count_attestations?.toLocaleString()}
                                                 </span>
                                             </>
                                         }
@@ -614,7 +615,7 @@ const ValidatorComponent = () => {
                 <div className='hidden md:block'>
                     <BlockGif poolName={validator?.f_pool_name ?? 'others'} width={150} height={150} />
                 </div>
-            </Card>
+            </div>
         );
     };
 
@@ -636,7 +637,13 @@ const ValidatorComponent = () => {
                 </h1>
             </div>
 
-            {validator?.f_val_idx !== undefined ? (
+            {loading && (
+                <div className='mt-6'>
+                    <Loader />
+                </div>
+            )}
+
+            {validator?.f_val_idx && (
                 <div className='flex flex-col gap-4 mx-auto max-w-[1100px]'>
                     <div>{getContentValidator()}</div>
 
@@ -651,9 +658,9 @@ const ValidatorComponent = () => {
 
                     {getSelectedTab()}
                 </div>
-            ) : (
-                animation && <Animation text={`Validator doesn't exists yet`} />
             )}
+
+            {animation && <Animation text={`Validator doesn't exists yet`} />}
         </Layout>
     );
 };
