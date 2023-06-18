@@ -14,6 +14,7 @@ import CustomImage from '../../components/ui/CustomImage';
 import LinkIcon from '../../components/ui/LinkIcon';
 import BlockGif from '../../components/ui/BlockGif';
 import TabHeader from '../../components/ui/TabHeader';
+import Loader from '../../components/ui/Loader';
 
 // Types
 import { Block } from '../../types';
@@ -66,7 +67,7 @@ const Card = ({ title, content, icon, iconSize, link, target }: CardProps) => {
 
 const Slot = () => {
     // Asset prefix
-    const assetPrefix = process.env.NEXT_PUBLIC_ASSET_PREFIX || '';
+    const assetPrefix = process.env.NEXT_PUBLIC_ASSET_PREFIX ?? '';
 
     // Next router
     const router = useRouter();
@@ -75,7 +76,7 @@ const Slot = () => {
     } = router;
 
     // Theme Mode Context
-    const { themeMode } = useContext(ThemeModeContext) || {};
+    const { themeMode } = useContext(ThemeModeContext) ?? {};
 
     // Refs
     const slotRef = useRef(0);
@@ -87,6 +88,7 @@ const Slot = () => {
     const [existsBlock, setExistsBlock] = useState<boolean>(true);
     const [countdownText, setCountdownText] = useState<string>('');
     const [tabPageIndex, setTabPageIndex] = useState<number>(0);
+    const [loading, setLoading] = useState<boolean>(true);
 
     // UseEffect
     useEffect(() => {
@@ -114,6 +116,8 @@ const Slot = () => {
     // Get blocks
     const getBlock = async () => {
         try {
+            setLoading(true);
+
             const response = await axiosClient.get(`/api/validator-rewards-summary/block/${id}`);
 
             const blockResponse: Block = response.data.block;
@@ -153,6 +157,8 @@ const Slot = () => {
             }
         } catch (error) {
             console.log(error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -272,14 +278,14 @@ const Slot = () => {
                 <div className='flex flex-col gap-y-5'>
                     <Card
                         title='Epoch'
-                        content={block?.f_epoch.toLocaleString()}
+                        content={block?.f_epoch?.toLocaleString()}
                         link={`${assetPrefix}/epoch/${block?.f_epoch}`}
                         icon='link'
                         iconSize={25}
                         target='_self'
                     />
 
-                    <Card title='Slot' content={block?.f_slot.toLocaleString()} />
+                    <Card title='Slot' content={block?.f_slot?.toLocaleString()} />
 
                     {existsBlock && (
                         <Card
@@ -499,6 +505,12 @@ const Slot = () => {
                     />
                 </Link>
             </div>
+
+            {loading && (
+                <div className='mt-6'>
+                    <Loader />
+                </div>
+            )}
 
             {block && getInformationView()}
         </Layout>
