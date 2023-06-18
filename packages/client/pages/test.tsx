@@ -55,7 +55,7 @@ const Tooltip = () => {
                             <p className='font-bold pt-0.5' style={{ color: bg, cursor: 'default' }}>
                                 {Number(Number(percent * 100).toFixed(2)).toLocaleString()}%
                             </p>
-                            <TooltipResponsive width={300}/>
+                            <TooltipResponsive width={300} />
                         </TooltipContainer>
                     ) : (
                         <p className='font-bold pt-0.5' style={{ color: bg, cursor: 'default' }}>
