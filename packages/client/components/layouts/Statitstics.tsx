@@ -468,6 +468,7 @@ const Statitstics = () => {
                                                     <span>Attestations: {epoch.f_num_vals?.toLocaleString()}</span>
                                                 </>
                                             }
+                                            widthTooltip={220}
                                         />
                                     </div>
                                     <div className='flex-1'>
@@ -485,6 +486,7 @@ const Statitstics = () => {
                                                     <span>Attestations: {epoch.f_num_vals?.toLocaleString()}</span>
                                                 </>
                                             }
+                                            widthTooltip={220}
                                         />
                                     </div>
                                     <div className='flex-1'>
@@ -500,6 +502,7 @@ const Statitstics = () => {
                                                     <span>Attestations: {epoch.f_num_vals?.toLocaleString()}</span>
                                                 </>
                                             }
+                                            widthTooltip={220}
                                         />
                                     </div>
                                 </div>
@@ -523,6 +526,7 @@ const Statitstics = () => {
                                             </span>
                                         </>
                                     }
+                                    widthTooltip={270}
                                 />
                             </div>
                         </div>
@@ -669,6 +673,7 @@ const Statitstics = () => {
                                         <span>Attestations: {epoch.f_num_vals?.toLocaleString()}</span>
                                     </>
                                 }
+                                widthTooltip={220}
                             />
 
                             <ProgressSmoothBar
@@ -683,6 +688,7 @@ const Statitstics = () => {
                                         <span>Attestations: {epoch.f_num_vals?.toLocaleString()}</span>
                                     </>
                                 }
+                                widthTooltip={220}
                             />
 
                             <ProgressSmoothBar
@@ -697,6 +703,7 @@ const Statitstics = () => {
                                         <span>Attestations: {epoch.f_num_vals?.toLocaleString()}</span>
                                     </>
                                 }
+                                widthTooltip={220}
                             />
                         </div>
 
@@ -733,6 +740,7 @@ const Statitstics = () => {
                                         </span>
                                     </>
                                 }
+                                widthTooltip={270}
                             />
                         </div>
                     </div>

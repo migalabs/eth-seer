@@ -1,23 +1,32 @@
-
 type Props = {
     width: number;
-}
+    backgroundColor: string;
+    colorLetter: string;
+    content: any;
+};
 
-const TooltipResponsive = ({width}: Props) => {
+const TooltipResponsive = ({ width, backgroundColor, colorLetter, content }: Props) => {
     return (
-        <div className='relative bg-white text-black text-xs border-2 border-black rounded-2xl py-2 px-3 mt-2 mx-auto'
-            style={{width}}
+        <div
+            className='absolute top-[30px] flex-col border-2 rounded-2xl py-4 px-8 mt-2 mx-auto hidden z-10 text-[7px] uppercase'
+            style={{
+                width,
+                left: `calc(50% - ${width / 2}px)`,
+                backgroundColor,
+                color: colorLetter,
+                borderColor: colorLetter,
+            }}
         >
-            <p>This is the tooltip text.</p>
+            {content}
             <svg
-                className='absolute h-10 w-full left-0 bottom-full overflow-visible -m-10'
-                x='0px'
+                className='absolute h-10 top-0 overflow-visible w-10 left-[calc(50%-20px)]'
+                x='00px'
                 y='0px'
                 viewBox='0 0 255 255'
                 xmlSpace='preserve'
             >
-                <polygon className='fill-black transform rotate-180' points='0,0 127.5,127.5 255,0' />
-                <polygon className='fill-white transform rotate-180' points='20,0 127.5,107.5 235,0' />
+                <polygon style={{ fill: colorLetter }} points='0,0 127.5,-127.5 255,0' />
+                <polygon style={{ fill: backgroundColor }} points='20,0 127.5,-107.5 235,0' />
             </svg>
         </div>
     );

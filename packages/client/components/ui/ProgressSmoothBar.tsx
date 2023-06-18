@@ -1,5 +1,8 @@
 import React from 'react';
+
+// Components
 import { TooltipContainer, TooltipContentContainerStats } from './Tooltips';
+import TooltipResponsive from './TooltipResponsive';
 
 type Props = {
     title: string;
@@ -9,9 +12,10 @@ type Props = {
     tooltipColor?: string;
     tooltipContent?: any;
     width?: number;
+    widthTooltip: number;
 };
 
-const ProgressSmoothBar = ({ title, percent, color, bg, tooltipColor, tooltipContent, width }: Props) => {
+const ProgressSmoothBar = ({ title, percent, color, bg, tooltipColor, tooltipContent, width, widthTooltip }: Props) => {
     const widthInnerDiv = Number(percent * 100).toFixed(0);
 
     return (
@@ -25,9 +29,12 @@ const ProgressSmoothBar = ({ title, percent, color, bg, tooltipColor, tooltipCon
                             <p className='font-bold pt-0.5' style={{ color: bg, cursor: 'default' }}>
                                 {Number(Number(percent * 100).toFixed(2)).toLocaleString()}%
                             </p>
-                            <TooltipContentContainerStats tooltipColor={tooltipColor} colorLetter={bg}>
-                                {tooltipContent}
-                            </TooltipContentContainerStats>
+                            <TooltipResponsive
+                                width={widthTooltip}
+                                backgroundColor={color}
+                                colorLetter={bg}
+                                content={tooltipContent}
+                            />
                         </TooltipContainer>
                     ) : (
                         <p className='font-bold pt-0.5' style={{ color: bg, cursor: 'default' }}>
