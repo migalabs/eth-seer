@@ -3,18 +3,20 @@ type Props = {
     backgroundColor: string;
     colorLetter: string;
     content: any;
+    top?: string;
 };
 
-const TooltipResponsive = ({ width, backgroundColor, colorLetter, content }: Props) => {
+const TooltipResponsive = ({ width, backgroundColor, colorLetter, content, top }: Props) => {
     return (
         <div
-            className='absolute top-[30px] flex-col border-2 rounded-2xl py-4 px-8 mt-2 mx-auto hidden z-10 text-[7px] uppercase'
+            className='absolute flex-col border-2 rounded-2xl py-4 px-4 mt-2 mx-auto hidden z-10 text-[7px] uppercase'
             style={{
                 width,
                 left: `calc(50% - ${width / 2}px)`,
                 backgroundColor,
                 color: colorLetter,
                 borderColor: colorLetter,
+                top: top ?? '30px',
             }}
         >
             {content}

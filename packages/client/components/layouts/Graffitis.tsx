@@ -110,6 +110,7 @@ const Graffitis = () => {
                             width={24}
                             height={24}
                         />
+
                         <TooltipContentContainerHeaders leftSide>
                             <span>Time at which the slot</span>
                             <span>should have passed</span>

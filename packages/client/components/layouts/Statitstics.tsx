@@ -137,8 +137,9 @@ const Statitstics = () => {
                         <LinkIcon />
                     </Link>
                 </div>
-                <div className='w-[15%] pt-3.5 mb-6'>
+                <div className='w-[15%] pt-3.5 mb-5'>
                     <p className='uppercase'>blocks</p>
+
                     <ProgressTileBar
                         totalBlocks={arrayBlocks}
                         tooltipContent={
@@ -194,6 +195,7 @@ const Statitstics = () => {
                         <p className='font-bold text-sm mt-0.5'>Epoch {f_epoch?.toLocaleString()}</p>
                     </Link>
                 </div>
+
                 <div className='flex flex-col gap-x-4 w-full'>
                     <div className='flex gap-x-1 justify-center mb-1'>
                         <p className='text-xs mt-1'>Time</p>
@@ -211,11 +213,13 @@ const Statitstics = () => {
                             </TooltipContentContainerHeaders>
                         </TooltipContainer>
                     </div>
+
                     <div>
                         <p>{new Date(firstBlock + f_epoch * 32 * 12000).toLocaleDateString('ja-JP')}</p>
                         <p>{new Date(firstBlock + f_epoch * 32 * 12000).toLocaleTimeString('ja-JP')}</p>
                     </div>
                 </div>
+
                 <div className='flex flex-col w-full'>
                     <div className='flex gap-x-1 justify-center mb-1'>
                         <p className='text-xs mt-1'>Blocks</p>
@@ -233,6 +237,7 @@ const Statitstics = () => {
                             </TooltipContentContainerHeaders>
                         </TooltipContainer>
                     </div>
+
                     <div>
                         <ProgressTileBar
                             totalBlocks={arrayBlocks}
@@ -251,6 +256,7 @@ const Statitstics = () => {
                         />
                     </div>
                 </div>
+
                 <div className='flex flex-col w-full'>
                     <div className='flex flex-col gap-x-1 items-center mb-1'>
                         <p className='text-xs mt-1'>Attestation Accuracy</p>
@@ -268,13 +274,16 @@ const Statitstics = () => {
                             </TooltipContentContainerHeaders>
                         </TooltipContainer>
                     </div>
+
                     <div>
                         <p className='w-32 uppercase mx-auto text-start'>{calculatingText}</p>
                     </div>
                 </div>
+
                 <div className='flex flex-col w-full'>
                     <div className='flex flex-col gap-x-1 items-center mb-1'>
                         <p className='text-xs mt-1'>Voting Participation</p>
+
                         <TooltipContainer>
                             <CustomImage
                                 src='/static/images/information.svg'
@@ -290,6 +299,7 @@ const Statitstics = () => {
                             </TooltipContentContainerHeaders>
                         </TooltipContainer>
                     </div>
+
                     <div>
                         <p className='w-32 uppercase mx-auto text-start'>{calculatingText}</p>
                     </div>
@@ -438,8 +448,9 @@ const Statitstics = () => {
                                 </Link>
                             </div>
 
-                            <div className='w-[15%] pt-3.5 mb-6'>
+                            <div className='w-[15%] pt-3.5 mb-5'>
                                 <p className='uppercase'>blocks</p>
+
                                 <ProgressTileBar
                                     totalBlocks={epoch.proposed_blocks}
                                     tooltipContent={
@@ -456,8 +467,8 @@ const Statitstics = () => {
                                     <div className='flex-1'>
                                         <ProgressSmoothBar
                                             title='Target'
-                                            bg='#E86506'
-                                            color='#FFC163'
+                                            color='#E86506'
+                                            backgroundColor='#FFC163'
                                             percent={1 - epoch.f_missing_target / epoch.f_num_vals}
                                             tooltipColor='orange'
                                             tooltipContent={
@@ -474,8 +485,8 @@ const Statitstics = () => {
                                     <div className='flex-1'>
                                         <ProgressSmoothBar
                                             title='Source'
-                                            bg='#14946e'
-                                            color='#BDFFEB'
+                                            color='#14946e'
+                                            backgroundColor='#BDFFEB'
                                             percent={1 - epoch.f_missing_source / epoch.f_num_vals}
                                             tooltipColor='blue'
                                             tooltipContent={
@@ -492,8 +503,8 @@ const Statitstics = () => {
                                     <div className='flex-1'>
                                         <ProgressSmoothBar
                                             title='Head'
-                                            bg='#532BC5'
-                                            color='#E6DDFF'
+                                            color='#532BC5'
+                                            backgroundColor='#E6DDFF'
                                             percent={1 - epoch.f_missing_head / epoch.f_num_vals}
                                             tooltipColor='purple'
                                             tooltipContent={
@@ -511,8 +522,8 @@ const Statitstics = () => {
                             <div className='mb-2 w-[32%]'>
                                 <ProgressSmoothBar
                                     title='Attesting/total active'
-                                    bg='#0016D8'
-                                    color='#BDC4FF'
+                                    color='#0016D8'
+                                    backgroundColor='#BDC4FF'
                                     percent={epoch.f_att_effective_balance_eth / epoch.f_total_effective_balance_eth}
                                     tooltipColor='bluedark'
                                     tooltipContent={
@@ -663,8 +674,8 @@ const Statitstics = () => {
                             </div>
                             <ProgressSmoothBar
                                 title='Target'
-                                bg='#E86506'
-                                color='#FFC163'
+                                color='#E86506'
+                                backgroundColor='#FFC163'
                                 percent={1 - epoch.f_missing_target / epoch.f_num_vals}
                                 tooltipColor='orange'
                                 tooltipContent={
@@ -678,8 +689,8 @@ const Statitstics = () => {
 
                             <ProgressSmoothBar
                                 title='Source'
-                                bg='#14946e'
-                                color='#BDFFEB'
+                                color='#14946e'
+                                backgroundColor='#BDFFEB'
                                 percent={1 - epoch.f_missing_source / epoch.f_num_vals}
                                 tooltipColor='blue'
                                 tooltipContent={
@@ -693,8 +704,8 @@ const Statitstics = () => {
 
                             <ProgressSmoothBar
                                 title='Head'
-                                bg='#532BC5'
-                                color='#E6DDFF'
+                                color='#532BC5'
+                                backgroundColor='#E6DDFF'
                                 percent={1 - epoch.f_missing_head / epoch.f_num_vals}
                                 tooltipColor='purple'
                                 tooltipContent={
@@ -726,8 +737,8 @@ const Statitstics = () => {
                             </div>
                             <ProgressSmoothBar
                                 title='Attesting/total active'
-                                bg='#0016D8'
-                                color='#BDC4FF'
+                                color='#0016D8'
+                                backgroundColor='#BDC4FF'
                                 percent={epoch.f_num_att_vals / epoch.f_num_vals}
                                 tooltipColor='bluedark'
                                 tooltipContent={
