@@ -9,11 +9,12 @@ import axiosClient from '../../config/axios';
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
 // Components
-import { TooltipContainer, TooltipContentContainerHeaders } from '../ui/Tooltips';
+import TooltipContainer from '../ui/TooltipContainer';
 import CustomImage from '../ui/CustomImage';
 import LinkIcon from '../ui/LinkIcon';
 import Animation from './Animation';
 import Loader from '../ui/Loader';
+import TooltipResponsive from '../ui/TooltipResponsive';
 
 // Types
 import { Block } from '../../types';
@@ -111,11 +112,19 @@ const Graffitis = () => {
                             height={24}
                         />
 
-                        <TooltipContentContainerHeaders leftSide>
-                            <span>Time at which the slot</span>
-                            <span>should have passed</span>
-                            <span>(calculated since genesis)</span>
-                        </TooltipContentContainerHeaders>
+                        <TooltipResponsive
+                            width={220}
+                            backgroundColor='white'
+                            colorLetter='black'
+                            content={
+                                <>
+                                    <span>Time at which the slot</span>
+                                    <span>should have passed</span>
+                                    <span>(calculated since genesis)</span>
+                                </>
+                            }
+                            top='34px'
+                        />
                     </TooltipContainer>
                 </div>
 
@@ -128,9 +137,14 @@ const Graffitis = () => {
                             width={24}
                             height={24}
                         />
-                        <TooltipContentContainerHeaders epoch>
-                            <span>Slot number</span>
-                        </TooltipContentContainerHeaders>
+
+                        <TooltipResponsive
+                            width={130}
+                            backgroundColor='white'
+                            colorLetter='black'
+                            content={<span>Slot number</span>}
+                            top='34px'
+                        />
                     </TooltipContainer>
                 </div>
 
@@ -143,9 +157,14 @@ const Graffitis = () => {
                             width={24}
                             height={24}
                         />
-                        <TooltipContentContainerHeaders epoch>
-                            <span>Validator number</span>
-                        </TooltipContentContainerHeaders>
+
+                        <TooltipResponsive
+                            width={160}
+                            backgroundColor='white'
+                            colorLetter='black'
+                            content={<span>Validator number</span>}
+                            top='34px'
+                        />
                     </TooltipContainer>
                 </div>
 
@@ -158,9 +177,14 @@ const Graffitis = () => {
                             width={24}
                             height={24}
                         />
-                        <TooltipContentContainerHeaders epoch>
-                            <span>Graffiti text</span>
-                        </TooltipContentContainerHeaders>
+
+                        <TooltipResponsive
+                            width={160}
+                            backgroundColor='white'
+                            colorLetter='black'
+                            content={<span>Graffiti text</span>}
+                            top='34px'
+                        />
                     </TooltipContainer>
                 </div>
             </div>
@@ -169,7 +193,7 @@ const Graffitis = () => {
                 {blocks &&
                     blocks.map((block: Block, idx: number) => (
                         <div
-                            key={block.f_epoch}
+                            key={block.f_slot}
                             className='flex gap-x-1 justify-around items-center text-[9px] text-black rounded-[22px] px-2 xl:px-8 py-9'
                             style={{
                                 backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
@@ -247,7 +271,7 @@ const Graffitis = () => {
             {blocks &&
                 blocks.map((block: Block, idx: number) => (
                     <div
-                        key={block.f_epoch}
+                        key={block.f_slot}
                         className='flex flex-col gap-y-4 justify-around items-center text-[10px] text-black rounded-[22px] px-3 py-7'
                         style={{
                             backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
@@ -278,11 +302,20 @@ const Graffitis = () => {
                                         width={24}
                                         height={24}
                                     />
-                                    <TooltipContentContainerHeaders>
-                                        <span>Time at which the slot</span>
-                                        <span>should have passed</span>
-                                        <span>(calculated since genesis)</span>
-                                    </TooltipContentContainerHeaders>
+
+                                    <TooltipResponsive
+                                        width={220}
+                                        backgroundColor='white'
+                                        colorLetter='black'
+                                        content={
+                                            <>
+                                                <span>Time at which the slot</span>
+                                                <span>should have passed</span>
+                                                <span>(calculated since genesis)</span>
+                                            </>
+                                        }
+                                        top='34px'
+                                    />
                                 </TooltipContainer>
                             </div>
                             <div>
@@ -300,9 +333,14 @@ const Graffitis = () => {
                                         width={24}
                                         height={24}
                                     />
-                                    <TooltipContentContainerHeaders epoch>
-                                        <span>Validator number</span>
-                                    </TooltipContentContainerHeaders>
+
+                                    <TooltipResponsive
+                                        width={160}
+                                        backgroundColor='white'
+                                        colorLetter='black'
+                                        content={<span>Validator number</span>}
+                                        top='34px'
+                                    />
                                 </TooltipContainer>
                             </div>
                             <div>
@@ -319,9 +357,14 @@ const Graffitis = () => {
                                         width={24}
                                         height={24}
                                     />
-                                    <TooltipContentContainerHeaders epoch>
-                                        <span>Graffiti text</span>
-                                    </TooltipContentContainerHeaders>
+
+                                    <TooltipResponsive
+                                        width={160}
+                                        backgroundColor='white'
+                                        colorLetter='black'
+                                        content={<span>Graffiti text</span>}
+                                        top='34px'
+                                    />
                                 </TooltipContainer>
                             </div>
                             <div>

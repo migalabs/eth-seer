@@ -5,7 +5,7 @@ import Link from 'next/link';
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
 // Components
-import { TooltipContainer } from '../ui/Tooltips';
+import TooltipContainer from '../ui/TooltipContainer';
 import CustomImage from '../ui/CustomImage';
 import TooltipResponsive from '../ui/TooltipResponsive';
 

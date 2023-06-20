@@ -1,7 +1,7 @@
 import React from 'react';
 
 // Components
-import { TooltipContainer } from './Tooltips';
+import TooltipContainer from './TooltipContainer';
 import TooltipResponsive from './TooltipResponsive';
 
 type Props = {
@@ -22,14 +22,14 @@ const ProgressTileBar = ({ tooltipContent, totalBlocks }: Props) => {
                 <div className='flex gap-x-2 bg-[#FEE351] px-2 py-1.5 w-fit rounded-2xl border-2 border-[#D88D1C] mx-auto'>
                     <div className='flex flex-col justify-center'>
                         <div className='flex gap-x-px'>
-                            {totalBlocks.map((element, idx) => (
+                            {totalBlocks?.map((element, idx) => (
                                 <div
                                     key={idx}
                                     className={`w-[3px] h-2.5 ${element === 1 ? 'bg-green-500' : 'bg-red-500'}`}
                                 />
                             ))}
 
-                            {totalBlocks.length < 32 && addBars(Array(32 - totalBlocks.length).fill(1))}
+                            {totalBlocks?.length < 32 && addBars(Array(32 - totalBlocks.length).fill(1))}
                         </div>
                     </div>
 

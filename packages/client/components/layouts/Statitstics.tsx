@@ -10,9 +10,10 @@ import EpochsContext from '../../contexts/epochs/EpochsContext';
 import ProgressTileBar from '../ui/ProgressTileBar';
 import ProgressSmoothBar from '../ui/ProgressSmoothBar';
 import Loader from '../ui/Loader';
-import { TooltipContainer, TooltipContentContainerHeaders } from '../ui/Tooltips';
+import TooltipContainer from '../ui/TooltipContainer';
 import CustomImage from '../ui/CustomImage';
 import LinkIcon from '../ui/LinkIcon';
+import TooltipResponsive from '../ui/TooltipResponsive';
 
 // Types
 import { Epoch, Block } from '../../types';
@@ -206,11 +207,20 @@ const Statitstics = () => {
                                 width={24}
                                 height={24}
                             />
-                            <TooltipContentContainerHeaders>
-                                <span>Time at which the epoch</span>
-                                <span>should have started</span>
-                                <span>(calculated since genesis)</span>
-                            </TooltipContentContainerHeaders>
+
+                            <TooltipResponsive
+                                width={220}
+                                backgroundColor='white'
+                                colorLetter='black'
+                                content={
+                                    <>
+                                        <span>Time at which the slot</span>
+                                        <span>should have passed</span>
+                                        <span>(calculated since genesis)</span>
+                                    </>
+                                }
+                                top='34px'
+                            />
                         </TooltipContainer>
                     </div>
 
@@ -230,11 +240,20 @@ const Statitstics = () => {
                                 width={24}
                                 height={24}
                             />
-                            <TooltipContentContainerHeaders>
-                                <span>Proposed Blocks out of 32</span>
-                                <span>vs</span>
-                                <span>Missed Blocks</span>
-                            </TooltipContentContainerHeaders>
+
+                            <TooltipResponsive
+                                width={220}
+                                backgroundColor='white'
+                                colorLetter='black'
+                                content={
+                                    <>
+                                        <span>Proposed Blocks out of 32</span>
+                                        <span>vs</span>
+                                        <span>Missed Blocks</span>
+                                    </>
+                                }
+                                top='34px'
+                            />
                         </TooltipContainer>
                     </div>
 
@@ -258,7 +277,7 @@ const Statitstics = () => {
                 </div>
 
                 <div className='flex flex-col w-full'>
-                    <div className='flex flex-col gap-x-1 items-center mb-1'>
+                    <div className='flex gap-x-1 items-center justify-center mb-1'>
                         <p className='text-xs mt-1'>Attestation Accuracy</p>
                         <TooltipContainer>
                             <CustomImage
@@ -267,11 +286,21 @@ const Statitstics = () => {
                                 width={24}
                                 height={24}
                             />
-                            <TooltipContentContainerHeaders>
-                                <span>Correctly Attested Flag Count</span>
-                                <span>vs</span>
-                                <span>Expected Attesting Flag Count</span>
-                            </TooltipContentContainerHeaders>
+
+                            <TooltipResponsive
+                                width={250}
+                                backgroundColor='white'
+                                colorLetter='black'
+                                content={
+                                    <>
+                                        <span>Correctly Attested Flag Count</span>
+                                        <span>vs</span>
+                                        <span>Expected Attesting Flag Count</span>
+                                    </>
+                                }
+                                top='34px'
+                                polygonRight
+                            />
                         </TooltipContainer>
                     </div>
 
@@ -281,7 +310,7 @@ const Statitstics = () => {
                 </div>
 
                 <div className='flex flex-col w-full'>
-                    <div className='flex flex-col gap-x-1 items-center mb-1'>
+                    <div className='flex gap-x-1 items-center justify-center mb-1'>
                         <p className='text-xs mt-1'>Voting Participation</p>
 
                         <TooltipContainer>
@@ -292,11 +321,20 @@ const Statitstics = () => {
                                 height={24}
                             />
 
-                            <TooltipContentContainerHeaders>
-                                <span>Attesting Balance</span>
-                                <span>vs</span>
-                                <span>Total Active Balance</span>
-                            </TooltipContentContainerHeaders>
+                            <TooltipResponsive
+                                width={200}
+                                backgroundColor='white'
+                                colorLetter='black'
+                                content={
+                                    <>
+                                        <span>Attesting Balance</span>
+                                        <span>vs</span>
+                                        <span>Total Active Balance</span>
+                                    </>
+                                }
+                                top='34px'
+                                polygonRight
+                            />
                         </TooltipContainer>
                     </div>
 
@@ -328,11 +366,21 @@ const Statitstics = () => {
                             width={24}
                             height={24}
                         />
-                        <TooltipContentContainerHeaders leftSide>
-                            <span>Time at which the epoch</span>
-                            <span>should have started</span>
-                            <span>(calculated since genesis)</span>
-                        </TooltipContentContainerHeaders>
+
+                        <TooltipResponsive
+                            width={220}
+                            backgroundColor='white'
+                            colorLetter='black'
+                            content={
+                                <>
+                                    <span>Time at which the slot</span>
+                                    <span>should have passed</span>
+                                    <span>(calculated since genesis)</span>
+                                </>
+                            }
+                            top='34px'
+                            polygonLeft
+                        />
                     </TooltipContainer>
                 </div>
 
@@ -345,9 +393,14 @@ const Statitstics = () => {
                             width={24}
                             height={24}
                         />
-                        <TooltipContentContainerHeaders epoch>
-                            <span>Epoch number</span>
-                        </TooltipContentContainerHeaders>
+
+                        <TooltipResponsive
+                            width={130}
+                            backgroundColor='white'
+                            colorLetter='black'
+                            content={<span>Epoch number</span>}
+                            top='34px'
+                        />
                     </TooltipContainer>
                 </div>
 
@@ -360,11 +413,20 @@ const Statitstics = () => {
                             width={24}
                             height={24}
                         />
-                        <TooltipContentContainerHeaders>
-                            <span>Proposed Blocks out of 32</span>
-                            <span>vs</span>
-                            <span>Missed Blocks</span>
-                        </TooltipContentContainerHeaders>
+
+                        <TooltipResponsive
+                            width={220}
+                            backgroundColor='white'
+                            colorLetter='black'
+                            content={
+                                <>
+                                    <span>Proposed Blocks out of 32</span>
+                                    <span>vs</span>
+                                    <span>Missed Blocks</span>
+                                </>
+                            }
+                            top='34px'
+                        />
                     </TooltipContainer>
                 </div>
 
@@ -377,11 +439,20 @@ const Statitstics = () => {
                             width={24}
                             height={24}
                         />
-                        <TooltipContentContainerHeaders>
-                            <span>Correctly Attested Flag Count</span>
-                            <span>vs</span>
-                            <span>Expected Attesting Flag Count</span>
-                        </TooltipContentContainerHeaders>
+
+                        <TooltipResponsive
+                            width={240}
+                            backgroundColor='white'
+                            colorLetter='black'
+                            content={
+                                <>
+                                    <span>Correctly Attested Flag Count</span>
+                                    <span>vs</span>
+                                    <span>Expected Attesting Flag Count</span>
+                                </>
+                            }
+                            top='34px'
+                        />
                     </TooltipContainer>
                 </div>
 
@@ -394,11 +465,21 @@ const Statitstics = () => {
                             width={24}
                             height={24}
                         />
-                        <TooltipContentContainerHeaders rightSide>
-                            <span>Attesting Balance</span>
-                            <span>vs</span>
-                            <span>Total Active Balance</span>
-                        </TooltipContentContainerHeaders>
+
+                        <TooltipResponsive
+                            width={180}
+                            backgroundColor='white'
+                            colorLetter='black'
+                            content={
+                                <>
+                                    <span>Attesting Balance</span>
+                                    <span>vs</span>
+                                    <span>Total Active Balance</span>
+                                </>
+                            }
+                            top='34px'
+                            polygonRight
+                        />
                     </TooltipContainer>
                 </div>
             </div>
@@ -612,11 +693,20 @@ const Statitstics = () => {
                                         width={24}
                                         height={24}
                                     />
-                                    <TooltipContentContainerHeaders>
-                                        <span>Time at which the epoch</span>
-                                        <span>should have started</span>
-                                        <span>(calculated since genesis)</span>
-                                    </TooltipContentContainerHeaders>
+
+                                    <TooltipResponsive
+                                        width={220}
+                                        backgroundColor='white'
+                                        colorLetter='black'
+                                        content={
+                                            <>
+                                                <span>Time at which the slot</span>
+                                                <span>should have passed</span>
+                                                <span>(calculated since genesis)</span>
+                                            </>
+                                        }
+                                        top='34px'
+                                    />
                                 </TooltipContainer>
                             </div>
                             <div>
@@ -635,11 +725,20 @@ const Statitstics = () => {
                                         width={24}
                                         height={24}
                                     />
-                                    <TooltipContentContainerHeaders>
-                                        <span>Proposed Blocks out of 32</span>
-                                        <span>vs</span>
-                                        <span>Missed Blocks</span>
-                                    </TooltipContentContainerHeaders>
+
+                                    <TooltipResponsive
+                                        width={220}
+                                        backgroundColor='white'
+                                        colorLetter='black'
+                                        content={
+                                            <>
+                                                <span>Proposed Blocks out of 32</span>
+                                                <span>vs</span>
+                                                <span>Missed Blocks</span>
+                                            </>
+                                        }
+                                        top='34px'
+                                    />
                                 </TooltipContainer>
                             </div>
                             <div>
@@ -656,7 +755,7 @@ const Statitstics = () => {
                         </div>
 
                         <div className='flex flex-col w-full gap-y-2'>
-                            <div className='flex flex-col gap-x-1 items-center mb-1'>
+                            <div className='flex gap-x-1 items-center justify-center mb-1'>
                                 <p className='text-xs mt-1'>Attestation Accuracy</p>
                                 <TooltipContainer>
                                     <CustomImage
@@ -665,11 +764,21 @@ const Statitstics = () => {
                                         width={24}
                                         height={24}
                                     />
-                                    <TooltipContentContainerHeaders>
-                                        <span>Correctly Attested Flag Count</span>
-                                        <span>vs</span>
-                                        <span>Expected Attesting Flag Count</span>
-                                    </TooltipContentContainerHeaders>
+
+                                    <TooltipResponsive
+                                        width={240}
+                                        backgroundColor='white'
+                                        colorLetter='black'
+                                        content={
+                                            <>
+                                                <span>Correctly Attested Flag Count</span>
+                                                <span>vs</span>
+                                                <span>Expected Attesting Flag Count</span>
+                                            </>
+                                        }
+                                        top='34px'
+                                        polygonRight
+                                    />
                                 </TooltipContainer>
                             </div>
                             <ProgressSmoothBar
@@ -719,7 +828,7 @@ const Statitstics = () => {
                         </div>
 
                         <div className='flex flex-col w-full gap-y-2'>
-                            <div className='flex flex-col gap-x-1 items-center mb-1'>
+                            <div className='flex gap-x-1 items-center justify-center mb-1'>
                                 <p className='text-xs mt-1'>Voting Participation</p>
                                 <TooltipContainer>
                                     <CustomImage
@@ -728,13 +837,24 @@ const Statitstics = () => {
                                         width={24}
                                         height={24}
                                     />
-                                    <TooltipContentContainerHeaders>
-                                        <span>Attesting Balance</span>
-                                        <span>vs</span>
-                                        <span>Total Active Balance</span>
-                                    </TooltipContentContainerHeaders>
+
+                                    <TooltipResponsive
+                                        width={180}
+                                        backgroundColor='white'
+                                        colorLetter='black'
+                                        content={
+                                            <>
+                                                <span>Attesting Balance</span>
+                                                <span>vs</span>
+                                                <span>Total Active Balance</span>
+                                            </>
+                                        }
+                                        top='34px'
+                                        polygonRight
+                                    />
                                 </TooltipContainer>
                             </div>
+
                             <ProgressSmoothBar
                                 title='Attesting/total active'
                                 color='#0016D8'

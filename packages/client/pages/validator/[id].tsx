@@ -16,8 +16,6 @@ import BlockGif from '../../components/ui/BlockGif';
 import TabHeader from '../../components/ui/TabHeader';
 import Animation from '../../components/layouts/Animation';
 import ProgressSmoothBar from '../../components/ui/ProgressSmoothBar';
-import { TooltipContainer, TooltipContentContainerHeaders } from '../../components/ui/Tooltips';
-import CustomImage from '../../components/ui/CustomImage';
 import Loader from '../../components/ui/Loader';
 
 // Types
