@@ -1,7 +1,7 @@
 import React from 'react';
 
 // Components
-import { TooltipContainer } from './Tooltips';
+import TooltipContainer from './TooltipContainer';
 import TooltipResponsive from './TooltipResponsive';
 
 type Props = {
