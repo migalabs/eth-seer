@@ -120,7 +120,7 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
                                     {getBlockImage(block)}
 
                                     <TooltipResponsive
-                                        width={200}
+                                        width={225}
                                         colorLetter='black'
                                         backgroundColor='white'
                                         content={
