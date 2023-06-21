@@ -64,7 +64,7 @@ export default function Home() {
 
                     <ChainOverview />
 
-                    <div className='mt-3'>
+                    <div className='mt-8'>
                         <Statitstics />
                     </div>
                 </Layout>
