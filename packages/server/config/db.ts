@@ -1,4 +1,5 @@
 import { Client } from 'pg';
+import { EventEmitter } from 'node:events';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -24,3 +25,22 @@ export const dbConnection = async () => {
         throw new Error('Error when trying to connect to the DB');
     }
 }
+
+class MyEmitter extends EventEmitter {}
+export const pgListener = new MyEmitter();
+
+const startListeners = async () => {
+    
+    pgClient.query('LISTEN new_head');
+    pgClient.query('LISTEN new_epoch_finalized');
+
+    pgClient.on('notification', (msg) => {
+        if (msg.channel === 'new_head') {
+            pgListener.emit('new_head', msg);
+        } else if (msg.channel === 'new_epoch_finalized') {
+            pgListener.emit('new_epoch_finalized', msg);
+        }
+    });
+}
+
+startListeners();
