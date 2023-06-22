@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { pgClient } from '../config/db';
+import { pgClient, pgListener } from '../config/db';
 
 export const getEpochsStatistics = async (req: Request, res: Response) => {
 
@@ -439,23 +439,11 @@ export const listenBlockNotification = async (req: Request, res: Response) => {
             'Connection': 'keep-alive'
         });
 
-        await pgClient.query('LISTEN new_head');
-
-        let isProcessing = false;
-        
-        pgClient.on('notification', (msg) => {
-            if (msg.channel === 'new_head') {
-                if(isProcessing){
-                    return;
-                }
-                isProcessing = true;
-                res.write('event: new_block\n');
-                res.write(`data: ${msg.payload}`);
-                res.write('\n\n', () => {
-                    res.end();
-                    isProcessing = false;
-                });
-            }
+        pgListener.once('new_head', msg => {
+            res.write('event: new_block\n');
+            res.write(`data: ${msg.payload}`);
+            res.write('\n\n');
+            res.end();
         });
 
     } catch (error) {
@@ -476,24 +464,11 @@ export const listenEpochNotification = async (req: Request, res: Response) => {
             'Connection': 'keep-alive'
         });
 
-        await pgClient.query('LISTEN new_epoch_finalized');
-
-        let isProcessing = false;
-
-        pgClient.on('notification', (msg) => {
-            if (msg.channel === 'new_epoch_finalized') {
-                if (isProcessing) {
-                    return;
-                }
-
-                isProcessing = true;
-                res.write('event: new_epoch\n');
-                res.write(`data: ${msg.payload}`);
-                res.write('\n\n', () => {
-                    res.end();
-                    isProcessing = false;
-                });
-            }
+        pgListener.once('new_epoch_finalized', msg => {
+            res.write('event: new_epoch\n');
+            res.write(`data: ${msg.payload}`);
+            res.write('\n\n');
+            res.end();
         });
 
     } catch (error) {
