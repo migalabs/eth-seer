@@ -41,7 +41,6 @@ export type Block = {
     f_att_slashings?: number;
     f_attestations?: number;
     f_deposits?: number;
-    f_el_base_fee_per_gas?: number;
     f_el_block_hash?: string;
     f_el_fee_recp?: string;
     f_el_gas_limit?: number;
@@ -51,7 +50,6 @@ export type Block = {
     f_sync_bits?: number;
     f_timestamp: number;
     f_voluntary_exits?: number;
-    withdrawals: Array<Withdrawal>;
 };
 
 export type Slot = {

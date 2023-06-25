@@ -158,10 +158,15 @@ export const getBlockById = async (req: Request, res: Response) => {
 
         const { id } = req.params;
 
-        const [ block, proposerDuties, withdrawals ] = 
+        const [ block, proposerDuties ] = 
             await Promise.all([
                 pgClient.query(`
-                    SELECT t_block_metrics.*, t_eth2_pubkeys.f_pool_name
+                    SELECT t_block_metrics.f_timestamp, t_block_metrics.f_epoch, t_block_metrics.f_slot,
+                    t_block_metrics.f_graffiti, t_block_metrics.f_proposer_index, t_block_metrics.f_proposed,
+                    t_block_metrics.f_attestations, t_block_metrics.f_deposits, t_block_metrics.f_proposer_slashings,
+                    t_block_metrics.f_att_slashings, t_block_metrics.f_voluntary_exits, t_block_metrics.f_sync_bits,
+                    t_block_metrics.f_el_fee_recp, t_block_metrics.f_el_gas_limit, t_block_metrics.f_el_gas_used,
+                    t_block_metrics.f_el_transactions, t_eth2_pubkeys.f_pool_name
                     FROM t_block_metrics
                     LEFT OUTER JOIN t_eth2_pubkeys ON t_block_metrics.f_proposer_index = t_eth2_pubkeys.f_val_idx
                     WHERE f_slot = '${id}'
@@ -170,12 +175,7 @@ export const getBlockById = async (req: Request, res: Response) => {
                     SELECT f_proposed
                     FROM t_proposer_duties
                     WHERE f_proposer_slot = '${id}'
-                `),
-                pgClient.query(`
-                    SELECT f_val_idx, f_address, f_amount
-                    FROM t_withdrawals
-                    WHERE f_slot = '${id}'
-                `),                
+                `),          
             ]);
 
         if (block.rows[0]) {
@@ -186,12 +186,36 @@ export const getBlockById = async (req: Request, res: Response) => {
             res.json({
                 block: {
                     ...block.rows[0],
-                    withdrawals: withdrawals.rows,
                 },
             });
         } else {
             res.json({});
         }
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            msg: 'An error occurred on the server'
+        });
+    }
+};
+
+export const getWithdrawalsByBlockId = async (req: Request, res: Response) => {
+
+    try {
+
+        const { id } = req.params;
+
+        const withdrawals = 
+            await pgClient.query(`
+                SELECT f_val_idx, f_address, f_amount
+                FROM t_withdrawals
+                WHERE f_slot = '${id}'
+            `);
+
+        res.json({
+            withdrawals: withdrawals.rows,
+        });
 
     } catch (error) {
         console.log(error);

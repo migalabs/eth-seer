@@ -6,6 +6,7 @@ import {
     getBlocks,
     getBlocksByGraffiti,
     getBlockById,
+    getWithdrawalsByBlockId,
     listenBlockNotification,
     listenEpochNotification,
     getEpoch,
@@ -30,6 +31,11 @@ router.get('/block/:id', [
     check('id').isInt({ min: 0, max: 2147483647 }),
     checkFields,
 ], getBlockById);
+
+router.get('/block/:id/withdrawals', [
+    check('id').isInt({ min: 0, max: 2147483647 }),
+    checkFields,
+], getWithdrawalsByBlockId);
 
 router.get('/epoch/:id', [
     check('id').isInt({ min: 0, max: 2147483647 }),
