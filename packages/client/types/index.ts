@@ -8,8 +8,6 @@ export type Epoch = {
     f_missing_source: number;
     f_missing_target: number;
     f_missing_head: number;
-    reward_average?: string;
-    max_reward_average?: string;
     proposed_blocks: Array<number>;
     f_slots?: Array<Slot>;
     withdrawals?: number;
