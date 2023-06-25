@@ -9,7 +9,7 @@ export const getEpochsStatistics = async (req: Request, res: Response) => {
 
         const skip = Number(page) * Number(limit);
 
-        const [ epochsStats, rewardsStats, blocksStats ] =
+        const [ epochsStats, blocksStats ] =
          await Promise.all([
             pgClient.query(`
                 SELECT f_epoch, f_slot, f_num_att_vals, f_num_vals, 
@@ -19,25 +19,6 @@ export const getEpochsStatistics = async (req: Request, res: Response) => {
                 ORDER BY f_epoch DESC
                 OFFSET ${skip}
                 LIMIT ${Number(limit)}
-            `),
-            pgClient.query(`
-                SELECT AVG(f_reward) AS reward_average, AVG(f_max_reward) AS max_reward_average, f_epoch
-                FROM (
-                    SELECT f_val_idx, f_reward, f_max_reward, f_epoch
-                    FROM t_validator_rewards_summary
-                    WHERE f_epoch IN (
-                        SELECT DISTINCT(f_epoch)
-                        FROM t_epoch_metrics_summary
-                        ORDER BY f_epoch DESC
-                        OFFSET ${skip}
-                        LIMIT ${Number(limit)}
-                    )
-                    ORDER BY f_epoch DESC
-                ) t1
-                LEFT JOIN t_proposer_duties ON t1.f_val_idx = t_proposer_duties.f_val_idx AND t1.f_epoch = t_proposer_duties.f_proposer_slot/32
-                WHERE t_proposer_duties.f_val_idx IS null
-                GROUP BY t1.f_epoch
-                ORDER BY f_epoch desc
             `),
             pgClient.query(`
                 SELECT (f_proposer_slot/32) AS epoch, 
@@ -53,19 +34,16 @@ export const getEpochsStatistics = async (req: Request, res: Response) => {
         let arrayEpochs = [];
 
         epochsStats.rows.forEach((epoch: any) => { 
-            const aux = rewardsStats.rows.find((reward: any) => reward.f_epoch === epoch.f_epoch);
-            const aux2 = blocksStats.rows.find((blocks: any) => blocks.epoch === epoch.f_epoch);
+            const aux = blocksStats.rows.find((blocks: any) => blocks.epoch === epoch.f_epoch);
             arrayEpochs.push({  
                 ...epoch, 
-                ...aux, 
-                ...aux2
+                ...aux,
             });
         });    
         
         res.json({
             epochsStats: arrayEpochs
         });
-
 
     } catch (error) {
         console.log(error);
