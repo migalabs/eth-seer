@@ -17,7 +17,7 @@ import TabHeader from '../../components/ui/TabHeader';
 import Loader from '../../components/ui/Loader';
 
 // Types
-import { Block } from '../../types';
+import { Block, Withdrawal } from '../../types';
 
 const firstBlock: number = Number(process.env.NEXT_PUBLIC_NETWORK_GENESIS);
 const zeroAddress = '0x0000000000000000000000000000000000000000000000000000000000000000';
@@ -85,10 +85,12 @@ const Slot = () => {
 
     // States
     const [block, setBlock] = useState<Block | null>(null);
+    const [withdrawals, setWithdrawals] = useState<Array<Withdrawal>>([]);
     const [existsBlock, setExistsBlock] = useState<boolean>(true);
     const [countdownText, setCountdownText] = useState<string>('');
     const [tabPageIndex, setTabPageIndex] = useState<number>(0);
-    const [loading, setLoading] = useState<boolean>(true);
+    const [loadingBlock, setLoadingBlock] = useState<boolean>(true);
+    const [loadingWithdrawals, setLoadingWithdrawals] = useState<boolean>(true);
 
     // UseEffect
     useEffect(() => {
@@ -98,6 +100,7 @@ const Slot = () => {
 
         if ((id && !block) || (block && block.f_slot !== Number(id))) {
             getBlock();
+            getWithdrawals();
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -116,7 +119,7 @@ const Slot = () => {
     // Get blocks
     const getBlock = async () => {
         try {
-            setLoading(true);
+            setLoadingBlock(true);
 
             const response = await axiosClient.get(`/api/validator-rewards-summary/block/${id}`);
 
@@ -130,7 +133,6 @@ const Slot = () => {
                     f_epoch: Math.floor(Number(id) / 32),
                     f_slot: Number(id),
                     f_timestamp: expectedTimestamp,
-                    withdrawals: [],
                 });
 
                 setExistsBlock(false);
@@ -158,7 +160,22 @@ const Slot = () => {
         } catch (error) {
             console.log(error);
         } finally {
-            setLoading(false);
+            setLoadingBlock(false);
+        }
+    };
+
+    // Get withdrawals
+    const getWithdrawals = async () => {
+        try {
+            setLoadingWithdrawals(true);
+
+            const response = await axiosClient.get(`/api/validator-rewards-summary/block/${id}/withdrawals`);
+
+            setWithdrawals(response.data.withdrawals);
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setLoadingWithdrawals(false);
         }
     };
 
@@ -444,44 +461,53 @@ const Slot = () => {
                     <p className='mt-0.5 w-1/3'>Amount</p>
                 </div>
 
-                <div
-                    className='flex flex-col gap-y-2 min-w-[400px] sm:min-w-[500px] text-sm text-[8px] sm:text-[10px] rounded-[22px] px-4 xl:px-8 py-3'
-                    style={{
-                        backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
-                        boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
-                    }}
-                >
-                    {block?.withdrawals?.map(element => (
-                        <div className='flex gap-x-4 py-1 uppercase text-center items-center' key={element.f_val_idx}>
-                            <div className='w-1/3'>
-                                <Link
-                                    href={{
-                                        pathname: '/validator/[id]',
-                                        query: {
-                                            id: element.f_val_idx,
-                                        },
-                                    }}
-                                    passHref
-                                    as={`/validator/${element.f_val_idx}`}
-                                    className='flex gap-x-1 items-center w-fit mx-auto'
-                                >
-                                    <p>{element.f_val_idx}</p>
-                                    <LinkIcon />
-                                </Link>
+                {loadingWithdrawals ? (
+                    <div className='mt-6'>
+                        <Loader />
+                    </div>
+                ) : (
+                    <div
+                        className='flex flex-col gap-y-2 min-w-[400px] sm:min-w-[500px] text-sm text-[8px] sm:text-[10px] rounded-[22px] px-4 xl:px-8 py-3'
+                        style={{
+                            backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
+                            boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
+                        }}
+                    >
+                        {withdrawals.map(element => (
+                            <div
+                                className='flex gap-x-4 py-1 uppercase text-center items-center'
+                                key={element.f_val_idx}
+                            >
+                                <div className='w-1/3'>
+                                    <Link
+                                        href={{
+                                            pathname: '/validator/[id]',
+                                            query: {
+                                                id: element.f_val_idx,
+                                            },
+                                        }}
+                                        passHref
+                                        as={`/validator/${element.f_val_idx}`}
+                                        className='flex gap-x-1 items-center w-fit mx-auto'
+                                    >
+                                        <p>{element.f_val_idx}</p>
+                                        <LinkIcon />
+                                    </Link>
+                                </div>
+                                <div className='w-1/3'>
+                                    <p>{getShortAddress(element?.f_address)}</p>
+                                </div>
+                                <p className='w-1/3'>{(element.f_amount / 10 ** 9).toLocaleString()} ETH</p>
                             </div>
-                            <div className='w-1/3'>
-                                <p>{getShortAddress(element?.f_address)}</p>
-                            </div>
-                            <p className='w-1/3'>{(element.f_amount / 10 ** 9).toLocaleString()} ETH</p>
-                        </div>
-                    ))}
+                        ))}
 
-                    {block?.withdrawals.length == 0 && (
-                        <div className='flex justify-center p-2'>
-                            <p className='uppercase'>No withdrawals</p>
-                        </div>
-                    )}
-                </div>
+                        {withdrawals.length == 0 && (
+                            <div className='flex justify-center p-2'>
+                                <p className='uppercase'>No withdrawals</p>
+                            </div>
+                        )}
+                    </div>
+                )}
             </div>
         );
     };
@@ -514,13 +540,13 @@ const Slot = () => {
                 </Link>
             </div>
 
-            {loading && (
+            {loadingBlock && (
                 <div className='mt-6'>
                     <Loader />
                 </div>
             )}
 
-            {block && getInformationView()}
+            {block && !loadingBlock && getInformationView()}
         </Layout>
     );
 };
