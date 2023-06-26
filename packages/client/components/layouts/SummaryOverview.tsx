@@ -17,9 +17,9 @@ const SummaryOverview = () => {
     const { themeMode } = React.useContext(ThemeModeContext) || {};
 
     return (
-        <div className='flex justify-center space-x-4 md:space-x-5 px-7 mb-5'>
+        <div className='flex justify-center mb-5'>
             <div
-                className='flex flex-row gap-10 items-center justify-around text-[10px] text-black rounded-[22px] px-3 py-4 md:left-[calc(50%-210px)] w-[calc(100%-2rem)] md:w-[1000px]'
+                className='grid grid-cols-2 md:grid-cols-4 gap-y-1 items-center justify-around text-center text-[10px] text-black rounded-[22px] px-3 py-4 md:w-[925px]'
                 style={{
                     backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
                     boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
@@ -28,7 +28,7 @@ const SummaryOverview = () => {
                 <p>Epoch: 100000</p>
                 <p>Slot: 100000</p>
                 <p>Block Height: 100000</p>
-                <p>Num. Validators: 100000</p>
+                <p>Validators: 100000</p>
             </div>
         </div>
     );
