@@ -9,9 +9,10 @@ import {
     getWithdrawalsByBlockId,
     listenBlockNotification,
     listenEpochNotification,
-    getEpoch,
+    getEpochById,
     getValidator,
     getEntity,
+    getSlotsByEpochId,
 } from '../controllers/validator-rewards-summary';
 
 import { checkFields } from '../middlewares/check-fields';
@@ -40,7 +41,12 @@ router.get('/block/:id/withdrawals', [
 router.get('/epoch/:id', [
     check('id').isInt({ min: 0, max: 2147483647 }),
     checkFields,
-], getEpoch);
+], getEpochById);
+
+router.get('/epoch/:id/slots', [
+    check('id').isInt({ min: 0, max: 2147483647 }),
+    checkFields,
+], getSlotsByEpochId);
 
 router.get('/validator/:id', [
     check('id').isInt({ min: 0, max: 2147483647 }),
