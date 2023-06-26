@@ -13,6 +13,8 @@ import {
     getValidator,
     getEntity,
     getSlotsByEpochId,
+    getProposedBlocksByValidatorId,
+    getWithdrawalsByValidatorId,
 } from '../controllers/validator-rewards-summary';
 
 import { checkFields } from '../middlewares/check-fields';
@@ -52,6 +54,16 @@ router.get('/validator/:id', [
     check('id').isInt({ min: 0, max: 2147483647 }),
     checkFields,
 ], getValidator);
+
+router.get('/validator/:id/proposed-blocks', [
+    check('id').isInt({ min: 0, max: 2147483647 }),
+    checkFields,
+], getProposedBlocksByValidatorId);
+
+router.get('/validator/:id/withdrawals', [
+    check('id').isInt({ min: 0, max: 2147483647 }),
+    checkFields,
+], getWithdrawalsByValidatorId);
 
 router.get('/entity/:name', [
     checkFields,
