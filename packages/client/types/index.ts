@@ -38,6 +38,7 @@ export type Block = {
     f_att_slashings?: number;
     f_attestations?: number;
     f_deposits?: number;
+    f_el_block_number?: number;
     f_el_block_hash?: string;
     f_el_fee_recp?: string;
     f_el_gas_limit?: number;

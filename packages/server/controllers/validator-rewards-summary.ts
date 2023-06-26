@@ -91,7 +91,7 @@ export const getBlocks = async (req: Request, res: Response) => {
                 `),
                 pgClient.query(`
                     SELECT t_block_metrics.f_epoch, t_block_metrics.f_slot, t_eth2_pubkeys.f_pool_name, t_block_metrics.f_proposed, t_block_metrics.f_proposer_index,
-                    t_block_metrics.f_graffiti
+                    t_block_metrics.f_graffiti, t_block_metrics.f_el_block_number
                     FROM t_block_metrics
                     LEFT OUTER JOIN t_eth2_pubkeys ON t_block_metrics.f_proposer_index = t_eth2_pubkeys.f_val_idx
                     WHERE t_block_metrics.f_epoch IN (
@@ -119,6 +119,29 @@ export const getBlocks = async (req: Request, res: Response) => {
         });
     }
 };
+
+export const getLastValidator = async (req: Request, res: Response) => {
+    try {
+    
+        const validator_idx = 
+            await pgClient.query(`
+                SELECT f_val_idx
+                FROM t_validator_last_status
+                ORDER BY f_val_idx DESC
+                LIMIT 1
+            `);
+
+        res.json({
+            f_val_idx: validator_idx.rows[0].f_val_idx,
+        });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            msg: 'An error occurred on the server'
+        });
+    }
+}
 
 export const getBlocksByGraffiti = async (req: Request, res: Response) => {
 

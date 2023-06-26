@@ -15,6 +15,7 @@ import {
     getSlotsByEpochId,
     getProposedBlocksByValidatorId,
     getWithdrawalsByValidatorId,
+    getLastValidator,
 } from '../controllers/validator-rewards-summary';
 
 import { checkFields } from '../middlewares/check-fields';
@@ -24,6 +25,8 @@ const router = Router();
 router.get('/', getEpochsStatistics);
 
 router.get('/blocks', getBlocks);
+
+router.get('/validator', getLastValidator);
 
 router.get('/blocks/graffiti/:id', [
     check('id').notEmpty().withMessage('Graffiti is required'),
