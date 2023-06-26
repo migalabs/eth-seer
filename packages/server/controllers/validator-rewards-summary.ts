@@ -225,13 +225,13 @@ export const getWithdrawalsByBlockId = async (req: Request, res: Response) => {
     }
 };
 
-export const getEpoch = async (req: Request, res: Response) => {
+export const getEpochById = async (req: Request, res: Response) => {
 
     try {
 
         const { id } = req.params;
 
-        const [ epochStats, blocksProposed, slotsEpoch, withdrawals ] = 
+        const [ epochStats, blocksProposed, withdrawals ] = 
             await Promise.all([
                 pgClient.query(`
                     SELECT f_epoch, f_slot, f_num_att_vals, f_num_vals, 
@@ -246,6 +246,37 @@ export const getEpoch = async (req: Request, res: Response) => {
                     WHERE f_proposer_slot/32 = '${id}' AND f_proposed = true
                 `),
                 pgClient.query(`
+                    SELECT SUM(f_amount) AS total_withdrawals
+                    FROM t_withdrawals
+                    WHERE f_slot/32 = '${id}'
+                `),
+            ]);
+
+        res.json({
+            epoch: {
+                ...epochStats.rows[0],
+                ...blocksProposed.rows[0],
+                withdrawals: withdrawals.rows[0].total_withdrawals,
+            }
+        });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            msg: 'An error occurred on the server'
+        });
+    }
+};
+
+export const getSlotsByEpochId = async (req: Request, res: Response) => {
+
+    try {
+
+        const { id } = req.params;
+
+        const [ slotsEpoch, withdrawals ] = 
+            await Promise.all([
+                pgClient.query(`
                     SELECT t_proposer_duties.*, t_eth2_pubkeys.f_pool_name
                     FROM t_proposer_duties
                     LEFT OUTER JOIN t_eth2_pubkeys ON t_proposer_duties.f_val_idx = t_eth2_pubkeys.f_val_idx
@@ -259,28 +290,16 @@ export const getEpoch = async (req: Request, res: Response) => {
                 `)
             ]);
 
-        const f_slots = slotsEpoch.rows.map((slot: any) => {
-            return {
-                ...slot,
-                withdrawals: 
-                    withdrawals.rows
-                        .filter((withdrawal: any) => withdrawal.f_slot === slot.f_proposer_slot)
-                        .reduce((acc: number, withdrawal: any) => acc + Number(withdrawal.f_amount), 0),
-            };
-        });
-
-        let sumWithdrawals = 0;
-        withdrawals.rows.forEach((withdrawal: any) => {
-            sumWithdrawals += Number(withdrawal.f_amount);
-        });
+        const slots = slotsEpoch.rows.map((slot: any) => ({
+            ...slot,
+            withdrawals: 
+                withdrawals.rows
+                    .filter((withdrawal: any) => withdrawal.f_slot === slot.f_proposer_slot)
+                    .reduce((acc: number, withdrawal: any) => acc + Number(withdrawal.f_amount), 0),
+        }));
 
         res.json({
-            epoch: {
-                ...epochStats.rows[0],
-                ...blocksProposed.rows[0], 
-                f_slots,
-                withdrawals: sumWithdrawals
-            }
+            slots
         });
 
     } catch (error) {

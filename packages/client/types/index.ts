@@ -9,7 +9,6 @@ export type Epoch = {
     f_missing_target: number;
     f_missing_head: number;
     proposed_blocks: Array<number>;
-    f_slots?: Array<Slot>;
     withdrawals?: number;
 };
 
