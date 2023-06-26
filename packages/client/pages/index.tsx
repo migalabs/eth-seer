@@ -62,7 +62,7 @@ export default function Home() {
             {status && status.working ? (
                 <Layout isMain>
                     <SearchEngine />
-                    
+
                     <SummaryOverview />
 
                     <ChainOverview />
