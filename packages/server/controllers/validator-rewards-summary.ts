@@ -9,7 +9,7 @@ export const getEpochsStatistics = async (req: Request, res: Response) => {
 
         const skip = Number(page) * Number(limit);
 
-        const [ epochsStats, rewardsStats, blocksStats ] =
+        const [ epochsStats, blocksStats ] =
          await Promise.all([
             pgClient.query(`
                 SELECT f_epoch, f_slot, f_num_att_vals, f_num_vals, 
@@ -19,25 +19,6 @@ export const getEpochsStatistics = async (req: Request, res: Response) => {
                 ORDER BY f_epoch DESC
                 OFFSET ${skip}
                 LIMIT ${Number(limit)}
-            `),
-            pgClient.query(`
-                SELECT AVG(f_reward) AS reward_average, AVG(f_max_reward) AS max_reward_average, f_epoch
-                FROM (
-                    SELECT f_val_idx, f_reward, f_max_reward, f_epoch
-                    FROM t_validator_rewards_summary
-                    WHERE f_epoch IN (
-                        SELECT DISTINCT(f_epoch)
-                        FROM t_epoch_metrics_summary
-                        ORDER BY f_epoch DESC
-                        OFFSET ${skip}
-                        LIMIT ${Number(limit)}
-                    )
-                    ORDER BY f_epoch DESC
-                ) t1
-                LEFT JOIN t_proposer_duties ON t1.f_val_idx = t_proposer_duties.f_val_idx AND t1.f_epoch = t_proposer_duties.f_proposer_slot/32
-                WHERE t_proposer_duties.f_val_idx IS null
-                GROUP BY t1.f_epoch
-                ORDER BY f_epoch desc
             `),
             pgClient.query(`
                 SELECT (f_proposer_slot/32) AS epoch, 
@@ -53,19 +34,16 @@ export const getEpochsStatistics = async (req: Request, res: Response) => {
         let arrayEpochs = [];
 
         epochsStats.rows.forEach((epoch: any) => { 
-            const aux = rewardsStats.rows.find((reward: any) => reward.f_epoch === epoch.f_epoch);
-            const aux2 = blocksStats.rows.find((blocks: any) => blocks.epoch === epoch.f_epoch);
+            const aux = blocksStats.rows.find((blocks: any) => blocks.epoch === epoch.f_epoch);
             arrayEpochs.push({  
                 ...epoch, 
-                ...aux, 
-                ...aux2
+                ...aux,
             });
         });    
         
         res.json({
             epochsStats: arrayEpochs
         });
-
 
     } catch (error) {
         console.log(error);
@@ -180,10 +158,15 @@ export const getBlockById = async (req: Request, res: Response) => {
 
         const { id } = req.params;
 
-        const [ block, proposerDuties, withdrawals ] = 
+        const [ block, proposerDuties ] = 
             await Promise.all([
                 pgClient.query(`
-                    SELECT t_block_metrics.*, t_eth2_pubkeys.f_pool_name
+                    SELECT t_block_metrics.f_timestamp, t_block_metrics.f_epoch, t_block_metrics.f_slot,
+                    t_block_metrics.f_graffiti, t_block_metrics.f_proposer_index, t_block_metrics.f_proposed,
+                    t_block_metrics.f_attestations, t_block_metrics.f_deposits, t_block_metrics.f_proposer_slashings,
+                    t_block_metrics.f_att_slashings, t_block_metrics.f_voluntary_exits, t_block_metrics.f_sync_bits,
+                    t_block_metrics.f_el_fee_recp, t_block_metrics.f_el_gas_limit, t_block_metrics.f_el_gas_used,
+                    t_block_metrics.f_el_transactions, t_eth2_pubkeys.f_pool_name
                     FROM t_block_metrics
                     LEFT OUTER JOIN t_eth2_pubkeys ON t_block_metrics.f_proposer_index = t_eth2_pubkeys.f_val_idx
                     WHERE f_slot = '${id}'
@@ -192,12 +175,7 @@ export const getBlockById = async (req: Request, res: Response) => {
                     SELECT f_proposed
                     FROM t_proposer_duties
                     WHERE f_proposer_slot = '${id}'
-                `),
-                pgClient.query(`
-                    SELECT f_val_idx, f_address, f_amount
-                    FROM t_withdrawals
-                    WHERE f_slot = '${id}'
-                `),                
+                `),          
             ]);
 
         if (block.rows[0]) {
@@ -208,7 +186,6 @@ export const getBlockById = async (req: Request, res: Response) => {
             res.json({
                 block: {
                     ...block.rows[0],
-                    withdrawals: withdrawals.rows,
                 },
             });
         } else {
@@ -223,13 +200,38 @@ export const getBlockById = async (req: Request, res: Response) => {
     }
 };
 
-export const getEpoch = async (req: Request, res: Response) => {
+export const getWithdrawalsByBlockId = async (req: Request, res: Response) => {
 
     try {
 
         const { id } = req.params;
 
-        const [ epochStats, blocksProposed, slotsEpoch, withdrawals ] = 
+        const withdrawals = 
+            await pgClient.query(`
+                SELECT f_val_idx, f_address, f_amount
+                FROM t_withdrawals
+                WHERE f_slot = '${id}'
+            `);
+
+        res.json({
+            withdrawals: withdrawals.rows,
+        });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            msg: 'An error occurred on the server'
+        });
+    }
+};
+
+export const getEpochById = async (req: Request, res: Response) => {
+
+    try {
+
+        const { id } = req.params;
+
+        const [ epochStats, blocksProposed, withdrawals ] = 
             await Promise.all([
                 pgClient.query(`
                     SELECT f_epoch, f_slot, f_num_att_vals, f_num_vals, 
@@ -244,6 +246,37 @@ export const getEpoch = async (req: Request, res: Response) => {
                     WHERE f_proposer_slot/32 = '${id}' AND f_proposed = true
                 `),
                 pgClient.query(`
+                    SELECT SUM(f_amount) AS total_withdrawals
+                    FROM t_withdrawals
+                    WHERE f_slot/32 = '${id}'
+                `),
+            ]);
+
+        res.json({
+            epoch: {
+                ...epochStats.rows[0],
+                ...blocksProposed.rows[0],
+                withdrawals: withdrawals.rows[0].total_withdrawals,
+            }
+        });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            msg: 'An error occurred on the server'
+        });
+    }
+};
+
+export const getSlotsByEpochId = async (req: Request, res: Response) => {
+
+    try {
+
+        const { id } = req.params;
+
+        const [ slotsEpoch, withdrawals ] = 
+            await Promise.all([
+                pgClient.query(`
                     SELECT t_proposer_duties.*, t_eth2_pubkeys.f_pool_name
                     FROM t_proposer_duties
                     LEFT OUTER JOIN t_eth2_pubkeys ON t_proposer_duties.f_val_idx = t_eth2_pubkeys.f_val_idx
@@ -257,28 +290,16 @@ export const getEpoch = async (req: Request, res: Response) => {
                 `)
             ]);
 
-        const f_slots = slotsEpoch.rows.map((slot: any) => {
-            return {
-                ...slot,
-                withdrawals: 
-                    withdrawals.rows
-                        .filter((withdrawal: any) => withdrawal.f_slot === slot.f_proposer_slot)
-                        .reduce((acc: number, withdrawal: any) => acc + Number(withdrawal.f_amount), 0),
-            };
-        });
-
-        let sumWithdrawals = 0;
-        withdrawals.rows.forEach((withdrawal: any) => {
-            sumWithdrawals += Number(withdrawal.f_amount);
-        });
+        const slots = slotsEpoch.rows.map((slot: any) => ({
+            ...slot,
+            withdrawals: 
+                withdrawals.rows
+                    .filter((withdrawal: any) => withdrawal.f_slot === slot.f_proposer_slot)
+                    .reduce((acc: number, withdrawal: any) => acc + Number(withdrawal.f_amount), 0),
+        }));
 
         res.json({
-            epoch: {
-                ...epochStats.rows[0],
-                ...blocksProposed.rows[0], 
-                f_slots,
-                withdrawals: sumWithdrawals
-            }
+            slots
         });
 
     } catch (error) {
@@ -295,29 +316,15 @@ export const getValidator = async (req: Request, res: Response) => {
 
         const { id } = req.params;
 
-        const [ validatorStats, blocksProposed, validatorPerformance, withdrawals ] = 
+        const [ validatorStats, validatorPerformance ] = 
             await Promise.all([
                 pgClient.query(`
-                SELECT 
-                    t_validator_last_status.f_val_idx,
-                    t_validator_last_status.f_epoch,
-                    t_validator_last_status.f_balance_eth,
-                    t_eth2_pubkeys.f_pool_name,
-                    t_status.f_status
-                FROM 
-                    t_validator_last_status
-                LEFT OUTER JOIN 
-                    t_eth2_pubkeys ON t_validator_last_status.f_val_idx = t_eth2_pubkeys.f_val_idx
-                LEFT OUTER JOIN
-                    t_status ON t_validator_last_status.f_status = t_status.f_id
-                WHERE 
-                    t_validator_last_status.f_val_idx = '${id}'
-                `),
-                pgClient.query(`
-                    SELECT t_proposer_duties.*, t_eth2_pubkeys.f_pool_name
-                    FROM t_proposer_duties
-                    LEFT OUTER JOIN t_eth2_pubkeys ON t_proposer_duties.f_val_idx = t_eth2_pubkeys.f_val_idx
-                    WHERE t_proposer_duties.f_val_idx = '${id}'
+                    SELECT t_validator_last_status.f_val_idx, t_validator_last_status.f_epoch, 
+                    t_validator_last_status.f_balance_eth, t_eth2_pubkeys.f_pool_name, t_status.f_status
+                    FROM t_validator_last_status
+                    LEFT OUTER JOIN t_eth2_pubkeys ON t_validator_last_status.f_val_idx = t_eth2_pubkeys.f_val_idx
+                    LEFT OUTER JOIN t_status ON t_validator_last_status.f_status = t_status.f_id
+                    WHERE t_validator_last_status.f_val_idx = '${id}'
                 `),
                 pgClient.query(`
                     SELECT 
@@ -347,18 +354,67 @@ export const getValidator = async (req: Request, res: Response) => {
                     WHERE t_validator_rewards_summary.f_val_idx = '${id}'
                     GROUP BY t_validator_rewards_summary.f_val_idx;
                 `),
-                pgClient.query(`
-                    SELECT f_val_idx, f_slot/32 as f_epoch, f_slot, f_address, f_amount
-                    FROM t_withdrawals
-                    WHERE f_val_idx = '${id}'
-                    ORDER BY f_slot DESC
-                `)
             ]);
 
-            const validator = {...validatorStats.rows[0], proposed_blocks: blocksProposed.rows, ...validatorPerformance.rows[0], withdrawals: withdrawals.rows}
+        res.json({
+            validator: {
+                ...validatorStats.rows[0], 
+                ...validatorPerformance.rows[0],
+            }
+        });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            msg: 'An error occurred on the server'
+        });
+    }
+};
+
+export const getProposedBlocksByValidatorId = async (req: Request, res: Response) => {
+
+    try {
+
+        const { id } = req.params;
+
+        const proposedBlocks = 
+            await pgClient.query(`
+                SELECT t_proposer_duties.f_val_idx, t_proposer_duties.f_proposer_slot, t_proposer_duties.f_proposed, 
+                t_eth2_pubkeys.f_pool_name
+                FROM t_proposer_duties
+                LEFT OUTER JOIN t_eth2_pubkeys ON t_proposer_duties.f_val_idx = t_eth2_pubkeys.f_val_idx
+                WHERE t_proposer_duties.f_val_idx = '${id}'
+                ORDER BY t_proposer_duties.f_proposer_slot DESC
+            `);
 
         res.json({
-            validator
+            proposedBlocks: proposedBlocks.rows
+        });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            msg: 'An error occurred on the server'
+        });
+    }
+};
+
+export const getWithdrawalsByValidatorId = async (req: Request, res: Response) => {
+
+    try {
+
+        const { id } = req.params;
+
+        const withdrawals =
+            await pgClient.query(`
+                SELECT f_val_idx, f_slot/32 as f_epoch, f_slot, f_address, f_amount
+                FROM t_withdrawals
+                WHERE f_val_idx = '${id}'
+                ORDER BY f_slot DESC
+            `);
+
+        res.json({
+            withdrawals: withdrawals.rows
         });
 
     } catch (error) {

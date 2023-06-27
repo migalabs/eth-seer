@@ -19,7 +19,7 @@ import BlockImage from '../../components/ui/BlockImage';
 import Loader from '../../components/ui/Loader';
 
 // Types
-import { Epoch } from '../../types';
+import { Epoch, Slot } from '../../types';
 
 // Constants
 const firstBlock: number = Number(process.env.NEXT_PUBLIC_NETWORK_GENESIS); // 1606824023000
@@ -58,11 +58,12 @@ const EpochComponent = () => {
 
     // States
     const [epoch, setEpoch] = useState<Epoch | null>(null);
+    const [slots, setSlots] = useState<Slot[]>([]);
     const [animation, setAnimation] = useState(false);
-    const [existsEpoch, setExistsEpoch] = useState<boolean>(true);
     const [notEpoch, setNotEpoch] = useState<boolean>(false);
     const [desktopView, setDesktopView] = useState(true);
-    const [loading, setLoading] = useState(true);
+    const [loadingEpoch, setLoadingEpoch] = useState(true);
+    const [loadingSlots, setLoadingSlots] = useState(true);
 
     // UseEffect
     useEffect(() => {
@@ -72,6 +73,7 @@ const EpochComponent = () => {
 
         if ((id && !epoch) || (epoch && epoch.f_epoch !== Number(id))) {
             getEpoch();
+            getSlots();
         }
 
         setDesktopView(window !== undefined && window.innerWidth > 768);
@@ -81,7 +83,7 @@ const EpochComponent = () => {
 
     const getEpoch = async () => {
         try {
-            setLoading(true);
+            setLoadingEpoch(true);
 
             const response = await axiosClient.get(`/api/validator-rewards-summary/epoch/${id}`);
 
@@ -89,12 +91,10 @@ const EpochComponent = () => {
                 ...response.data.epoch,
             });
 
-            if (Number(response.data.epoch.proposed_blocks) == 0 && response.data.epoch.f_slots.length == 0) {
+            if (Number(response.data.epoch.proposed_blocks) === 0) {
                 setAnimation(true);
 
                 const expectedTimestamp = (firstBlock + Number(id) * 12000 * 32 + 12000 * 64) / 1000;
-
-                setExistsEpoch(false);
 
                 existsEpochRef.current = false;
 
@@ -116,7 +116,6 @@ const EpochComponent = () => {
                     setNotEpoch(true);
                 }
             } else {
-                setExistsEpoch(true);
                 setAnimation(false);
                 existsEpochRef.current = true;
             }
@@ -124,7 +123,21 @@ const EpochComponent = () => {
             console.log(error);
             setAnimation(true);
         } finally {
-            setLoading(false);
+            setLoadingEpoch(false);
+        }
+    };
+
+    const getSlots = async () => {
+        try {
+            setLoadingSlots(true);
+
+            const response = await axiosClient.get(`/api/validator-rewards-summary/epoch/${id}/slots`);
+
+            setSlots(response.data.slots);
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setLoadingSlots(false);
         }
     };
 
@@ -164,7 +177,7 @@ const EpochComponent = () => {
                         boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
                     }}
                 >
-                    {epoch?.f_slots?.map(element => (
+                    {slots.map(element => (
                         <div
                             className='flex gap-x-4 py-1 uppercase text-center items-center'
                             key={element.f_proposer_slot}
@@ -232,6 +245,12 @@ const EpochComponent = () => {
                             <p className='w-[18%]'>{(element.withdrawals / 10 ** 9).toLocaleString()} ETH</p>
                         </div>
                     ))}
+
+                    {slots.length === 0 && (
+                        <div className='flex justify-center p-2'>
+                            <p className='uppercase'>No slots</p>
+                        </div>
+                    )}
                 </div>
             </div>
         );
@@ -246,7 +265,7 @@ const EpochComponent = () => {
                     boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
                 }}
             >
-                {epoch?.f_slots?.map(element => (
+                {slots.map(element => (
                     <div className='flex flex-row gap-x-6 py-1 uppercase' key={element.f_proposer_slot}>
                         <div className='flex items-center'>
                             <BlockImage
@@ -320,6 +339,12 @@ const EpochComponent = () => {
                         </div>
                     </div>
                 ))}
+
+                {slots.length === 0 && (
+                    <div className='flex justify-center p-2'>
+                        <p className='uppercase'>No slots</p>
+                    </div>
+                )}
             </div>
         );
     };
@@ -484,20 +509,27 @@ const EpochComponent = () => {
                 </Link>
             </div>
 
-            {loading && (
+            {loadingEpoch && (
                 <div className='mt-6'>
                     <Loader />
                 </div>
             )}
 
-            {epoch && epoch.f_slots && epoch.f_slots.length > 0 && (
+            {!loadingEpoch && epoch && existsEpochRef.current && (
                 <div className='mx-auto max-w-[1100px]'>
                     <div>{getContentEpochStats()}</div>
-                    <div>{desktopView ? getContentSlots() : getContentSlotsMobile()}</div>
+
+                    {loadingSlots ? (
+                        <div className='mt-6'>
+                            <Loader />
+                        </div>
+                    ) : (
+                        <div>{desktopView ? getContentSlots() : getContentSlotsMobile()}</div>
+                    )}
                 </div>
             )}
 
-            {animation && <EpochAnimation notEpoch={notEpoch} />}
+            {!loadingEpoch && animation && <EpochAnimation notEpoch={notEpoch} />}
         </Layout>
     );
 };

@@ -25,7 +25,7 @@ const ProgressSmoothBar = ({
     width,
     widthTooltip,
 }: Props) => {
-    const widthInnerDiv = Number(percent * 100).toFixed(0);
+    const widthInnerDiv = percent > 0 ? Math.min(Number(percent * 100), 100).toFixed(0) : 100;
 
     return (
         <div className='text-center leading-4'>
