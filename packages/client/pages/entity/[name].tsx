@@ -29,7 +29,7 @@ const CardContent = ({ content, bg, color, rounded, isFixedWidth }: Props) => {
         <span
             className={`block uppercase border-2 px-5 ${
                 rounded ? 'rounded-2xl' : 'rounded-lg'
-            } font-bold leading-5 py-0.5 sm:py-1 ${isFixedWidth ? 'w-40 sm:w-48' : ''}`}
+            } font-bold leading-5 py-0.5 sm:py-1 ${isFixedWidth ? 'w-44 sm:w-52 md:w-auto' : ''}`}
             style={{ background: bg, borderColor: color, color: color }}
         >
             {content}
@@ -132,7 +132,7 @@ const EntityComponent = () => {
 
                             <div className='flex flex-col gap-y-1 xs:gap-y-5'>
                                 <p className='w-44 sm:w-60'>Number of Validators:</p>
-                                <div className='flex flex-col xl:flex-row items-center md:justify-center gap-x-4 gap-y-2'>
+                                <div className='flex flex-col md:flex-row items-center md:justify-center gap-x-4 gap-y-2'>
                                     <CardContent
                                         content={`Deposited: ${entity && entity.deposited?.toLocaleString()}`}
                                         bg='#98D3E6'
