@@ -8,10 +8,7 @@ export type Epoch = {
     f_missing_source: number;
     f_missing_target: number;
     f_missing_head: number;
-    reward_average?: string;
-    max_reward_average?: string;
     proposed_blocks: Array<number>;
-    f_slots?: Array<Slot>;
     withdrawals?: number;
 };
 
@@ -29,8 +26,6 @@ export type Validator = {
     count_attestations: number;
     proposed_blocks_performance: number;
     missed_blocks_performance: number;
-    proposed_blocks: Array<Slot>;
-    withdrawals: Array<Withdrawal>;
 };
 
 export type Block = {
@@ -43,7 +38,6 @@ export type Block = {
     f_att_slashings?: number;
     f_attestations?: number;
     f_deposits?: number;
-    f_el_base_fee_per_gas?: number;
     f_el_block_hash?: string;
     f_el_fee_recp?: string;
     f_el_gas_limit?: number;
@@ -53,7 +47,6 @@ export type Block = {
     f_sync_bits?: number;
     f_timestamp: number;
     f_voluntary_exits?: number;
-    withdrawals: Array<Withdrawal>;
 };
 
 export type Slot = {

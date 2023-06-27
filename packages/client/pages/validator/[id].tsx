@@ -19,7 +19,7 @@ import ProgressSmoothBar from '../../components/ui/ProgressSmoothBar';
 import Loader from '../../components/ui/Loader';
 
 // Types
-import { Validator } from '../../types';
+import { Validator, Slot, Withdrawal } from '../../types';
 
 // Constants
 const firstBlock: number = Number(process.env.NEXT_PUBLIC_NETWORK_GENESIS); // 1606824023000
@@ -57,10 +57,14 @@ const ValidatorComponent = () => {
 
     // States
     const [validator, setValidator] = useState<Validator | null>(null);
+    const [proposedBlocks, setProposedBlocks] = useState<Slot[]>([]);
+    const [withdrawals, setWithdrawals] = useState<Withdrawal[]>([]);
     const [animation, setAnimation] = useState(false);
     const [desktopView, setDesktopView] = useState(true);
     const [tabPageIndex, setTabPageIndex] = useState(0);
-    const [loading, setLoading] = useState(true);
+    const [loadingValidator, setLoadingValidator] = useState(true);
+    const [loadingProposedBlocks, setLoadingProposedBlocks] = useState(true);
+    const [loadingWithdrawals, setLoadingWithdrawals] = useState(true);
 
     // UseEffect
     useEffect(() => {
@@ -70,6 +74,8 @@ const ValidatorComponent = () => {
 
         if ((id && !validator) || (validator && validator.f_val_idx !== Number(id))) {
             getValidator();
+            getProposedBlocks();
+            getWithdrawals();
         }
 
         setDesktopView(window !== undefined && window.innerWidth > 768);
@@ -79,7 +85,7 @@ const ValidatorComponent = () => {
 
     const getValidator = async () => {
         try {
-            setLoading(true);
+            setLoadingValidator(true);
 
             const response = await axiosClient.get(`/api/validator-rewards-summary/validator/${id}`);
 
@@ -94,7 +100,35 @@ const ValidatorComponent = () => {
             console.log(error);
             setAnimation(true);
         } finally {
-            setLoading(false);
+            setLoadingValidator(false);
+        }
+    };
+
+    const getProposedBlocks = async () => {
+        try {
+            setLoadingProposedBlocks(true);
+
+            const response = await axiosClient.get(`/api/validator-rewards-summary/validator/${id}/proposed-blocks`);
+
+            setProposedBlocks(response.data.proposedBlocks);
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setLoadingProposedBlocks(false);
+        }
+    };
+
+    const getWithdrawals = async () => {
+        try {
+            setLoadingWithdrawals(true);
+
+            const response = await axiosClient.get(`/api/validator-rewards-summary/validator/${id}/withdrawals`);
+
+            setWithdrawals(response.data.withdrawals);
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setLoadingWithdrawals(false);
         }
     };
 
@@ -120,7 +154,7 @@ const ValidatorComponent = () => {
                     boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
                 }}
             >
-                {validator?.proposed_blocks?.map(element => (
+                {proposedBlocks.map(element => (
                     <div className='flex flex-row gap-x-6 py-1 uppercase' key={element.f_proposer_slot}>
                         <div className='flex items-center'>
                             <BlockImage
@@ -184,7 +218,7 @@ const ValidatorComponent = () => {
                     </div>
                 ))}
 
-                {validator?.proposed_blocks.length === 0 && (
+                {proposedBlocks.length === 0 && (
                     <div className='flex justify-center p-2'>
                         <p className='uppercase'>No proposed blocks</p>
                     </div>
@@ -214,7 +248,7 @@ const ValidatorComponent = () => {
                         boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
                     }}
                 >
-                    {validator?.proposed_blocks?.map(element => (
+                    {proposedBlocks.map(element => (
                         <div
                             className='flex gap-x-4 py-1 uppercase text-center items-center'
                             key={element.f_proposer_slot}
@@ -266,7 +300,7 @@ const ValidatorComponent = () => {
                         </div>
                     ))}
 
-                    {validator?.proposed_blocks.length === 0 && (
+                    {proposedBlocks.length === 0 && (
                         <div className='flex justify-center p-2'>
                             <p className='uppercase'>No proposed blocks</p>
                         </div>
@@ -297,7 +331,7 @@ const ValidatorComponent = () => {
                         boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
                     }}
                 >
-                    {validator?.withdrawals?.map((element, idx) => (
+                    {withdrawals.map((element, idx) => (
                         <div className='flex gap-x-4 py-1 uppercase text-center items-center' key={idx}>
                             <div className='w-[25%]'>
                                 <Link
@@ -338,7 +372,7 @@ const ValidatorComponent = () => {
                         </div>
                     ))}
 
-                    {validator?.withdrawals.length === 0 && (
+                    {withdrawals.length === 0 && (
                         <div className='flex justify-center p-2'>
                             <p className='uppercase'>No withdrawals</p>
                         </div>
@@ -357,7 +391,7 @@ const ValidatorComponent = () => {
                     boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
                 }}
             >
-                {validator?.withdrawals?.map((element, idx) => (
+                {withdrawals.map((element, idx) => (
                     <div className='flex flex-row gap-x-6 py-1 uppercase' key={idx}>
                         <div className='flex flex-col items-start '>
                             <div>
@@ -412,7 +446,7 @@ const ValidatorComponent = () => {
                     </div>
                 ))}
 
-                {validator?.withdrawals.length === 0 && (
+                {withdrawals.length === 0 && (
                     <div className='flex justify-center p-2'>
                         <p className='uppercase'>No withdrawals</p>
                     </div>
@@ -613,10 +647,26 @@ const ValidatorComponent = () => {
     const getSelectedTab = () => {
         switch (tabPageIndex) {
             case 0:
-                return desktopView ? getContentProposedBlocks() : getContentProposedBlocksMobile();
+                if (loadingProposedBlocks) {
+                    return (
+                        <div className='mt-6'>
+                            <Loader />
+                        </div>
+                    );
+                } else {
+                    return desktopView ? getContentProposedBlocks() : getContentProposedBlocksMobile();
+                }
 
             case 1:
-                return desktopView ? getContentWithdrawals() : getContentWithdrawalsMobile();
+                if (loadingWithdrawals) {
+                    return (
+                        <div className='mt-6'>
+                            <Loader />
+                        </div>
+                    );
+                } else {
+                    return desktopView ? getContentWithdrawals() : getContentWithdrawalsMobile();
+                }
         }
     };
 
@@ -628,13 +678,13 @@ const ValidatorComponent = () => {
                 </h1>
             </div>
 
-            {loading && (
+            {loadingValidator && (
                 <div className='mt-6'>
                     <Loader />
                 </div>
             )}
 
-            {validator?.f_val_idx && (
+            {!loadingValidator && validator && (
                 <div className='flex flex-col gap-4 mx-auto max-w-[1100px]'>
                     <div>{getContentValidator()}</div>
 
