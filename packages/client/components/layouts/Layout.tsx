@@ -23,7 +23,7 @@ const Layout = ({ children, isMain }: PropsWithChildren) => {
             <main className='mt-20 md:mt-4'>{children}</main>
 
             {isMain ? (
-                <footer className='text-center text-sm p-2.5 bg-[#D9D9D94D]'>
+                <footer className='text-center text-[7.5px] md:text-sm p-2.5 mt-2 bg-[#D9D9D94D]'>
                     <div className='flex flex-row justify-center '>
                         <p className='text-white uppercase mt-2'>Powered with</p>
                         <img className='' src={`${assetPrefix}/static/images/cookie_heart.svg`} />

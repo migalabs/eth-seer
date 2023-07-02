@@ -23,7 +23,7 @@ const Header = ({ isMain }: Props) => {
                     >
                         <CustomImage src='/static/images/ethseer_logo.svg' alt='Logo' width={50} height={50} />
 
-                        <p className='uppercase text-white text-xs mt-1 ml-2'>Ethseer.io</p>
+                        <p className='uppercase text-white text-2xs md:text-xs mt-1 ml-2'>Ethseer.io</p>
                     </div>
                 </Link>
             </div>
