@@ -70,7 +70,7 @@ const SummaryOverview = () => {
 
     const getLastValidator = async () => {
         const response = await axiosClient.get(`/api/validator-rewards-summary/validator`);
-        if (response.data.f_val_idx) setLastValidator(response.data.f_val_idx);
+        if (response.data.number_active_validators) setLastValidator(response.data.number_active_validators);
     };
 
     return (
