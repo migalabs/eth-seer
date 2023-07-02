@@ -125,14 +125,14 @@ export const getLastValidator = async (req: Request, res: Response) => {
     
         const validator_idx = 
             await pgClient.query(`
-                SELECT f_val_idx
+                SELECT COUNT(*) as number_active_validators
                 FROM t_validator_last_status
-                ORDER BY f_val_idx DESC
-                LIMIT 1
+                LEFT OUTER JOIN t_status ON t_status.f_id = t_validator_last_status.f_status
+                WHERE t_status.f_status = 'active'
             `);
 
         res.json({
-            f_val_idx: validator_idx.rows[0].f_val_idx,
+            number_active_validators: validator_idx.rows[0].number_active_validators,
         });
 
     } catch (error) {
