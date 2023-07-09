@@ -10,10 +10,10 @@ import CustomImage from '../ui/CustomImage';
 
 const ChainOverview = () => {
     // Theme Mode Context
-    const { themeMode } = React.useContext(ThemeModeContext) || {};
+    const { themeMode } = React.useContext(ThemeModeContext) ?? {};
 
     // Blocks Context
-    const { blocks, getBlocks } = React.useContext(BlocksContext) || {};
+    const { blocks, getBlocks } = React.useContext(BlocksContext) ?? {};
 
     // States
     const [lastEpoch, setLastEpoch] = useState(0);
@@ -108,7 +108,7 @@ const ChainOverview = () => {
             <div className='flex items-center mt-8'>
                 <CustomImage
                     src={themeMode?.darkMode ? '/static/images/arrow.svg' : '/static/images/arrow-blue.svg'}
-                    alt='Left arrow'
+                    alt='Right arrow'
                     width={30}
                     height={30}
                     onClick={() => arrowRightHidden || handleRight()}
