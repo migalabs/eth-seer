@@ -22,21 +22,19 @@ const Layout = ({ children, isMain }: PropsWithChildren) => {
 
             <main className='mt-20 md:mt-4 min-h-screen'>{children}</main>
 
-                <footer className='text-center text-[7.5px] md:text-sm p-2.5 mt-4 bg-[#D9D9D94D]'>
-                    <div className='flex flex-row justify-center '>
-                        <p className='text-white uppercase mt-2'>Powered with</p>
-                        <img className='' src={`${assetPrefix}/static/images/cookie_heart.svg`} />
-                        <p className='text-white uppercase mt-2 ml-1.5'>
-                            by&nbsp;
-                            <a className='underline' href='https://migalabs.io/' target='_blank' rel='noreferrer'>
-                                MigaLabs
-                            </a>
-                            &nbsp;® 2023-2024
-                        </p>
-                    </div>
-                </footer>
-           
-               
+            <footer className='text-center text-[7.5px] md:text-sm p-2.5 mt-4 bg-[#D9D9D94D]'>
+                <div className='flex flex-row justify-center '>
+                    <p className='text-white uppercase mt-2'>Powered with</p>
+                    <img className='' src={`${assetPrefix}/static/images/cookie_heart.svg`} />
+                    <p className='text-white uppercase mt-2 ml-1.5'>
+                        by&nbsp;
+                        <a className='underline' href='https://migalabs.io/' target='_blank' rel='noreferrer'>
+                            MigaLabs
+                        </a>
+                        &nbsp;® 2023-2024
+                    </p>
+                </div>
+            </footer>
 
             <Consent />
         </>
