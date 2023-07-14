@@ -16,17 +16,14 @@ const Header = ({ isMain }: Props) => {
             <div className='w-fit'>
                 <Link href='/' passHref>
                     <div
-                        className={
-                            isMain
-                                ? 'flex flex-row justify-start items-center p-2'
-                                : 'flex flex-row justify-start items-center p-2 bg-[#D9D9D94D] rounded-2xl  border-2 border-white mt-2 ml-2 hover:bg-[#202021e3]'
-                        }
+                        className={`flex flex-row justify-start items-center p-2 ${
+                            !isMain &&
+                            'bg-[#D9D9D94D] rounded-2xl  border-2 border-white mt-2 ml-2 hover:bg-[#202021e3]'
+                        }`}
                     >
                         <CustomImage src='/static/images/ethseer_logo.svg' alt='Logo' width={50} height={50} />
 
-                        <p className='uppercase text-white text-xs mt-1 ml-2'>
-                            Ethseer <br /> Stats
-                        </p>
+                        <p className='uppercase text-white text-2xs md:text-xs mt-1 ml-2'>Ethseer.io</p>
                     </div>
                 </Link>
             </div>
