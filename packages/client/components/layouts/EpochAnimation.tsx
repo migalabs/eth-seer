@@ -1,26 +1,23 @@
-import React from 'react';
+import React, { useContext } from 'react';
+
+// Contexts
+import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
 type Props = {
-    darkMode: boolean;
     notEpoch: boolean;
 };
 
-const EpochAnimation = ({ darkMode, notEpoch }: Props) => {
-    const assetPrefix = process.env.NEXT_PUBLIC_ASSET_PREFIX || '';
+const EpochAnimation = ({ notEpoch }: Props) => {
+    const assetPrefix = process.env.NEXT_PUBLIC_ASSET_PREFIX ?? '';
 
-    const getTextImageName = () => {
+    // Theme Mode Context
+    const { themeMode } = useContext(ThemeModeContext) ?? {};
+
+    const getText = () => {
         if (notEpoch) {
-            if (darkMode) {
-                return 'text2-white.png';
-            } else {
-                return 'text2.png';
-            }
+            return 'Epoch not saved yet';
         } else {
-            if (darkMode) {
-                return 'text-white.png';
-            } else {
-                return 'text.png';
-            }
+            return "We're not there yet";
         }
     };
 
@@ -46,11 +43,7 @@ const EpochAnimation = ({ darkMode, notEpoch }: Props) => {
                     alt='Image 7'
                     className='panda-tumbleweed'
                 />
-                <img
-                    src={`${assetPrefix}/static/images/epoch_animation/${getTextImageName()}`}
-                    alt='Image 8'
-                    className='panda-text'
-                />
+                <p className={`panda-text ${themeMode?.darkMode ? 'text-white' : 'text-black'}`}>{getText()}</p>
             </div>
         </div>
     );

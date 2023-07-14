@@ -10,7 +10,8 @@ import Layout from '../components/layouts/Layout';
 import ChainOverview from '../components/layouts/ChainOverview';
 import Statitstics from '../components/layouts/Statitstics';
 import Problems from '../components/layouts/Problems';
-import SearchEngine from '../components/ui/SearchEngine';
+import SearchEngine from '../components/ui/SearchEngineBlack';
+import SummaryOverview from '../components/layouts/SummaryOverview';
 
 export default function Home() {
     // Status Context
@@ -62,9 +63,11 @@ export default function Home() {
                 <Layout isMain>
                     <SearchEngine />
 
+                    <SummaryOverview />
+
                     <ChainOverview />
 
-                    <div className='mt-3'>
+                    <div className='mt-8'>
                         <Statitstics />
                     </div>
                 </Layout>

@@ -71,7 +71,7 @@
         }
     }
 
-    /* Epoch Animation */
+    /* Panda Animation */
     .animation-container {
         display: flex;
         align-items: center;
@@ -85,10 +85,13 @@
 
     .panda-text {
         position: absolute;
-        top: 25%;
-        left: calc(50% - 10rem);
-        width: 20rem;
-        height: 4.5rem;
+        top: 40%;
+        left: calc(50% - 7.5rem);
+        width: 15rem;
+        font-size: 12px;
+        text-transform: uppercase;
+        text-align: center;
+        color: white;
     }
 
     .cloud {
@@ -152,9 +155,9 @@
 
     @media (min-width: 640px) {
         .panda-text {
-            left: calc(50% - 12.5rem);
-            width: 25rem;
-            height: 6.5rem;
+            left: calc(50% - 12rem);
+            width: 24rem;
+            font-size: 16px;
         }
 
         .cloud.one {
@@ -202,7 +205,7 @@
         .panda-text {
             left: calc(50% - 15rem);
             width: 30rem;
-            height: 7.5rem;
+            font-size: 22px;
         }
 
         .cloud.one {

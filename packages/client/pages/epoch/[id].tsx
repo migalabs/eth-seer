@@ -1,38 +1,35 @@
 import { useContext, useEffect, useRef, useState } from 'react';
-import styled from '@emotion/styled';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 // Axios
 import axiosClient from '../../config/axios';
 
+// Contexts
+import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
+
 // Components
 import Layout from '../../components/layouts/Layout';
 import ProgressSmoothBarEpoch from '../../components/ui/ProgressSmoothBarEpoch';
+import ProgressSmoothBar from '../../components/ui/ProgressSmoothBar';
 import EpochAnimation from '../../components/layouts/EpochAnimation';
 import CustomImage from '../../components/ui/CustomImage';
-
-// Constants
-import { POOLS } from '../../constants';
+import LinkIcon from '../../components/ui/LinkIcon';
+import BlockImage from '../../components/ui/BlockImage';
+import Loader from '../../components/ui/Loader';
 
 // Types
 import { Epoch, Slot } from '../../types';
-import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
-import BlockImage from '../../components/ui/BlockImage';
 
 // Constants
 const firstBlock: number = Number(process.env.NEXT_PUBLIC_NETWORK_GENESIS); // 1606824023000
-
-// Styled
-const Card = styled.div`
-    box-shadow: inset -7px -7px 8px #f0c83a, inset 7px 7px 8px #f0c83a;
-`;
 
 type Props = {
     content: string;
     bg: string;
     color: string;
 };
+
 const CardContent = ({ content, bg, color }: Props) => {
     return (
         <span
@@ -52,18 +49,21 @@ const EpochComponent = () => {
     } = router;
 
     // Theme Mode Context
-    const { themeMode } = useContext(ThemeModeContext) || {};
+    const { themeMode } = useContext(ThemeModeContext) ?? {};
 
     // Refs
     const epochRef = useRef(0);
     const existsEpochRef = useRef(true);
     const containerRef = useRef<HTMLInputElement>(null);
 
+    // States
     const [epoch, setEpoch] = useState<Epoch | null>(null);
+    const [slots, setSlots] = useState<Slot[]>([]);
     const [animation, setAnimation] = useState(false);
-    const [existsEpoch, setExistsEpoch] = useState<boolean>(true);
     const [notEpoch, setNotEpoch] = useState<boolean>(false);
     const [desktopView, setDesktopView] = useState(true);
+    const [loadingEpoch, setLoadingEpoch] = useState(true);
+    const [loadingSlots, setLoadingSlots] = useState(true);
 
     // UseEffect
     useEffect(() => {
@@ -73,6 +73,7 @@ const EpochComponent = () => {
 
         if ((id && !epoch) || (epoch && epoch.f_epoch !== Number(id))) {
             getEpoch();
+            getSlots();
         }
 
         setDesktopView(window !== undefined && window.innerWidth > 768);
@@ -82,18 +83,18 @@ const EpochComponent = () => {
 
     const getEpoch = async () => {
         try {
+            setLoadingEpoch(true);
+
             const response = await axiosClient.get(`/api/validator-rewards-summary/epoch/${id}`);
 
             setEpoch({
                 ...response.data.epoch,
             });
 
-            if (Number(response.data.epoch.proposed_blocks) == 0 && response.data.epoch.f_slots.length == 0) {
+            if (Number(response.data.epoch.proposed_blocks) === 0) {
                 setAnimation(true);
 
                 const expectedTimestamp = (firstBlock + Number(id) * 12000 * 32 + 12000 * 64) / 1000;
-
-                setExistsEpoch(false);
 
                 existsEpochRef.current = false;
 
@@ -115,13 +116,28 @@ const EpochComponent = () => {
                     setNotEpoch(true);
                 }
             } else {
-                setExistsEpoch(true);
                 setAnimation(false);
                 existsEpochRef.current = true;
             }
         } catch (error) {
             console.log(error);
             setAnimation(true);
+        } finally {
+            setLoadingEpoch(false);
+        }
+    };
+
+    const getSlots = async () => {
+        try {
+            setLoadingSlots(true);
+
+            const response = await axiosClient.get(`/api/validator-rewards-summary/epoch/${id}/slots`);
+
+            setSlots(response.data.slots);
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setLoadingSlots(false);
         }
     };
 
@@ -145,31 +161,53 @@ const EpochComponent = () => {
                 className='flex flex-col px-2 mt-10 overflow-x-scroll overflow-y-hidden scrollbar-thin'
                 onMouseMove={handleMouseMove}
             >
-                <div className='flex gap-x-4 justify-around px-4 xl:px-8 min-w-[700px] py-3 uppercase text-sm text-white text-center'>
-                    <p className='mt-0.5 w-[10%]'>Block</p>
-                    <p className='mt-0.5 w-[35%]'>Entity</p>
-                    <p className='mt-0.5 w-[18%]'>Proposer</p>
-                    <p className='mt-0.5 w-[18%]'>Slot</p>
-                    <p className='mt-0.5 w-[18%]'>DateTime</p>
+                <div className='flex gap-x-4 justify-around px-4 xl:px-8 min-w-[1050px] py-3 uppercase text-sm text-white text-center'>
+                    <p className='mt-0.5 w-[7%]'>Block</p>
+                    <p className='mt-0.5 w-[32%]'>Entity</p>
+                    <p className='mt-0.5 w-[14%]'>Proposer</p>
+                    <p className='mt-0.5 w-[15%]'>Slot</p>
+                    <p className='mt-0.5 w-[14%]'>DateTime</p>
+                    <p className='mt-0.5 w-[18%]'>Withdrawals</p>
                 </div>
 
-                <Card
-                    className='flex flex-col gap-y-2 min-w-[700px] text-2xs sm:text-xs rounded-[22px] px-4 xl:px-8 py-3'
+                <div
+                    className='flex flex-col gap-y-2 min-w-[1050px] text-2xs sm:text-xs rounded-[22px] px-4 xl:px-8 py-3'
                     style={{
                         backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
                         boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
                     }}
                 >
-                    {epoch?.f_slots?.map(element => (
+                    {slots.map(element => (
                         <div
                             className='flex gap-x-4 py-1 uppercase text-center items-center'
                             key={element.f_proposer_slot}
                         >
-                            <div className='flex items-center justify-center w-[10%]'>
-                                <BlockImage slot={element} />
+                            <div className='flex items-center justify-center w-[7%]'>
+                                <BlockImage
+                                    poolName={element.f_pool_name}
+                                    proposed={element.f_proposed}
+                                    width={60}
+                                    height={60}
+                                    showCheck
+                                />
                             </div>
-                            <p className='w-[35%]'>{element.f_pool_name || 'others'}</p>
-                            <div className='w-[18%]'>
+                            <div className='w-[32%]'>
+                                <Link
+                                    href={{
+                                        pathname: '/entity/[name]',
+                                        query: {
+                                            name: element.f_pool_name || 'others',
+                                        },
+                                    }}
+                                    passHref
+                                    as={`/entity/${element.f_pool_name || 'others'}`}
+                                    className='flex gap-x-1 items-center w-fit mx-auto'
+                                >
+                                    <p>{element.f_pool_name || 'others'}</p>
+                                    <LinkIcon />
+                                </Link>
+                            </div>
+                            <div className='w-[14%]'>
                                 <Link
                                     href={{
                                         pathname: '/validator/[id]',
@@ -181,17 +219,11 @@ const EpochComponent = () => {
                                     as={`/validator/${element.f_val_idx}`}
                                     className='flex gap-x-1 items-center w-fit mx-auto'
                                 >
-                                    <p>{element.f_val_idx.toLocaleString()}</p>
-                                    <CustomImage
-                                        src='/static/images/link.svg'
-                                        alt='Link icon'
-                                        width={20}
-                                        height={20}
-                                        className='mb-1'
-                                    />
+                                    <p>{element.f_val_idx?.toLocaleString()}</p>
+                                    <LinkIcon />
                                 </Link>
                             </div>
-                            <div className='w-[18%]'>
+                            <div className='w-[15%]'>
                                 <Link
                                     href={{
                                         pathname: '/slot/[id]',
@@ -203,39 +235,46 @@ const EpochComponent = () => {
                                     as={`/slot/${element.f_proposer_slot}`}
                                     className='flex gap-x-1 items-center w-fit mx-auto'
                                 >
-                                    <p>{element.f_proposer_slot.toLocaleString()}</p>
-                                    <CustomImage
-                                        src='/static/images/link.svg'
-                                        alt='Link icon'
-                                        width={20}
-                                        height={20}
-                                        className='mb-1'
-                                    />
+                                    <p>{element.f_proposer_slot?.toLocaleString()}</p>
+                                    <LinkIcon />
                                 </Link>
                             </div>
-                            <p className='w-[18%]'>
+                            <p className='w-[14%]'>
                                 {new Date(firstBlock + Number(element.f_proposer_slot) * 12000).toLocaleString('ja-JP')}
                             </p>
+                            <p className='w-[18%]'>{(element.withdrawals / 10 ** 9).toLocaleString()} ETH</p>
                         </div>
                     ))}
-                </Card>
+
+                    {slots.length === 0 && (
+                        <div className='flex justify-center p-2'>
+                            <p className='uppercase'>No slots</p>
+                        </div>
+                    )}
+                </div>
             </div>
         );
     };
 
     const getContentSlotsMobile = () => {
         return (
-            <Card
+            <div
                 className='mt-5 flex flex-col gap-y-2 mx-2 px-6 uppercase overflow-x-scroll overflow-y-hidden scrollbar-thin text-black text-xl text-[8px] sm:text-[10px]  rounded-[22px] py-3'
                 style={{
                     backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
                     boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
                 }}
             >
-                {epoch?.f_slots?.map(element => (
+                {slots.map(element => (
                     <div className='flex flex-row gap-x-6 py-1 uppercase' key={element.f_proposer_slot}>
                         <div className='flex items-center'>
-                            <BlockImage slot={element} />
+                            <BlockImage
+                                poolName={element.f_pool_name}
+                                proposed={element.f_proposed}
+                                width={60}
+                                height={60}
+                                showCheck
+                            />
                         </div>
                         <div className='flex flex-col items-start '>
                             <div>
@@ -251,16 +290,10 @@ const EpochComponent = () => {
                                     className='flex gap-x-1 items-center w-fit mx-auto'
                                 >
                                     <div className='flex flex-row items-center gap-x-8'>
-                                        <p className='w-20'>Proposer:</p>
-                                        <p className='leading-3'>{element.f_val_idx.toLocaleString()}</p>
+                                        <p className='w-24'>Proposer:</p>
+                                        <p className='leading-3'>{element.f_val_idx?.toLocaleString()}</p>
                                     </div>
-                                    <CustomImage
-                                        src='/static/images/link.svg'
-                                        alt='Link icon'
-                                        width={20}
-                                        height={20}
-                                        className='mb-1'
-                                    />
+                                    <LinkIcon />
                                 </Link>
                             </div>
                             <div>
@@ -276,48 +309,82 @@ const EpochComponent = () => {
                                     className='flex gap-x-1 items-center w-fit mx-auto'
                                 >
                                     <div className='flex flex-row items-center gap-x-8'>
-                                        <p className='w-20'>Slot:</p>
-                                        <p className='leading-3'>{element.f_proposer_slot.toLocaleString()}</p>
+                                        <p className='w-24'>Slot:</p>
+                                        <p className='leading-3'>{element.f_proposer_slot?.toLocaleString()}</p>
                                     </div>
-                                    <CustomImage
-                                        src='/static/images/link.svg'
-                                        alt='Link icon'
-                                        width={20}
-                                        height={20}
-                                        className='mb-1'
-                                    />
+                                    <LinkIcon />
                                 </Link>
                             </div>
-                            <div className='flex flex-row items-center gap-x-10'>
-                                <p className='w-20'>DateTime:</p>
-                                <p className='leading-3'>
-                                    {new Date(firstBlock + Number(epoch?.f_slot) * 12000).toLocaleString('ja-JP')}
-                                </p>
+                            <div className='flex flex-row items-center gap-x-8'>
+                                <p className='w-24'>DateTime:</p>
+                                <div className='flex flex-col gap-y-0.5'>
+                                    <p className='leading-3'>
+                                        {new Date(firstBlock + Number(epoch?.f_slot) * 12000).toLocaleDateString(
+                                            'ja-JP',
+                                            { year: 'numeric', month: 'numeric', day: 'numeric' }
+                                        )}
+                                    </p>
+                                    <p className='leading-3'>
+                                        {new Date(firstBlock + Number(epoch?.f_slot) * 12000).toLocaleTimeString(
+                                            'ja-JP',
+                                            { hour: 'numeric', minute: 'numeric', second: 'numeric' }
+                                        )}
+                                    </p>
+                                </div>
+                            </div>
+                            <div className='flex flex-row items-center gap-x-8'>
+                                <p className='w-24'>Withdrawals:</p>
+                                <p className='leading-3'>{(element.withdrawals / 10 ** 9).toLocaleString()} ETH</p>
                             </div>
                         </div>
                     </div>
                 ))}
-            </Card>
+
+                {slots.length === 0 && (
+                    <div className='flex justify-center p-2'>
+                        <p className='uppercase'>No slots</p>
+                    </div>
+                )}
+            </div>
         );
     };
 
-    const getAttestation = (title: string, bg: string, color: string, value: number, attestations: number) => {
+    const getAttestation = (
+        title: string,
+        primaryColor: string,
+        secundaryColor: string,
+        value: number,
+        attestations: number
+    ) => {
         return (
             <div className='flex flex-col md:flex-row gap-x-10 gap-y-2 items-center md:justify-end md:w-full'>
                 <div className='flex flex-col md:flex-row gap-x-3 justify-between w-full md:w-auto flex-grow max-w-[350px] min-w-[200px]'>
-                    <p className='w-20' style={{ color: bg }}>
+                    <p className='w-20' style={{ color: primaryColor }}>
                         {title}
                     </p>
                     <div className='flex-grow mx-6 md:mx-0'>
-                        <ProgressSmoothBarEpoch bg={bg} color={color} percent={1 - value / attestations} />
+                        <ProgressSmoothBarEpoch
+                            backgroundColor={secundaryColor}
+                            color={primaryColor}
+                            percent={1 - value / attestations}
+                        />
                     </div>
                 </div>
+
                 <div className='flex flex-col md:flex-row gap-x-10 gap-y-2'>
                     <div className='md:w-[275px]'>
-                        <CardContent content={`Missing ${title}: ${value.toLocaleString()}`} bg={bg} color={color} />
+                        <CardContent
+                            content={`Missing ${title}: ${value.toLocaleString()}`}
+                            bg={primaryColor}
+                            color={secundaryColor}
+                        />
                     </div>
                     <div className='flex-shrink'>
-                        <CardContent content={`Attestations: ${attestations.toLocaleString()}`} bg={bg} color={color} />
+                        <CardContent
+                            content={`Attestations: ${attestations.toLocaleString()}`}
+                            bg={primaryColor}
+                            color={secundaryColor}
+                        />
                     </div>
                 </div>
             </div>
@@ -326,7 +393,7 @@ const EpochComponent = () => {
 
     const getContentEpochStats = () => {
         return (
-            <Card
+            <div
                 className='flex flex-col gap-y-2 mx-2 px-6 uppercase overflow-x-scroll overflow-y-hidden scrollbar-thin text-black text-xl text-[8px] sm:text-[10px]  rounded-[22px] py-3'
                 style={{
                     backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
@@ -334,13 +401,13 @@ const EpochComponent = () => {
                 }}
             >
                 <div className='flex flex-row items-center gap-x-5'>
-                    <p className='w-60'>DateTime (Local):</p>
+                    <p className='w-40 sm:w-60'>DateTime (Local):</p>
                     <p className='leading-3'>
                         {new Date(firstBlock + Number(epoch?.f_slot) * 12000).toLocaleString('ja-JP')}
                     </p>
                 </div>
                 <div className='flex flex-col sm:flex-row gap-x-5'>
-                    <p className='w-60'>Blocks (out of 32):</p>
+                    <p className='w-40 sm:w-60'>Blocks (out of 32):</p>
                     <div className='flex justify-center gap-x-4 '>
                         <CardContent content={`Proposed: ${epoch?.proposed_blocks}`} bg='#00720B' color='#83E18C' />
                         <CardContent
@@ -378,14 +445,16 @@ const EpochComponent = () => {
                 <div className='flex flex-col'>
                     <p>Voting Participation:</p>
                     <div className='flex flex-col md:flex-row gap-x-10 gap-y-2 items-center md:justify-end md:w-full mb-4 mt-2'>
-                        <div className='w-64 text-center'>
-                            <ProgressSmoothBarEpoch
-                                bg='#0016D8'
-                                color='#BDC4FF'
+                        <div>
+                            <ProgressSmoothBar
                                 percent={
                                     Number(epoch?.f_att_effective_balance_eth) /
                                     Number(epoch?.f_total_effective_balance_eth)
                                 }
+                                color='#0016D8'
+                                backgroundColor='#BDC4FF'
+                                width={170}
+                                widthTooltip={220}
                             />
                         </div>
                         <div className='flex flex-col gap-y-2 w-[270px] md:w-fit'>
@@ -403,8 +472,12 @@ const EpochComponent = () => {
                             />
                         </div>
                     </div>
+                    <div className='flex flex-row items-center gap-x-5'>
+                        <p className='w-40 sm:w-60'>Withdrawals:</p>
+                        <p className='leading-3'>{((epoch?.withdrawals ?? 0) / 10 ** 9).toLocaleString()} ETH</p>
+                    </div>
                 </div>
-            </Card>
+            </div>
         );
     };
 
@@ -413,7 +486,7 @@ const EpochComponent = () => {
             <div className='flex gap-x-3 justify-center items-center mt-2 mb-5'>
                 <Link href={`/epoch/${id && Number(id) - 1}`} passHref>
                     <CustomImage
-                        src='/static/images/arrow-purple.svg'
+                        src={themeMode?.darkMode ? '/static/images/arrow.svg' : '/static/images/arrow-blue.svg'}
                         alt='Left arrow'
                         width={15}
                         height={15}
@@ -424,10 +497,11 @@ const EpochComponent = () => {
                 <h1 className='text-white text-center text-xl md:text-3xl uppercase'>
                     Epoch {Number(id)?.toLocaleString()}
                 </h1>
+
                 <Link href={`/epoch/${id && Number(id) + 1}`} passHref>
                     <CustomImage
-                        src='/static/images/arrow-purple.svg'
-                        alt='Left arrow'
+                        src={themeMode?.darkMode ? '/static/images/arrow.svg' : '/static/images/arrow-blue.svg'}
+                        alt='Right arrow'
                         width={15}
                         height={15}
                         className='rotate-180 mb-1 cursor-pointer'
@@ -435,14 +509,27 @@ const EpochComponent = () => {
                 </Link>
             </div>
 
-            {epoch && epoch.f_slots && epoch.f_slots.length > 0 ? (
+            {loadingEpoch && (
+                <div className='mt-6'>
+                    <Loader />
+                </div>
+            )}
+
+            {!loadingEpoch && epoch && existsEpochRef.current && (
                 <div className='mx-auto max-w-[1100px]'>
                     <div>{getContentEpochStats()}</div>
-                    <div>{desktopView ? getContentSlots() : getContentSlotsMobile()}</div>
+
+                    {loadingSlots ? (
+                        <div className='mt-6'>
+                            <Loader />
+                        </div>
+                    ) : (
+                        <div>{desktopView ? getContentSlots() : getContentSlotsMobile()}</div>
+                    )}
                 </div>
-            ) : (
-                animation && <EpochAnimation darkMode={themeMode?.darkMode as boolean} notEpoch={notEpoch} />
             )}
+
+            {!loadingEpoch && animation && <EpochAnimation notEpoch={notEpoch} />}
         </Layout>
     );
 };
