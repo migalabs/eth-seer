@@ -1,0 +1,59 @@
+<svg id="Capa_1" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="50" height="50" viewBox="0 0 50 50">
+  <defs>
+    <clipPath id="clip-path">
+      <polygon points="24.04 49.76 1.26 39.47 1.42 9.17 24.2 19.46 24.04 49.76" fill="none"/>
+    </clipPath>
+    <clipPath id="clip-path-2">
+      <polygon points="24.2 19.46 1.42 9.17 25.96 0.24 48.75 10.53 24.2 19.46" fill="none"/>
+    </clipPath>
+    <clipPath id="clip-path-3">
+      <polygon points="48.75 10.53 48.59 40.82 24.04 49.76 24.2 19.46 48.75 10.53" fill="none"/>
+    </clipPath>
+  </defs>
+  <g id="Figment_lido">
+    <g style="isolation: isolate">
+      <g>
+        <polygon points="24.04 49.76 1.26 39.47 1.42 9.17 24.2 19.46 24.04 49.76" fill="#127883"/>
+        <g style="isolation: isolate">
+          <g clip-path="url(#clip-path)">
+            <g>
+              <path d="M15.84,30.91l-3.31,3L9.27,27.94l3.31-3,3.26,5.95m-9.75-4.4,6.42,11.7L19,32.34,12.6,20.64,6.09,26.51" fill="#fff"/>
+              <polyline points="4.91 33.41 6.75 36.77 8.62 35.09 6.78 31.73 4.91 33.41" fill="#fff"/>
+              <polyline points="4.99 18.06 6.83 21.42 8.7 19.73 6.86 16.37 4.99 18.06" fill="#fff"/>
+              <polyline points="16.29 38.43 18.13 41.79 20.01 40.11 18.16 36.74 16.29 38.43" fill="#fff"/>
+              <polyline points="16.37 23.08 18.21 26.44 20.09 24.76 18.24 21.38 16.37 23.08" fill="#fff"/>
+            </g>
+          </g>
+        </g>
+      </g>
+      <g>
+        <polygon points="24.2 19.46 1.42 9.17 25.96 0.24 48.75 10.53 24.2 19.46" fill="#148490"/>
+        <g style="isolation: isolate">
+          <g clip-path="url(#clip-path-2)">
+            <g>
+              <path d="M27.9,11.39l-6.78-.16.33-2.75,6.77.16-.32,2.75M18.33,7.07l-.64,5.41L31,12.8l.65-5.41L18.33,7.07" fill="#fff"/>
+              <polyline points="11.32 8.71 11.13 10.26 14.96 10.36 15.14 8.8 11.32 8.71" fill="#fff"/>
+              <polyline points="23.52 4.27 23.34 5.82 27.16 5.92 27.34 4.36 23.52 4.27" fill="#fff"/>
+              <polyline points="22.57 13.72 22.39 15.27 26.22 15.37 26.4 13.81 22.57 13.72" fill="#fff"/>
+              <polyline points="34.77 9.28 34.59 10.83 38.42 10.93 38.61 9.37 34.77 9.28" fill="#fff"/>
+            </g>
+          </g>
+        </g>
+      </g>
+      <g>
+        <polygon points="48.75 10.53 48.59 40.82 24.04 49.76 24.2 19.46 48.75 10.53" fill="#158793"/>
+        <g style="isolation: isolate">
+          <g clip-path="url(#clip-path-3)">
+            <g>
+              <path d="M36.26,35.09l-3.6-3.15,3.65-5.78,3.59,3.15-3.64,5.78m.07-13.25L29.17,33.21l7.07,6.2L43.4,28l-7.07-6.19" fill="#fff"/>
+              <polyline points="30.33 22.48 28.27 25.74 30.3 27.52 32.36 24.25 30.33 22.48" fill="#fff"/>
+              <polyline points="42.76 17.95 40.71 21.21 42.74 22.99 44.79 19.73 42.76 17.95" fill="#fff"/>
+              <polyline points="30.34 37.91 28.29 41.17 30.32 42.96 32.37 39.68 30.34 37.91" fill="#fff"/>
+              <polyline points="42.78 33.38 40.72 36.64 42.75 38.44 44.82 35.15 42.78 33.38" fill="#fff"/>
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>
