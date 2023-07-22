@@ -85,7 +85,7 @@ const EpochComponent = () => {
         try {
             setLoadingEpoch(true);
 
-            const response = await axiosClient.get(`/api/validator-rewards-summary/epoch/${id}`);
+            const response = await axiosClient.get(`/api/epochs/${id}`);
 
             setEpoch({
                 ...response.data.epoch,
@@ -131,7 +131,7 @@ const EpochComponent = () => {
         try {
             setLoadingSlots(true);
 
-            const response = await axiosClient.get(`/api/validator-rewards-summary/epoch/${id}/slots`);
+            const response = await axiosClient.get(`/api/epochs/${id}/slots`);
 
             setSlots(response.data.slots);
         } catch (error) {

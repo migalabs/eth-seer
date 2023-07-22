@@ -55,7 +55,7 @@ const Graffitis = () => {
         try {
             setLoading(true);
 
-            const response = await axiosClient.get(`/api/validator-rewards-summary/blocks/graffiti/${graffiti}`, {
+            const response = await axiosClient.get(`/api/slots/graffiti/${graffiti}`, {
                 params: {
                     limit,
                     page,
