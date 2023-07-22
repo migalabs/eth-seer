@@ -24,13 +24,13 @@ const Problems = () => {
     const checkQueries = async () => {
         try {
             await Promise.all([
-                axiosClient.get(`/api/validator-rewards-summary/blocks`, {
+                axiosClient.get(`/api/slots`, {
                     params: {
                         limit: 1,
                         page: 0,
                     },
                 }),
-                axiosClient.get('/api/validator-rewards-summary', {
+                axiosClient.get('/api/epochs', {
                     params: {
                         limit: 1,
                         page: 0,
