@@ -87,7 +87,7 @@ const ValidatorComponent = () => {
         try {
             setLoadingValidator(true);
 
-            const response = await axiosClient.get(`/api/validator-rewards-summary/validator/${id}`);
+            const response = await axiosClient.get(`/api/validators/${id}`);
 
             setValidator(response.data.validator);
 
@@ -108,7 +108,7 @@ const ValidatorComponent = () => {
         try {
             setLoadingProposedBlocks(true);
 
-            const response = await axiosClient.get(`/api/validator-rewards-summary/validator/${id}/proposed-blocks`);
+            const response = await axiosClient.get(`/api/validators/${id}/proposed-blocks`);
 
             setProposedBlocks(response.data.proposedBlocks);
         } catch (error) {
@@ -122,7 +122,7 @@ const ValidatorComponent = () => {
         try {
             setLoadingWithdrawals(true);
 
-            const response = await axiosClient.get(`/api/validator-rewards-summary/validator/${id}/withdrawals`);
+            const response = await axiosClient.get(`/api/validators/${id}/withdrawals`);
 
             setWithdrawals(response.data.withdrawals);
         } catch (error) {

@@ -121,7 +121,7 @@ const Slot = () => {
         try {
             setLoadingBlock(true);
 
-            const response = await axiosClient.get(`/api/validator-rewards-summary/block/${id}`);
+            const response = await axiosClient.get(`/api/slots/${id}`);
 
             const blockResponse: Block = response.data.block;
             setBlock(blockResponse);
@@ -169,7 +169,7 @@ const Slot = () => {
         try {
             setLoadingWithdrawals(true);
 
-            const response = await axiosClient.get(`/api/validator-rewards-summary/block/${id}/withdrawals`);
+            const response = await axiosClient.get(`/api/slots/${id}/withdrawals`);
 
             setWithdrawals(response.data.withdrawals);
         } catch (error) {

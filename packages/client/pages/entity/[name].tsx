@@ -65,9 +65,7 @@ const EntityComponent = () => {
         try {
             setLoading(true);
 
-            const response = await axiosClient.get(
-                `/api/validator-rewards-summary/entity/${(name as string).toLowerCase()}`
-            );
+            const response = await axiosClient.get(`/api/entities/${(name as string).toLowerCase()}`);
 
             if (response.data.entity) {
                 setEntity(response.data.entity);
