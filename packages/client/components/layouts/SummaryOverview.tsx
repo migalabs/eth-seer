@@ -69,7 +69,7 @@ const SummaryOverview = () => {
     }, [blocks]);
 
     const getLastValidator = async () => {
-        const response = await axiosClient.get(`/api/validator-rewards-summary/validator`);
+        const response = await axiosClient.get('/api/validators/last');
         if (response.data.number_active_validators) setLastValidator(response.data.number_active_validators);
     };
 
