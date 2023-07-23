@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { pgClient, pgListener } from '../config/db';
+import { pgPool, pgListener } from '../config/db';
 
 export const getSlots = async (req: Request, res: Response) => {
 
@@ -11,7 +11,7 @@ export const getSlots = async (req: Request, res: Response) => {
 
         if (Number(page) > 0) {
 
-            const blocks = await pgClient.query(`
+            const blocks = await pgPool.query(`
                 SELECT (f_proposer_slot/32) AS f_epoch, f_proposer_slot AS f_slot, f_proposed, t_eth2_pubkeys.f_pool_name,
                 t_proposer_duties.f_val_idx AS f_proposer_index
                 FROM t_proposer_duties
@@ -28,7 +28,7 @@ export const getSlots = async (req: Request, res: Response) => {
         } else {
 
             const [actualBlocks, finalBlocks] = await Promise.all([
-                pgClient.query(`
+                pgPool.query(`
                     SELECT (f_proposer_slot/32) AS f_epoch, f_proposer_slot AS f_slot, f_proposed, t_eth2_pubkeys.f_pool_name,
                     t_proposer_duties.f_val_idx AS f_proposer_index
                     FROM t_proposer_duties
@@ -37,7 +37,7 @@ export const getSlots = async (req: Request, res: Response) => {
                     OFFSET ${skip}
                     LIMIT ${Number(limit)}
                 `),
-                pgClient.query(`
+                pgPool.query(`
                     SELECT t_block_metrics.f_epoch, t_block_metrics.f_slot, t_eth2_pubkeys.f_pool_name, t_block_metrics.f_proposed, t_block_metrics.f_proposer_index,
                     t_block_metrics.f_graffiti, t_block_metrics.f_el_block_number
                     FROM t_block_metrics
@@ -76,7 +76,7 @@ export const getSlotById = async (req: Request, res: Response) => {
 
         const [ block, proposerDuties ] = 
             await Promise.all([
-                pgClient.query(`
+                pgPool.query(`
                     SELECT t_block_metrics.f_timestamp, t_block_metrics.f_epoch, t_block_metrics.f_slot,
                     t_block_metrics.f_graffiti, t_block_metrics.f_proposer_index, t_block_metrics.f_proposed,
                     t_block_metrics.f_attestations, t_block_metrics.f_deposits, t_block_metrics.f_proposer_slashings,
@@ -87,7 +87,7 @@ export const getSlotById = async (req: Request, res: Response) => {
                     LEFT OUTER JOIN t_eth2_pubkeys ON t_block_metrics.f_proposer_index = t_eth2_pubkeys.f_val_idx
                     WHERE f_slot = '${id}'
                 `),
-                pgClient.query(`
+                pgPool.query(`
                     SELECT f_proposed
                     FROM t_proposer_duties
                     WHERE f_proposer_slot = '${id}'
@@ -126,7 +126,7 @@ export const getSlotsByGraffiti = async (req: Request, res: Response) => {
         const { id } = req.params;
 
         const blocks = 
-            await pgClient.query(`
+            await pgPool.query(`
                 SELECT t_block_metrics.*, t_eth2_pubkeys.f_pool_name
                 FROM t_block_metrics
                 LEFT OUTER JOIN t_eth2_pubkeys ON t_block_metrics.f_proposer_index = t_eth2_pubkeys.f_val_idx
@@ -155,7 +155,7 @@ export const getWithdrawalsBySlot = async (req: Request, res: Response) => {
         const { id } = req.params;
 
         const withdrawals = 
-            await pgClient.query(`
+            await pgPool.query(`
                 SELECT f_val_idx, f_address, f_amount
                 FROM t_withdrawals
                 WHERE f_slot = '${id}'
