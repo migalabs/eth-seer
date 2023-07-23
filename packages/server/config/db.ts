@@ -1,10 +1,10 @@
-import { Client } from 'pg';
+import { Pool } from 'pg';
 import { EventEmitter } from 'node:events';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-export const pgClient = new Client({
+export const pgPool = new Pool({
     user: process.env.DB_USER || '',
     host: process.env.DB_HOST || '',
     database: process.env.DB_NAME || '',
@@ -16,7 +16,7 @@ export const dbConnection = async () => {
 
     try {
 
-        await pgClient.connect();
+        await pgPool.connect();
 
         console.log('Database connected');
 
@@ -31,10 +31,12 @@ export const pgListener = new MyEmitter();
 
 const startListeners = async () => {
     
-    pgClient.query('LISTEN new_head');
-    pgClient.query('LISTEN new_epoch_finalized');
+    const client = await pgPool.connect();
 
-    pgClient.on('notification', (msg) => {
+    client.query('LISTEN new_head');
+    client.query('LISTEN new_epoch_finalized');
+
+    client.on('notification', (msg) => {
         if (msg.channel === 'new_head') {
             pgListener.emit('new_head', msg);
         } else if (msg.channel === 'new_epoch_finalized') {

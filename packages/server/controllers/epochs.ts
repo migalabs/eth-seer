@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { pgClient, pgListener } from '../config/db';
+import { pgPool, pgListener } from '../config/db';
 
 export const getEpochsStatistics = async (req: Request, res: Response) => {
 
@@ -11,7 +11,7 @@ export const getEpochsStatistics = async (req: Request, res: Response) => {
 
         const [ epochsStats, blocksStats ] =
          await Promise.all([
-            pgClient.query(`
+            pgPool.query(`
                 SELECT f_epoch, f_slot, f_num_att_vals, f_num_vals, 
                 f_att_effective_balance_eth, f_total_effective_balance_eth,
                 f_missing_source, f_missing_target, f_missing_head
@@ -20,7 +20,7 @@ export const getEpochsStatistics = async (req: Request, res: Response) => {
                 OFFSET ${skip}
                 LIMIT ${Number(limit)}
             `),
-            pgClient.query(`
+            pgPool.query(`
                 SELECT (f_proposer_slot/32) AS epoch, 
                 ARRAY_AGG(CASE WHEN f_proposed = true THEN 1 ELSE 0 END ORDER BY f_proposer_slot ASC) AS proposed_blocks
                 FROM t_proposer_duties
@@ -61,19 +61,19 @@ export const getEpochById = async (req: Request, res: Response) => {
 
         const [ epochStats, blocksProposed, withdrawals ] = 
             await Promise.all([
-                pgClient.query(`
+                pgPool.query(`
                     SELECT f_epoch, f_slot, f_num_att_vals, f_num_vals, 
                     f_att_effective_balance_eth, f_total_effective_balance_eth,
                     f_missing_source, f_missing_target, f_missing_head
                     FROM t_epoch_metrics_summary
                     WHERE f_epoch = '${id}'
                 `),
-                pgClient.query(`
+                pgPool.query(`
                     SELECT COUNT(*) AS proposed_blocks
                     FROM t_proposer_duties
                     WHERE f_proposer_slot/32 = '${id}' AND f_proposed = true
                 `),
-                pgClient.query(`
+                pgPool.query(`
                     SELECT SUM(f_amount) AS total_withdrawals
                     FROM t_withdrawals
                     WHERE f_slot/32 = '${id}'
@@ -104,14 +104,14 @@ export const getSlotsByEpoch = async (req: Request, res: Response) => {
 
         const [ slotsEpoch, withdrawals ] = 
             await Promise.all([
-                pgClient.query(`
+                pgPool.query(`
                     SELECT t_proposer_duties.*, t_eth2_pubkeys.f_pool_name
                     FROM t_proposer_duties
                     LEFT OUTER JOIN t_eth2_pubkeys ON t_proposer_duties.f_val_idx = t_eth2_pubkeys.f_val_idx
                     WHERE f_proposer_slot/32 = '${id}'
                     ORDER BY f_proposer_slot DESC
                 `),
-                pgClient.query(`
+                pgPool.query(`
                     SELECT f_slot, f_amount
                     FROM t_withdrawals
                     WHERE f_slot/32 = '${id}'
