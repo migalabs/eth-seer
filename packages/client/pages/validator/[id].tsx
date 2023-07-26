@@ -504,7 +504,7 @@ const ValidatorComponent = () => {
 
                     <div className='flex flex-row items-center gap-x-5'>
                         <p className='w-40'>Current balance:</p>
-                        <p className='leading-3'>{validator?.f_balance_eth}</p>
+                        <p className='leading-3'>{validator?.f_balance_eth} eth</p>
                     </div>
 
                     <div className='flex md:flex-row gap-x-5'>
@@ -548,7 +548,7 @@ const ValidatorComponent = () => {
                         </div>
 
                         <div className='flex flex-col md:flex-row gap-x-4 gap-y-2 md:items-center ml-4 md:ml-10'>
-                            <p className='md:w-52 lg:w-80'>Missing attestation flags:</p>
+                            <p className='md:w-52 lg:w-80'>attestation flags:</p>
 
                             {validator && (
                                 <div className='flex flex-col md:flex-row items-center gap-x-4 gap-y-2 text-[9px]'>
