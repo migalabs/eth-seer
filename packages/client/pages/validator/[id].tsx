@@ -227,6 +227,18 @@ const ValidatorComponent = () => {
         );
     };
 
+    const getNumberProposedBlocks = (proposed_blocks: Slot[]) => {
+        return proposed_blocks.filter(item => item.f_proposed).length;
+    };
+
+    const getNumberMissedBlocks = (proposed_blocks: Slot[]) => {
+        return proposed_blocks.filter(item => !item.f_proposed).length;
+    };
+
+    const getTotalWithdrawals = (withdrawals: Withdrawal[]) => {
+        return withdrawals.reduce((total, item) => total + item.f_amount / 10 ** 9, 0);
+    };
+
     const getContentProposedBlocks = () => {
         return (
             <div
@@ -474,173 +486,209 @@ const ValidatorComponent = () => {
 
     const getContentValidator = () => {
         return (
-            <div
-                className='flex mx-2 px-4 xs:px-10 py-5 rounded-[22px] justify-between gap-x-5'
-                style={{
-                    backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
-                    boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
-                }}
-            >
-                <div className='flex flex-col gap-y-2 uppercase text-black text-xl text-[8px] md:text-[10px]'>
-                    <div className='flex flex-row items-center gap-x-5'>
-                        <p className='w-40'>Entity:</p>
-                        <div>
-                            <Link
-                                href={{
-                                    pathname: '/entity/[name]',
-                                    query: {
-                                        name: validator?.f_pool_name ? validator.f_pool_name : 'others',
-                                    },
-                                }}
-                                passHref
-                                as={`/entity/${validator?.f_pool_name ? validator.f_pool_name : 'others'}`}
-                                className='flex gap-x-1 items-center w-fit mx-auto'
-                            >
-                                <p className='leading-3'>{validator?.f_pool_name ? validator.f_pool_name : 'others'}</p>
-                                <LinkIcon />
-                            </Link>
-                        </div>
-                    </div>
-
-                    <div className='flex flex-row items-center gap-x-5'>
-                        <p className='w-40'>Current balance:</p>
-                        <p className='leading-3'>{validator?.f_balance_eth} eth</p>
-                    </div>
-
-                    <div className='flex md:flex-row gap-x-5'>
-                        <p className='w-40'>Current status:</p>
-                        {validator?.f_status && getCurrentStatus(validator?.f_status)}
-                    </div>
-
-                    <div className='flex flex-col gap-y-4'>
-                        <div className='flex flex-row'>
-                            <p>
-                                Validator performance (Data from last{' '}
-                                {convertToHours(validator?.count_attestations ?? 0)} hour):
-                            </p>
+            <>
+                <div
+                    className='flex mx-2 px-4 xs:px-10 py-5 rounded-[22px] justify-between gap-x-5 mb-5'
+                    style={{
+                        backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
+                        boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
+                    }}
+                >
+                    <div className='flex flex-col gap-y-2 uppercase text-black text-xl text-[8px] md:text-[10px]'>
+                        <div className='flex flex-row items-center gap-x-5'>
+                            <p className='w-40'>Entity:</p>
+                            <div>
+                                <Link
+                                    href={{
+                                        pathname: '/entity/[name]',
+                                        query: {
+                                            name: validator?.f_pool_name ? validator.f_pool_name : 'others',
+                                        },
+                                    }}
+                                    passHref
+                                    as={`/entity/${validator?.f_pool_name ? validator.f_pool_name : 'others'}`}
+                                    className='flex gap-x-1 items-center w-fit mx-auto'
+                                >
+                                    <p className='leading-3'>
+                                        {validator?.f_pool_name ? validator.f_pool_name : 'others'}
+                                    </p>
+                                    <LinkIcon />
+                                </Link>
+                            </div>
                         </div>
 
-                        <div className='flex flex-col md:flex-row gap-x-4 ml-4 md:ml-10'>
-                            <p className='md:w-52 lg:w-80'>Rewards:</p>
-                            <div className='w-72 md:w-80 text-[9px] text-center leading-3'>
+                        <div className='flex flex-row items-center gap-x-5'>
+                            <p className='w-40'>Current balance:</p>
+                            <p className='leading-3'>{validator?.f_balance_eth} eth</p>
+                        </div>
+
+                        <div className='flex md:flex-row gap-x-5'>
+                            <p className='w-40'>Current status:</p>
+                            {validator?.f_status && getCurrentStatus(validator?.f_status)}
+                        </div>
+                        <div className='flex flex-col sm:flex-row gap-x-5'>
+                            <p className='w-40'>Blocks:</p>
+                            <div className='flex justify-center gap-x-5 '>
+                                <CardContent
+                                    content={`Proposed: ${getNumberProposedBlocks(proposedBlocks)}`}
+                                    bg='#00720B'
+                                    color='#83E18C'
+                                />
+                                <CardContent
+                                    content={`Missed:  ${getNumberMissedBlocks(proposedBlocks)}`}
+                                    bg='#980E0E'
+                                    color='#FF9090'
+                                />
+                            </div>
+                        </div>
+                        <div className='flex flex-row items-center gap-x-5'>
+                            <p className='w-40'>Withdrawals:</p>
+                            <p className='leading-3'>{getTotalWithdrawals(withdrawals).toLocaleString()} eth</p>
+                        </div>
+                    </div>
+                    <div className='hidden md:block'>
+                        <BlockGif poolName={validator?.f_pool_name ?? 'others'} width={125} height={125} />
+                    </div>
+                </div>
+
+                <div
+                    className='flex mx-2 px-4 xs:px-10 py-5 rounded-[22px] justify-between gap-x-5'
+                    style={{
+                        backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
+                        boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
+                    }}
+                >
+                    <div className='flex flex-col gap-y-2 uppercase text-black text-xl text-[8px] md:text-[10px]'>
+                        <div className='flex flex-col gap-y-4'>
+                            <div className='flex flex-row'>
+                                <p>
+                                    Validator performance (Data from last{' '}
+                                    {convertToHours(validator?.count_attestations ?? 0)} hour):
+                                </p>
+                            </div>
+
+                            <div className='flex flex-col md:flex-row gap-x-4 ml-4 md:ml-10'>
+                                <p className='md:w-52 lg:w-80'>Rewards:</p>
+                                <div className='w-72 md:w-80 text-[9px] text-center leading-3'>
+                                    {validator && (
+                                        <ProgressSmoothBar
+                                            title=''
+                                            color='#1194BD'
+                                            backgroundColor='#BDFFEB'
+                                            percent={
+                                                validator.aggregated_rewards / validator.aggregated_max_rewards || 0
+                                            }
+                                            tooltipColor='blue'
+                                            tooltipContent={
+                                                <>
+                                                    <span>Agg. Rewards: {validator?.aggregated_rewards}</span>
+                                                    <span>Max. Rewards: {validator?.aggregated_max_rewards}</span>
+                                                </>
+                                            }
+                                            widthTooltip={220}
+                                        />
+                                    )}
+                                </div>
+                            </div>
+
+                            <div className='flex flex-col md:flex-row gap-x-4 gap-y-2 md:items-center ml-4 md:ml-10'>
+                                <p className='md:w-52 lg:w-80'>Sync committee participation:</p>
+                                <p className='leading-3'>{validator?.count_missing_source} epochs</p>
+                            </div>
+
+                            <div className='flex flex-col md:flex-row gap-x-4 gap-y-2 md:items-center ml-4 md:ml-10'>
+                                <p className='md:w-52 lg:w-80'>attestation flags:</p>
+
                                 {validator && (
-                                    <ProgressSmoothBar
-                                        title=''
-                                        color='#1194BD'
-                                        backgroundColor='#BDFFEB'
-                                        percent={validator.aggregated_rewards / validator.aggregated_max_rewards || 0}
-                                        tooltipColor='blue'
-                                        tooltipContent={
-                                            <>
-                                                <span>Agg. Rewards: {validator?.aggregated_rewards}</span>
-                                                <span>Max. Rewards: {validator?.aggregated_max_rewards}</span>
-                                            </>
-                                        }
-                                        widthTooltip={220}
-                                    />
+                                    <div className='flex flex-col md:flex-row items-center gap-x-4 gap-y-2 text-[9px]'>
+                                        <ProgressSmoothBar
+                                            title='Target'
+                                            color='#E86506'
+                                            backgroundColor='#FFC163'
+                                            percent={1 - validator.count_missing_target / validator.count_attestations}
+                                            width={150}
+                                            tooltipColor='orange'
+                                            tooltipContent={
+                                                <>
+                                                    <span>
+                                                        Missing Target:{' '}
+                                                        {validator.count_missing_target?.toLocaleString()}
+                                                    </span>
+                                                    <span>
+                                                        Attestations: {validator.count_attestations?.toLocaleString()}
+                                                    </span>
+                                                </>
+                                            }
+                                            widthTooltip={220}
+                                        />
+
+                                        <ProgressSmoothBar
+                                            title='Source'
+                                            color='#14946e'
+                                            backgroundColor='#BDFFEB'
+                                            percent={1 - validator.count_missing_source / validator.count_attestations}
+                                            width={150}
+                                            tooltipColor='blue'
+                                            tooltipContent={
+                                                <>
+                                                    <span>
+                                                        Missing Source:{' '}
+                                                        {validator.count_missing_source?.toLocaleString()}
+                                                    </span>
+                                                    <span>
+                                                        Attestations: {validator.count_attestations?.toLocaleString()}
+                                                    </span>
+                                                </>
+                                            }
+                                            widthTooltip={220}
+                                        />
+
+                                        <ProgressSmoothBar
+                                            title='Head'
+                                            color='#532BC5'
+                                            backgroundColor='#E6DDFF'
+                                            percent={1 - validator.count_missing_head / validator.count_attestations}
+                                            width={150}
+                                            tooltipColor='purple'
+                                            tooltipContent={
+                                                <>
+                                                    <span>
+                                                        Missing Head: {validator.count_missing_head?.toLocaleString()}
+                                                    </span>
+                                                    <span>
+                                                        Attestations: {validator.count_attestations?.toLocaleString()}
+                                                    </span>
+                                                </>
+                                            }
+                                            widthTooltip={220}
+                                        />
+                                    </div>
                                 )}
                             </div>
-                        </div>
 
-                        <div className='flex flex-col md:flex-row gap-x-4 gap-y-2 md:items-center ml-4 md:ml-10'>
-                            <p className='md:w-52 lg:w-80'>Sync committee participation:</p>
-                            <p className='leading-3'>{validator?.count_missing_source}</p>
-                        </div>
+                            <div className='flex flex-col md:flex-row gap-x-4 gap-y-2 md:w-full ml-4 md:ml-10'>
+                                <p className='md:w-52 lg:w-80'>Blocks:</p>
 
-                        <div className='flex flex-col md:flex-row gap-x-4 gap-y-2 md:items-center ml-4 md:ml-10'>
-                            <p className='md:w-52 lg:w-80'>attestation flags:</p>
+                                <div className='flex justify-center'>
+                                    <div className='flex flex-col md:flex-row gap-x-4 gap-y-2'>
+                                        <CardContent
+                                            content={`Proposed: ${validator?.proposed_blocks_performance}`}
+                                            bg={'#00720B'}
+                                            color={'#83E18C'}
+                                        />
 
-                            {validator && (
-                                <div className='flex flex-col md:flex-row items-center gap-x-4 gap-y-2 text-[9px]'>
-                                    <ProgressSmoothBar
-                                        title='Target'
-                                        color='#E86506'
-                                        backgroundColor='#FFC163'
-                                        percent={1 - validator.count_missing_target / validator.count_attestations}
-                                        width={150}
-                                        tooltipColor='orange'
-                                        tooltipContent={
-                                            <>
-                                                <span>
-                                                    Missing Target: {validator.count_missing_target?.toLocaleString()}
-                                                </span>
-                                                <span>
-                                                    Attestations: {validator.count_attestations?.toLocaleString()}
-                                                </span>
-                                            </>
-                                        }
-                                        widthTooltip={220}
-                                    />
-
-                                    <ProgressSmoothBar
-                                        title='Source'
-                                        color='#14946e'
-                                        backgroundColor='#BDFFEB'
-                                        percent={1 - validator.count_missing_source / validator.count_attestations}
-                                        width={150}
-                                        tooltipColor='blue'
-                                        tooltipContent={
-                                            <>
-                                                <span>
-                                                    Missing Source: {validator.count_missing_source?.toLocaleString()}
-                                                </span>
-                                                <span>
-                                                    Attestations: {validator.count_attestations?.toLocaleString()}
-                                                </span>
-                                            </>
-                                        }
-                                        widthTooltip={220}
-                                    />
-
-                                    <ProgressSmoothBar
-                                        title='Head'
-                                        color='#532BC5'
-                                        backgroundColor='#E6DDFF'
-                                        percent={1 - validator.count_missing_head / validator.count_attestations}
-                                        width={150}
-                                        tooltipColor='purple'
-                                        tooltipContent={
-                                            <>
-                                                <span>
-                                                    Missing Head: {validator.count_missing_head?.toLocaleString()}
-                                                </span>
-                                                <span>
-                                                    Attestations: {validator.count_attestations?.toLocaleString()}
-                                                </span>
-                                            </>
-                                        }
-                                        widthTooltip={220}
-                                    />
-                                </div>
-                            )}
-                        </div>
-
-                        <div className='flex flex-col md:flex-row gap-x-4 gap-y-2 md:w-full ml-4 md:ml-10'>
-                            <p className='md:w-52 lg:w-80'>Blocks:</p>
-
-                            <div className='flex justify-center'>
-                                <div className='flex flex-col md:flex-row gap-x-4 gap-y-2'>
-                                    <CardContent
-                                        content={`Proposed: ${validator?.proposed_blocks_performance}`}
-                                        bg={'#00720B'}
-                                        color={'#83E18C'}
-                                    />
-
-                                    <CardContent
-                                        content={`Missed: ${validator?.missed_blocks_performance}`}
-                                        bg={'#980E0E'}
-                                        color={'#FF9090'}
-                                    />
+                                        <CardContent
+                                            content={`Missed: ${validator?.missed_blocks_performance}`}
+                                            bg={'#980E0E'}
+                                            color={'#FF9090'}
+                                        />
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <div className='hidden md:block'>
-                    <BlockGif poolName={validator?.f_pool_name ?? 'others'} width={150} height={150} />
-                </div>
-            </div>
+            </>
         );
     };
 
