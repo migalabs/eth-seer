@@ -325,27 +325,25 @@
     /* CUBE */
     .body-cube {
         display: flex;
-        align-items: center;
         justify-content: center;
-        font-size: 100px;
-        perspective: 130rem;
-        perspective-origin: 0 0;
+        height: 100vh;
     }
-
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 50px;
+    }
     .cube {
-        position: relative;
         transform-style: preserve-3d;
         display: flex;
         align-items: center;
         justify-content: center;
-        animation: animateCube 10s linear infinite;
-        padding-bottom: 2.5rem;
-        cursor: pointer;
+        animation: animateCube 8s linear infinite;
     }
-
     @keyframes animateCube {
-        to {
-            transform: rotateY(360deg);
+        100% {
+          transform: rotateX(360deg) rotateZ(360deg);
         }
     }
 
@@ -355,14 +353,15 @@
     .cube-right,
     .cube-front,
     .cube-back {
-        height: 2em;
-        width: 2em;
+        border: 1px solid #4d4d4d;
         background: url(/static/images/blocks.png) no-repeat center center / cover;
+        width: 2em;
+        height: 2em;
         position: absolute;
-        top: 0;
-        bottom: 0;
-        border: 4px solid white;
-        box-shadow: 0 0 50px 10px rgb(139, 70, 196) inset;
+        box-shadow: 0.5px 0.5px 0.5px inset #707070,
+                -0.5px 0.5px 0.5px inset #707070,
+                0.5px -0.5px 0.5px inset #707070,
+                -0.5px -0.5px 0.5px inset #707070;
     }
 
     /* INITIAL ANIMATION */
