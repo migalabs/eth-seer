@@ -1,18 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
+// Axios
+import axiosClient from '../../config/axios';
+
 // Contexts
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 import BlocksContext from '../../contexts/blocks/BlocksContext';
-
-// Types
-import { Block } from '../../types';
-import axiosClient from '../../config/axios';
-
-type Props = {
-    epoch: number;
-    blocks: Block[];
-    lastEpoch: boolean;
-};
 
 type Summary = {
     epoch: number;
@@ -22,12 +15,13 @@ type Summary = {
 
 const SummaryOverview = () => {
     // Theme Mode Context
-    const { themeMode } = React.useContext(ThemeModeContext) || {};
+    const { themeMode } = React.useContext(ThemeModeContext) ?? {};
 
     // Blocks Context
-    const { blocks, getBlocks } = React.useContext(BlocksContext) || {};
+    const { blocks, getBlocks } = React.useContext(BlocksContext) ?? {};
 
-    const [summary, setSummary] = useState<Summary>() || {};
+    // States
+    const [summary, setSummary] = useState<Summary>() ?? {};
     const [lastValidator, setLastValidator] = useState(0);
 
     useEffect(() => {
