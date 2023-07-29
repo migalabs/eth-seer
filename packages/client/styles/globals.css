@@ -326,7 +326,6 @@
     .body-cube {
         display: flex;
         justify-content: center;
-        height: 100vh;
     }
     .container {
         display: flex;
@@ -343,7 +342,7 @@
     }
     @keyframes animateCube {
         100% {
-          transform: rotateX(360deg) rotateZ(360deg);
+            transform: rotateX(360deg) rotateZ(360deg);
         }
     }
 
@@ -354,14 +353,15 @@
     .cube-front,
     .cube-back {
         border: 1px solid #4d4d4d;
-        background: url(/static/images/blocks.png) no-repeat center center / cover;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center center;
+        /* background: url(/static/images/blocks.png) no-repeat center center / cover; */
         width: 2em;
         height: 2em;
         position: absolute;
-        box-shadow: 0.5px 0.5px 0.5px inset #707070,
-                -0.5px 0.5px 0.5px inset #707070,
-                0.5px -0.5px 0.5px inset #707070,
-                -0.5px -0.5px 0.5px inset #707070;
+        box-shadow: 0.5px 0.5px 0.5px inset #707070, -0.5px 0.5px 0.5px inset #707070, 0.5px -0.5px 0.5px inset #707070,
+            -0.5px -0.5px 0.5px inset #707070;
     }
 
     /* INITIAL ANIMATION */
