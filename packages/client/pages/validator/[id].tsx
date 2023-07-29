@@ -91,10 +91,10 @@ const ValidatorComponent = () => {
 
             setValidator(response.data.validator);
 
-            if (response.data.validator.f_val_idx === undefined) {
-                setAnimation(true);
-            } else {
+            if (response.data.validator) {
                 setAnimation(false);
+            } else {
+                setAnimation(true);
             }
         } catch (error) {
             console.log(error);

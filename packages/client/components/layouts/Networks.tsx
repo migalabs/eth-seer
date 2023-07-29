@@ -1,15 +1,20 @@
-import Link from 'next/link';
 import React, { useContext, useState } from 'react';
+import Link from 'next/link';
+
+// Contexts
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
+
+// Components
 import CustomImage from '../ui/CustomImage';
 
 const Networks = () => {
+    const assetPrefix = process.env.NEXT_PUBLIC_ASSET_PREFIX ?? '';
+
     // Theme Mode Context
-    const { themeMode } = useContext(ThemeModeContext) || {};
+    const { themeMode } = useContext(ThemeModeContext) ?? {};
 
+    // States
     const [network, setNetwork] = useState(false);
-
-    const assetPrefix = process.env.NEXT_PUBLIC_ASSET_PREFIX || '';
 
     const handleClick = () => {
         setNetwork(!network);
@@ -30,6 +35,7 @@ const Networks = () => {
                 />
                 <p className='text-white text-xs'>{assetPrefix !== '/goerli' ? 'MAINNET' : 'GOERLI'}</p>
             </div>
+
             {network && (
                 <div
                     className='absolute  mt-14 flex flex-col items-center w-fit  mx-auto gap-2 rounded-2xl bg-[#FFF0A1] p-4 text-xs '

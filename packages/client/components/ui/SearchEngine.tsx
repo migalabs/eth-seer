@@ -41,13 +41,13 @@ type SearchEngineItem = {
 
 const SearchEngine = () => {
     // Theme Mode Context
-    const { themeMode } = React.useContext(ThemeModeContext) || {};
+    const { themeMode } = React.useContext(ThemeModeContext) ?? {};
 
     // Blocks Context
-    const { blocks } = useContext(BlocksContext) || {};
+    const { blocks } = useContext(BlocksContext) ?? {};
 
     // Epochs Context
-    const { epochs } = useContext(EpochsContext) || {};
+    const { epochs } = useContext(EpochsContext) ?? {};
 
     // States
     const [search, setSearch] = useState('');
@@ -146,7 +146,7 @@ const SearchEngine = () => {
                 placeholder='Search'
                 value={search}
                 onChange={handleSearch}
-                darkMode={themeMode?.darkMode || false}
+                darkMode={themeMode?.darkMode ?? false}
             />
 
             {searchResults.length > 0 && (

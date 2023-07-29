@@ -11,7 +11,7 @@ import CustomImage from '../ui/CustomImage';
 
 const Problems = () => {
     // Contexts
-    const { setWorking } = React.useContext(StatusContext) || {};
+    const { setWorking } = React.useContext(StatusContext) ?? {};
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -19,6 +19,8 @@ const Problems = () => {
         }, 10000);
 
         return () => clearInterval(interval);
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const checkQueries = async () => {

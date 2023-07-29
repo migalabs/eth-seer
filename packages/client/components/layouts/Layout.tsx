@@ -1,9 +1,13 @@
 import React from 'react';
 import Head from 'next/head';
+import Image from 'next/image';
 
 // Components
 import Header from './Header';
 import Consent from './Consent';
+
+// Images
+import CookieHeartImage from '../../public/static/images/cookie_heart.svg';
 
 type PropsWithChildren = {
     children?: React.ReactNode;
@@ -11,7 +15,6 @@ type PropsWithChildren = {
 };
 
 const Layout = ({ children, isMain }: PropsWithChildren) => {
-    const assetPrefix = process.env.NEXT_PUBLIC_ASSET_PREFIX ?? '';
     return (
         <>
             <Head>
@@ -25,7 +28,7 @@ const Layout = ({ children, isMain }: PropsWithChildren) => {
             <footer className='text-center text-[7.5px] md:text-sm p-2.5 mt-4 bg-[#D9D9D94D]'>
                 <div className='flex flex-row justify-center '>
                     <p className='text-white uppercase mt-2'>Powered with</p>
-                    <img className='' src={`${assetPrefix}/static/images/cookie_heart.svg`} />
+                    <Image src={CookieHeartImage} alt='Cookie Heart' />
                     <p className='text-white uppercase mt-2 ml-1.5'>
                         by&nbsp;
                         <a className='underline' href='https://migalabs.io/' target='_blank' rel='noreferrer'>
