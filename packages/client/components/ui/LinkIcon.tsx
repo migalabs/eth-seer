@@ -13,7 +13,7 @@ type Props = {
 
 const LinkIcon = ({ forceOrange, forceBlue }: Props) => {
     // Theme Mode Context
-    const { themeMode } = useContext(ThemeModeContext) || {};
+    const { themeMode } = useContext(ThemeModeContext) ?? {};
 
     const getUrl = () => {
         if (forceOrange) {

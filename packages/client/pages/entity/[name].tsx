@@ -69,6 +69,7 @@ const EntityComponent = () => {
 
             if (response.data.entity) {
                 setEntity(response.data.entity);
+                setShowAnimation(false);
             } else {
                 setShowAnimation(true);
             }

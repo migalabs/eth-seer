@@ -15,15 +15,15 @@ import SummaryOverview from '../components/layouts/SummaryOverview';
 
 export default function Home() {
     // Status Context
-    const { status } = useContext(StatusContext) || {};
+    const { status } = useContext(StatusContext) ?? {};
 
     // Blocks Context
     const { startEventSource: startEventSourceBlocks, closeEventSource: closeEventSourceBlocks } =
-        useContext(BlocksContext) || {};
+        useContext(BlocksContext) ?? {};
 
     // Epochs Context
     const { startEventSource: startEventSourceEpochs, closeEventSource: closeEventSourceEpochs } =
-        useContext(EpochsContext) || {};
+        useContext(EpochsContext) ?? {};
 
     // States
     const [eventSourceBlocksCreated, setEventSourceBlocksCreated] = useState(false);
@@ -41,6 +41,8 @@ export default function Home() {
                 }
             };
         }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -55,6 +57,8 @@ export default function Home() {
                 }
             };
         }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (

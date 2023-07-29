@@ -16,7 +16,7 @@ import { Block } from '../../types';
 
 const BlocksState = (props: any) => {
     // Status Context
-    const { setNotWorking } = useContext(StatusContext) || {};
+    const { setNotWorking } = useContext(StatusContext) ?? {};
 
     const initialState = {
         epochs: null,

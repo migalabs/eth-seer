@@ -2,7 +2,7 @@ import { Html, Head, Main, NextScript } from 'next/document';
 import { Global, css } from '@emotion/react';
 
 export default function Document() {
-    const assetPrefix = process.env.NEXT_PUBLIC_ASSET_PREFIX || '';
+    const assetPrefix = process.env.NEXT_PUBLIC_ASSET_PREFIX ?? '';
 
     return (
         <Html>
