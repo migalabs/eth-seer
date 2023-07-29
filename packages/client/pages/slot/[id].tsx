@@ -114,6 +114,8 @@ const Slot = () => {
     useEffect(() => {
         const intervalID = setInterval(shuffle, 1000);
         return () => clearInterval(intervalID);
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [shuffle, slotRef.current]);
 
     // Get blocks

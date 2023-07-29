@@ -13,7 +13,7 @@ import StatusContext from '../status/StatusContext';
 
 const EpochsState = (props: any) => {
     // Status Context
-    const { setNotWorking } = useContext(StatusContext) || {};
+    const { setNotWorking } = useContext(StatusContext) ?? {};
 
     const initialState = {
         epochs: [],

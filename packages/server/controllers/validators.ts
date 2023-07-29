@@ -47,11 +47,17 @@ export const getValidatorById = async (req: Request, res: Response) => {
                 `),
             ]);
 
-        res.json({
-            validator: {
+        let validator = null;
+
+        if (validatorStats.rows.length > 0) {
+            validator = {
                 ...validatorStats.rows[0], 
                 ...validatorPerformance.rows[0],
-            }
+            };
+        }
+
+        res.json({
+            validator
         });
 
     } catch (error) {

@@ -12,7 +12,7 @@ type Props = {
 };
 
 const CustomImage = ({ src, alt, width, height, className, priority, onClick }: Props) => {
-    const assetPrefix = process.env.NEXT_PUBLIC_ASSET_PREFIX || '';
+    const assetPrefix = process.env.NEXT_PUBLIC_ASSET_PREFIX ?? '';
 
     return (
         <Image
