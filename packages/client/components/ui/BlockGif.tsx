@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from 'react';
 
-// Components
-import CustomImage from './CustomImage';
-
 // Constants
 import { POOLS } from '../../constants';
 
@@ -25,14 +22,16 @@ const BlockGif = ({ poolName, width, height }: Props) => {
     }, [poolName]);
 
     const getUrl = () => {
+        const assetPrefix = process.env.NEXT_PUBLIC_ASSET_PREFIX ?? '';
+
         if (poolName && POOLS.includes(poolName.toUpperCase())) {
-            return `/static/images/blocks/covers/${poolName.toLowerCase()}.svg`;
+            return `${assetPrefix}/static/images/blocks/covers/${poolName.toLowerCase()}.svg`;
         } else if (poolName && poolName.includes('lido')) {
-            return `/static/images/blocks/covers/lido.svg`;
+            return `${assetPrefix}/static/images/blocks/covers/lido.svg`;
         } else if (poolName && poolName.includes('whale')) {
-            return `/static/images/blocks/covers/whale.svg`;
+            return `${assetPrefix}/static/images/blocks/covers/whale.svg`;
         } else {
-            return `/static/images/blocks/covers/others.svg`;
+            return `${assetPrefix}/static/images/blocks/covers/others.svg`;
         }
     };
 
