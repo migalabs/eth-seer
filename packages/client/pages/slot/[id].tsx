@@ -114,6 +114,8 @@ const Slot = () => {
     useEffect(() => {
         const intervalID = setInterval(shuffle, 1000);
         return () => clearInterval(intervalID);
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [shuffle, slotRef.current]);
 
     // Get blocks
@@ -121,7 +123,7 @@ const Slot = () => {
         try {
             setLoadingBlock(true);
 
-            const response = await axiosClient.get(`/api/validator-rewards-summary/block/${id}`);
+            const response = await axiosClient.get(`/api/slots/${id}`);
 
             const blockResponse: Block = response.data.block;
             setBlock(blockResponse);
@@ -169,7 +171,7 @@ const Slot = () => {
         try {
             setLoadingWithdrawals(true);
 
-            const response = await axiosClient.get(`/api/validator-rewards-summary/block/${id}/withdrawals`);
+            const response = await axiosClient.get(`/api/slots/${id}/withdrawals`);
 
             setWithdrawals(response.data.withdrawals);
         } catch (error) {
@@ -517,7 +519,7 @@ const Slot = () => {
             <div className='flex gap-x-3 justify-center items-center mt-2 mb-5'>
                 <Link href={`/slot/${id && Number(id) - 1}`} passHref>
                     <CustomImage
-                        src='/static/images/arrow-purple.svg'
+                        src={themeMode?.darkMode ? '/static/images/arrow.svg' : '/static/images/arrow-blue.svg'}
                         alt='Left arrow'
                         width={15}
                         height={15}
@@ -531,8 +533,8 @@ const Slot = () => {
 
                 <Link href={`/slot/${id && Number(id) + 1}`} passHref>
                     <CustomImage
-                        src='/static/images/arrow-purple.svg'
-                        alt='Left arrow'
+                        src={themeMode?.darkMode ? '/static/images/arrow.svg' : '/static/images/arrow-blue.svg'}
+                        alt='Right arrow'
                         width={15}
                         height={15}
                         className='rotate-180 mb-1 cursor-pointer'

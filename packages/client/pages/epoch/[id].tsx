@@ -85,7 +85,7 @@ const EpochComponent = () => {
         try {
             setLoadingEpoch(true);
 
-            const response = await axiosClient.get(`/api/validator-rewards-summary/epoch/${id}`);
+            const response = await axiosClient.get(`/api/epochs/${id}`);
 
             setEpoch({
                 ...response.data.epoch,
@@ -131,7 +131,7 @@ const EpochComponent = () => {
         try {
             setLoadingSlots(true);
 
-            const response = await axiosClient.get(`/api/validator-rewards-summary/epoch/${id}/slots`);
+            const response = await axiosClient.get(`/api/epochs/${id}/slots`);
 
             setSlots(response.data.slots);
         } catch (error) {
@@ -486,7 +486,7 @@ const EpochComponent = () => {
             <div className='flex gap-x-3 justify-center items-center mt-2 mb-5'>
                 <Link href={`/epoch/${id && Number(id) - 1}`} passHref>
                     <CustomImage
-                        src='/static/images/arrow-purple.svg'
+                        src={themeMode?.darkMode ? '/static/images/arrow.svg' : '/static/images/arrow-blue.svg'}
                         alt='Left arrow'
                         width={15}
                         height={15}
@@ -500,8 +500,8 @@ const EpochComponent = () => {
 
                 <Link href={`/epoch/${id && Number(id) + 1}`} passHref>
                     <CustomImage
-                        src='/static/images/arrow-purple.svg'
-                        alt='Left arrow'
+                        src={themeMode?.darkMode ? '/static/images/arrow.svg' : '/static/images/arrow-blue.svg'}
+                        alt='Right arrow'
                         width={15}
                         height={15}
                         className='rotate-180 mb-1 cursor-pointer'

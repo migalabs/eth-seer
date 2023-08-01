@@ -1,7 +1,11 @@
 import express, { Application } from 'express';
 import cors from 'cors';
 import { dbConnection } from '../config/db';
-import validatorReardsSummaryRoutes from '../routes/validator-rewards-summary';
+
+import entitiesRoutes from '../routes/entities';
+import epochsRoutes from '../routes/epochs';
+import slotsRoutes from '../routes/slots';
+import validatorsRoutes from '../routes/validators';
 
 class Server {
 
@@ -9,7 +13,10 @@ class Server {
     private ip: string;
     private port: number;
     private paths = {
-        validatorRewardsSummary: '/api/validator-rewards-summary'
+        entities: '/api/entities',
+        epochs: '/api/epochs',
+        slots: '/api/slots',
+        validators: '/api/validators',
     };
     private callsVerbose: boolean;
 
@@ -51,7 +58,10 @@ class Server {
     }
 
     routes() {
-        this.app.use(this.paths.validatorRewardsSummary, validatorReardsSummaryRoutes);
+        this.app.use(this.paths.entities, entitiesRoutes);
+        this.app.use(this.paths.epochs, epochsRoutes);
+        this.app.use(this.paths.slots, slotsRoutes);
+        this.app.use(this.paths.validators, validatorsRoutes);
     }
 
     listen() {
