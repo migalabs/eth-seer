@@ -15,10 +15,10 @@ const BlockGif = ({ poolName, width, height }: Props) => {
     }
 
     // States
-    const [urlImage, setUrlImage] = useState('url(/static/images/blocks/covers/vitalik.svg)');
+    const [urlImage, setUrlImage] = useState('');
 
     useEffect(() => {
-        //setUrlImage(`url(${getUrl()})`);
+        setUrlImage(`url(${getUrl()})`);
     }, [poolName]);
 
     const getUrl = () => {
