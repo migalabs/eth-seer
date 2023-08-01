@@ -352,7 +352,6 @@
     .cube-right,
     .cube-front,
     .cube-back {
-        border: 1px solid #4d4d4d;
         background-repeat: no-repeat;
         background-size: cover;
         background-position: center center;

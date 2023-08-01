@@ -1,0 +1,9 @@
+<svg id="Capa_1" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="250" height="250" viewBox="0 0 250 250">
+  <defs>
+    <symbol id="Fgiment" data-name="Fgiment" viewBox="0 0 115.75 163.37">
+      <path d="M0,163.37V0H115.74V26.47H29.26V67.92h82v26h-82v69.44Z"/>
+    </symbol>
+  </defs>
+  <rect id="Figment_lido" x="-1.22" y="-1.06" width="252.5" height="252.5" transform="translate(-0.16 250.22) rotate(-90)" fill="#fff29a"/>
+  <use width="115.74" height="163.37" transform="translate(80.43 62.09) scale(0.77)" xlink:href="#Fgiment"/>
+</svg>

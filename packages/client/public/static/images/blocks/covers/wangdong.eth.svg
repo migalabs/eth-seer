@@ -1,0 +1,23 @@
+<svg id="Capa_1" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="250" height="250" viewBox="0 0 250 250">
+  <defs>
+    <symbol id="wangdong.eth" data-name="wangdong.eth" viewBox="0 0 22.47 22.47">
+      <g>
+        <path d="M0,16.86V0H2.81V2.74H5.62V0H16.85V2.74h2.81V0h2.81V16.86H19.62V8.45H16.84V5.7H14.12V8.42h2.75v2.76H5.6V8.42H8.35V5.69H5.63V8.45H2.78v8.41Z" fill="#d9c4a1"/>
+        <path d="M16.84,8.45h2.78v8.41h2.85v5.61H0V16.86H2.78V8.45H5.63l0,0v2.76H16.87V8.42ZM8.46,19.62H14V14.09H8.46Z" fill="#311eac"/>
+        <path d="M5.62,0V2.74H2.81V0Z" fill="#311eac"/>
+        <path d="M19.66,0V2.74H16.85V0Z" fill="#311eac"/>
+        <path d="M5.63,8.45V5.69H8.35V8.42H5.6Z" fill="#311eac"/>
+        <path d="M16.87,8.42H14.12V5.7h2.72V8.45Z" fill="#311eac"/>
+        <path d="M8.46,19.62V14.09H14v5.53Z" fill="#d9c4a1"/>
+        <path d="M2.89,14.05V11.29H5.61V14H2.86Z" fill="#de0c80"/>
+        <path d="M2.85,19.61V16.85H5.57v2.73H2.82Z" fill="#de0c80"/>
+        <path d="M5.67,16.83V14.07H8.39V16.8H5.64Z" fill="#de0c80"/>
+        <path d="M19.55,16.85v2.76H16.83V16.88h2.74Z" fill="#de0c80"/>
+        <path d="M19.59,11.29v2.76H16.87V11.32h2.75Z" fill="#de0c80"/>
+        <path d="M16.77,14.07v2.76H14.05V14.1h2.74Z" fill="#de0c80"/>
+      </g>
+    </symbol>
+  </defs>
+  <rect id="Figment_lido" x="-1.22" y="-1.06" width="252.5" height="252.5" transform="translate(-0.16 250.22) rotate(-90)" fill="#fff"/>
+  <use width="22.47" height="22.47" transform="translate(45 45) scale(7.12)" xlink:href="#wangdong.eth"/>
+</svg>
