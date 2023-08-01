@@ -401,7 +401,7 @@ const Slot = () => {
                 </div>
 
                 <div className='hidden md:block flex-shrink'>
-                    <BlockGif poolName={block?.f_pool_name ?? 'others'} width={200} height={200} />
+                    <BlockGif poolName={block?.f_pool_name ?? 'others'} width={150} height={150} />
                 </div>
             </div>
         );
