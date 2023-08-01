@@ -1,0 +1,21 @@
+<svg id="Capa_1" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="250" height="250" viewBox="0 0 250 250">
+  <defs>
+    <symbol id="Deleted_Symbol_3" data-name="Deleted Symbol 3" viewBox="0 0 243.06 252.6">
+      <polygon points="227.57 45.28 121.87 15.19 16.17 45.28 16.17 45.28 16.17 212.43 121.19 238.47 227.57 212.43 227.57 45.28 227.57 45.28" fill="none" stroke="#fff" stroke-miterlimit="10" stroke-width="12"/>
+      <polyline points="16.17 45.28 120.85 73.19 227.57 45.28" fill="none" stroke="#fff" stroke-miterlimit="10" stroke-width="12"/>
+      <circle cx="120.51" cy="70.81" r="16" fill="#fff"/>
+      <circle cx="226.72" cy="46.64" r="16" fill="#fff"/>
+      <circle cx="121.87" cy="16" r="16" fill="#fff"/>
+      <circle cx="17.02" cy="47.32" r="16" fill="#fff"/>
+      <circle cx="16" cy="211.74" r="16" fill="#fff"/>
+      <circle cx="78.98" cy="140.6" r="16" fill="#fff"/>
+      <circle cx="121.53" cy="236.6" r="16" fill="#fff"/>
+      <circle cx="227.06" cy="212.43" r="16" fill="#fff"/>
+      <polyline points="15.66 123.92 80.68 138.89 80.68 228.77" fill="none" stroke="#fff" stroke-miterlimit="10" stroke-width="12"/>
+      <circle cx="166.13" cy="141.28" r="16" fill="#fff"/>
+      <polyline points="229.45 124.6 164.43 139.57 164.43 229.45" fill="none" stroke="#fff" stroke-miterlimit="10" stroke-width="12"/>
+    </symbol>
+  </defs>
+  <rect id="Figment_lido" x="-1.22" y="-1.06" width="252.5" height="252.5" transform="translate(-0.16 250.22) rotate(-90)" fill="#2c56de"/>
+  <use width="243.06" height="252.6" transform="translate(39.79 36.45) scale(0.7)" xlink:href="#Deleted_Symbol_3"/>
+</svg>

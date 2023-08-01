@@ -1,0 +1,16 @@
+<svg id="Capa_1" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="250" height="250" viewBox="0 0 250 250">
+  <defs>
+    <symbol id="Deleted_Symbol" data-name="Deleted Symbol" viewBox="0 0 10.13 14.29">
+      <path d="M0,14.29V0H10.12V2.32H2.56V5.94H9.73V8.22H2.56v6.07Z"/>
+    </symbol>
+    <symbol id="figment_lido-2" data-name="figment_lido" viewBox="0 0 21.02 21.82">
+      <g>
+        <path d="M17.62,9.7a3.34,3.34,0,0,1-3-1.83,3.26,3.26,0,0,1,.13-3.38c.07-.12.11-.12.23-.06l2.46,1.45a.3.3,0,0,0,.36,0l2.45-1.43c.13-.08.17-.05.24.06a3.39,3.39,0,0,1-2.42,5.15Z" fill="#00a2fd"/>
+        <path d="M17.63,0l1.45,2.27c.29.45.57.9.87,1.35.07.11.05.15-.05.21L17.74,5.09a.2.2,0,0,1-.22,0L15.35,3.82c-.07,0-.12-.07-.06-.16C16.07,2.45,16.84,1.24,17.63,0Zm0,1-.06.08L16,3.49c-.06.08,0,.11.05.15.49.28,1,.56,1.46.85a.19.19,0,0,0,.22,0L18.9,3.8c.13-.07.33-.13.35-.23s-.12-.25-.2-.37q-.66-1.05-1.32-2.07S17.69,1,17.62,1Z" fill="#00a2fd"/>
+      </g>
+      <use width="10.12" height="14.29" transform="translate(0 4.59) scale(1.21)" xlink:href="#Deleted_Symbol"/>
+    </symbol>
+  </defs>
+  <rect id="Figment_lido" x="-1.22" y="-1.06" width="252.5" height="252.5" transform="translate(-0.16 250.22) rotate(-90)" fill="#fff29a"/>
+  <use width="21.02" height="21.82" transform="translate(48.4 45.48) scale(7.29)" xlink:href="#figment_lido-2"/>
+</svg>
