@@ -1,0 +1,29 @@
+<svg id="Capa_1" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="250" height="250" viewBox="0 0 250 250">
+  <defs>
+    <symbol id="Was.eth" data-name="Was.eth" viewBox="0 0 22.47 22.47">
+      <rect width="22.36" height="22.41" fill="#5e36ba"/>
+      <rect x="0.01" y="0.06" width="5.65" height="2.89" fill="#e882c3"/>
+      <rect x="8.36" y="0.03" width="5.65" height="2.89" fill="#e882c3"/>
+      <rect x="16.74" y="0.03" width="5.65" height="2.89" fill="#e882c3"/>
+      <polygon points="2.9 11.26 2.9 16.94 0.03 16.94 0.03 11.26 2.9 11.26" fill="#e882c3"/>
+      <polygon points="22.44 11.24 22.44 16.92 19.57 16.92 19.57 11.24 22.44 11.24" fill="#e882c3"/>
+      <rect x="5.58" y="14.02" width="11.25" height="2.89" fill="#e882c3"/>
+      <rect x="5.64" y="5.59" width="2.81" height="2.83" fill="#e882c3"/>
+      <rect x="2.84" y="2.84" width="2.81" height="2.83" fill="#e882c3"/>
+      <rect x="13.94" y="5.7" width="2.81" height="2.83" fill="#e882c3"/>
+      <rect x="16.75" y="2.86" width="2.81" height="2.89" fill="#e882c3"/>
+      <rect x="19.54" y="5.73" width="2.81" height="2.83" fill="#e882c3"/>
+      <rect x="2.75" y="16.82" width="2.81" height="2.83" fill="#e882c3"/>
+      <rect x="16.78" y="16.85" width="2.81" height="2.83" fill="#e882c3"/>
+      <rect x="5.56" y="19.58" width="2.81" height="2.83" fill="#e882c3"/>
+      <rect x="13.97" y="19.64" width="2.81" height="2.83" fill="#e882c3"/>
+      <rect x="0.03" y="5.64" width="2.81" height="2.83" fill="#e882c3"/>
+      <rect x="2.89" y="11.24" width="5.65" height="2.81" fill="#f217e4"/>
+      <rect x="13.9" y="11.2" width="5.65" height="2.81" fill="#f217e4"/>
+      <rect x="0.03" y="16.8" width="2.89" height="2.83" fill="#f217e4"/>
+      <rect x="19.52" y="16.88" width="2.95" height="2.83" fill="#f217e4"/>
+    </symbol>
+  </defs>
+  <rect id="Figment_lido" x="-1.22" y="-1.06" width="252.5" height="252.5" transform="translate(-0.16 250.22) rotate(-90)" fill="#fff"/>
+  <use width="22.47" height="22.47" transform="translate(45 45) scale(7.12)" xlink:href="#Was.eth"/>
+</svg>
