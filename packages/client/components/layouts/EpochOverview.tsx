@@ -23,7 +23,7 @@ type Props = {
 
 const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
     // Theme Mode Context
-    const { themeMode } = React.useContext(ThemeModeContext) || {};
+    const { themeMode } = React.useContext(ThemeModeContext) ?? {};
 
     const getBlockImage = (block: Block) => {
         const missedExtension = block.f_proposed ? '' : '_missed';

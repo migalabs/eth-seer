@@ -16,7 +16,7 @@ import { Block } from '../../types';
 
 const BlocksState = (props: any) => {
     // Status Context
-    const { setNotWorking } = useContext(StatusContext) || {};
+    const { setNotWorking } = useContext(StatusContext) ?? {};
 
     const initialState = {
         epochs: null,
@@ -31,10 +31,10 @@ const BlocksState = (props: any) => {
         try {
             if (!eventSourceBlock || eventSourceBlock.readyState === eventSourceBlock.CLOSED) {
                 eventSourceBlock = new EventSource(
-                    `${process.env.NEXT_PUBLIC_URL_API}/api/validator-rewards-summary/new-block-notification`
+                    `${process.env.NEXT_PUBLIC_URL_API}/api/slots/new-slot-notification`
                 );
 
-                eventSourceBlock.addEventListener('new_block', function (e) {
+                eventSourceBlock.addEventListener('new_slot', function (e) {
                     getBlocks(0, 32, true);
                 });
 
@@ -58,7 +58,7 @@ const BlocksState = (props: any) => {
     // Get blocks
     const getBlocks = async (page: number, limit: number = 320, onlyLastEpoch: boolean = false) => {
         try {
-            const response = await axiosClient.get(`/api/validator-rewards-summary/blocks`, {
+            const response = await axiosClient.get(`/api/slots`, {
                 params: {
                     limit,
                     page,

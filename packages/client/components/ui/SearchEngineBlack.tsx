@@ -48,19 +48,19 @@ type SearchEngineItem = {
 };
 
 const SearchEngineBlack = () => {
+    const assetPrefix = process.env.NEXT_PUBLIC_ASSET_PREFIX ?? '';
+
     // Theme Mode Context
-    const { themeMode } = React.useContext(ThemeModeContext) || {};
+    const { themeMode } = React.useContext(ThemeModeContext) ?? {};
 
     // Blocks Context
-    const { blocks } = useContext(BlocksContext) || {};
+    const { blocks } = useContext(BlocksContext) ?? {};
 
     // Epochs Context
-    const { epochs } = useContext(EpochsContext) || {};
+    const { epochs } = useContext(EpochsContext) ?? {};
 
     // Refs
     const popUpRef = useRef<HTMLDivElement>(null);
-
-    const assetPrefix = process.env.NEXT_PUBLIC_ASSET_PREFIX || '';
 
     // Hook Outside Click
     useOutsideClick(popUpRef, () => setShowResults(false));
