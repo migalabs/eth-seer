@@ -101,6 +101,7 @@ export const POOLS = [
     'TEKUTEAM',
     'TGERRING.ETH',
     'TOKENPOCKET',
+    'VITALIK',
     'WANGDONG.ETH',
     'WAS.ETH',
     'WEXEXCHANGE',
