@@ -1,0 +1,9 @@
+<svg id="Capa_1" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="250" height="250" viewBox="0 0 250 250">
+  <defs>
+    <symbol id="Cream" data-name="Cream" viewBox="0 0 99.58 99.57">
+      <path d="M49.79,0A49.79,49.79,0,1,0,99.57,49.79,49.79,49.79,0,0,0,49.79,0Zm3.47,51.94L71.47,71.13a3.14,3.14,0,0,1-.41,4.69,32.16,32.16,0,1,1,.6-51.11,3.15,3.15,0,0,1,.21,4.76L53.39,47A3.5,3.5,0,0,0,53.26,51.94Z" fill="#69e2db"/>
+    </symbol>
+  </defs>
+  <rect id="Figment_lido" x="-1.22" y="-1.06" width="252.5" height="252.5" transform="translate(-0.16 250.22) rotate(-90)" fill="#fff"/>
+  <use width="99.57" height="99.57" transform="translate(50.44 50.44) scale(1.5)" xlink:href="#Cream"/>
+</svg>
