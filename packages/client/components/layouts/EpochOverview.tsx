@@ -88,9 +88,9 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
 
     return (
         <div className='flex flex-col'>
-            <h3 className='uppercase text-white text-center text-sm mb-2'>Epoch {epoch?.toLocaleString()}</h3>
+            <span className='uppercase text-white text-center text-xs'>Epoch {epoch?.toLocaleString()}</span>
             <div
-                className={`flex items-center p-2 h-full border-[6px] ${lastEpoch && 'rounded-3xl'}`}
+                className={`flex items-center my-2 p-2 h-full border-[4px] ${lastEpoch && 'rounded-3xl'}`}
                 style={{
                     borderColor: lastEpoch
                         ? `${themeMode?.darkMode ? 'var(--yellow4)' : 'var(--blue2)'}`

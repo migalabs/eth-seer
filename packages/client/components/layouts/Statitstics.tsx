@@ -358,7 +358,7 @@ const Statitstics = () => {
         >
             <div className='flex gap-x-1 justify-around px-2 xl:px-8 py-3 uppercase text-sm min-w-[1150px]'>
                 <div className='flex w-[10%] items-center gap-x-1 justify-center'>
-                    <p className='mt-0.5'>Time</p>
+                    <p className='mt-0.5 text-xs'>Time</p>
                     <TooltipContainer>
                         <CustomImage
                             src='/static/images/information.svg'
@@ -385,7 +385,7 @@ const Statitstics = () => {
                 </div>
 
                 <div className='flex w-[11%] items-center gap-x-1 justify-center'>
-                    <p className='mt-0.5'>Epoch</p>
+                    <p className='mt-0.5 text-xs'>Epoch</p>
                     <TooltipContainer>
                         <CustomImage
                             src='/static/images/information.svg'
@@ -405,7 +405,7 @@ const Statitstics = () => {
                 </div>
 
                 <div className='flex w-[15%] items-center gap-x-1 justify-center'>
-                    <p className='mt-0.5'>Blocks</p>
+                    <p className='mt-0.5 text-xs'>Blocks</p>
                     <TooltipContainer>
                         <CustomImage
                             src='/static/images/information.svg'
@@ -431,7 +431,7 @@ const Statitstics = () => {
                 </div>
 
                 <div className='flex w-[32%] items-center gap-x-1 justify-center'>
-                    <p className='mt-0.5'>Attestation Accuracy</p>
+                    <p className='mt-0.5 text-xs'>Attestation Accuracy</p>
                     <TooltipContainer>
                         <CustomImage
                             src='/static/images/information.svg'
@@ -457,7 +457,7 @@ const Statitstics = () => {
                 </div>
 
                 <div className='flex w-[32%] items-center gap-x-1 justify-center'>
-                    <p className='mt-0.5'>Voting Participation</p>
+                    <p className='mt-0.5 text-xs'>Voting Participation</p>
                     <TooltipContainer>
                         <CustomImage
                             src='/static/images/information.svg'
@@ -898,7 +898,7 @@ const Statitstics = () => {
 
     return (
         <div className='text-center text-white'>
-            <h1 className='text-lg md:text-3xl uppercase'>Epoch Statistics</h1>
+            <h2 className='text-lg md:text-2xl uppercase'>Epoch Statistics</h2>
 
             {desktopView ? getDesktopView() : getPhoneView()}
         </div>
