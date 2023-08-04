@@ -110,7 +110,7 @@ export default function Document() {
                     content="Ethereum's network latest epochs and blocks live data and statistics are shown on Ethseer"
                 />
                 <meta property='og:image' content='http://ethseer.com/static/images/ethseer_metadata.png' />
-                {/* <meta httpEquiv='Content-Security-Policy' content='upgrade-insecure-requests' /> */}
+                <meta httpEquiv='Content-Security-Policy' content='upgrade-insecure-requests' />
                 <link href={`${assetPrefix}/static/css/theme-mode-switch.css`} rel='stylesheet' />
             </Head>
 
