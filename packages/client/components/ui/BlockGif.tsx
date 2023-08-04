@@ -10,20 +10,17 @@ type Props = {
 };
 
 const BlockGif = ({ poolName, width, height }: Props) => {
-    if (!poolName) {
-        return null;
-    }
-
+    
     // States
     const [urlImage, setUrlImage] = useState('');
-
+    
     useEffect(() => {
         setUrlImage(`url(${getUrl()})`);
     }, [poolName]);
-
+    
     const getUrl = () => {
         const assetPrefix = process.env.NEXT_PUBLIC_ASSET_PREFIX ?? '';
-
+        
         if (poolName && POOLS.includes(poolName.toUpperCase())) {
             return `${assetPrefix}/static/images/blocks/covers/${poolName.toLowerCase()}.svg`;
         } else if (poolName && poolName.includes('lido')) {
@@ -34,7 +31,11 @@ const BlockGif = ({ poolName, width, height }: Props) => {
             return `${assetPrefix}/static/images/blocks/covers/others.svg`;
         }
     };
-
+    
+    if (!poolName) {
+        return null;
+    }
+    
     return (
         <div className='body-cube' style={{ width, height }}>
             <div className='container'>
