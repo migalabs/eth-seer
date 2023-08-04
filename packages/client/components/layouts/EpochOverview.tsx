@@ -27,10 +27,11 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
 
     const getBlockImage = (block: Block) => {
         const missedExtension = block.f_proposed ? '' : '_missed';
+        const subfolder = block.f_proposed ? 'cube' : 'missed-cube';
         if (block.f_pool_name && POOLS.includes(block.f_pool_name.toUpperCase())) {
             return (
                 <CustomImage
-                    src={`/static/images/blocks/block_${block.f_pool_name.toLowerCase()}${missedExtension}.svg`}
+                    src={`/static/images/blocks/${subfolder}/block_${block.f_pool_name.toLowerCase()}${missedExtension}.svg`}
                     alt='Logo'
                     width={50}
                     height={50}
@@ -39,7 +40,7 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
         } else if (block.f_pool_name && block.f_pool_name.includes('lido')) {
             return (
                 <CustomImage
-                    src={`/static/images/blocks/block_lido${missedExtension}.svg`}
+                    src={`/static/images/blocks/${subfolder}/block_lido${missedExtension}.svg`}
                     alt='Logo'
                     width={50}
                     height={50}
@@ -48,7 +49,7 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
         } else if (block.f_pool_name && block.f_pool_name.includes('whale')) {
             return (
                 <CustomImage
-                    src={`/static/images/blocks/block_whale${missedExtension}.svg`}
+                    src={`/static/images/blocks/${subfolder}/block_whale${missedExtension}.svg`}
                     alt='Logo'
                     width={50}
                     height={50}
@@ -57,7 +58,7 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
         } else {
             return (
                 <CustomImage
-                    src={`/static/images/blocks/block_others${missedExtension}.svg`}
+                    src={`/static/images/blocks/${subfolder}/block_others${missedExtension}.svg`}
                     alt='Logo'
                     width={50}
                     height={50}
