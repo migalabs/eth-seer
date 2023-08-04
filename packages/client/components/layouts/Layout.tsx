@@ -18,7 +18,7 @@ const Layout = ({ children, isMain }: PropsWithChildren) => {
     return (
         <>
             <Head>
-                <title>Ethseer Ethereum Blockchain Explorer</title>
+                <title>Ethereum (ETH) blockchain explorer - EthSeer.io</title>
             </Head>
 
             <Header isMain={isMain} />
