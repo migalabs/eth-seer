@@ -18,6 +18,7 @@ import LinkIcon from '../../components/ui/LinkIcon';
 import BlockImage from '../../components/ui/BlockImage';
 import Loader from '../../components/ui/Loader';
 import LinkValidator from '../../components/ui/LinkValidator';
+import LinkSlot from '../../components/ui/LinkSlot';
 
 // Types
 import { Epoch, Slot } from '../../types';
@@ -212,20 +213,7 @@ const EpochComponent = () => {
                                 <LinkValidator validator={element.f_val_idx} />
                             </div>
                             <div className='w-[15%]'>
-                                <Link
-                                    href={{
-                                        pathname: '/slots/[id]',
-                                        query: {
-                                            id: element.f_proposer_slot,
-                                        },
-                                    }}
-                                    passHref
-                                    as={`/slots/${element.f_proposer_slot}`}
-                                    className='flex gap-x-1 items-center w-fit mx-auto'
-                                >
-                                    <p>{element.f_proposer_slot?.toLocaleString()}</p>
-                                    <LinkIcon />
-                                </Link>
+                                <LinkSlot slot={element.f_proposer_slot} />
                             </div>
                             <p className='w-[14%]'>
                                 {new Date(firstBlock + Number(element.f_proposer_slot) * 12000).toLocaleString('ja-JP')}
@@ -269,25 +257,12 @@ const EpochComponent = () => {
                                 <p className='w-24'>Validator:</p>
                                 <LinkValidator validator={element.f_val_idx} />
                             </div>
-                            <div>
-                                <Link
-                                    href={{
-                                        pathname: '/slots/[id]',
-                                        query: {
-                                            id: element.f_proposer_slot,
-                                        },
-                                    }}
-                                    passHref
-                                    as={`/slots/${element.f_proposer_slot}`}
-                                    className='flex gap-x-1 items-center w-fit mx-auto'
-                                >
-                                    <div className='flex flex-row items-center gap-x-8'>
-                                        <p className='w-24'>Slot:</p>
-                                        <p className='leading-3'>{element.f_proposer_slot?.toLocaleString()}</p>
-                                    </div>
-                                    <LinkIcon />
-                                </Link>
+
+                            <div className='flex flex-row items-center gap-x-8'>
+                                <p className='w-24'>Slot:</p>
+                                <LinkSlot slot={element.f_proposer_slot} />
                             </div>
+
                             <div className='flex flex-row items-center gap-x-8'>
                                 <p className='w-24'>DateTime:</p>
                                 <div className='flex flex-col gap-y-0.5'>
@@ -305,6 +280,7 @@ const EpochComponent = () => {
                                     </p>
                                 </div>
                             </div>
+
                             <div className='flex flex-row items-center gap-x-8'>
                                 <p className='w-24'>Withdrawals:</p>
                                 <p className='leading-3'>{(element.withdrawals / 10 ** 9).toLocaleString()} ETH</p>
