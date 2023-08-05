@@ -208,13 +208,13 @@ const Graffitis = () => {
                             <div className='w-[20%]'>
                                 <Link
                                     href={{
-                                        pathname: '/slot/[id]',
+                                        pathname: '/slots/[id]',
                                         query: {
                                             id: block.f_slot,
                                         },
                                     }}
                                     passHref
-                                    as={`/slot/${block.f_slot}`}
+                                    as={`/slots/${block.f_slot}`}
                                     className='flex gap-x-1 items-center w-fit mx-auto'
                                 >
                                     <p>{block?.f_slot?.toLocaleString()}</p>
@@ -225,13 +225,13 @@ const Graffitis = () => {
                             <div className='w-[20%]'>
                                 <Link
                                     href={{
-                                        pathname: '/validator/[id]',
+                                        pathname: '/validators/[id]',
                                         query: {
                                             id: block.f_proposer_index,
                                         },
                                     }}
                                     passHref
-                                    as={`/validator/${block.f_proposer_index}`}
+                                    as={`/validators/${block.f_proposer_index}`}
                                     className='flex gap-x-1 items-center w-fit mx-auto'
                                 >
                                     <p>{block.f_proposer_index?.toLocaleString()}</p>
@@ -281,13 +281,13 @@ const Graffitis = () => {
                         <div className='flex gap-x-1 justify-center'>
                             <Link
                                 href={{
-                                    pathname: '/slot/[id]',
+                                    pathname: '/slots/[id]',
                                     query: {
                                         id: block.f_slot,
                                     },
                                 }}
                                 passHref
-                                as={`/slot/${block.f_slot}`}
+                                as={`/slots/${block.f_slot}`}
                             >
                                 <p className='font-bold text-sm mt-0.5'>Slot {block.f_slot?.toLocaleString()}</p>
                             </Link>

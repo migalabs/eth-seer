@@ -306,7 +306,7 @@ const Slot = () => {
                     <Card
                         title='Epoch'
                         content={block?.f_epoch?.toLocaleString()}
-                        link={`${assetPrefix}/epoch/${block?.f_epoch}`}
+                        link={`${assetPrefix}/epochs/${block?.f_epoch}`}
                         icon='link'
                         iconSize={25}
                         target='_self'
@@ -320,7 +320,7 @@ const Slot = () => {
                             content={block?.f_pool_name?.toLocaleString() ?? 'others'}
                             icon='link'
                             iconSize={25}
-                            link={`${assetPrefix}/entity/${block?.f_pool_name?.toLocaleString() ?? 'others'}`}
+                            link={`${assetPrefix}/entities/${block?.f_pool_name?.toLocaleString() ?? 'others'}`}
                             target='_self'
                         />
                     )}
@@ -350,7 +350,7 @@ const Slot = () => {
                             content={block?.f_proposer_index?.toLocaleString()}
                             icon='link'
                             iconSize={25}
-                            link={`${assetPrefix}/validator/${block?.f_proposer_index}`}
+                            link={`${assetPrefix}/validators/${block?.f_proposer_index}`}
                             target='_self'
                         />
                     )}
@@ -483,13 +483,13 @@ const Slot = () => {
                                 <div className='w-1/3'>
                                     <Link
                                         href={{
-                                            pathname: '/validator/[id]',
+                                            pathname: '/validators/[id]',
                                             query: {
                                                 id: element.f_val_idx,
                                             },
                                         }}
                                         passHref
-                                        as={`/validator/${element.f_val_idx}`}
+                                        as={`/validators/${element.f_val_idx}`}
                                         className='flex gap-x-1 items-center w-fit mx-auto'
                                     >
                                         <p>{element.f_val_idx}</p>
@@ -517,7 +517,7 @@ const Slot = () => {
     return (
         <Layout isMain={false}>
             <div className='flex gap-x-3 justify-center items-center mt-2 mb-5'>
-                <Link href={`/slot/${id && Number(id) - 1}`} passHref>
+                <Link href={`/slots/${id && Number(id) - 1}`} passHref>
                     <CustomImage
                         src={themeMode?.darkMode ? '/static/images/arrow.svg' : '/static/images/arrow-blue.svg'}
                         alt='Left arrow'
@@ -531,7 +531,7 @@ const Slot = () => {
                     Slot {Number(id)?.toLocaleString()}
                 </h1>
 
-                <Link href={`/slot/${id && Number(id) + 1}`} passHref>
+                <Link href={`/slots/${id && Number(id) + 1}`} passHref>
                     <CustomImage
                         src={themeMode?.darkMode ? '/static/images/arrow.svg' : '/static/images/arrow-blue.svg'}
                         alt='Right arrow'

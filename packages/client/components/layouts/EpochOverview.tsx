@@ -108,13 +108,13 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
                         <div key={block.f_slot} className='group'>
                             <Link
                                 href={{
-                                    pathname: '/slot/[id]',
+                                    pathname: '/slots/[id]',
                                     query: {
                                         id: block.f_slot,
                                     },
                                 }}
                                 passHref
-                                as={`/slot/${block.f_slot}`}
+                                as={`/slots/${block.f_slot}`}
                             >
                                 <TooltipContainer>
                                     {getBlockImage(block)}

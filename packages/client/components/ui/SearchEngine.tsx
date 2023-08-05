@@ -70,7 +70,7 @@ const SearchEngine = () => {
                 // It can be an epoch
                 items.push({
                     label: `Epoch: ${searchContent}`,
-                    link: `/epoch/${searchContent}`,
+                    link: `/epochs/${searchContent}`,
                 });
             }
 
@@ -80,7 +80,7 @@ const SearchEngine = () => {
                 // It can be a slot
                 items.push({
                     label: `Slot: ${searchContent}`,
-                    link: `/slot/${searchContent}`,
+                    link: `/slots/${searchContent}`,
                 });
             }
 
@@ -88,7 +88,7 @@ const SearchEngine = () => {
                 // It can be a validator
                 items.push({
                     label: `Validator: ${searchContent}`,
-                    link: `/validator/${searchContent}`,
+                    link: `/validators/${searchContent}`,
                 });
             }
         }

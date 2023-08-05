@@ -194,13 +194,13 @@ const EpochComponent = () => {
                             <div className='w-[32%]'>
                                 <Link
                                     href={{
-                                        pathname: '/entity/[name]',
+                                        pathname: '/entities/[name]',
                                         query: {
                                             name: element.f_pool_name || 'others',
                                         },
                                     }}
                                     passHref
-                                    as={`/entity/${element.f_pool_name || 'others'}`}
+                                    as={`/entities/${element.f_pool_name || 'others'}`}
                                     className='flex gap-x-1 items-center w-fit mx-auto'
                                 >
                                     <p>{element.f_pool_name || 'others'}</p>
@@ -210,13 +210,13 @@ const EpochComponent = () => {
                             <div className='w-[14%]'>
                                 <Link
                                     href={{
-                                        pathname: '/validator/[id]',
+                                        pathname: '/validators/[id]',
                                         query: {
                                             id: element.f_val_idx,
                                         },
                                     }}
                                     passHref
-                                    as={`/validator/${element.f_val_idx}`}
+                                    as={`/validators/${element.f_val_idx}`}
                                     className='flex gap-x-1 items-center w-fit mx-auto'
                                 >
                                     <p>{element.f_val_idx?.toLocaleString()}</p>
@@ -226,13 +226,13 @@ const EpochComponent = () => {
                             <div className='w-[15%]'>
                                 <Link
                                     href={{
-                                        pathname: '/slot/[id]',
+                                        pathname: '/slots/[id]',
                                         query: {
                                             id: element.f_proposer_slot,
                                         },
                                     }}
                                     passHref
-                                    as={`/slot/${element.f_proposer_slot}`}
+                                    as={`/slots/${element.f_proposer_slot}`}
                                     className='flex gap-x-1 items-center w-fit mx-auto'
                                 >
                                     <p>{element.f_proposer_slot?.toLocaleString()}</p>
@@ -280,13 +280,13 @@ const EpochComponent = () => {
                             <div>
                                 <Link
                                     href={{
-                                        pathname: '/validator/[id]',
+                                        pathname: '/validators/[id]',
                                         query: {
                                             id: element.f_val_idx,
                                         },
                                     }}
                                     passHref
-                                    as={`/validator/${element.f_val_idx}`}
+                                    as={`/validators/${element.f_val_idx}`}
                                     className='flex gap-x-1 items-center w-fit mx-auto'
                                 >
                                     <div className='flex flex-row items-center gap-x-8'>
@@ -299,13 +299,13 @@ const EpochComponent = () => {
                             <div>
                                 <Link
                                     href={{
-                                        pathname: '/slot/[id]',
+                                        pathname: '/slots/[id]',
                                         query: {
                                             id: element.f_proposer_slot,
                                         },
                                     }}
                                     passHref
-                                    as={`/slot/${element.f_proposer_slot}`}
+                                    as={`/slots/${element.f_proposer_slot}`}
                                     className='flex gap-x-1 items-center w-fit mx-auto'
                                 >
                                     <div className='flex flex-row items-center gap-x-8'>
@@ -484,7 +484,7 @@ const EpochComponent = () => {
     return (
         <Layout isMain={false}>
             <div className='flex gap-x-3 justify-center items-center mt-2 mb-5'>
-                <Link href={`/epoch/${id && Number(id) - 1}`} passHref>
+                <Link href={`/epochs/${id && Number(id) - 1}`} passHref>
                     <CustomImage
                         src={themeMode?.darkMode ? '/static/images/arrow.svg' : '/static/images/arrow-blue.svg'}
                         alt='Left arrow'
@@ -498,7 +498,7 @@ const EpochComponent = () => {
                     Epoch {Number(id)?.toLocaleString()}
                 </h1>
 
-                <Link href={`/epoch/${id && Number(id) + 1}`} passHref>
+                <Link href={`/epochs/${id && Number(id) + 1}`} passHref>
                     <CustomImage
                         src={themeMode?.darkMode ? '/static/images/arrow.svg' : '/static/images/arrow-blue.svg'}
                         alt='Right arrow'
