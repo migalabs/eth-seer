@@ -1,5 +1,4 @@
 import { useContext, useEffect, useRef, useState } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 // Axios
@@ -14,12 +13,12 @@ import ProgressSmoothBarEpoch from '../../components/ui/ProgressSmoothBarEpoch';
 import ProgressSmoothBar from '../../components/ui/ProgressSmoothBar';
 import EpochAnimation from '../../components/layouts/EpochAnimation';
 import CustomImage from '../../components/ui/CustomImage';
-import LinkIcon from '../../components/ui/LinkIcon';
 import BlockImage from '../../components/ui/BlockImage';
 import Loader from '../../components/ui/Loader';
 import LinkValidator from '../../components/ui/LinkValidator';
 import LinkSlot from '../../components/ui/LinkSlot';
 import LinkEpoch from '../../components/ui/LinkEpoch';
+import LinkEntity from '../../components/ui/LinkEntity';
 
 // Types
 import { Epoch, Slot } from '../../types';
@@ -194,31 +193,23 @@ const EpochComponent = () => {
                                     showCheck
                                 />
                             </div>
+
                             <div className='w-[32%]'>
-                                <Link
-                                    href={{
-                                        pathname: '/entities/[name]',
-                                        query: {
-                                            name: element.f_pool_name || 'others',
-                                        },
-                                    }}
-                                    passHref
-                                    as={`/entities/${element.f_pool_name || 'others'}`}
-                                    className='flex gap-x-1 items-center w-fit mx-auto'
-                                >
-                                    <p>{element.f_pool_name || 'others'}</p>
-                                    <LinkIcon />
-                                </Link>
+                                <LinkEntity entity={element.f_pool_name || 'others'} />
                             </div>
+
                             <div className='w-[14%]'>
                                 <LinkValidator validator={element.f_val_idx} />
                             </div>
+
                             <div className='w-[15%]'>
                                 <LinkSlot slot={element.f_proposer_slot} />
                             </div>
+
                             <p className='w-[14%]'>
                                 {new Date(firstBlock + Number(element.f_proposer_slot) * 12000).toLocaleString('ja-JP')}
                             </p>
+
                             <p className='w-[18%]'>{(element.withdrawals / 10 ** 9).toLocaleString()} ETH</p>
                         </div>
                     ))}

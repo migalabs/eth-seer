@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
-import Link from 'next/link';
 
 // Axios
 import axiosClient from '../config/axios';
@@ -9,11 +8,11 @@ import ThemeModeContext from '../contexts/theme-mode/ThemeModeContext';
 
 // Components
 import Layout from '../components/layouts/Layout';
-import LinkIcon from '../components/ui/LinkIcon';
 import ValidatorStatus from '../components/ui/ValidatorStatus';
 import Loader from '../components/ui/Loader';
 import ViewMoreButton from '../components/ui/ViewMoreButton';
 import LinkValidator from '../components/ui/LinkValidator';
+import LinkEntity from '../components/ui/LinkEntity';
 
 // Types
 import { Validator } from '../types';
@@ -102,20 +101,7 @@ const Validators = () => {
                             <p className='w-[25%]'>{validator.f_balance_eth} ETH</p>
 
                             <div className='w-[25%]'>
-                                <Link
-                                    href={{
-                                        pathname: '/entities/[name]',
-                                        query: {
-                                            name: validator.f_pool_name || 'others',
-                                        },
-                                    }}
-                                    passHref
-                                    as={`/entities/${validator.f_pool_name || 'others'}`}
-                                    className='flex gap-x-1 items-center w-fit mx-auto'
-                                >
-                                    <p>{validator.f_pool_name || 'others'}</p>
-                                    <LinkIcon />
-                                </Link>
+                                <LinkEntity entity={validator.f_pool_name || 'others'} />
                             </div>
 
                             <div className='flex justify-center w-[25%]'>
