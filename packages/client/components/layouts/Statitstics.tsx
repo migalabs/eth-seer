@@ -125,13 +125,13 @@ const Statitstics = () => {
                 <div className='w-[11%]'>
                     <Link
                         href={{
-                            pathname: '/epoch/[id]',
+                            pathname: '/epochs/[id]',
                             query: {
                                 id: f_epoch,
                             },
                         }}
                         passHref
-                        as={`/epoch/${f_epoch}`}
+                        as={`/epochs/${f_epoch}`}
                         className='flex gap-x-1 items-center w-fit mx-auto'
                     >
                         <p>{f_epoch?.toLocaleString()}</p>
@@ -185,13 +185,13 @@ const Statitstics = () => {
                 <div className='flex gap-x-1 justify-center'>
                     <Link
                         href={{
-                            pathname: '/epoch/[id]',
+                            pathname: '/epochs/[id]',
                             query: {
                                 id: f_epoch,
                             },
                         }}
                         passHref
-                        as={`/epoch/${f_epoch}`}
+                        as={`/epochs/${f_epoch}`}
                     >
                         <p className='font-bold text-sm mt-0.5'>Epoch {f_epoch?.toLocaleString()}</p>
                     </Link>
@@ -515,13 +515,13 @@ const Statitstics = () => {
                             <div className='w-[11%]'>
                                 <Link
                                     href={{
-                                        pathname: '/epoch/[id]',
+                                        pathname: '/epochs/[id]',
                                         query: {
                                             id: epoch.f_epoch,
                                         },
                                     }}
                                     passHref
-                                    as={`/epoch/${epoch.f_epoch}`}
+                                    as={`/epochs/${epoch.f_epoch}`}
                                     className='flex gap-x-1 items-center w-fit mx-auto'
                                 >
                                     <p>{epoch?.f_epoch?.toLocaleString()}</p>
@@ -672,13 +672,13 @@ const Statitstics = () => {
                         <div className='flex gap-x-1 justify-center'>
                             <Link
                                 href={{
-                                    pathname: '/epoch/[id]',
+                                    pathname: '/epochs/[id]',
                                     query: {
                                         id: epoch.f_epoch,
                                     },
                                 }}
                                 passHref
-                                as={`/epoch/${epoch.f_epoch}`}
+                                as={`/epochs/${epoch.f_epoch}`}
                             >
                                 <p className='font-bold text-sm mt-0.5'>Epoch {epoch.f_epoch?.toLocaleString()}</p>
                             </Link>

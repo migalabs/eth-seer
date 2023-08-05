@@ -169,13 +169,13 @@ const ValidatorComponent = () => {
                             <div>
                                 <Link
                                     href={{
-                                        pathname: '/epoch/[id]',
+                                        pathname: '/epochs/[id]',
                                         query: {
                                             id: Math.floor(element.f_proposer_slot / 32),
                                         },
                                     }}
                                     passHref
-                                    as={`/epoch/${Math.floor(element.f_proposer_slot / 32)}`}
+                                    as={`/epochs/${Math.floor(element.f_proposer_slot / 32)}`}
                                     className='flex gap-x-1 items-center w-fit mx-auto'
                                 >
                                     <div className='flex flex-row items-center gap-x-8'>
@@ -190,13 +190,13 @@ const ValidatorComponent = () => {
                             <div>
                                 <Link
                                     href={{
-                                        pathname: '/slot/[id]',
+                                        pathname: '/slots/[id]',
                                         query: {
                                             id: element.f_proposer_slot,
                                         },
                                     }}
                                     passHref
-                                    as={`/slot/${element.f_proposer_slot}`}
+                                    as={`/slots/${element.f_proposer_slot}`}
                                     className='flex gap-x-1 items-center w-fit mx-auto'
                                 >
                                     <div className='flex flex-row items-center gap-x-8'>
@@ -277,13 +277,13 @@ const ValidatorComponent = () => {
                             <div className='w-[25%]'>
                                 <Link
                                     href={{
-                                        pathname: '/epoch/[id]',
+                                        pathname: '/epochs/[id]',
                                         query: {
                                             id: Math.floor(element.f_proposer_slot / 32),
                                         },
                                     }}
                                     passHref
-                                    as={`/epoch/${Math.floor(element.f_proposer_slot / 32)}`}
+                                    as={`/epochs/${Math.floor(element.f_proposer_slot / 32)}`}
                                     className='flex gap-x-1 items-center w-fit mx-auto'
                                 >
                                     <p>{Math.floor(element.f_proposer_slot / 32).toLocaleString()}</p>
@@ -293,13 +293,13 @@ const ValidatorComponent = () => {
                             <div className='w-[25%]'>
                                 <Link
                                     href={{
-                                        pathname: '/slot/[id]',
+                                        pathname: '/slots/[id]',
                                         query: {
                                             id: element.f_proposer_slot,
                                         },
                                     }}
                                     passHref
-                                    as={`/slot/${element.f_proposer_slot}`}
+                                    as={`/slots/${element.f_proposer_slot}`}
                                     className='flex gap-x-1 items-center w-fit mx-auto'
                                 >
                                     <p>{element.f_proposer_slot?.toLocaleString()}</p>
@@ -348,13 +348,13 @@ const ValidatorComponent = () => {
                             <div className='w-[25%]'>
                                 <Link
                                     href={{
-                                        pathname: '/epoch/[id]',
+                                        pathname: '/epochs/[id]',
                                         query: {
                                             id: Math.floor(element.f_epoch ?? 0),
                                         },
                                     }}
                                     passHref
-                                    as={`/epoch/${Math.floor(element.f_epoch ?? 0)}`}
+                                    as={`/epochs/${Math.floor(element.f_epoch ?? 0)}`}
                                     className='flex gap-x-1 items-center w-fit mx-auto'
                                 >
                                     <p>{Math.floor(element.f_epoch ?? 0).toLocaleString()}</p>
@@ -364,13 +364,13 @@ const ValidatorComponent = () => {
                             <div className='w-[25%]'>
                                 <Link
                                     href={{
-                                        pathname: '/slot/[id]',
+                                        pathname: '/slots/[id]',
                                         query: {
                                             id: element.f_slot,
                                         },
                                     }}
                                     passHref
-                                    as={`/slot/${element.f_slot}`}
+                                    as={`/slots/${element.f_slot}`}
                                     className='flex gap-x-1 items-center w-fit mx-auto'
                                 >
                                     <p>{element?.f_slot?.toLocaleString()}</p>
@@ -409,13 +409,13 @@ const ValidatorComponent = () => {
                             <div>
                                 <Link
                                     href={{
-                                        pathname: '/epoch/[id]',
+                                        pathname: '/epochs/[id]',
                                         query: {
                                             id: Math.floor(element.f_epoch ?? 0),
                                         },
                                     }}
                                     passHref
-                                    as={`/epoch/${Math.floor(element.f_epoch ?? 0)}`}
+                                    as={`/epochs/${Math.floor(element.f_epoch ?? 0)}`}
                                     className='flex gap-x-1 items-center w-fit mx-auto'
                                 >
                                     <div className='flex flex-row items-center gap-x-8'>
@@ -428,13 +428,13 @@ const ValidatorComponent = () => {
                             <div>
                                 <Link
                                     href={{
-                                        pathname: '/slot/[id]',
+                                        pathname: '/slots/[id]',
                                         query: {
                                             id: element.f_slot,
                                         },
                                     }}
                                     passHref
-                                    as={`/slot/${element.f_slot}`}
+                                    as={`/slots/${element.f_slot}`}
                                     className='flex gap-x-1 items-center w-fit mx-auto'
                                 >
                                     <div className='flex flex-row items-center gap-x-8'>
@@ -500,13 +500,13 @@ const ValidatorComponent = () => {
                             <div>
                                 <Link
                                     href={{
-                                        pathname: '/entity/[name]',
+                                        pathname: '/entities/[name]',
                                         query: {
                                             name: validator?.f_pool_name ? validator.f_pool_name : 'others',
                                         },
                                     }}
                                     passHref
-                                    as={`/entity/${validator?.f_pool_name ? validator.f_pool_name : 'others'}`}
+                                    as={`/entities/${validator?.f_pool_name ? validator.f_pool_name : 'others'}`}
                                     className='flex gap-x-1 items-center w-fit mx-auto'
                                 >
                                     <p className='leading-3'>

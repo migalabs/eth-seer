@@ -87,7 +87,7 @@ const SearchEngineBlack = () => {
                 // It can be an epoch
                 items.push({
                     label: `Epoch: ${searchContent}`,
-                    link: `/epoch/${searchContent}`,
+                    link: `/epochs/${searchContent}`,
                 });
             }
 
@@ -97,7 +97,7 @@ const SearchEngineBlack = () => {
                 // It can be a slot
                 items.push({
                     label: `Slot: ${searchContent}`,
-                    link: `/slot/${searchContent}`,
+                    link: `/slots/${searchContent}`,
                 });
             }
 
@@ -105,7 +105,7 @@ const SearchEngineBlack = () => {
                 // It can be a validator
                 items.push({
                     label: `Validator: ${searchContent}`,
-                    link: `/validator/${searchContent}`,
+                    link: `/validators/${searchContent}`,
                 });
             }
 
@@ -113,7 +113,7 @@ const SearchEngineBlack = () => {
                 // It can be a graffiti
                 items.push({
                     label: `Graffiti: ${searchContent}`,
-                    link: `/slot/graffiti/${searchContent}`,
+                    link: `/slots/graffiti/${searchContent}`,
                 });
             }
         } else {
@@ -121,7 +121,7 @@ const SearchEngineBlack = () => {
                 // It can be a graffiti
                 items.push({
                     label: `Graffiti: ${searchContent}`,
-                    link: `/slot/graffiti/${searchContent}`,
+                    link: `/slots/graffiti/${searchContent}`,
                 });
             }
 
@@ -134,7 +134,7 @@ const SearchEngineBlack = () => {
                         .filter(pool => pool.search(expression) !== -1)
                         .map(pool => ({
                             label: `Entity: ${pool}`,
-                            link: `/entity/${pool.toLowerCase()}`,
+                            link: `/entities/${pool.toLowerCase()}`,
                         }))
                 );
             } else {
@@ -143,7 +143,7 @@ const SearchEngineBlack = () => {
                         .filter(pool => pool.search(expression) !== -1)
                         .map(pool => ({
                             label: `Entity: ${pool}`,
-                            link: `/entity/${pool.toLowerCase()}`,
+                            link: `/entities/${pool.toLowerCase()}`,
                         }))
                 );
             }
