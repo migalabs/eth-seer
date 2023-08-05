@@ -19,6 +19,7 @@ import ProgressSmoothBar from '../../components/ui/ProgressSmoothBar';
 import Loader from '../../components/ui/Loader';
 import ValidatorStatus from '../../components/ui/ValidatorStatus';
 import LinkEpoch from '../../components/ui/LinkEpoch';
+import LinkSlot from '../../components/ui/LinkSlot';
 
 // Types
 import { Validator, Slot, Withdrawal } from '../../types';
@@ -173,24 +174,9 @@ const ValidatorComponent = () => {
                                 <LinkEpoch epoch={Math.floor(element.f_proposer_slot / 32)} />
                             </div>
 
-                            <div>
-                                <Link
-                                    href={{
-                                        pathname: '/slots/[id]',
-                                        query: {
-                                            id: element.f_proposer_slot,
-                                        },
-                                    }}
-                                    passHref
-                                    as={`/slots/${element.f_proposer_slot}`}
-                                    className='flex gap-x-1 items-center w-fit mx-auto'
-                                >
-                                    <div className='flex flex-row items-center gap-x-8'>
-                                        <p className='w-20'>Slot:</p>
-                                        <p className='leading-3'>{element.f_proposer_slot?.toLocaleString()}</p>
-                                    </div>
-                                    <LinkIcon />
-                                </Link>
+                            <div className='flex flex-row items-center gap-x-8'>
+                                <p className='w-20'>Slot:</p>
+                                <LinkSlot slot={element.f_proposer_slot} />
                             </div>
 
                             <div className='flex flex-row items-center gap-x-10'>
@@ -261,25 +247,15 @@ const ValidatorComponent = () => {
                                     showCheck
                                 />
                             </div>
+
                             <div className='w-[25%]'>
                                 <LinkEpoch epoch={Math.floor(element.f_proposer_slot / 32)} />
                             </div>
+
                             <div className='w-[25%]'>
-                                <Link
-                                    href={{
-                                        pathname: '/slots/[id]',
-                                        query: {
-                                            id: element.f_proposer_slot,
-                                        },
-                                    }}
-                                    passHref
-                                    as={`/slots/${element.f_proposer_slot}`}
-                                    className='flex gap-x-1 items-center w-fit mx-auto'
-                                >
-                                    <p>{element.f_proposer_slot?.toLocaleString()}</p>
-                                    <LinkIcon />
-                                </Link>
+                                <LinkSlot slot={element.f_proposer_slot} />
                             </div>
+
                             <p className='w-[25%]'>
                                 {new Date(firstBlock + Number(element.f_proposer_slot) * 12000).toLocaleString('ja-JP')}
                             </p>
@@ -322,25 +298,15 @@ const ValidatorComponent = () => {
                             <div className='w-[25%]'>
                                 <LinkEpoch epoch={Math.floor(element.f_epoch ?? 0)} />
                             </div>
+
                             <div className='w-[25%]'>
-                                <Link
-                                    href={{
-                                        pathname: '/slots/[id]',
-                                        query: {
-                                            id: element.f_slot,
-                                        },
-                                    }}
-                                    passHref
-                                    as={`/slots/${element.f_slot}`}
-                                    className='flex gap-x-1 items-center w-fit mx-auto'
-                                >
-                                    <p>{element?.f_slot?.toLocaleString()}</p>
-                                    <LinkIcon />
-                                </Link>
+                                <LinkSlot slot={element.f_slot} />
                             </div>
+
                             <p className='w-[25%]'>
                                 {new Date(firstBlock + Number(element.f_slot) * 12000).toLocaleString('ja-JP')}
                             </p>
+
                             <p className='w-[25%]'>{(element.f_amount / 10 ** 9).toLocaleString()} ETH</p>
                         </div>
                     ))}
@@ -372,24 +338,9 @@ const ValidatorComponent = () => {
                                 <LinkEpoch epoch={Math.floor(element.f_epoch ?? 0)} />
                             </div>
 
-                            <div>
-                                <Link
-                                    href={{
-                                        pathname: '/slots/[id]',
-                                        query: {
-                                            id: element.f_slot,
-                                        },
-                                    }}
-                                    passHref
-                                    as={`/slots/${element.f_slot}`}
-                                    className='flex gap-x-1 items-center w-fit mx-auto'
-                                >
-                                    <div className='flex flex-row items-center gap-x-8'>
-                                        <p className='w-20'>Slot:</p>
-                                        <p className='leading-3'>{element?.f_slot?.toLocaleString()}</p>
-                                    </div>
-                                    <LinkIcon />
-                                </Link>
+                            <div className='flex flex-row items-center gap-x-8'>
+                                <p className='w-20'>Slot:</p>
+                                <LinkSlot slot={element.f_slot} />
                             </div>
 
                             <div className='flex flex-row items-center gap-x-8'>

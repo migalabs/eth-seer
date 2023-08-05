@@ -16,6 +16,7 @@ import BlockGif from '../../components/ui/BlockGif';
 import TabHeader from '../../components/ui/TabHeader';
 import Loader from '../../components/ui/Loader';
 import LinkValidator from '../../components/ui/LinkValidator';
+import LinkSlot from '../../components/ui/LinkSlot';
 
 // Types
 import { Block, Withdrawal } from '../../types';
@@ -507,7 +508,7 @@ const Slot = () => {
     return (
         <Layout isMain={false}>
             <div className='flex gap-x-3 justify-center items-center mt-2 mb-5'>
-                <Link href={`/slots/${id && Number(id) - 1}`} passHref>
+                <LinkSlot slot={Number(id) - 1}>
                     <CustomImage
                         src={themeMode?.darkMode ? '/static/images/arrow.svg' : '/static/images/arrow-blue.svg'}
                         alt='Left arrow'
@@ -515,13 +516,13 @@ const Slot = () => {
                         height={15}
                         className='mb-1 cursor-pointer'
                     />
-                </Link>
+                </LinkSlot>
 
                 <h1 className='text-white text-center text-xl md:text-3xl uppercase'>
                     Slot {Number(id)?.toLocaleString()}
                 </h1>
 
-                <Link href={`/slots/${id && Number(id) + 1}`} passHref>
+                <LinkSlot slot={Number(id) + 1}>
                     <CustomImage
                         src={themeMode?.darkMode ? '/static/images/arrow.svg' : '/static/images/arrow-blue.svg'}
                         alt='Right arrow'
@@ -529,7 +530,7 @@ const Slot = () => {
                         height={15}
                         className='rotate-180 mb-1 cursor-pointer'
                     />
-                </Link>
+                </LinkSlot>
             </div>
 
             {loadingBlock && (

@@ -11,12 +11,12 @@ import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 // Components
 import TooltipContainer from '../ui/TooltipContainer';
 import CustomImage from '../ui/CustomImage';
-import LinkIcon from '../ui/LinkIcon';
 import Animation from './Animation';
 import Loader from '../ui/Loader';
 import TooltipResponsive from '../ui/TooltipResponsive';
 import ViewMoreButton from '../ui/ViewMoreButton';
 import LinkValidator from '../ui/LinkValidator';
+import LinkSlot from '../ui/LinkSlot';
 
 // Types
 import { Block } from '../../types';
@@ -208,20 +208,7 @@ const Graffitis = () => {
                             </div>
 
                             <div className='w-[20%]'>
-                                <Link
-                                    href={{
-                                        pathname: '/slots/[id]',
-                                        query: {
-                                            id: block.f_slot,
-                                        },
-                                    }}
-                                    passHref
-                                    as={`/slots/${block.f_slot}`}
-                                    className='flex gap-x-1 items-center w-fit mx-auto'
-                                >
-                                    <p>{block?.f_slot?.toLocaleString()}</p>
-                                    <LinkIcon />
-                                </Link>
+                                <LinkSlot slot={block.f_slot} />
                             </div>
 
                             <div className='w-[20%]'>
@@ -248,7 +235,7 @@ const Graffitis = () => {
     const getPhoneView = () => (
         <div className='flex flex-col gap-y-4 uppercase px-4 mt-3'>
             {blocks &&
-                blocks.map((block: Block, idx: number) => (
+                blocks.map((block: Block) => (
                     <div
                         key={block.f_slot}
                         className='flex flex-col gap-y-4 justify-around items-center text-[10px] text-black rounded-[22px] px-3 py-7'
@@ -258,19 +245,11 @@ const Graffitis = () => {
                         }}
                     >
                         <div className='flex gap-x-1 justify-center'>
-                            <Link
-                                href={{
-                                    pathname: '/slots/[id]',
-                                    query: {
-                                        id: block.f_slot,
-                                    },
-                                }}
-                                passHref
-                                as={`/slots/${block.f_slot}`}
-                            >
+                            <LinkSlot slot={block.f_slot}>
                                 <p className='font-bold text-sm mt-0.5'>Slot {block.f_slot?.toLocaleString()}</p>
-                            </Link>
+                            </LinkSlot>
                         </div>
+
                         <div className='flex flex-col gap-x-4 w-full'>
                             <div className='flex gap-x-1 justify-center mb-1'>
                                 <p className='text-xs mt-1'>Time</p>
@@ -297,11 +276,13 @@ const Graffitis = () => {
                                     />
                                 </TooltipContainer>
                             </div>
+
                             <div>
                                 <p>{new Date(firstBlock + block.f_slot * 12000).toLocaleDateString('ja-JP')}</p>
                                 <p>{new Date(firstBlock + block.f_slot * 12000).toLocaleTimeString('ja-JP')}</p>
                             </div>
                         </div>
+
                         <div className='flex flex-col gap-x-4 w-full'>
                             <div className='flex gap-x-1 justify-center mb-1'>
                                 <p className='text-xs mt-1'>Validator</p>
@@ -326,6 +307,7 @@ const Graffitis = () => {
                                 <p>{block.f_proposer_index}</p>
                             </div>
                         </div>
+
                         <div className='flex flex-col gap-x-4 w-full'>
                             <div className='flex gap-x-1 justify-center mb-1'>
                                 <p className='text-xs mt-1'>Graffiti</p>
