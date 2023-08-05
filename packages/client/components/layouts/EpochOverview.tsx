@@ -26,21 +26,30 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
     const { themeMode } = React.useContext(ThemeModeContext) ?? {};
 
     const getBlockImage = (block: Block) => {
-        const missedExtension = block.f_proposed ? '' : '_missed';
-        const subfolder = block.f_proposed ? 'cube' : 'missed-cube';
         if (block.f_pool_name && POOLS.includes(block.f_pool_name.toUpperCase())) {
             return (
-                <CustomImage
-                    src={`/static/images/blocks/${subfolder}/block_${block.f_pool_name.toLowerCase()}${missedExtension}.svg`}
-                    alt='Logo'
-                    width={50}
-                    height={50}
-                />
+                <div className="relative">
+                    <CustomImage
+                        className={`absolute z-10 ${block.f_proposed ? 'hidden' : ''}`}
+                        src={`/static/images/blocks/cubes/missed.svg`}
+                        alt='Missed Logo'
+                        width={50}
+                        height={50}
+                    />
+                    <CustomImage 
+                        src={`/static/images/blocks/cubes/${block.f_pool_name.toLowerCase()}.svg`}
+                        className={`${block.f_proposed ? '' : 'brightness-75'}`}
+                        alt='Logo'
+                        width={50}
+                        height={50}
+                    />
+
+                </div>
             );
         } else if (block.f_pool_name && block.f_pool_name.includes('lido')) {
             return (
                 <CustomImage
-                    src={`/static/images/blocks/${subfolder}/block_lido${missedExtension}.svg`}
+                    src={`/static/images/blocks/cubes/lido.svg`}
                     alt='Logo'
                     width={50}
                     height={50}
@@ -48,17 +57,27 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
             );
         } else if (block.f_pool_name && block.f_pool_name.includes('whale')) {
             return (
-                <CustomImage
-                    src={`/static/images/blocks/${subfolder}/block_whale${missedExtension}.svg`}
-                    alt='Logo'
-                    width={50}
-                    height={50}
-                />
+                <div className="relative">
+                    <CustomImage
+                        className={`absolute z-10 ${block.f_proposed ? 'hidden' : ''}`}
+                        src={`/static/images/blocks/cubes/missed.svg`}
+                        alt='Missed Logo'
+                        width={50}
+                        height={50}
+                    />
+                    <CustomImage
+                        src={`/static/images/blocks/cubes/whale.svg`}
+                        className={`${block.f_proposed ? '' : 'brightness-75'}`}
+                        alt='Logo'
+                        width={50}
+                        height={50}
+                    />
+                </div>
             );
         } else {
             return (
                 <CustomImage
-                    src={`/static/images/blocks/${subfolder}/block_others${missedExtension}.svg`}
+                    src={`/static/images/blocks/cubes/others.svg`}
                     alt='Logo'
                     width={50}
                     height={50}
