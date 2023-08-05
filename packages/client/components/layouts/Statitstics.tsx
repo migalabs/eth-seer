@@ -14,6 +14,7 @@ import TooltipContainer from '../ui/TooltipContainer';
 import CustomImage from '../ui/CustomImage';
 import LinkIcon from '../ui/LinkIcon';
 import TooltipResponsive from '../ui/TooltipResponsive';
+import ViewMoreButton from '../ui/ViewMoreButton';
 
 // Types
 import { Epoch, Block } from '../../types';
@@ -635,16 +636,7 @@ const Statitstics = ({ title }: Props) => {
                     </div>
                 )}
 
-                <button
-                    className='cursor-pointer mx-auto w-fit text-[10px] text-black rounded-[22px] px-6 py-4'
-                    onClick={handleViewMore}
-                    style={{
-                        backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
-                        boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
-                    }}
-                >
-                    VIEW MORE
-                </button>
+                <ViewMoreButton onClick={handleViewMore} />
             </div>
         </div>
     );
@@ -888,16 +880,7 @@ const Statitstics = ({ title }: Props) => {
                 </div>
             )}
 
-            <button
-                className='cursor-pointer mx-auto w-fit text-[10px] text-black rounded-[22px] px-6 py-4'
-                onClick={handleViewMore}
-                style={{
-                    backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
-                    boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
-                }}
-            >
-                VIEW MORE
-            </button>
+            <ViewMoreButton onClick={handleViewMore} />
         </div>
     );
 

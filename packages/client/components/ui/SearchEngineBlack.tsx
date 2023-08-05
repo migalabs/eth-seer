@@ -113,7 +113,7 @@ const SearchEngineBlack = () => {
                 // It can be a graffiti
                 items.push({
                     label: `Graffiti: ${searchContent}`,
-                    link: `/slots/graffiti/${searchContent}`,
+                    link: `/slots/graffitis/${searchContent}`,
                 });
             }
         } else {
@@ -121,7 +121,7 @@ const SearchEngineBlack = () => {
                 // It can be a graffiti
                 items.push({
                     label: `Graffiti: ${searchContent}`,
-                    link: `/slots/graffiti/${searchContent}`,
+                    link: `/slots/graffitis/${searchContent}`,
                 });
             }
 

@@ -15,6 +15,7 @@ import LinkIcon from '../ui/LinkIcon';
 import Animation from './Animation';
 import Loader from '../ui/Loader';
 import TooltipResponsive from '../ui/TooltipResponsive';
+import ViewMoreButton from '../ui/ViewMoreButton';
 
 // Types
 import { Block } from '../../types';
@@ -250,18 +251,7 @@ const Graffitis = () => {
                     </div>
                 )}
 
-                {!disableViewMore && (
-                    <button
-                        className='cursor-pointer mx-auto w-fit text-[10px] text-black rounded-[22px] px-6 py-4'
-                        onClick={handleViewMore}
-                        style={{
-                            backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
-                            boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
-                        }}
-                    >
-                        VIEW MORE
-                    </button>
-                )}
+                {!disableViewMore && <ViewMoreButton onClick={handleViewMore} />}
             </div>
         </div>
     );
@@ -380,16 +370,7 @@ const Graffitis = () => {
                 </div>
             )}
 
-            <button
-                className='cursor-pointer mx-auto w-fit text-[10px] text-black rounded-[22px] px-6 py-4'
-                onClick={handleViewMore}
-                style={{
-                    backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
-                    boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
-                }}
-            >
-                VIEW MORE
-            </button>
+            <ViewMoreButton onClick={handleViewMore} />
         </div>
     );
 

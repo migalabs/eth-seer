@@ -15,6 +15,7 @@ import Loader from '../components/ui/Loader';
 
 // Types
 import { Validator } from '../types';
+import ViewMoreButton from '../components/ui/ViewMoreButton';
 
 const Validators = () => {
     // Theme Mode Context
@@ -143,16 +144,7 @@ const Validators = () => {
                 </div>
             )}
 
-            <button
-                className='flex cursor-pointer mx-auto w-fit text-[10px] text-black rounded-[22px] px-6 py-4'
-                onClick={() => getValidators(currentPage + 1)}
-                style={{
-                    backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
-                    boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
-                }}
-            >
-                VIEW MORE
-            </button>
+            <ViewMoreButton onClick={() => getValidators(currentPage + 1)} />
         </Layout>
     );
 };
