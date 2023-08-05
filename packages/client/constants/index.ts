@@ -155,3 +155,5 @@ export const POOLS_EXTENDED = [
     'WHALE_0XFB62633309',
     'WHALE_0XFFD22B84FB',
 ];
+
+export const FIRST_BLOCK: number = Number(process.env.NEXT_PUBLIC_NETWORK_GENESIS); // 1606824023000

@@ -9,6 +9,52 @@ export const getSlots = async (req: Request, res: Response) => {
 
         const skip = Number(page) * Number(limit);
 
+        const [ slotsEpoch, withdrawals ] = 
+            await Promise.all([
+                pgPool.query(`
+                    SELECT t_proposer_duties.*, t_eth2_pubkeys.f_pool_name
+                    FROM t_proposer_duties
+                    LEFT OUTER JOIN t_eth2_pubkeys ON t_proposer_duties.f_val_idx = t_eth2_pubkeys.f_val_idx
+                    ORDER BY f_proposer_slot DESC
+                    OFFSET ${skip}
+                    LIMIT ${Number(limit)}
+                `),
+                pgPool.query(`
+                    SELECT f_slot, f_amount
+                    FROM t_withdrawals
+                    OFFSET ${skip}
+                    LIMIT ${Number(limit)}
+                `)
+            ]);
+
+        const slots = slotsEpoch.rows.map((slot: any) => ({
+            ...slot,
+            withdrawals: 
+                withdrawals.rows
+                    .filter((withdrawal: any) => withdrawal.f_slot === slot.f_proposer_slot)
+                    .reduce((acc: number, withdrawal: any) => acc + Number(withdrawal.f_amount), 0),
+        }));
+
+        res.json({
+            slots
+        }); 
+    
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            msg: 'An error occurred on the server'
+        });
+    }
+};
+
+export const getBlocks = async (req: Request, res: Response) => {
+
+    try {
+
+        const { page = 0, limit = 128 } = req.query;
+
+        const skip = Number(page) * Number(limit);
+
         if (Number(page) > 0) {
 
             const blocks = await pgPool.query(`
