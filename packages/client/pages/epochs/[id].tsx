@@ -265,7 +265,8 @@ const EpochComponent = () => {
                             />
                         </div>
                         <div className='flex flex-col items-start '>
-                            <div>
+                            <div className='flex flex-row items-center gap-x-8'>
+                                <p className='w-24'>Validator:</p>
                                 <LinkValidator validator={element.f_val_idx} />
                             </div>
                             <div>

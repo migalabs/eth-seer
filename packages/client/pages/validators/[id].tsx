@@ -18,6 +18,7 @@ import Animation from '../../components/layouts/Animation';
 import ProgressSmoothBar from '../../components/ui/ProgressSmoothBar';
 import Loader from '../../components/ui/Loader';
 import ValidatorStatus from '../../components/ui/ValidatorStatus';
+import LinkEpoch from '../../components/ui/LinkEpoch';
 
 // Types
 import { Validator, Slot, Withdrawal } from '../../types';
@@ -166,28 +167,12 @@ const ValidatorComponent = () => {
                                 showCheck
                             />
                         </div>
-                        <div className='flex flex-col items-start '>
-                            <div>
-                                <Link
-                                    href={{
-                                        pathname: '/epochs/[id]',
-                                        query: {
-                                            id: Math.floor(element.f_proposer_slot / 32),
-                                        },
-                                    }}
-                                    passHref
-                                    as={`/epochs/${Math.floor(element.f_proposer_slot / 32)}`}
-                                    className='flex gap-x-1 items-center w-fit mx-auto'
-                                >
-                                    <div className='flex flex-row items-center gap-x-8'>
-                                        <p className='w-20'>Epoch:</p>
-                                        <p className='leading-3'>
-                                            {Math.floor(element.f_proposer_slot / 32).toLocaleString()}
-                                        </p>
-                                    </div>
-                                    <LinkIcon />
-                                </Link>
+                        <div className='flex flex-col items-start'>
+                            <div className='flex flex-row items-center gap-x-8'>
+                                <p className='w-20'>Epoch:</p>
+                                <LinkEpoch epoch={Math.floor(element.f_proposer_slot / 32)} />
                             </div>
+
                             <div>
                                 <Link
                                     href={{
@@ -207,6 +192,7 @@ const ValidatorComponent = () => {
                                     <LinkIcon />
                                 </Link>
                             </div>
+
                             <div className='flex flex-row items-center gap-x-10'>
                                 <p className='w-20'>DateTime:</p>
                                 <p className='leading-3'>
@@ -276,20 +262,7 @@ const ValidatorComponent = () => {
                                 />
                             </div>
                             <div className='w-[25%]'>
-                                <Link
-                                    href={{
-                                        pathname: '/epochs/[id]',
-                                        query: {
-                                            id: Math.floor(element.f_proposer_slot / 32),
-                                        },
-                                    }}
-                                    passHref
-                                    as={`/epochs/${Math.floor(element.f_proposer_slot / 32)}`}
-                                    className='flex gap-x-1 items-center w-fit mx-auto'
-                                >
-                                    <p>{Math.floor(element.f_proposer_slot / 32).toLocaleString()}</p>
-                                    <LinkIcon />
-                                </Link>
+                                <LinkEpoch epoch={Math.floor(element.f_proposer_slot / 32)} />
                             </div>
                             <div className='w-[25%]'>
                                 <Link
@@ -347,20 +320,7 @@ const ValidatorComponent = () => {
                     {withdrawals.map((element, idx) => (
                         <div className='flex gap-x-4 py-1 uppercase text-center items-center' key={idx}>
                             <div className='w-[25%]'>
-                                <Link
-                                    href={{
-                                        pathname: '/epochs/[id]',
-                                        query: {
-                                            id: Math.floor(element.f_epoch ?? 0),
-                                        },
-                                    }}
-                                    passHref
-                                    as={`/epochs/${Math.floor(element.f_epoch ?? 0)}`}
-                                    className='flex gap-x-1 items-center w-fit mx-auto'
-                                >
-                                    <p>{Math.floor(element.f_epoch ?? 0).toLocaleString()}</p>
-                                    <LinkIcon />
-                                </Link>
+                                <LinkEpoch epoch={Math.floor(element.f_epoch ?? 0)} />
                             </div>
                             <div className='w-[25%]'>
                                 <Link
@@ -407,25 +367,11 @@ const ValidatorComponent = () => {
                 {withdrawals.map((element, idx) => (
                     <div className='flex flex-row gap-x-6 py-1 uppercase' key={idx}>
                         <div className='flex flex-col items-start '>
-                            <div>
-                                <Link
-                                    href={{
-                                        pathname: '/epochs/[id]',
-                                        query: {
-                                            id: Math.floor(element.f_epoch ?? 0),
-                                        },
-                                    }}
-                                    passHref
-                                    as={`/epochs/${Math.floor(element.f_epoch ?? 0)}`}
-                                    className='flex gap-x-1 items-center w-fit mx-auto'
-                                >
-                                    <div className='flex flex-row items-center gap-x-8'>
-                                        <p className='w-20'>Epoch:</p>
-                                        <p className='leading-3'>{Math.floor(element.f_epoch ?? 0).toLocaleString()}</p>
-                                    </div>
-                                    <LinkIcon />
-                                </Link>
+                            <div className='flex flex-row items-center gap-x-8'>
+                                <p className='w-20'>Epoch:</p>
+                                <LinkEpoch epoch={Math.floor(element.f_epoch ?? 0)} />
                             </div>
+
                             <div>
                                 <Link
                                     href={{
@@ -445,12 +391,14 @@ const ValidatorComponent = () => {
                                     <LinkIcon />
                                 </Link>
                             </div>
+
                             <div className='flex flex-row items-center gap-x-8'>
                                 <p className='w-20'>DateTime:</p>
                                 <p className='leading-3'>
                                     {new Date(firstBlock + Number(element.f_slot) * 12000).toLocaleString('ja-JP')}
                                 </p>
                             </div>
+
                             <div className='flex flex-row items-center gap-x-8'>
                                 <p className='w-20'>Amount:</p>
                                 <p className='leading-3'>{(element.f_amount / 10 ** 9).toLocaleString()} ETH</p>
