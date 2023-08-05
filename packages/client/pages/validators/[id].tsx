@@ -491,16 +491,14 @@ const ValidatorComponent = () => {
                                     href={{
                                         pathname: '/entities/[name]',
                                         query: {
-                                            name: validator?.f_pool_name ? validator.f_pool_name : 'others',
+                                            name: validator?.f_pool_name ?? 'others',
                                         },
                                     }}
                                     passHref
-                                    as={`/entities/${validator?.f_pool_name ? validator.f_pool_name : 'others'}`}
+                                    as={`/entities/${validator?.f_pool_name ?? 'others'}`}
                                     className='flex gap-x-1 items-center w-fit mx-auto'
                                 >
-                                    <p className='leading-3'>
-                                        {validator?.f_pool_name ? validator.f_pool_name : 'others'}
-                                    </p>
+                                    <p className='leading-3'>{validator?.f_pool_name ?? 'others'}</p>
                                     <LinkIcon />
                                 </Link>
                             </div>

@@ -15,6 +15,7 @@ import LinkIcon from '../../components/ui/LinkIcon';
 import BlockGif from '../../components/ui/BlockGif';
 import TabHeader from '../../components/ui/TabHeader';
 import Loader from '../../components/ui/Loader';
+import LinkValidator from '../../components/ui/LinkValidator';
 
 // Types
 import { Block, Withdrawal } from '../../types';
@@ -481,24 +482,13 @@ const Slot = () => {
                                 key={element.f_val_idx}
                             >
                                 <div className='w-1/3'>
-                                    <Link
-                                        href={{
-                                            pathname: '/validators/[id]',
-                                            query: {
-                                                id: element.f_val_idx,
-                                            },
-                                        }}
-                                        passHref
-                                        as={`/validators/${element.f_val_idx}`}
-                                        className='flex gap-x-1 items-center w-fit mx-auto'
-                                    >
-                                        <p>{element.f_val_idx}</p>
-                                        <LinkIcon />
-                                    </Link>
+                                    <LinkValidator validator={element.f_val_idx} />
                                 </div>
+
                                 <div className='w-1/3'>
                                     <p>{getShortAddress(element?.f_address)}</p>
                                 </div>
+
                                 <p className='w-1/3'>{(element.f_amount / 10 ** 9).toLocaleString()} ETH</p>
                             </div>
                         ))}

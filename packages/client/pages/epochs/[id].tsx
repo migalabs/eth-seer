@@ -17,6 +17,7 @@ import CustomImage from '../../components/ui/CustomImage';
 import LinkIcon from '../../components/ui/LinkIcon';
 import BlockImage from '../../components/ui/BlockImage';
 import Loader from '../../components/ui/Loader';
+import LinkValidator from '../../components/ui/LinkValidator';
 
 // Types
 import { Epoch, Slot } from '../../types';
@@ -208,20 +209,7 @@ const EpochComponent = () => {
                                 </Link>
                             </div>
                             <div className='w-[14%]'>
-                                <Link
-                                    href={{
-                                        pathname: '/validators/[id]',
-                                        query: {
-                                            id: element.f_val_idx,
-                                        },
-                                    }}
-                                    passHref
-                                    as={`/validators/${element.f_val_idx}`}
-                                    className='flex gap-x-1 items-center w-fit mx-auto'
-                                >
-                                    <p>{element.f_val_idx?.toLocaleString()}</p>
-                                    <LinkIcon />
-                                </Link>
+                                <LinkValidator validator={element.f_val_idx} />
                             </div>
                             <div className='w-[15%]'>
                                 <Link
@@ -278,23 +266,7 @@ const EpochComponent = () => {
                         </div>
                         <div className='flex flex-col items-start '>
                             <div>
-                                <Link
-                                    href={{
-                                        pathname: '/validators/[id]',
-                                        query: {
-                                            id: element.f_val_idx,
-                                        },
-                                    }}
-                                    passHref
-                                    as={`/validators/${element.f_val_idx}`}
-                                    className='flex gap-x-1 items-center w-fit mx-auto'
-                                >
-                                    <div className='flex flex-row items-center gap-x-8'>
-                                        <p className='w-24'>Proposer:</p>
-                                        <p className='leading-3'>{element.f_val_idx?.toLocaleString()}</p>
-                                    </div>
-                                    <LinkIcon />
-                                </Link>
+                                <LinkValidator validator={element.f_val_idx} />
                             </div>
                             <div>
                                 <Link
