@@ -7,9 +7,10 @@ import LinkIcon from './LinkIcon';
 // Types
 type Props = {
     epoch: number | undefined;
+    children?: React.ReactNode;
 };
 
-const LinkEpoch = ({ epoch }: Props) => {
+const LinkEpoch = ({ epoch, children }: Props) => {
     return (
         <Link
             href={{
@@ -22,8 +23,12 @@ const LinkEpoch = ({ epoch }: Props) => {
             as={`/epochs/${epoch}`}
             className='flex gap-x-1 items-center w-fit mx-auto'
         >
-            <p>{epoch?.toLocaleString()}</p>
-            <LinkIcon />
+            {children ?? (
+                <>
+                    <p>{epoch?.toLocaleString()}</p>
+                    <LinkIcon />
+                </>
+            )}
         </Link>
     );
 };
