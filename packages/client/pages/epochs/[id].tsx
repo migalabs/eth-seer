@@ -19,6 +19,7 @@ import BlockImage from '../../components/ui/BlockImage';
 import Loader from '../../components/ui/Loader';
 import LinkValidator from '../../components/ui/LinkValidator';
 import LinkSlot from '../../components/ui/LinkSlot';
+import LinkEpoch from '../../components/ui/LinkEpoch';
 
 // Types
 import { Epoch, Slot } from '../../types';
@@ -433,7 +434,7 @@ const EpochComponent = () => {
     return (
         <Layout isMain={false}>
             <div className='flex gap-x-3 justify-center items-center mt-2 mb-5'>
-                <Link href={`/epochs/${id && Number(id) - 1}`} passHref>
+                <LinkEpoch epoch={Number(id) - 1}>
                     <CustomImage
                         src={themeMode?.darkMode ? '/static/images/arrow.svg' : '/static/images/arrow-blue.svg'}
                         alt='Left arrow'
@@ -441,13 +442,13 @@ const EpochComponent = () => {
                         height={15}
                         className='mb-1 cursor-pointer'
                     />
-                </Link>
+                </LinkEpoch>
 
                 <h1 className='text-white text-center text-xl md:text-3xl uppercase'>
                     Epoch {Number(id)?.toLocaleString()}
                 </h1>
 
-                <Link href={`/epochs/${id && Number(id) + 1}`} passHref>
+                <LinkEpoch epoch={Number(id) + 1}>
                     <CustomImage
                         src={themeMode?.darkMode ? '/static/images/arrow.svg' : '/static/images/arrow-blue.svg'}
                         alt='Right arrow'
@@ -455,7 +456,7 @@ const EpochComponent = () => {
                         height={15}
                         className='rotate-180 mb-1 cursor-pointer'
                     />
-                </Link>
+                </LinkEpoch>
             </div>
 
             {loadingEpoch && (
