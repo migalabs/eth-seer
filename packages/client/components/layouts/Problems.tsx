@@ -26,7 +26,7 @@ const Problems = () => {
     const checkQueries = async () => {
         try {
             await Promise.all([
-                axiosClient.get(`/api/slots`, {
+                axiosClient.get(`/api/slots/blocks`, {
                     params: {
                         limit: 1,
                         page: 0,
