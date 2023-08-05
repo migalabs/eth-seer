@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState, useCallback, useContext } from 'react';
-import Link from 'next/link';
 
 // Contexts
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
@@ -12,9 +11,9 @@ import ProgressSmoothBar from '../ui/ProgressSmoothBar';
 import Loader from '../ui/Loader';
 import TooltipContainer from '../ui/TooltipContainer';
 import CustomImage from '../ui/CustomImage';
-import LinkIcon from '../ui/LinkIcon';
 import TooltipResponsive from '../ui/TooltipResponsive';
 import ViewMoreButton from '../ui/ViewMoreButton';
+import LinkEpoch from '../ui/LinkEpoch';
 
 // Types
 import { Epoch, Block } from '../../types';
@@ -129,20 +128,7 @@ const Statitstics = ({ title }: Props) => {
                     <p>{new Date(firstBlock + f_epoch * 32 * 12000).toLocaleTimeString('ja-JP')}</p>
                 </div>
                 <div className='w-[11%]'>
-                    <Link
-                        href={{
-                            pathname: '/epochs/[id]',
-                            query: {
-                                id: f_epoch,
-                            },
-                        }}
-                        passHref
-                        as={`/epochs/${f_epoch}`}
-                        className='flex gap-x-1 items-center w-fit mx-auto'
-                    >
-                        <p>{f_epoch?.toLocaleString()}</p>
-                        <LinkIcon />
-                    </Link>
+                    <LinkEpoch epoch={f_epoch} />
                 </div>
                 <div className='w-[15%] pt-3.5 mb-5'>
                     <p className='uppercase'>blocks</p>
@@ -189,18 +175,7 @@ const Statitstics = ({ title }: Props) => {
                 }}
             >
                 <div className='flex gap-x-1 justify-center'>
-                    <Link
-                        href={{
-                            pathname: '/epochs/[id]',
-                            query: {
-                                id: f_epoch,
-                            },
-                        }}
-                        passHref
-                        as={`/epochs/${f_epoch}`}
-                    >
-                        <p className='font-bold text-sm mt-0.5'>Epoch {f_epoch?.toLocaleString()}</p>
-                    </Link>
+                    <LinkEpoch epoch={f_epoch} />
                 </div>
 
                 <div className='flex flex-col gap-x-4 w-full'>
@@ -519,20 +494,7 @@ const Statitstics = ({ title }: Props) => {
                                 <p>{new Date(firstBlock + epoch.f_epoch * 32 * 12000).toLocaleTimeString('ja-JP')}</p>
                             </div>
                             <div className='w-[11%]'>
-                                <Link
-                                    href={{
-                                        pathname: '/epochs/[id]',
-                                        query: {
-                                            id: epoch.f_epoch,
-                                        },
-                                    }}
-                                    passHref
-                                    as={`/epochs/${epoch.f_epoch}`}
-                                    className='flex gap-x-1 items-center w-fit mx-auto'
-                                >
-                                    <p>{epoch?.f_epoch?.toLocaleString()}</p>
-                                    <LinkIcon />
-                                </Link>
+                                <LinkEpoch epoch={epoch.f_epoch} />
                             </div>
 
                             <div className='w-[15%] pt-3.5 mb-5'>
@@ -667,18 +629,7 @@ const Statitstics = ({ title }: Props) => {
                         }}
                     >
                         <div className='flex gap-x-1 justify-center'>
-                            <Link
-                                href={{
-                                    pathname: '/epochs/[id]',
-                                    query: {
-                                        id: epoch.f_epoch,
-                                    },
-                                }}
-                                passHref
-                                as={`/epochs/${epoch.f_epoch}`}
-                            >
-                                <p className='font-bold text-sm mt-0.5'>Epoch {epoch.f_epoch?.toLocaleString()}</p>
-                            </Link>
+                            <LinkEpoch epoch={epoch.f_epoch} />
                         </div>
                         <div className='flex flex-col gap-x-4 w-full'>
                             <div className='flex gap-x-1 justify-center mb-1'>
