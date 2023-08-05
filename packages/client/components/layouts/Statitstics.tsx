@@ -21,7 +21,7 @@ import { Epoch, Block } from '../../types';
 // Constants
 const firstBlock: number = Number(process.env.NEXT_PUBLIC_NETWORK_GENESIS);
 
-// Define the type of props
+// Props
 type Props = {
     title: string;
 };
