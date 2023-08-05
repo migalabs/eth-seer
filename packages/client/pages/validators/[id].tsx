@@ -17,6 +17,7 @@ import TabHeader from '../../components/ui/TabHeader';
 import Animation from '../../components/layouts/Animation';
 import ProgressSmoothBar from '../../components/ui/ProgressSmoothBar';
 import Loader from '../../components/ui/Loader';
+import ValidatorStatus from '../../components/ui/ValidatorStatus';
 
 // Types
 import { Validator, Slot, Withdrawal } from '../../types';
@@ -467,18 +468,6 @@ const ValidatorComponent = () => {
         );
     };
 
-    const getCurrentStatus = (status: string) => {
-        if (status === 'active') {
-            return <CardContent content={status} bg='#00720B' color='#83E18C' />;
-        } else if (status === 'slashed') {
-            return <CardContent content={status} bg='#980E0E' color='#FF9090' />;
-        } else if (status === 'exit') {
-            return <CardContent content='exited' bg='#0016D8' color='#BDC4FF' />;
-        } else if (status === 'in queue to activation') {
-            return <CardContent content='deposited' bg='#E86506' color='#FFC163' />;
-        }
-    };
-
     const convertToHours = (epochs: number) => {
         let minutes = epochs * 6.4;
         return Math.floor(minutes / 60);
@@ -524,7 +513,7 @@ const ValidatorComponent = () => {
 
                         <div className='flex md:flex-row gap-x-5'>
                             <p className='w-40'>Current status:</p>
-                            {validator?.f_status && getCurrentStatus(validator?.f_status)}
+                            {validator?.f_status && <ValidatorStatus status={validator?.f_status} />}
                         </div>
                         <div className='flex flex-col sm:flex-row gap-x-5'>
                             <p className='w-40'>Blocks:</p>
