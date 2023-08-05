@@ -12,10 +12,11 @@ import Layout from '../components/layouts/Layout';
 import LinkIcon from '../components/ui/LinkIcon';
 import ValidatorStatus from '../components/ui/ValidatorStatus';
 import Loader from '../components/ui/Loader';
+import ViewMoreButton from '../components/ui/ViewMoreButton';
+import LinkValidator from '../components/ui/LinkValidator';
 
 // Types
 import { Validator } from '../types';
-import ViewMoreButton from '../components/ui/ViewMoreButton';
 
 const Validators = () => {
     // Theme Mode Context
@@ -95,20 +96,7 @@ const Validators = () => {
                             }}
                         >
                             <div className='w-[25%]'>
-                                <Link
-                                    href={{
-                                        pathname: '/validators/[id]',
-                                        query: {
-                                            id: validator.f_val_idx,
-                                        },
-                                    }}
-                                    passHref
-                                    as={`/validators/${validator.f_val_idx}`}
-                                    className='flex gap-x-1 items-center w-fit mx-auto'
-                                >
-                                    <p>{validator?.f_val_idx?.toLocaleString()}</p>
-                                    <LinkIcon />
-                                </Link>
+                                <LinkValidator validator={validator.f_val_idx} />
                             </div>
 
                             <p className='w-[25%]'>{validator.f_balance_eth} ETH</p>

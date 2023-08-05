@@ -16,6 +16,7 @@ import Animation from './Animation';
 import Loader from '../ui/Loader';
 import TooltipResponsive from '../ui/TooltipResponsive';
 import ViewMoreButton from '../ui/ViewMoreButton';
+import LinkValidator from '../ui/LinkValidator';
 
 // Types
 import { Block } from '../../types';
@@ -224,21 +225,9 @@ const Graffitis = () => {
                             </div>
 
                             <div className='w-[20%]'>
-                                <Link
-                                    href={{
-                                        pathname: '/validators/[id]',
-                                        query: {
-                                            id: block.f_proposer_index,
-                                        },
-                                    }}
-                                    passHref
-                                    as={`/validators/${block.f_proposer_index}`}
-                                    className='flex gap-x-1 items-center w-fit mx-auto'
-                                >
-                                    <p>{block.f_proposer_index?.toLocaleString()}</p>
-                                    <LinkIcon />
-                                </Link>
+                                <LinkValidator validator={block.f_proposer_index} />
                             </div>
+
                             <div className='w-[40%]'>
                                 <p>{block.f_graffiti?.toLocaleString()}</p>
                             </div>
