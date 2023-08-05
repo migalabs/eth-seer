@@ -21,7 +21,12 @@ import { Epoch, Block } from '../../types';
 // Constants
 const firstBlock: number = Number(process.env.NEXT_PUBLIC_NETWORK_GENESIS);
 
-const Statitstics = () => {
+// Define the type of props
+type Props = {
+    title: string;
+};
+
+const Statitstics = ({ title }: Props) => {
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
 
@@ -898,7 +903,7 @@ const Statitstics = () => {
 
     return (
         <div className='text-center text-white'>
-            <h1 className='text-lg md:text-3xl uppercase'>Epoch Statistics</h1>
+            <h1 className='text-lg md:text-3xl uppercase'>{title}</h1>
 
             {desktopView ? getDesktopView() : getPhoneView()}
         </div>
