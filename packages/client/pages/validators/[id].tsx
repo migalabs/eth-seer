@@ -1,5 +1,4 @@
 import { useContext, useEffect, useRef, useState } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 // Axios
@@ -10,7 +9,6 @@ import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
 // Components
 import Layout from '../../components/layouts/Layout';
-import LinkIcon from '../../components/ui/LinkIcon';
 import BlockImage from '../../components/ui/BlockImage';
 import BlockGif from '../../components/ui/BlockGif';
 import TabHeader from '../../components/ui/TabHeader';
@@ -20,6 +18,7 @@ import Loader from '../../components/ui/Loader';
 import ValidatorStatus from '../../components/ui/ValidatorStatus';
 import LinkEpoch from '../../components/ui/LinkEpoch';
 import LinkSlot from '../../components/ui/LinkSlot';
+import LinkEntity from '../../components/ui/LinkEntity';
 
 // Types
 import { Validator, Slot, Withdrawal } from '../../types';
@@ -386,20 +385,7 @@ const ValidatorComponent = () => {
                         <div className='flex flex-row items-center gap-x-5'>
                             <p className='w-40'>Entity:</p>
                             <div>
-                                <Link
-                                    href={{
-                                        pathname: '/entities/[name]',
-                                        query: {
-                                            name: validator?.f_pool_name ?? 'others',
-                                        },
-                                    }}
-                                    passHref
-                                    as={`/entities/${validator?.f_pool_name ?? 'others'}`}
-                                    className='flex gap-x-1 items-center w-fit mx-auto'
-                                >
-                                    <p className='leading-3'>{validator?.f_pool_name ?? 'others'}</p>
-                                    <LinkIcon />
-                                </Link>
+                                <LinkEntity entity={validator?.f_pool_name ?? 'others'} />
                             </div>
                         </div>
 
