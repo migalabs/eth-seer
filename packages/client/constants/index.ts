@@ -75,7 +75,6 @@ export const POOLS = [
     'NETHERMIND_LIDO',
     'NIMBUSTEAM',
     'OKEX',
-    'OTHERS',
     'P2PORG_LIDO',
     'PIEDAO',
     'POGIBOY.ETH',

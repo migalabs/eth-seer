@@ -8,9 +8,7 @@ import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 import TooltipContainer from '../ui/TooltipContainer';
 import CustomImage from '../ui/CustomImage';
 import TooltipResponsive from '../ui/TooltipResponsive';
-
-// Constants
-import { POOLS } from '../../constants';
+import BlockImage from '../ui/BlockImage';
 
 // Types
 import { Block } from '../../types';
@@ -25,67 +23,6 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
     // Theme Mode Context
     const { themeMode } = React.useContext(ThemeModeContext) ?? {};
 
-    const getBlockImage = (block: Block) => {
-        if (block.f_pool_name && POOLS.includes(block.f_pool_name.toUpperCase())) {
-            return (
-                <div className="relative">
-                    <CustomImage
-                        className={`absolute z-10 ${block.f_proposed ? 'hidden' : ''}`}
-                        src={`/static/images/blocks/cubes/missed.svg`}
-                        alt='Missed Logo'
-                        width={50}
-                        height={50}
-                    />
-                    <CustomImage 
-                        src={`/static/images/blocks/cubes/${block.f_pool_name.toLowerCase()}.svg`}
-                        className={`${block.f_proposed ? '' : 'brightness-75'}`}
-                        alt='Logo'
-                        width={50}
-                        height={50}
-                    />
-
-                </div>
-            );
-        } else if (block.f_pool_name && block.f_pool_name.includes('lido')) {
-            return (
-                <CustomImage
-                    src={`/static/images/blocks/cubes/lido.svg`}
-                    alt='Logo'
-                    width={50}
-                    height={50}
-                />
-            );
-        } else if (block.f_pool_name && block.f_pool_name.includes('whale')) {
-            return (
-                <div className="relative">
-                    <CustomImage
-                        className={`absolute z-10 ${block.f_proposed ? 'hidden' : ''}`}
-                        src={`/static/images/blocks/cubes/missed.svg`}
-                        alt='Missed Logo'
-                        width={50}
-                        height={50}
-                    />
-                    <CustomImage
-                        src={`/static/images/blocks/cubes/whale.svg`}
-                        className={`${block.f_proposed ? '' : 'brightness-75'}`}
-                        alt='Logo'
-                        width={50}
-                        height={50}
-                    />
-                </div>
-            );
-        } else {
-            return (
-                <CustomImage
-                    src={`/static/images/blocks/cubes/others.svg`}
-                    alt='Logo'
-                    width={50}
-                    height={50}
-                />
-            );
-        }
-    };
-
     const getEntityName = (f_pool_name: string) => {
         if (f_pool_name) {
             if (f_pool_name.length > 18) {
@@ -97,14 +34,6 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
             return 'others';
         }
     };
-
-    // const getTopWidthTooltip = () => {
-    //     if (window.innerWidth > 1150) {
-    //         return 60;
-    //     } else if (window.innerWidth > 768) {
-    //         return 50;
-    //     }
-    // };
 
     return (
         <div className='flex flex-col'>
@@ -137,7 +66,12 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
                                 as={`/slot/${block.f_slot}`}
                             >
                                 <TooltipContainer>
-                                    {getBlockImage(block)}
+                                    <BlockImage
+                                        poolName={block.f_pool_name ?? 'others'}
+                                        proposed={block.f_proposed}
+                                        height={50}
+                                        width={50}
+                                    />
 
                                     <TooltipResponsive
                                         width={225}
