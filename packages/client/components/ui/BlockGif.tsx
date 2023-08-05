@@ -25,13 +25,13 @@ const BlockGif = ({ poolName, width, height }: Props) => {
         const assetPrefix = process.env.NEXT_PUBLIC_ASSET_PREFIX ?? '';
 
         if (poolName && POOLS.includes(poolName.toUpperCase())) {
-            return `${assetPrefix}/static/images/blocks/cover/${poolName.toLowerCase()}.svg`;
+            return `${assetPrefix}/static/images/blocks/covers/${poolName.toLowerCase()}.svg`;
         } else if (poolName && poolName.includes('lido')) {
-            return `${assetPrefix}/static/images/blocks/cover/lido.svg`;
+            return `${assetPrefix}/static/images/blocks/covers/lido.svg`;
         } else if (poolName && poolName.includes('whale')) {
-            return `${assetPrefix}/static/images/blocks/cover/whale.svg`;
+            return `${assetPrefix}/static/images/blocks/covers/whale.svg`;
         } else {
-            return `${assetPrefix}/static/images/blocks/cover/others.svg`;
+            return `${assetPrefix}/static/images/blocks/covers/others.svg`;
         }
     };
 
