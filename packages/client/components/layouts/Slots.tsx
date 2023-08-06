@@ -96,7 +96,7 @@ const Slots = ({ slots }: Props) => {
                             </div>
 
                             <div className='w-[15%]'>
-                                <LinkSlot slot={element.f_proposer_slot} />
+                                <LinkSlot slot={element.f_proposer_slot} mxAuto />
                             </div>
 
                             <p className='w-[14%]'>

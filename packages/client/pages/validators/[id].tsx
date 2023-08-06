@@ -252,7 +252,7 @@ const ValidatorComponent = () => {
                             </div>
 
                             <div className='w-[25%]'>
-                                <LinkSlot slot={element.f_proposer_slot} />
+                                <LinkSlot slot={element.f_proposer_slot} mxAuto />
                             </div>
 
                             <p className='w-[25%]'>
@@ -299,7 +299,7 @@ const ValidatorComponent = () => {
                             </div>
 
                             <div className='w-[25%]'>
-                                <LinkSlot slot={element.f_slot} />
+                                <LinkSlot slot={element.f_slot} mxAuto />
                             </div>
 
                             <p className='w-[25%]'>

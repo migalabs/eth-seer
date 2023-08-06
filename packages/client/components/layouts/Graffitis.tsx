@@ -208,7 +208,7 @@ const Graffitis = () => {
                             </div>
 
                             <div className='w-[20%]'>
-                                <LinkSlot slot={block.f_slot} />
+                                <LinkSlot slot={block.f_slot} mxAuto />
                             </div>
 
                             <div className='w-[20%]'>

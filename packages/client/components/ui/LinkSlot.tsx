@@ -8,9 +8,10 @@ import LinkIcon from './LinkIcon';
 type Props = {
     slot: number | undefined;
     children?: React.ReactNode;
+    mxAuto?: boolean;
 };
 
-const LinkSlot = ({ slot, children }: Props) => {
+const LinkSlot = ({ slot, children, mxAuto }: Props) => {
     return (
         <Link
             href={{
@@ -21,7 +22,7 @@ const LinkSlot = ({ slot, children }: Props) => {
             }}
             passHref
             as={`/slots/${slot}`}
-            className='flex gap-x-1 items-center w-fit mx-auto'
+            className={`flex gap-x-1 items-center w-fit ${mxAuto ? 'mx-auto' : ''}`}
         >
             {children ?? (
                 <>
