@@ -24,7 +24,7 @@ const EntityCard = ({ index, pool }: Props) => {
     }, [pool]);
 
     return (
-        <Link href={`/entity/${pool.toLocaleLowerCase()}`}>
+        <Link href={`/entities/${pool.toLocaleLowerCase()}`}>
             <div className='relative w-44 h-56 mx-auto cursor-pointer'>
                 <CustomImage
                     src='/static/images/entity-card.svg'

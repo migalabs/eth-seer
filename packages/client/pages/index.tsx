@@ -72,7 +72,7 @@ export default function Home() {
                     <ChainOverview />
 
                     <div className='mt-8'>
-                        <Statitstics />
+                        <Statitstics title='Epoch Statistics' />
                     </div>
                 </Layout>
             ) : (
