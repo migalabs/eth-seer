@@ -6,6 +6,8 @@ import axiosClient from '../config/axios';
 // Components
 import Layout from '../components/layouts/Layout';
 import SlotsList from '../components/layouts/Slots';
+import Loader from '../components/ui/Loader';
+import ViewMoreButton from '../components/ui/ViewMoreButton';
 
 // Types
 import { Slot } from '../types';
@@ -14,7 +16,7 @@ const Slots = () => {
     // States
     const [slots, setSlots] = useState<Slot[]>([]);
     const [currentPage, setCurrentPage] = useState(0);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         if (slots.length === 0) {
@@ -33,7 +35,7 @@ const Slots = () => {
             const response = await axiosClient.get(`/api/slots`, {
                 params: {
                     page,
-                    limit: 20,
+                    limit: 32,
                 },
             });
 
@@ -53,9 +55,17 @@ const Slots = () => {
 
     return (
         <Layout>
-            <h1>Slots</h1>
+            <h1 className='text-white text-center text-xl md:text-3xl uppercase'>Slots</h1>
 
-            <SlotsList slots={slots} />
+            <div className='mx-auto max-w-[1100px] my-6'>{slots.length > 0 && <SlotsList slots={slots} />}</div>
+
+            {loading && (
+                <div className='my-6'>
+                    <Loader />
+                </div>
+            )}
+
+            {slots.length > 0 && <ViewMoreButton onClick={() => getSlots(currentPage + 1)} />}
         </Layout>
     );
 };
