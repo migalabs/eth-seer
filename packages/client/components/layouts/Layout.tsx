@@ -19,7 +19,7 @@ const Layout = ({ children, isMain }: PropsWithChildren) => {
         <>
             <Head>
                 <title>Ethereum (ETH) blockchain explorer - EthSeer.io</title>
-                <link rel="canonical" href="https://ethseer.io/" />
+                <link rel='canonical' href='https://ethseer.io/' />
             </Head>
 
             <Header isMain={isMain} />

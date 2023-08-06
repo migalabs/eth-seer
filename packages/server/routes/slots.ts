@@ -3,6 +3,7 @@ import { check } from 'express-validator';
 
 import {
     getSlots,
+    getBlocks,
     getSlotById,
     getSlotsByGraffiti,
     getWithdrawalsBySlot,
@@ -14,6 +15,8 @@ import { checkFields } from '../middlewares/check-fields';
 const router = Router();
 
 router.get('/', getSlots);
+
+router.get('/blocks', getBlocks);
 
 router.get('/new-slot-notification', listenSlotNotification);
 

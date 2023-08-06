@@ -55,6 +55,7 @@ export type Slot = {
     f_pool_name: string;
     f_val_idx: number;
     f_proposed: boolean;
+    f_epoch?: number;
     withdrawals: number;
 };
 
