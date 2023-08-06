@@ -248,7 +248,7 @@ const ValidatorComponent = () => {
                             </div>
 
                             <div className='w-[25%]'>
-                                <LinkEpoch epoch={Math.floor(element.f_proposer_slot / 32)} />
+                                <LinkEpoch epoch={Math.floor(element.f_proposer_slot / 32)} mxAuto />
                             </div>
 
                             <div className='w-[25%]'>
@@ -295,7 +295,7 @@ const ValidatorComponent = () => {
                     {withdrawals.map((element, idx) => (
                         <div className='flex gap-x-4 py-1 uppercase text-center items-center' key={idx}>
                             <div className='w-[25%]'>
-                                <LinkEpoch epoch={Math.floor(element.f_epoch ?? 0)} />
+                                <LinkEpoch epoch={Math.floor(element.f_epoch ?? 0)} mxAuto />
                             </div>
 
                             <div className='w-[25%]'>
