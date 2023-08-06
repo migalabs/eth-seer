@@ -72,9 +72,11 @@ const Validators = () => {
 
     return (
         <Layout>
+            <h1 className='text-white text-center text-xl md:text-3xl uppercase'>Validators</h1>
+
             <div
                 ref={containerRef}
-                className='flex flex-col px-2 xl:px-20 overflow-x-scroll overflow-y-hidden scrollbar-thin pb-4 text-center mx-auto min-w-[700px] max-w-[1100px]'
+                className='flex flex-col my-6 px-2 xl:px-20 overflow-x-scroll overflow-y-hidden scrollbar-thin text-center mx-auto min-w-[700px] max-w-[1100px]'
                 onMouseMove={handleMouseMove}
             >
                 <div className='flex gap-x-1 justify-around px-2 xl:px-8 py-3 uppercase text-sm text-white'>
@@ -84,15 +86,17 @@ const Validators = () => {
                     <p className='w-[25%]'>Status</p>
                 </div>
 
-                <div className='flex flex-col justify-center gap-y-4'>
+                <div
+                    className='flex flex-col justify-center gap-y-4 rounded-[22px] py-5 px-2 xl:px-8'
+                    style={{
+                        backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
+                        boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
+                    }}
+                >
                     {validators.map((validator: Validator) => (
                         <div
                             key={validator.f_val_idx}
-                            className='flex gap-x-1 justify-around items-center text-[9px] text-black rounded-[22px] px-2 xl:px-8 py-3 uppercase'
-                            style={{
-                                backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
-                                boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
-                            }}
+                            className='flex gap-x-1 justify-around items-center text-[9px] text-black uppercase'
                         >
                             <div className='w-[25%]'>
                                 <LinkValidator validator={validator.f_val_idx} />
