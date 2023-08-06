@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState, useCallback, useContext } from 'react';
-import Link from 'next/link';
 
 // Contexts
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
@@ -12,8 +11,9 @@ import ProgressSmoothBar from '../ui/ProgressSmoothBar';
 import Loader from '../ui/Loader';
 import TooltipContainer from '../ui/TooltipContainer';
 import CustomImage from '../ui/CustomImage';
-import LinkIcon from '../ui/LinkIcon';
 import TooltipResponsive from '../ui/TooltipResponsive';
+import ViewMoreButton from '../ui/ViewMoreButton';
+import LinkEpoch from '../ui/LinkEpoch';
 
 // Types
 import { Epoch, Block } from '../../types';
@@ -123,20 +123,7 @@ const Statitstics = () => {
                     <p>{new Date(firstBlock + f_epoch * 32 * 12000).toLocaleTimeString('ja-JP')}</p>
                 </div>
                 <div className='w-[11%]'>
-                    <Link
-                        href={{
-                            pathname: '/epoch/[id]',
-                            query: {
-                                id: f_epoch,
-                            },
-                        }}
-                        passHref
-                        as={`/epoch/${f_epoch}`}
-                        className='flex gap-x-1 items-center w-fit mx-auto'
-                    >
-                        <p>{f_epoch?.toLocaleString()}</p>
-                        <LinkIcon />
-                    </Link>
+                    <LinkEpoch epoch={f_epoch} mxAuto />
                 </div>
                 <div className='w-[15%] pt-3.5 mb-5'>
                     <p className='uppercase'>blocks</p>
@@ -183,18 +170,9 @@ const Statitstics = () => {
                 }}
             >
                 <div className='flex gap-x-1 justify-center'>
-                    <Link
-                        href={{
-                            pathname: '/epoch/[id]',
-                            query: {
-                                id: f_epoch,
-                            },
-                        }}
-                        passHref
-                        as={`/epoch/${f_epoch}`}
-                    >
+                    <LinkEpoch epoch={f_epoch}>
                         <p className='font-bold text-sm mt-0.5'>Epoch {f_epoch?.toLocaleString()}</p>
-                    </Link>
+                    </LinkEpoch>
                 </div>
 
                 <div className='flex flex-col gap-x-4 w-full'>
@@ -353,7 +331,7 @@ const Statitstics = () => {
     const getDesktopView = () => (
         <div
             ref={containerRef}
-            className='flex flex-col px-2 xl:px-20 overflow-x-scroll overflow-y-hidden scrollbar-thin pb-4'
+            className='flex flex-col px-2 xl:px-20 overflow-x-scroll overflow-y-hidden scrollbar-thin'
             onMouseMove={handleMouseMove}
         >
             <div className='flex gap-x-1 justify-around px-2 xl:px-8 py-3 uppercase text-sm min-w-[1150px]'>
@@ -513,20 +491,7 @@ const Statitstics = () => {
                                 <p>{new Date(firstBlock + epoch.f_epoch * 32 * 12000).toLocaleTimeString('ja-JP')}</p>
                             </div>
                             <div className='w-[11%]'>
-                                <Link
-                                    href={{
-                                        pathname: '/epoch/[id]',
-                                        query: {
-                                            id: epoch.f_epoch,
-                                        },
-                                    }}
-                                    passHref
-                                    as={`/epoch/${epoch.f_epoch}`}
-                                    className='flex gap-x-1 items-center w-fit mx-auto'
-                                >
-                                    <p>{epoch?.f_epoch?.toLocaleString()}</p>
-                                    <LinkIcon />
-                                </Link>
+                                <LinkEpoch epoch={epoch.f_epoch} mxAuto />
                             </div>
 
                             <div className='w-[15%] pt-3.5 mb-5'>
@@ -623,23 +588,6 @@ const Statitstics = () => {
                             </div>
                         </div>
                     ))}
-
-                {loadingEpochs && (
-                    <div className='mt-6'>
-                        <Loader />
-                    </div>
-                )}
-
-                <button
-                    className='cursor-pointer mx-auto w-fit text-[10px] text-black rounded-[22px] px-6 py-4'
-                    onClick={handleViewMore}
-                    style={{
-                        backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
-                        boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
-                    }}
-                >
-                    VIEW MORE
-                </button>
             </div>
         </div>
     );
@@ -670,18 +618,9 @@ const Statitstics = () => {
                         }}
                     >
                         <div className='flex gap-x-1 justify-center'>
-                            <Link
-                                href={{
-                                    pathname: '/epoch/[id]',
-                                    query: {
-                                        id: epoch.f_epoch,
-                                    },
-                                }}
-                                passHref
-                                as={`/epoch/${epoch.f_epoch}`}
-                            >
+                            <LinkEpoch epoch={epoch.f_epoch}>
                                 <p className='font-bold text-sm mt-0.5'>Epoch {epoch.f_epoch?.toLocaleString()}</p>
-                            </Link>
+                            </LinkEpoch>
                         </div>
                         <div className='flex flex-col gap-x-4 w-full'>
                             <div className='flex gap-x-1 justify-center mb-1'>
@@ -876,31 +815,20 @@ const Statitstics = () => {
                         </div>
                     </div>
                 ))}
-
-            {loadingEpochs && (
-                <div className='mt-6'>
-                    <Loader />
-                </div>
-            )}
-
-            <button
-                className='cursor-pointer mx-auto w-fit text-[10px] text-black rounded-[22px] px-6 py-4'
-                onClick={handleViewMore}
-                style={{
-                    backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
-                    boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
-                }}
-            >
-                VIEW MORE
-            </button>
         </div>
     );
 
     return (
-        <div className='text-center text-white'>
-            <h2 className='text-lg md:text-2xl uppercase'>Epoch Statistics</h2>
+        <div>
+            <div className='my-6'>{desktopView ? getDesktopView() : getPhoneView()}</div>
 
-            {desktopView ? getDesktopView() : getPhoneView()}
+            {loadingEpochs && (
+                <div className='my-6'>
+                    <Loader />
+                </div>
+            )}
+
+            <ViewMoreButton onClick={handleViewMore} />
         </div>
     );
 };

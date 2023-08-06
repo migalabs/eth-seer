@@ -110,7 +110,7 @@ export default function Document() {
                     content="Ethseer is an Ethereum (ETH) blockchain explorer. It provides real-time data and statistics on Ethereum's latest epochs and blocks."
                 />
                 <meta property='og:image' content='http://ethseer.com/static/images/ethseer_metadata.png' />
-                {/* <meta httpEquiv='Content-Security-Policy' content='upgrade-insecure-requests' /> */}
+                <meta httpEquiv='Content-Security-Policy' content='upgrade-insecure-requests' />
                 <link href={`${assetPrefix}/static/css/theme-mode-switch.css`} rel='stylesheet' />
             </Head>
 

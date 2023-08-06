@@ -58,7 +58,7 @@ const BlocksState = (props: any) => {
     // Get blocks
     const getBlocks = async (page: number, limit: number = 320, onlyLastEpoch: boolean = false) => {
         try {
-            const response = await axiosClient.get(`/api/slots`, {
+            const response = await axiosClient.get(`/api/slots/blocks`, {
                 params: {
                     limit,
                     page,

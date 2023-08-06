@@ -1,5 +1,4 @@
 import React from 'react';
-import Link from 'next/link';
 
 // Contexts
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
@@ -8,6 +7,7 @@ import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 import TooltipContainer from '../ui/TooltipContainer';
 import CustomImage from '../ui/CustomImage';
 import TooltipResponsive from '../ui/TooltipResponsive';
+import LinkSlot from '../ui/LinkSlot';
 
 // Constants
 import { POOLS } from '../../constants';
@@ -106,16 +106,7 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
                 >
                     {blocks.map(block => (
                         <div key={block.f_slot} className='group'>
-                            <Link
-                                href={{
-                                    pathname: '/slot/[id]',
-                                    query: {
-                                        id: block.f_slot,
-                                    },
-                                }}
-                                passHref
-                                as={`/slot/${block.f_slot}`}
-                            >
+                            <LinkSlot slot={block.f_slot}>
                                 <TooltipContainer>
                                     {getBlockImage(block)}
 
@@ -135,7 +126,7 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
                                         top='120%'
                                     />
                                 </TooltipContainer>
-                            </Link>
+                            </LinkSlot>
                         </div>
                     ))}
 
