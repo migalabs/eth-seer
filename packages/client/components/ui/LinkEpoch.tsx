@@ -8,9 +8,10 @@ import LinkIcon from './LinkIcon';
 type Props = {
     epoch: number | undefined;
     children?: React.ReactNode;
+    mxAuto?: boolean;
 };
 
-const LinkEpoch = ({ epoch, children }: Props) => {
+const LinkEpoch = ({ epoch, children, mxAuto }: Props) => {
     return (
         <Link
             href={{
@@ -21,7 +22,7 @@ const LinkEpoch = ({ epoch, children }: Props) => {
             }}
             passHref
             as={`/epochs/${epoch}`}
-            className='flex gap-x-1 items-center w-fit mx-auto'
+            className={`flex gap-x-1 items-center w-fit ${mxAuto ? 'mx-auto' : ''}`}
         >
             {children ?? (
                 <>

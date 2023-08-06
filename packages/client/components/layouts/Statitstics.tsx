@@ -128,7 +128,7 @@ const Statitstics = ({ title }: Props) => {
                     <p>{new Date(firstBlock + f_epoch * 32 * 12000).toLocaleTimeString('ja-JP')}</p>
                 </div>
                 <div className='w-[11%]'>
-                    <LinkEpoch epoch={f_epoch} />
+                    <LinkEpoch epoch={f_epoch} mxAuto />
                 </div>
                 <div className='w-[15%] pt-3.5 mb-5'>
                     <p className='uppercase'>blocks</p>
@@ -175,7 +175,9 @@ const Statitstics = ({ title }: Props) => {
                 }}
             >
                 <div className='flex gap-x-1 justify-center'>
-                    <LinkEpoch epoch={f_epoch} />
+                    <LinkEpoch epoch={f_epoch}>
+                        <p className='font-bold text-sm mt-0.5'>Epoch {f_epoch?.toLocaleString()}</p>
+                    </LinkEpoch>
                 </div>
 
                 <div className='flex flex-col gap-x-4 w-full'>
@@ -494,7 +496,7 @@ const Statitstics = ({ title }: Props) => {
                                 <p>{new Date(firstBlock + epoch.f_epoch * 32 * 12000).toLocaleTimeString('ja-JP')}</p>
                             </div>
                             <div className='w-[11%]'>
-                                <LinkEpoch epoch={epoch.f_epoch} />
+                                <LinkEpoch epoch={epoch.f_epoch} mxAuto />
                             </div>
 
                             <div className='w-[15%] pt-3.5 mb-5'>
@@ -629,7 +631,9 @@ const Statitstics = ({ title }: Props) => {
                         }}
                     >
                         <div className='flex gap-x-1 justify-center'>
-                            <LinkEpoch epoch={epoch.f_epoch} />
+                            <LinkEpoch epoch={epoch.f_epoch}>
+                                <p className='font-bold text-sm mt-0.5'>Epoch {epoch.f_epoch?.toLocaleString()}</p>
+                            </LinkEpoch>
                         </div>
                         <div className='flex flex-col gap-x-4 w-full'>
                             <div className='flex gap-x-1 justify-center mb-1'>
