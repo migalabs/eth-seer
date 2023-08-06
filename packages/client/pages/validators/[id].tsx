@@ -383,23 +383,23 @@ const ValidatorComponent = () => {
                 >
                     <div className='flex flex-col gap-y-2 uppercase text-black text-xl text-[8px] md:text-[10px]'>
                         <div className='flex flex-row items-center gap-x-5'>
-                            <p className='w-40'>Entity:</p>
+                            <p className='w-32 sm:w-40'>Entity:</p>
                             <div>
                                 <LinkEntity entity={validator?.f_pool_name ?? 'others'} />
                             </div>
                         </div>
 
                         <div className='flex flex-row items-center gap-x-5'>
-                            <p className='w-40'>Current balance:</p>
+                            <p className='w-32 sm:w-40'>Current balance:</p>
                             <p className='leading-3'>{validator?.f_balance_eth} eth</p>
                         </div>
 
                         <div className='flex md:flex-row gap-x-5'>
-                            <p className='w-40'>Current status:</p>
+                            <p className='w-32 sm:w-40'>Current status:</p>
                             {validator?.f_status && <ValidatorStatus status={validator?.f_status} />}
                         </div>
                         <div className='flex flex-col sm:flex-row gap-x-5'>
-                            <p className='w-40'>Blocks:</p>
+                            <p className='w-32 sm:w-40'>Blocks:</p>
                             <div className='flex justify-center gap-x-5 '>
                                 <CardContent
                                     content={`Proposed: ${getNumberProposedBlocks(proposedBlocks)}`}
@@ -414,7 +414,7 @@ const ValidatorComponent = () => {
                             </div>
                         </div>
                         <div className='flex flex-row items-center gap-x-5'>
-                            <p className='w-40'>Withdrawals:</p>
+                            <p className='w-32 sm:w-40'>Withdrawals:</p>
                             <p className='leading-3'>{getTotalWithdrawals(withdrawals).toLocaleString()} eth</p>
                         </div>
                     </div>
