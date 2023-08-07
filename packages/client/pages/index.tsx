@@ -74,9 +74,8 @@ export default function Home() {
 
                     <ChainOverview />
 
-                    <div className='my-6 text-center text-white'>
-                        <h2 className='text-lg md:text-2xl uppercase'>Epochs Statistics</h2>
-
+                    <div className='text-center text-white mt-3'>
+                        <h2 className='text-lg md:text-2xl uppercase'>Epoch Statistics</h2>
                         <Statitstics />
                     </div>
                 </Layout>
