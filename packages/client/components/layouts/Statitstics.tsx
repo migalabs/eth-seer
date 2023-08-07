@@ -335,7 +335,7 @@ const Statitstics = () => {
             className='flex flex-col px-2 xl:px-20 overflow-x-scroll overflow-y-hidden scrollbar-thin pb-4'
             onMouseMove={handleMouseMove}
         >
-            <div className='flex gap-x-1 justify-around px-2 xl:px-8 py-3 uppercase text-sm min-w-[1150px]'>
+            <div className='flex gap-x-1 justify-around px-2 xl:px-8 pb-3 uppercase text-sm min-w-[1150px]'>
                 <div className='flex w-[10%] items-center gap-x-1 justify-center'>
                     <p className='mt-0.5 text-xs'>Time</p>
                     <TooltipContainer>
