@@ -96,7 +96,7 @@ const Validators = () => {
                     {validators.map((validator: Validator) => (
                         <div
                             key={validator.f_val_idx}
-                            className='flex gap-x-1 justify-around items-center text-[9px] text-black uppercase'
+                            className='flex gap-x-1 justify-around items-center text-[10px] text-black uppercase'
                         >
                             <div className='w-[25%]'>
                                 <LinkValidator validator={validator.f_val_idx} />
