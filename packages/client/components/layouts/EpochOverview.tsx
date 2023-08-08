@@ -7,10 +7,8 @@ import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 import TooltipContainer from '../ui/TooltipContainer';
 import CustomImage from '../ui/CustomImage';
 import TooltipResponsive from '../ui/TooltipResponsive';
+import BlockImage from '../ui/BlockImage';
 import LinkSlot from '../ui/LinkSlot';
-
-// Constants
-import { POOLS } from '../../constants';
 
 // Types
 import { Block } from '../../types';
@@ -25,47 +23,6 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
     // Theme Mode Context
     const { themeMode } = React.useContext(ThemeModeContext) ?? {};
 
-    const getBlockImage = (block: Block) => {
-        const missedExtension = block.f_proposed ? '' : '_missed';
-        if (block.f_pool_name && POOLS.includes(block.f_pool_name.toUpperCase())) {
-            return (
-                <CustomImage
-                    src={`/static/images/blocks/block_${block.f_pool_name.toLowerCase()}${missedExtension}.svg`}
-                    alt='Logo'
-                    width={50}
-                    height={50}
-                />
-            );
-        } else if (block.f_pool_name && block.f_pool_name.includes('lido')) {
-            return (
-                <CustomImage
-                    src={`/static/images/blocks/block_lido${missedExtension}.svg`}
-                    alt='Logo'
-                    width={50}
-                    height={50}
-                />
-            );
-        } else if (block.f_pool_name && block.f_pool_name.includes('whale')) {
-            return (
-                <CustomImage
-                    src={`/static/images/blocks/block_whale${missedExtension}.svg`}
-                    alt='Logo'
-                    width={50}
-                    height={50}
-                />
-            );
-        } else {
-            return (
-                <CustomImage
-                    src={`/static/images/blocks/block_others${missedExtension}.svg`}
-                    alt='Logo'
-                    width={50}
-                    height={50}
-                />
-            );
-        }
-    };
-
     const getEntityName = (f_pool_name: string) => {
         if (f_pool_name) {
             if (f_pool_name.length > 18) {
@@ -77,14 +34,6 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
             return 'others';
         }
     };
-
-    // const getTopWidthTooltip = () => {
-    //     if (window.innerWidth > 1150) {
-    //         return 60;
-    //     } else if (window.innerWidth > 768) {
-    //         return 50;
-    //     }
-    // };
 
     return (
         <div className='flex flex-col'>
@@ -108,7 +57,12 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
                         <div key={block.f_slot} className='group'>
                             <LinkSlot slot={block.f_slot}>
                                 <TooltipContainer>
-                                    {getBlockImage(block)}
+                                    <BlockImage
+                                        poolName={block.f_pool_name ?? 'others'}
+                                        proposed={block.f_proposed}
+                                        height={50}
+                                        width={50}
+                                    />
 
                                     <TooltipResponsive
                                         width={225}
