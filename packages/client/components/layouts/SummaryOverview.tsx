@@ -70,18 +70,18 @@ const SummaryOverview = () => {
     return (
         <>
             {summary && lastValidator !== 0 && (
-                <div className='flex justify-center px-5 mb-5'>
+                <div className='px-2 mb-5'>
                     <div
-                        className='grid grid-cols-2 md:grid-cols-4 gap-y-1 items-center justify-around text-center text-[10px] text-black rounded-[22px] px-3 py-4 md:w-[925px]'
+                        className='flex flex-wrap justify-between w-fit gap-y-4 gap-x-8 text-[10px] text-black rounded-[22px] px-8 py-4 mx-auto'
                         style={{
                             backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
                             boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
                         }}
                     >
-                        <p>Epoch: {summary.epoch}</p>
-                        <p>Slot: {summary.slot}</p>
-                        <p>Block Height: {summary.block_height}</p>
-                        <p>Validators: {lastValidator}</p>
+                        <p className='flex-shrink-0'>Epoch: {summary.epoch}</p>
+                        <p className='flex-shrink-0'>Slot: {summary.slot}</p>
+                        <p className='flex-shrink-0'>Block Height: {summary.block_height}</p>
+                        <p className='flex-shrink-0'>Active Validators: {lastValidator}</p>
                     </div>
                 </div>
             )}
