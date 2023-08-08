@@ -18,23 +18,37 @@ type Props = {
 };
 
 const BlockImage = ({ poolName, proposed = true, width, height, showCheck }: Props) => {
-    const missedExtension = proposed ? '' : '_missed';
-
     const getUrl = () => {
         if (poolName && POOLS.includes(poolName.toUpperCase())) {
-            return `/static/images/blocks/block_${poolName.toLowerCase()}${missedExtension}.svg`;
+            return `/static/images/blocks/cubes/${poolName}.svg`;
         } else if (poolName && poolName.includes('lido')) {
-            return `/static/images/blocks/block_lido${missedExtension}.svg`;
+            return `/static/images/blocks/cubes/lido.svg`;
         } else if (poolName && poolName.includes('whale')) {
-            return `/static/images/blocks/block_whale${missedExtension}.svg`;
+            return `/static/images/blocks/cubes/whale.svg`;
         } else {
-            return `/static/images/blocks/block_others${missedExtension}.svg`;
+            return `/static/images/blocks/cubes/others.svg`;
         }
     };
 
     return (
         <div className='relative'>
-            <CustomImage src={getUrl()} alt='Logo' width={width} height={height} />
+            <CustomImage
+                src={getUrl()}
+                alt='Logo'
+                width={width}
+                height={height}
+                className={`${proposed ? '' : 'brightness-75'}`}
+            />
+
+            {!proposed && (
+                <CustomImage
+                    className='absolute z-10 top-0'
+                    src={`/static/images/blocks/cubes/missed.svg`}
+                    alt='Missed Logo'
+                    width={50}
+                    height={50}
+                />
+            )}
 
             {proposed && showCheck && (
                 <CustomImage
