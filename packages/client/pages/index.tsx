@@ -65,17 +65,14 @@ export default function Home() {
         <>
             {status && status.working ? (
                 <Layout isMain>
-                    <SearchEngine />
-                    <div className="text-center text-white m-5">
-                        <h1 className='text-lg md:text-3xl uppercase'>Ethereum (ETH) blockchain explorer</h1>
+                    <div className='text-center text-white'>
+                        <h1 className='text-lg md:text-2xl uppercase'>Ethereum blockchain explorer</h1>
                     </div>
-
+                    <SearchEngine />
                     <SummaryOverview />
-
                     <ChainOverview />
-
                     <div className='text-center text-white mt-3'>
-                        <h2 className='text-lg md:text-2xl uppercase'>Epoch Statistics</h2>
+                        <h2 className='text-lg md:text-xl uppercase'>Epoch Statistics</h2>
                         <Statitstics />
                     </div>
                 </Layout>
