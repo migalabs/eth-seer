@@ -107,7 +107,7 @@ export default function Document() {
                 <meta property='og:title' content='Ethereum (ETH) blockchain explorer - EthSeer.io' />
                 <meta
                     property='og:description'
-                    content="Ethseer is an Ethereum (ETH) blockchain explorer. It provides real-time data and statistics on Ethereum's latest epochs and blocks."
+                    content="Ethseer is an Ethereum Blockchain Explorer. It provides real-time data and statistics on Ethereum's latest epochs and blocks."
                 />
                 <meta property='og:image' content='http://ethseer.com/static/images/ethseer_metadata.png' />
                 <meta httpEquiv='Content-Security-Policy' content='upgrade-insecure-requests' />
