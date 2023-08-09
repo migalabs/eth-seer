@@ -49,7 +49,13 @@ const Validators = () => {
                 },
             });
 
-            setValidators(prevState => [...prevState, ...response.data.validators]);
+            setValidators(prevState => [
+                ...prevState,
+                ...response.data.validators.filter(
+                    (validator: Validator) =>
+                        !prevState.find((prevValidator: Validator) => prevValidator.f_val_idx === validator.f_val_idx)
+                ),
+            ]);
         } catch (error) {
             console.log(error);
         } finally {
