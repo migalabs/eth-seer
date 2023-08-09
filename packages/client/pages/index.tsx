@@ -11,7 +11,7 @@ import ChainOverview from '../components/layouts/ChainOverview';
 import Statitstics from '../components/layouts/Statitstics';
 import Problems from '../components/layouts/Problems';
 import SearchEngine from '../components/ui/SearchEngineBlack';
-import SummaryOverview from '../components/layouts/SummaryOverview';
+import SummaryOverview from '../components/ui/SummaryOverview';
 
 export default function Home() {
     // Status Context
