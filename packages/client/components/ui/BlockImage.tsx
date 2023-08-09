@@ -20,7 +20,7 @@ type Props = {
 const BlockImage = ({ poolName, proposed = true, width, height, showCheck }: Props) => {
     const getUrl = () => {
         if (poolName && POOLS.includes(poolName.toUpperCase())) {
-            return `/static/images/blocks/cubes/${poolName}.svg`;
+            return `/static/images/blocks/cubes/${poolName.toLowerCase()}.svg`;
         } else if (poolName && poolName.includes('lido')) {
             return `/static/images/blocks/cubes/lido.svg`;
         } else if (poolName && poolName.includes('whale')) {
