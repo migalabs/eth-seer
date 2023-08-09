@@ -70,12 +70,13 @@ const SummaryOverview = () => {
     return (
         <>
             {summary && lastValidator !== 0 && (
-                <div className='px-2 mb-5'>
+                <div className='px-4 mb-5'>
                     <div
-                        className='flex flex-wrap justify-between w-fit gap-y-4 gap-x-8 text-[10px] text-black rounded-[22px] px-8 py-4 mx-auto'
+                        className='grid grid-row-4 md:flex md:flex-wrap justify-between w-fit gap-2 md:gap-10 text-[10px] text-center text-white rounded-[22px] bg-white/20 py-4 px-8 md:px-8 md:py-3 mx-auto border-2'
                         style={{
-                            backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
-                            boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
+                            borderColor: themeMode?.darkMode ? 'var(--yellow4)' : 'var(--blue1)',
+                            color: themeMode?.darkMode ? 'var(--yellow4)' : 'var(--blue1)',
+                            backgroundColor: themeMode?.darkMode ? '' : 'var(--blue5)',
                         }}
                     >
                         <p className='flex-shrink-0'>Epoch: {summary.epoch}</p>
