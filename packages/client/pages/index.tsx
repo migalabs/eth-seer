@@ -11,7 +11,7 @@ import ChainOverview from '../components/layouts/ChainOverview';
 import Statitstics from '../components/layouts/Statitstics';
 import Problems from '../components/layouts/Problems';
 import SearchEngine from '../components/ui/SearchEngineBlack';
-import SummaryOverview from '../components/layouts/SummaryOverview';
+import SummaryOverview from '../components/ui/SummaryOverview';
 
 export default function Home() {
     // Status Context
@@ -66,13 +66,14 @@ export default function Home() {
             {status && status.working ? (
                 <Layout isMain>
                     <SearchEngine />
-
+                    <div className='text-center text-white mb-5 md:mt-0 mt-20'>
+                        <h1 className='text-lg md:text-2xl uppercase'>Ethereum blockchain explorer</h1>
+                    </div>
                     <SummaryOverview />
-
                     <ChainOverview />
-
-                    <div className='mt-8'>
-                        <Statitstics title='Epoch Statistics' />
+                    <div className='text-center text-white mt-3'>
+                        {/* <h2 className='text-lg md:text-xl uppercase'>Epoch Statistics</h2> */}
+                        <Statitstics />
                     </div>
                 </Layout>
             ) : (
