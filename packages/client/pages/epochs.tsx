@@ -7,7 +7,7 @@ import Statitstics from '../components/layouts/Statitstics';
 const Epochs = () => {
     return (
         <Layout>
-            <Statitstics title='Epochs' />
+            <Statitstics />
         </Layout>
     );
 };
