@@ -26,7 +26,7 @@ const BlockImage = ({ poolName, proposed = true, width, height, showCheck }: Pro
         } else if (poolName && poolName.includes('whale')) {
             return `/static/images/blocks/cubes/whale.svg`;
         } else {
-            return `/static/images/blocks/cubes/others.svg`;
+            return `/static/images/blocks/cubes/others.webp`;
         }
     };
 
