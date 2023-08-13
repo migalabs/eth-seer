@@ -105,7 +105,7 @@ const Validators = () => {
                             className='flex gap-x-1 justify-around items-center text-[10px] text-black uppercase'
                         >
                             <div className='w-[25%]'>
-                                <LinkValidator validator={validator.f_val_idx} />
+                                <LinkValidator validator={validator.f_val_idx} mxAuto />
                             </div>
 
                             <p className='w-[25%]'>{validator.f_balance_eth} ETH</p>
