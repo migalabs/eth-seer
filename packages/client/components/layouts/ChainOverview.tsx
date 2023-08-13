@@ -6,7 +6,7 @@ import BlocksContext from '../../contexts/blocks/BlocksContext';
 
 // Components
 import EpochOverview from './EpochOverview';
-import CustomImage from '../ui/CustomImage';
+import Arrow from '../ui/Arrow';
 
 const ChainOverview = () => {
     // Theme Mode Context
@@ -79,13 +79,12 @@ const ChainOverview = () => {
     return (
         <div className='flex flex-row justify-center space-x-4 md:space-x-5 px-7'>
             <div className='flex items-center mt-8'>
-                <CustomImage
-                    src={themeMode?.darkMode ? '/static/images/arrow.svg' : '/static/images/arrow-blue.svg'}
-                    alt='Left arrow'
+                <Arrow
+                    direction='left'
                     width={30}
                     height={30}
                     onClick={() => arrowLeftHidden || handleLeft()}
-                    className={`h-fit ${arrowLeftHidden ? 'opacity-0' : 'cursor-pointer'}`}
+                    className={`h-fit ${arrowLeftHidden ? 'opacity-0' : ''}`}
                 />
             </div>
 
@@ -106,13 +105,12 @@ const ChainOverview = () => {
                     ))}
 
             <div className='flex items-center mt-8'>
-                <CustomImage
-                    src={themeMode?.darkMode ? '/static/images/arrow.svg' : '/static/images/arrow-blue.svg'}
-                    alt='Right arrow'
+                <Arrow
+                    direction='right'
                     width={30}
                     height={30}
                     onClick={() => arrowRightHidden || handleRight()}
-                    className={`h-fit rotate-180 ${arrowRightHidden ? 'opacity-0' : 'cursor-pointer'}`}
+                    className={`h-fit ${arrowRightHidden ? 'opacity-0' : ''}`}
                 />
             </div>
         </div>

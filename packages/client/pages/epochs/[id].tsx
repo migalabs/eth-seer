@@ -12,10 +12,10 @@ import Layout from '../../components/layouts/Layout';
 import ProgressSmoothBarEpoch from '../../components/ui/ProgressSmoothBarEpoch';
 import ProgressSmoothBar from '../../components/ui/ProgressSmoothBar';
 import EpochAnimation from '../../components/layouts/EpochAnimation';
-import CustomImage from '../../components/ui/CustomImage';
 import Loader from '../../components/ui/Loader';
 import LinkEpoch from '../../components/ui/LinkEpoch';
 import Slots from '../../components/layouts/Slots';
+import Arrow from '../../components/ui/Arrow';
 
 // Types
 import { Epoch, Slot } from '../../types';
@@ -272,13 +272,7 @@ const EpochComponent = () => {
         <Layout isMain={false}>
             <div className='flex gap-x-3 justify-center items-center mt-2 mb-5'>
                 <LinkEpoch epoch={Number(id) - 1}>
-                    <CustomImage
-                        src={themeMode?.darkMode ? '/static/images/arrow.svg' : '/static/images/arrow-blue.svg'}
-                        alt='Left arrow'
-                        width={15}
-                        height={15}
-                        className='mb-1 cursor-pointer'
-                    />
+                    <Arrow direction='left' />
                 </LinkEpoch>
 
                 <h1 className='text-white text-center text-xl md:text-3xl uppercase'>
@@ -286,13 +280,7 @@ const EpochComponent = () => {
                 </h1>
 
                 <LinkEpoch epoch={Number(id) + 1}>
-                    <CustomImage
-                        src={themeMode?.darkMode ? '/static/images/arrow.svg' : '/static/images/arrow-blue.svg'}
-                        alt='Right arrow'
-                        width={15}
-                        height={15}
-                        className='rotate-180 mb-1 cursor-pointer'
-                    />
+                    <Arrow direction='right' />
                 </LinkEpoch>
             </div>
 
