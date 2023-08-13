@@ -19,6 +19,8 @@ import ValidatorStatus from '../../components/ui/ValidatorStatus';
 import LinkEpoch from '../../components/ui/LinkEpoch';
 import LinkSlot from '../../components/ui/LinkSlot';
 import LinkEntity from '../../components/ui/LinkEntity';
+import LinkValidator from '../../components/ui/LinkValidator';
+import Arrow from '../../components/ui/Arrow';
 
 // Types
 import { Validator, Slot, Withdrawal } from '../../types';
@@ -593,9 +595,17 @@ const ValidatorComponent = () => {
     return (
         <Layout isMain={false}>
             <div className='flex gap-x-3 justify-center items-center mt-2 mb-5'>
+                <LinkValidator validator={Number(id) - 1}>
+                    <Arrow direction='left' />
+                </LinkValidator>
+
                 <h1 className='text-white text-center text-xl md:text-3xl uppercase max-w-full'>
                     Validator {Number(id)?.toLocaleString()}
                 </h1>
+
+                <LinkValidator validator={Number(id) + 1}>
+                    <Arrow direction='right' />
+                </LinkValidator>
             </div>
 
             {loadingValidator && (

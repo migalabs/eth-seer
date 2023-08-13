@@ -212,7 +212,7 @@ const Graffitis = () => {
                             </div>
 
                             <div className='w-[20%]'>
-                                <LinkValidator validator={block.f_proposer_index} />
+                                <LinkValidator validator={block.f_proposer_index} mxAuto />
                             </div>
 
                             <div className='w-[40%]'>

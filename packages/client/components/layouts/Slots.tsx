@@ -92,7 +92,7 @@ const Slots = ({ slots }: Props) => {
                             </div>
 
                             <div className='w-[14%] text-[10px]'>
-                                <LinkValidator validator={element.f_val_idx} />
+                                <LinkValidator validator={element.f_val_idx} mxAuto />
                             </div>
 
                             <div className='w-[15%] text-[10px]'>
