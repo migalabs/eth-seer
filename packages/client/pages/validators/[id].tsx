@@ -22,6 +22,8 @@ import LinkEntity from '../../components/ui/LinkEntity';
 
 // Types
 import { Validator, Slot, Withdrawal } from '../../types';
+import LinkValidator from '../../components/ui/LinkValidator';
+import CustomImage from '../../components/ui/CustomImage';
 
 // Constants
 const firstBlock: number = Number(process.env.NEXT_PUBLIC_NETWORK_GENESIS); // 1606824023000
@@ -593,9 +595,29 @@ const ValidatorComponent = () => {
     return (
         <Layout isMain={false}>
             <div className='flex gap-x-3 justify-center items-center mt-2 mb-5'>
+                <LinkValidator validator={Number(id) - 1}>
+                    <CustomImage
+                        src={themeMode?.darkMode ? '/static/images/arrow.svg' : '/static/images/arrow-blue.svg'}
+                        alt='Left arrow'
+                        width={15}
+                        height={15}
+                        className='mb-1 cursor-pointer'
+                    />
+                </LinkValidator>
+
                 <h1 className='text-white text-center text-xl md:text-3xl uppercase max-w-full'>
                     Validator {Number(id)?.toLocaleString()}
                 </h1>
+
+                <LinkValidator validator={Number(id) + 1}>
+                    <CustomImage
+                        src={themeMode?.darkMode ? '/static/images/arrow.svg' : '/static/images/arrow-blue.svg'}
+                        alt='Right arrow'
+                        width={15}
+                        height={15}
+                        className='rotate-180 mb-1 cursor-pointer'
+                    />
+                </LinkValidator>
             </div>
 
             {loadingValidator && (
