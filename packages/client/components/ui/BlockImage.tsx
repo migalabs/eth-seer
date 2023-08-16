@@ -45,8 +45,8 @@ const BlockImage = ({ poolName, proposed = true, width, height, showCheck }: Pro
                     className='absolute z-[var(--zIndexBlockImageMissed)] top-0'
                     src={`/static/images/blocks/cubes/missed.svg`}
                     alt='Missed Logo'
-                    width={50}
-                    height={50}
+                    width={width}
+                    height={width}
                 />
             )}
 
