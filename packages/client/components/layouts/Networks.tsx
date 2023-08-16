@@ -21,7 +21,7 @@ const Networks = () => {
     };
 
     return (
-        <div className='flex flex-col items-center relative z-20'>
+        <div className='flex flex-col items-center relative z-[var(--zIndexNetwork)]'>
             <div className='flex flex-col items-center cursor-pointer' onClick={handleClick}>
                 <CustomImage
                     src={
