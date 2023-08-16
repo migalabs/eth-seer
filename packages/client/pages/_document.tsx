@@ -67,6 +67,13 @@ export default function Document() {
 
                         --background-image-light: url('${assetPrefix}/static/images/background-orange.svg');
                         --background-image-dark: url('${assetPrefix}/static/images/background-purple.svg');
+
+                        --zIndexThemeModeSwitch: 5;
+                        --zIndexBlockImageMissed: 10;
+                        --zIndexSearchEngine: 10;
+                        --zIndexNetwork: 20;
+                        --zIndexTooltip: 20;
+                        --zIndexConsent: 30;
                     }
 
                     html {
