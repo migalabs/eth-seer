@@ -65,8 +65,8 @@ export default function Document() {
                         --boxShadowPurple1: inset -7px -7px 8px var(--purple2), inset 7px 7px 8px var(--purple2);
                         --boxShadowPurple2: inset -4px -4px 4px var(--purple4), inset 4px 4px 4px var(--purple4);
 
-                        --background-image-light: url('${assetPrefix}/static/images/background-orange.webp');
-                        --background-image-dark: url('${assetPrefix}/static/images/background-purple.webp');
+                        --background-image-light: url('${assetPrefix}/static/images/background/background_light.webp');
+                        --background-image-dark: url('${assetPrefix}/static/images/background/background_dark.webp');
                     }
 
                     html {
