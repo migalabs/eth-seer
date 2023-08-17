@@ -20,11 +20,11 @@ type Props = {
 const BlockImage = ({ poolName, proposed = true, width, height, showCheck }: Props) => {
     const getUrl = () => {
         if (poolName && POOLS.includes(poolName.toUpperCase())) {
-            return `/static/images/blocks/cubes/${poolName}.svg`;
+            return `/static/images/blocks/cubes/${poolName}.webp`;
         } else if (poolName && poolName.includes('lido')) {
-            return `/static/images/blocks/cubes/lido.svg`;
+            return `/static/images/blocks/cubes/lido.webp`;
         } else if (poolName && poolName.includes('whale')) {
-            return `/static/images/blocks/cubes/whale.svg`;
+            return `/static/images/blocks/cubes/whale.webp`;
         } else {
             return `/static/images/blocks/cubes/others.webp`;
         }
@@ -43,7 +43,7 @@ const BlockImage = ({ poolName, proposed = true, width, height, showCheck }: Pro
             {!proposed && (
                 <CustomImage
                     className='absolute z-10 top-0'
-                    src={`/static/images/blocks/cubes/missed.svg`}
+                    src={`/static/images/blocks/cubes/missed.webp`}
                     alt='Missed Logo'
                     width={50}
                     height={50}
