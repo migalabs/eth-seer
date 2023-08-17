@@ -1,6 +1,5 @@
 import { useEffect, useState, useRef, useCallback, useContext } from 'react';
 import { useRouter } from 'next/router';
-import Link from 'next/link';
 
 // Axios
 import axiosClient from '../../config/axios';
@@ -17,6 +16,7 @@ import TabHeader from '../../components/ui/TabHeader';
 import Loader from '../../components/ui/Loader';
 import LinkValidator from '../../components/ui/LinkValidator';
 import LinkSlot from '../../components/ui/LinkSlot';
+import Arrow from '../../components/ui/Arrow';
 
 // Types
 import { Block, Withdrawal } from '../../types';
@@ -509,13 +509,7 @@ const Slot = () => {
         <Layout isMain={false}>
             <div className='flex gap-x-3 justify-center items-center mt-2 mb-5'>
                 <LinkSlot slot={Number(id) - 1}>
-                    <CustomImage
-                        src={themeMode?.darkMode ? '/static/images/arrow.svg' : '/static/images/arrow-blue.svg'}
-                        alt='Left arrow'
-                        width={15}
-                        height={15}
-                        className='mb-1 cursor-pointer'
-                    />
+                    <Arrow direction='left' />
                 </LinkSlot>
 
                 <h1 className='text-white text-center text-xl md:text-3xl uppercase'>
@@ -523,13 +517,7 @@ const Slot = () => {
                 </h1>
 
                 <LinkSlot slot={Number(id) + 1}>
-                    <CustomImage
-                        src={themeMode?.darkMode ? '/static/images/arrow.svg' : '/static/images/arrow-blue.svg'}
-                        alt='Right arrow'
-                        width={15}
-                        height={15}
-                        className='rotate-180 mb-1 cursor-pointer'
-                    />
+                    <Arrow direction='right' />
                 </LinkSlot>
             </div>
 
