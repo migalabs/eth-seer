@@ -6,25 +6,6 @@ import styled from '@emotion/styled';
 // Components
 import CustomImage from '../components/ui/CustomImage';
 
-// Styled
-const Button = styled.div`
-    background-color: #90d1f4;
-    box-shadow: inset -6px -6px 10px rgba(20, 21, 62, 0.6), inset 6px 6px 10px rgba(20, 21, 62, 0.6);
-
-    p {
-        color: white;
-    }
-
-    &:hover {
-        background-color: white;
-        box-shadow: inset -6px -6px 10px rgba(20, 21, 62, 0.6), inset 6px 6px 10px rgba(20, 21, 62, 0.6);
-
-        p {
-            color: #90d1f4;
-        }
-    }
-`;
-
 const NotFoundPage = () => {
     return (
         <>
@@ -34,7 +15,7 @@ const NotFoundPage = () => {
 
             <div className='flex flex-col items-center justify-center h-screen gap-y-6 text-white uppercase'>
                 <CustomImage
-                    src='/static/images/404.svg'
+                    src='/static/images/error/404.webp'
                     alt='404'
                     width={1920}
                     height={1080}
@@ -47,19 +28,18 @@ const NotFoundPage = () => {
                     Sorry. We couldn&apos;t find the <br /> page you were looking for.
                 </p>
 
-                <div className='relative mt-10'>
-                    <Link href='/' passHref>
-                        <Button className='w-fit rounded-[50px] py-4 px-5 md:py-4 md:px-5 mx-auto'>
-                            <p className='uppercase 2xl:text-base xl:text-xl md:text-base text-sm'>Go back home</p>
-                        </Button>
-                    </Link>
-
+                <div className='relative mt-4 lg:mt-8'>
+                    <a href='/' className='relative px-3 py-2 md:px-7 md:py-4 text-white group'>
+                        <span className='absolute inset-0 w-full h-full transition duration-300 transform -translate-x-1 -translate-y-1 bg-blue-300 ease opacity-90 md:group-hover:translate-x-0 md:group-hover:translate-y-0'></span>
+                        <span className='absolute inset-0 w-full h-full transition duration-300 transform translate-x-1 translate-y-1 bg-purple-900 ease md:group-hover:translate-x-0 md:group-hover:translate-y-0 mix-blend-screen'></span>
+                        <span className='relative text-lg md:text-2xl'>Go back home</span>
+                    </a>
                     <CustomImage
-                        src='/static/images/ghost.svg'
-                        alt='Ghost'
-                        width={200}
-                        height={200}
-                        className='absolute top-[60px] right-[0px] sm:top-[-30px] sm:right-[-180px] ghost'
+                        src='/static/images/error/ghost404.webp'
+                        alt='Ghost error page'
+                        width={250}
+                        height={250}
+                        className='absolute top-[-60px] right-[-250px] hidden md:block ghost'
                     />
                 </div>
             </div>

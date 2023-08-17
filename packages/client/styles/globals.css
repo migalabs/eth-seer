@@ -67,7 +67,7 @@
 
     @keyframes ghostAnimation {
         50% {
-            transform: translate(0, 20px);
+            transform: translate(5px, 10px);
         }
     }
 
