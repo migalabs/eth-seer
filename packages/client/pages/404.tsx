@@ -16,7 +16,7 @@ const NotFoundPage = () => {
             <div className='flex flex-col items-center justify-center h-screen gap-y-6 text-white uppercase'>
                 <CustomImage
                     src='/static/images/error/404.webp'
-                    alt='404'
+                    alt='404 illustration for error page'
                     width={1920}
                     height={1080}
                     className='xl:w-4/12 md:w-5/12 w-7/12'
@@ -35,8 +35,8 @@ const NotFoundPage = () => {
                         <span className='relative text-lg md:text-2xl'>Go back home</span>
                     </a>
                     <CustomImage
-                        src='/static/images/error/ghost404.webp'
-                        alt='Ghost error page'
+                        src='/static/images/error/ghost_404.webp'
+                        alt='Ghost illustration for error page'
                         width={250}
                         height={250}
                         className='absolute top-[-60px] right-[-250px] hidden md:block ghost'
