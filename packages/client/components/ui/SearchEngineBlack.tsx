@@ -195,11 +195,11 @@ const SearchEngineBlack = () => {
             ref={popUpRef}
         >
             <CustomImage
-                src={'/static/images/magnifying-glass-pixel.svg'}
+                src={'/static/images/icons/magnifying_glass_icon.webp'}
                 alt='Magnifying Glass Pixel'
-                width={30}
-                height={30}
-                className='ml-2 mt-1'
+                width={25}
+                height={25}
+                className='ml-2'
             />
 
             <SearchEngineInput

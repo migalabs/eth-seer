@@ -25,9 +25,9 @@ const BlockGif = ({ poolName, width, height }: Props) => {
         } else if (poolName && poolName.includes('lido')) {
             return `${assetPrefix}/static/images/blocks/covers/lido.webp`;
         } else if (poolName && poolName.includes('whale')) {
-            return `${assetPrefix}/static/images/blocks/covers/whale.webp`;
+            return `${assetPrefix}/static/images/blocks/covers/whale-ethereum-entity.webp`;
         } else {
-            return `${assetPrefix}/static/images/blocks/covers/others.webp`;
+            return `${assetPrefix}/static/images/blocks/covers/unknown-ethereum-entity.webp`;
         }
     };
 

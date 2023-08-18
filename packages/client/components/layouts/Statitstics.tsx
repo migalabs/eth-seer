@@ -185,7 +185,7 @@ const Statitstics = ({ title }: Props) => {
                         <p className='text-xs mt-1'>Time</p>
                         <TooltipContainer>
                             <CustomImage
-                                src='/static/images/information.svg'
+                                src='/static/images/icons/information_icon.webp'
                                 alt='Time information'
                                 width={24}
                                 height={24}
@@ -218,7 +218,7 @@ const Statitstics = ({ title }: Props) => {
                         <p className='text-xs mt-1'>Blocks</p>
                         <TooltipContainer>
                             <CustomImage
-                                src='/static/images/information.svg'
+                                src='/static/images/icons/information_icon.webp'
                                 alt='Blocks information'
                                 width={24}
                                 height={24}
@@ -264,7 +264,7 @@ const Statitstics = ({ title }: Props) => {
                         <p className='text-xs mt-1'>Attestation Accuracy</p>
                         <TooltipContainer>
                             <CustomImage
-                                src='/static/images/information.svg'
+                                src='/static/images/icons/information_icon.webp'
                                 alt='Attestation Accuracy information'
                                 width={24}
                                 height={24}
@@ -298,7 +298,7 @@ const Statitstics = ({ title }: Props) => {
 
                         <TooltipContainer>
                             <CustomImage
-                                src='/static/images/information.svg'
+                                src='/static/images/icons/information_icon.webp'
                                 alt='Attestation Accuracy information'
                                 width={24}
                                 height={24}
@@ -344,7 +344,7 @@ const Statitstics = ({ title }: Props) => {
                     <p className='mt-0.5'>Time</p>
                     <TooltipContainer>
                         <CustomImage
-                            src='/static/images/information.svg'
+                            src='/static/images/icons/information_icon.webp'
                             alt='Time information'
                             width={24}
                             height={24}
@@ -371,7 +371,7 @@ const Statitstics = ({ title }: Props) => {
                     <p className='mt-0.5'>Epoch</p>
                     <TooltipContainer>
                         <CustomImage
-                            src='/static/images/information.svg'
+                            src='/static/images/icons/information_icon.webp'
                             alt='Time information'
                             width={24}
                             height={24}
@@ -391,7 +391,7 @@ const Statitstics = ({ title }: Props) => {
                     <p className='mt-0.5'>Blocks</p>
                     <TooltipContainer>
                         <CustomImage
-                            src='/static/images/information.svg'
+                            src='/static/images/icons/information_icon.webp'
                             alt='Blocks information'
                             width={24}
                             height={24}
@@ -417,7 +417,7 @@ const Statitstics = ({ title }: Props) => {
                     <p className='mt-0.5'>Attestation Accuracy</p>
                     <TooltipContainer>
                         <CustomImage
-                            src='/static/images/information.svg'
+                            src='/static/images/icons/information_icon.webp'
                             alt='Attestation Accuracy information'
                             width={24}
                             height={24}
@@ -443,7 +443,7 @@ const Statitstics = ({ title }: Props) => {
                     <p className='mt-0.5'>Voting Participation</p>
                     <TooltipContainer>
                         <CustomImage
-                            src='/static/images/information.svg'
+                            src='/static/images/icons/information_icon.webp'
                             alt='Balance information'
                             width={24}
                             height={24}
@@ -640,7 +640,7 @@ const Statitstics = ({ title }: Props) => {
                                 <p className='text-xs mt-1'>Time</p>
                                 <TooltipContainer>
                                     <CustomImage
-                                        src='/static/images/information.svg'
+                                        src='/static/images/icons/information_icon.webp'
                                         alt='Time information'
                                         width={24}
                                         height={24}
@@ -672,7 +672,7 @@ const Statitstics = ({ title }: Props) => {
                                 <p className='text-xs mt-1'>Blocks</p>
                                 <TooltipContainer>
                                     <CustomImage
-                                        src='/static/images/information.svg'
+                                        src='/static/images/icons/information_icon.webp'
                                         alt='Blocks information'
                                         width={24}
                                         height={24}
@@ -711,7 +711,7 @@ const Statitstics = ({ title }: Props) => {
                                 <p className='text-xs mt-1'>Attestation Accuracy</p>
                                 <TooltipContainer>
                                     <CustomImage
-                                        src='/static/images/information.svg'
+                                        src='/static/images/icons/information_icon.webp'
                                         alt='Attestation Accuracy information'
                                         width={24}
                                         height={24}
@@ -784,7 +784,7 @@ const Statitstics = ({ title }: Props) => {
                                 <p className='text-xs mt-1'>Voting Participation</p>
                                 <TooltipContainer>
                                     <CustomImage
-                                        src='/static/images/information.svg'
+                                        src='/static/images/icons/information_icon.webp'
                                         alt='Balance information'
                                         width={24}
                                         height={24}
