@@ -48,7 +48,7 @@ const Container = styled.div<Props>`
     }
 
     .text {
-        font-family: var(--headingFont); 
+        font-family: var(--headingFont);
         font-size: 12px;
     }
 
@@ -61,8 +61,7 @@ const Container = styled.div<Props>`
     }
 
     button {
-        box-shadow: inset 3px 3px 5px var(--brown3),
-            inset -3px -3px 5px var(--brown3);
+        box-shadow: inset 3px 3px 5px var(--brown3), inset -3px -3px 5px var(--brown3);
         border-radius: 40px;
         font-size: 10px;
         text-transform: uppercase;
@@ -75,8 +74,7 @@ const Container = styled.div<Props>`
         color: white;
 
         &:hover {
-            box-shadow: inset 3px 3px 5px var(--brown5),
-                inset -3px -3px 5px var(--brown5);
+            box-shadow: inset 3px 3px 5px var(--brown5), inset -3px -3px 5px var(--brown5);
             background-color: var(--yellow1);
         }
     }
@@ -173,12 +171,13 @@ const Consent = () => {
                             />
                         </div>
                         <div className={`relative ${necessaryVisible ? 'block' : 'hidden'}`}>
-                            <CustomImage 
-                                src='/static/images/cookies/necessary_cookies.webp' 
-                                alt='Pacman eating the necessary amount of cookies ' 
-                                width={180} 
-                                height={180} 
-                                className='mx-auto'/>
+                            <CustomImage
+                                src='/static/images/cookies/necessary_cookies.webp'
+                                alt='Pacman eating the necessary amount of cookies '
+                                width={180}
+                                height={180}
+                                className='mx-auto'
+                            />
                         </div>
                         <div className={`relative ${allVisible ? 'block' : 'hidden'}`}>
                             <CustomImage
