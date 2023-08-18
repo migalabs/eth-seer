@@ -272,13 +272,33 @@ const EpochComponent = () => {
         <Layout isMain={false}>
             <div className='flex gap-x-3 justify-center items-center mt-2 mb-5'>
                 <LinkEpoch epoch={Number(id) - 1}>
-                    <CustomImage
-                        src={themeMode?.darkMode ? '/static/images/arrow.svg' : '/static/images/arrow-blue.svg'}
-                        alt='Left arrow'
-                        width={15}
-                        height={15}
-                        className='mb-1 cursor-pointer'
-                    />
+                {themeMode?.darkMode ? (
+                    <svg
+                        xmlns='http://www.w3.org/2000/svg'
+                        width='30'
+                        height='30'
+                        viewBox='0 0 16 16'
+                        className='stroke-[#fbc508] stroke-1 dark-mode-class'
+                    >
+                        <path
+                            fill-rule='evenodd'
+                            d='M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z'
+                        />
+                    </svg>
+                ) : (
+                    <svg
+                        xmlns='http://www.w3.org/2000/svg'
+                        width='30'
+                        height='30'
+                        viewBox='0 0 16 16'
+                        className='stroke-[#6cc4e0] stroke-1 light-mode-class'
+                    >
+                        <path
+                            fill-rule='evenodd'
+                            d='M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z'
+                        />
+                    </svg>
+                )}
                 </LinkEpoch>
 
                 <h1 className='text-white text-center text-xl md:text-3xl uppercase'>
@@ -286,13 +306,33 @@ const EpochComponent = () => {
                 </h1>
 
                 <LinkEpoch epoch={Number(id) + 1}>
-                    <CustomImage
-                        src={themeMode?.darkMode ? '/static/images/arrow.svg' : '/static/images/arrow-blue.svg'}
-                        alt='Right arrow'
-                        width={15}
-                        height={15}
-                        className='rotate-180 mb-1 cursor-pointer'
-                    />
+                {themeMode?.darkMode ? (
+                    <svg
+                        xmlns='http://www.w3.org/2000/svg'
+                        width='30'
+                        height='30'
+                        viewBox='0 0 16 16'
+                        className='stroke-[#fbc508] stroke-1 dark-mode-class'
+                    >
+                        <path
+                            fill-rule='evenodd'
+                            d='M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z'
+                        />
+                    </svg>
+                ) : (
+                    <svg
+                        xmlns='http://www.w3.org/2000/svg'
+                        width='30'
+                        height='30'
+                        viewBox='0 0 16 16'
+                        className='stroke-[#6cc4e0] stroke-1 light-mode-class'
+                    >
+                        <path
+                            fill-rule='evenodd'
+                            d='M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z'
+                        />
+                    </svg>
+                )}
                 </LinkEpoch>
             </div>
 
