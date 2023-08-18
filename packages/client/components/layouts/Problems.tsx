@@ -49,8 +49,8 @@ const Problems = () => {
     return (
         <div className='flex flex-col gap-y-6 px-4 sm:px-14 max-w-[1200px] mx-auto h-screen justify-center'>
             <CustomImage
-                src='/static/images/big-logo.svg'
-                alt='Big logo of Ethseer'
+                src='/static/images/icons/ethseer_logo_problems.webp'
+                alt='Big logo of Ethseer with floating cubes for technical problems page'
                 width={700}
                 height={700}
                 className='mx-auto max-h-[70%]'

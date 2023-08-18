@@ -24,9 +24,9 @@ const BlockImage = ({ poolName, proposed = true, width, height, showCheck }: Pro
         } else if (poolName && poolName.includes('lido')) {
             return `/static/images/blocks/cubes/lido.webp`;
         } else if (poolName && poolName.includes('whale')) {
-            return `/static/images/blocks/cubes/whale.webp`;
+            return `/static/images/blocks/cubes/whale-ethereum-entity.webp`;
         } else {
-            return `/static/images/blocks/cubes/others.webp`;
+            return `/static/images/blocks/cubes/unknown-ethereum-entity.webp`;
         }
     };
 
@@ -43,7 +43,7 @@ const BlockImage = ({ poolName, proposed = true, width, height, showCheck }: Pro
             {!proposed && (
                 <CustomImage
                     className='absolute z-10 top-0'
-                    src={`/static/images/blocks/cubes/missed.webp`}
+                    src={`/static/images/blocks/cubes/missed_block.webp`}
                     alt='Missed Logo'
                     width={50}
                     height={50}
@@ -52,8 +52,8 @@ const BlockImage = ({ poolName, proposed = true, width, height, showCheck }: Pro
 
             {proposed && showCheck && (
                 <CustomImage
-                    src='/static/images/check.svg'
-                    alt='Check'
+                    src='/static/images/icons/proposed_block.webp'
+                    alt='Proposed block check illustration'
                     width={40}
                     height={40}
                     className='absolute -bottom-2 -right-2'
