@@ -31,7 +31,7 @@ const Container = styled.div<Props>`
     background-color: var(--brown1);
     box-shadow: inset 3px 3px 5px var(--brown3), inset -3px -3px 5px var(--brown3);
     border-radius: 1.5rem;
-    z-index: 1;
+    z-index: var(--zIndexConsent);
     animation-duration: 1s;
     animation-name: slidein;
 

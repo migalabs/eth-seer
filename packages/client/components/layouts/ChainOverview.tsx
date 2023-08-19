@@ -1,16 +1,13 @@
 import React, { useState, useEffect } from 'react';
 
 // Contexts
-import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 import BlocksContext from '../../contexts/blocks/BlocksContext';
 
 // Components
 import EpochOverview from './EpochOverview';
+import Arrow from '../ui/Arrow';
 
 const ChainOverview = () => {
-    // Theme Mode Context
-    const { themeMode } = React.useContext(ThemeModeContext) ?? {};
-
     // Blocks Context
     const { blocks, getBlocks } = React.useContext(BlocksContext) ?? {};
 
@@ -76,41 +73,15 @@ const ChainOverview = () => {
     };
 
     return (
-        <div className='flex flex-row justify-center items-center gap-4'>
-            <div className='flex mt-5'>
-                {themeMode?.darkMode ? (
-                    <svg
-                        xmlns='http://www.w3.org/2000/svg'
-                        width='50'
-                        height='50'
-                        viewBox='0 0 16 16'
-                        className={`stroke-[#fbc508] stroke-1 dark-mode-class ${
-                            arrowLeftHidden ? 'opacity-0' : 'cursor-pointer'
-                        }`}
-                        onClick={() => arrowLeftHidden || handleLeft()}
-                    >
-                        <path
-                            fill-rule='evenodd'
-                            d='M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z'
-                        />
-                    </svg>
-                ) : (
-                    <svg
-                        xmlns='http://www.w3.org/2000/svg'
-                        width='50'
-                        height='50'
-                        viewBox='0 0 16 16'
-                        className={`stroke-[#6cc4e0] stroke-1 light-mode-class' ${
-                            arrowLeftHidden ? 'opacity-0' : 'cursor-pointer'
-                        }`}
-                        onClick={() => arrowLeftHidden || handleLeft()}
-                    >
-                        <path
-                            fill-rule='evenodd'
-                            d='M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z'
-                        />
-                    </svg>
-                )}
+        <div className='flex flex-row justify-center space-x-4 md:space-x-5 px-7'>
+            <div className='flex items-center mt-8'>
+                <Arrow
+                    direction='left'
+                    width={50}
+                    height={50}
+                    onClick={() => arrowLeftHidden || handleLeft()}
+                    className={`h-fit ${arrowLeftHidden ? 'opacity-0' : ''}`}
+                />
             </div>
 
             {blocks &&
@@ -129,40 +100,14 @@ const ChainOverview = () => {
                         />
                     ))}
 
-            <div className='flex mt-5'>
-                {themeMode?.darkMode ? (
-                    <svg
-                        xmlns='http://www.w3.org/2000/svg'
-                        width='50'
-                        height='50'
-                        viewBox='0 0 16 16'
-                        className={`stroke-[#fbc508] stroke-1 dark-mode-class ${
-                            arrowRightHidden ? 'opacity-0' : 'cursor-pointer'
-                        }`}
-                        onClick={() => arrowRightHidden || handleRight()}
-                    >
-                        <path
-                            fill-rule='evenodd'
-                            d='M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z'
-                        />
-                    </svg>
-                ) : (
-                    <svg
-                        xmlns='http://www.w3.org/2000/svg'
-                        width='50'
-                        height='50'
-                        viewBox='0 0 16 16'
-                        className={`stroke-[#6cc4e0] stroke-1 light-mode-class' ${
-                            arrowRightHidden ? 'opacity-0' : 'cursor-pointer'
-                        }`}
-                        onClick={() => arrowRightHidden || handleRight()}
-                    >
-                        <path
-                            fill-rule='evenodd'
-                            d='M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z'
-                        />
-                    </svg>
-                )}
+            <div className='flex items-center mt-8'>
+                <Arrow
+                    direction='right'
+                    width={50}
+                    height={50}
+                    onClick={() => arrowRightHidden || handleRight()}
+                    className={`h-fit ${arrowRightHidden ? 'opacity-0' : ''}`}
+                />
             </div>
         </div>
     );

@@ -49,7 +49,13 @@ const Validators = () => {
                 },
             });
 
-            setValidators(prevState => [...prevState, ...response.data.validators]);
+            setValidators(prevState => [
+                ...prevState,
+                ...response.data.validators.filter(
+                    (validator: Validator) =>
+                        !prevState.find((prevValidator: Validator) => prevValidator.f_val_idx === validator.f_val_idx)
+                ),
+            ]);
         } catch (error) {
             console.log(error);
         } finally {
@@ -99,7 +105,7 @@ const Validators = () => {
                             className='flex gap-x-1 justify-around items-center text-[10px] text-black uppercase'
                         >
                             <div className='w-[25%]'>
-                                <LinkValidator validator={validator.f_val_idx} />
+                                <LinkValidator validator={validator.f_val_idx} mxAuto />
                             </div>
 
                             <p className='w-[25%]'>{validator.f_balance_eth} ETH</p>

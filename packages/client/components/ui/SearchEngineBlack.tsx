@@ -214,7 +214,7 @@ const SearchEngineBlack = () => {
 
             {searchResults.length > 0 && showResults && (
                 <div
-                    className='absolute top-full left-0 border-2 rounded-xl p-1 bg-[#736a73] z-10 w-full'
+                    className='absolute top-full left-0 border-2 rounded-xl p-1 bg-[#736a73] z-[var(--zIndexSearchEngine)] w-full'
                     style={{
                         borderColor: themeMode?.darkMode ? 'var(--yellow4)' : 'var(--blue2)',
                         color: themeMode?.darkMode ? 'var(--yellow4)' : 'var(--blue2)',

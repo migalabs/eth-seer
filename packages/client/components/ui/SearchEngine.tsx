@@ -154,7 +154,7 @@ const SearchEngine = () => {
                     {searchResults.map((item, index) => (
                         <div
                             key={index}
-                            className='border-2 rounded-xl px-5 py-4 text-xs z-10'
+                            className='border-2 rounded-xl px-5 py-4 text-xs z-[var(--zIndexSearchEngine)]'
                             style={{
                                 boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow3)' : 'var(--boxShadowBlue5)',
                                 backgroundColor: themeMode?.darkMode ? 'var(--yellow5)' : 'var(--blue9)',

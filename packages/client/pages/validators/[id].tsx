@@ -19,6 +19,8 @@ import ValidatorStatus from '../../components/ui/ValidatorStatus';
 import LinkEpoch from '../../components/ui/LinkEpoch';
 import LinkSlot from '../../components/ui/LinkSlot';
 import LinkEntity from '../../components/ui/LinkEntity';
+import LinkValidator from '../../components/ui/LinkValidator';
+import Arrow from '../../components/ui/Arrow';
 
 // Types
 import { Validator, Slot, Withdrawal } from '../../types';
@@ -150,7 +152,7 @@ const ValidatorComponent = () => {
     const getContentProposedBlocksMobile = () => {
         return (
             <div
-                className='mt-5 flex flex-col gap-y-2 mx-2 px-6 uppercase overflow-x-scroll overflow-y-hidden scrollbar-thin text-black text-xl text-[8px] md:text-[10px]  rounded-[22px] py-3'
+                className='mt-5 flex flex-col gap-y-2 mx-2 px-6 uppercase overflow-x-scroll overflow-y-hidden scrollbar-thin text-black leading-7 text-[8px] md:text-[10px]  rounded-[22px] py-3'
                 style={{
                     backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
                     boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
@@ -323,7 +325,7 @@ const ValidatorComponent = () => {
     const getContentWithdrawalsMobile = () => {
         return (
             <div
-                className='mt-5 flex flex-col gap-y-2 mx-2 px-6 uppercase overflow-x-scroll overflow-y-hidden scrollbar-thin text-black text-xl text-[8px] md:text-[10px]  rounded-[22px] py-3'
+                className='mt-5 flex flex-col gap-y-2 mx-2 px-6 uppercase overflow-x-scroll overflow-y-hidden scrollbar-thin text-black leading-7 text-[8px] md:text-[10px]  rounded-[22px] py-3'
                 style={{
                     backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
                     boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
@@ -381,7 +383,7 @@ const ValidatorComponent = () => {
                         boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
                     }}
                 >
-                    <div className='flex flex-col gap-y-2 uppercase text-black text-xl text-[8px] md:text-[10px]'>
+                    <div className='flex flex-col gap-y-2 uppercase text-black leading-7 text-[8px] md:text-[10px]'>
                         <div className='flex flex-row items-center gap-x-5'>
                             <p className='w-32 sm:w-40'>Entity:</p>
                             <div>
@@ -430,7 +432,7 @@ const ValidatorComponent = () => {
                         boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
                     }}
                 >
-                    <div className='flex flex-col gap-y-2 uppercase text-black text-xl text-[8px] md:text-[10px]'>
+                    <div className='flex flex-col gap-y-2 uppercase text-black leading-7 text-[8px] md:text-[10px]'>
                         <div className='flex flex-col gap-y-4'>
                             <div className='flex flex-row'>
                                 <p>
@@ -593,9 +595,17 @@ const ValidatorComponent = () => {
     return (
         <Layout isMain={false}>
             <div className='flex gap-x-3 justify-center items-center mt-2 mb-5'>
+                <LinkValidator validator={Number(id) - 1}>
+                    <Arrow direction='left' />
+                </LinkValidator>
+
                 <h1 className='text-white text-center text-xl md:text-3xl uppercase max-w-full'>
                     Validator {Number(id)?.toLocaleString()}
                 </h1>
+
+                <LinkValidator validator={Number(id) + 1}>
+                    <Arrow direction='right' />
+                </LinkValidator>
             </div>
 
             {loadingValidator && (

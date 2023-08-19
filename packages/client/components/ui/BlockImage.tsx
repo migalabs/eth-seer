@@ -3,9 +3,6 @@ import React from 'react';
 // Components
 import CustomImage from './CustomImage';
 
-// Types
-import { Slot } from '../../types';
-
 // Constants
 import { POOLS } from '../../constants';
 
@@ -20,7 +17,7 @@ type Props = {
 const BlockImage = ({ poolName, proposed = true, width, height, showCheck }: Props) => {
     const getUrl = () => {
         if (poolName && POOLS.includes(poolName.toUpperCase())) {
-            return `/static/images/blocks/cubes/${poolName}.webp`;
+            return `/static/images/blocks/cubes/${poolName.toLowerCase()}.webp`;
         } else if (poolName && poolName.includes('lido')) {
             return `/static/images/blocks/cubes/lido.webp`;
         } else if (poolName && poolName.includes('whale')) {
@@ -42,11 +39,11 @@ const BlockImage = ({ poolName, proposed = true, width, height, showCheck }: Pro
 
             {!proposed && (
                 <CustomImage
-                    className='absolute z-10 top-0'
+                    className='absolute z-[var(--zIndexBlockImageMissed)] top-0'
                     src={`/static/images/blocks/cubes/missed_block.webp`}
                     alt='Missed Logo'
-                    width={50}
-                    height={50}
+                    width={width}
+                    height={width}
                 />
             )}
 
