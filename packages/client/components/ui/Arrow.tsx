@@ -34,7 +34,7 @@ const Arrow = ({ direction, height = 15, width = 15, className, onClick }: Props
             style={{ stroke: themeMode?.darkMode ? 'var(--yellow1)' : 'var(--blue2)' }}
             onClick={onClick}
         >
-            <path fill-rule='evenodd' d={getPath()} />
+            <path fillRule='evenodd' d={getPath()} />
         </svg>
     );
 };
