@@ -1,7 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
 import Head from 'next/head';
-import styled from '@emotion/styled';
 
 // Components
 import CustomImage from '../components/ui/CustomImage';
@@ -29,11 +28,11 @@ const NotFoundPage = () => {
                 </p>
 
                 <div className='relative mt-4 lg:mt-8'>
-                    <a href='/' className='relative px-3 py-2 md:px-7 md:py-4 text-white group'>
+                    <Link href='/' passHref className='relative px-3 py-2 md:px-7 md:py-4 text-white group'>
                         <span className='absolute inset-0 w-full h-full transition duration-300 transform -translate-x-1 -translate-y-1 bg-blue-300 ease opacity-90 md:group-hover:translate-x-0 md:group-hover:translate-y-0'></span>
                         <span className='absolute inset-0 w-full h-full transition duration-300 transform translate-x-1 translate-y-1 bg-purple-900 ease md:group-hover:translate-x-0 md:group-hover:translate-y-0 mix-blend-screen'></span>
                         <span className='relative text-lg md:text-2xl'>Go back home</span>
-                    </a>
+                    </Link>
                     <CustomImage
                         src='/static/images/error/ghost_404.webp'
                         alt='Ghost illustration for error page'
