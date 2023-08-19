@@ -72,7 +72,6 @@ export default function Home() {
                     <SummaryOverview />
                     <ChainOverview />
                     <div className='text-center text-white mt-3'>
-                        {/* <h2 className='text-lg md:text-xl uppercase'>Epoch Statistics</h2> */}
                         <Statitstics />
                     </div>
                 </Layout>
