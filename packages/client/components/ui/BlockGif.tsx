@@ -15,6 +15,8 @@ const BlockGif = ({ poolName, width, height }: Props) => {
 
     useEffect(() => {
         setUrlImage(`url(${getUrl()})`);
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [poolName]);
 
     const getUrl = () => {

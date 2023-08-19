@@ -101,7 +101,7 @@ const EntityComponent = () => {
                             boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
                         }}
                     >
-                        <div className='flex flex-col gap-y-2 uppercase text-black text-xl text-[8px] sm:text-[10px] mx-auto md:mx-0'>
+                        <div className='flex flex-col gap-y-2 uppercase text-black leading-7 text-[8px] sm:text-[10px] mx-auto md:mx-0'>
                             <div className='flex flex-row items-center gap-x-5'>
                                 <p className='leading-3 w-24 xs:w-44 sm:w-60'>Aggregate Balance:</p>
                                 <p className='leading-3'>{entity && entity.aggregate_balance?.toLocaleString()} ETH</p>

@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState, useContext } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 // Axios
@@ -212,7 +211,7 @@ const Graffitis = () => {
                             </div>
 
                             <div className='w-[20%]'>
-                                <LinkValidator validator={block.f_proposer_index} />
+                                <LinkValidator validator={block.f_proposer_index} mxAuto />
                             </div>
 
                             <div className='w-[40%]'>
