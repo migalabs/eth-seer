@@ -51,7 +51,7 @@ const Card = ({ title, content, icon, iconSize, link, target }: CardProps) => {
                                 <LinkIcon />
                             ) : (
                                 <CustomImage
-                                    src={`/static/images/${icon}.svg`}
+                                    src={`/static/images/icons/${icon}.webp`}
                                     width={iconSize ?? 35}
                                     height={iconSize ?? 35}
                                     alt='Icon'
@@ -502,7 +502,7 @@ const Slot = () => {
 
     return (
         <Layout isMain={false}>
-            <div className='flex gap-x-3 justify-center items-center mt-2 mb-5'>
+            <div className='flex flex-row mb-4 justify-center gap-3'>
                 <LinkSlot slot={Number(id) - 1}>
                     <Arrow direction='left' />
                 </LinkSlot>

@@ -69,8 +69,8 @@ const ChainOverview = () => {
             <div className='flex items-center mt-8'>
                 <Arrow
                     direction='left'
-                    width={30}
-                    height={30}
+                    width={50}
+                    height={50}
                     onClick={() => arrowLeftHidden || handleLeft()}
                     className={`h-fit ${arrowLeftHidden ? 'opacity-0' : ''}`}
                 />
@@ -95,8 +95,8 @@ const ChainOverview = () => {
             <div className='flex items-center mt-8'>
                 <Arrow
                     direction='right'
-                    width={30}
-                    height={30}
+                    width={50}
+                    height={50}
                     onClick={() => arrowRightHidden || handleRight()}
                     className={`h-fit ${arrowRightHidden ? 'opacity-0' : ''}`}
                 />
