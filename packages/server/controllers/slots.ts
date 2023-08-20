@@ -128,7 +128,7 @@ export const getSlotById = async (req: Request, res: Response) => {
                     t_block_metrics.f_attestations, t_block_metrics.f_deposits, t_block_metrics.f_proposer_slashings,
                     t_block_metrics.f_att_slashings, t_block_metrics.f_voluntary_exits, t_block_metrics.f_sync_bits,
                     t_block_metrics.f_el_fee_recp, t_block_metrics.f_el_gas_limit, t_block_metrics.f_el_gas_used,
-                    t_block_metrics.f_el_transactions, t_eth2_pubkeys.f_pool_name
+                    t_block_metrics.f_el_transactions, t_block_metrics.f_el_block_hash, t_eth2_pubkeys.f_pool_name
                     FROM t_block_metrics
                     LEFT OUTER JOIN t_eth2_pubkeys ON t_block_metrics.f_proposer_index = t_eth2_pubkeys.f_val_idx
                     WHERE f_slot = '${id}'
