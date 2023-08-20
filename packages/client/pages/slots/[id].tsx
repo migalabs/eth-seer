@@ -424,10 +424,6 @@ const Slot = () => {
                             ? getShortAddress(block?.f_el_block_hash)
                             : '---'
                     }
-                    icon={block?.f_proposed && block?.f_el_block_hash !== ADDRESS_ZERO ? 'etherscan-icon' : undefined}
-                    iconSize={35}
-                    link={`https://etherscan.io/block/${block?.f_el_block_hash}`}
-                    target='_blank'
                 />
 
                 <Card
