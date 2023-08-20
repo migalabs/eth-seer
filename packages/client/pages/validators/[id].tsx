@@ -26,7 +26,7 @@ import Arrow from '../../components/ui/Arrow';
 import { Validator, Slot, Withdrawal } from '../../types';
 
 // Constants
-const firstBlock: number = Number(process.env.NEXT_PUBLIC_NETWORK_GENESIS); // 1606824023000
+import { FIRST_BLOCK } from '../../constants';
 
 type Props = {
     content: string;
@@ -183,7 +183,7 @@ const ValidatorComponent = () => {
                             <div className='flex flex-row items-center gap-x-10'>
                                 <p className='w-20'>DateTime:</p>
                                 <p className='leading-3'>
-                                    {new Date(firstBlock + Number(element.f_proposer_slot) * 12000).toLocaleString(
+                                    {new Date(FIRST_BLOCK + Number(element.f_proposer_slot) * 12000).toLocaleString(
                                         'ja-JP'
                                     )}
                                 </p>
@@ -258,7 +258,9 @@ const ValidatorComponent = () => {
                             </div>
 
                             <p className='w-[25%]'>
-                                {new Date(firstBlock + Number(element.f_proposer_slot) * 12000).toLocaleString('ja-JP')}
+                                {new Date(FIRST_BLOCK + Number(element.f_proposer_slot) * 12000).toLocaleString(
+                                    'ja-JP'
+                                )}
                             </p>
                         </div>
                     ))}
@@ -305,7 +307,7 @@ const ValidatorComponent = () => {
                             </div>
 
                             <p className='w-[25%]'>
-                                {new Date(firstBlock + Number(element.f_slot) * 12000).toLocaleString('ja-JP')}
+                                {new Date(FIRST_BLOCK + Number(element.f_slot) * 12000).toLocaleString('ja-JP')}
                             </p>
 
                             <p className='w-[25%]'>{(element.f_amount / 10 ** 9).toLocaleString()} ETH</p>
@@ -347,7 +349,7 @@ const ValidatorComponent = () => {
                             <div className='flex flex-row items-center gap-x-8'>
                                 <p className='w-20'>DateTime:</p>
                                 <p className='leading-3'>
-                                    {new Date(firstBlock + Number(element.f_slot) * 12000).toLocaleString('ja-JP')}
+                                    {new Date(FIRST_BLOCK + Number(element.f_slot) * 12000).toLocaleString('ja-JP')}
                                 </p>
                             </div>
 

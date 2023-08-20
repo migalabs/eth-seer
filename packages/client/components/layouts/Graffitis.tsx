@@ -21,7 +21,7 @@ import LinkSlot from '../ui/LinkSlot';
 import { Block } from '../../types';
 
 // Constants
-const firstBlock: number = Number(process.env.NEXT_PUBLIC_NETWORK_GENESIS);
+import { FIRST_BLOCK } from '../../constants';
 
 const Graffitis = () => {
     // Router
@@ -202,8 +202,8 @@ const Graffitis = () => {
                             }}
                         >
                             <div className='flex flex-col w-[20%]'>
-                                <p>{new Date(firstBlock + block.f_slot * 12000).toLocaleDateString('ja-JP')}</p>
-                                <p>{new Date(firstBlock + block.f_slot * 12000).toLocaleTimeString('ja-JP')}</p>
+                                <p>{new Date(FIRST_BLOCK + block.f_slot * 12000).toLocaleDateString('ja-JP')}</p>
+                                <p>{new Date(FIRST_BLOCK + block.f_slot * 12000).toLocaleTimeString('ja-JP')}</p>
                             </div>
 
                             <div className='w-[20%]'>
@@ -277,8 +277,8 @@ const Graffitis = () => {
                             </div>
 
                             <div>
-                                <p>{new Date(firstBlock + block.f_slot * 12000).toLocaleDateString('ja-JP')}</p>
-                                <p>{new Date(firstBlock + block.f_slot * 12000).toLocaleTimeString('ja-JP')}</p>
+                                <p>{new Date(FIRST_BLOCK + block.f_slot * 12000).toLocaleDateString('ja-JP')}</p>
+                                <p>{new Date(FIRST_BLOCK + block.f_slot * 12000).toLocaleTimeString('ja-JP')}</p>
                             </div>
                         </div>
 
@@ -303,7 +303,7 @@ const Graffitis = () => {
                                 </TooltipContainer>
                             </div>
                             <div>
-                                <p>{block.f_proposer_index}</p>
+                                <LinkValidator validator={block.f_proposer_index} mxAuto />
                             </div>
                         </div>
 
