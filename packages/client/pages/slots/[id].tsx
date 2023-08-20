@@ -454,7 +454,7 @@ const Slot = () => {
                 className='flex flex-col px-2 mt-2.5 overflow-x-scroll overflow-y-hidden scrollbar-thin'
                 onMouseMove={handleMouseMove}
             >
-                <div className='flex gap-x-4 justify-around px-4 xl:px-8 min-w-[400px] sm:min-w-[500px] py-3 uppercase text-sm text-[12px] sm:text-[14px] text-white text-center'>
+                <div className='flex gap-x-4 justify-around px-4 xl:px-8 min-w-[470px] py-3 uppercase text-sm text-[12px] sm:text-[14px] text-white text-center'>
                     <p className='mt-0.5 w-1/3'>Validator</p>
                     <p className='mt-0.5 w-1/3'>Address</p>
                     <p className='mt-0.5 w-1/3'>Amount</p>
@@ -466,7 +466,7 @@ const Slot = () => {
                     </div>
                 ) : (
                     <div
-                        className='flex flex-col gap-y-2 min-w-[400px] sm:min-w-[500px] text-sm text-[8px] sm:text-[10px] rounded-[22px] px-4 xl:px-8 py-3'
+                        className='flex flex-col gap-y-2 min-w-[470px] leading-5 text-[8px] sm:text-[10px] rounded-[22px] px-4 xl:px-8 py-3'
                         style={{
                             backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
                             boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
@@ -478,7 +478,7 @@ const Slot = () => {
                                 key={element.f_val_idx}
                             >
                                 <div className='w-1/3'>
-                                    <LinkValidator validator={element.f_val_idx} />
+                                    <LinkValidator validator={element.f_val_idx} mxAuto />
                                 </div>
 
                                 <div className='w-1/3'>
