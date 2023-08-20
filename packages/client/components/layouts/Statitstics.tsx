@@ -19,7 +19,7 @@ import LinkEpoch from '../ui/LinkEpoch';
 import { Epoch, Block } from '../../types';
 
 // Constants
-const firstBlock: number = Number(process.env.NEXT_PUBLIC_NETWORK_GENESIS);
+import { FIRST_BLOCK } from '../../constants';
 
 const Statitstics = () => {
     // Theme Mode Context
@@ -119,8 +119,8 @@ const Statitstics = () => {
                 }}
             >
                 <div className='flex flex-col w-[10%] pt-2.5 pb-2.5'>
-                    <p>{new Date(firstBlock + f_epoch * 32 * 12000).toLocaleDateString('ja-JP')}</p>
-                    <p>{new Date(firstBlock + f_epoch * 32 * 12000).toLocaleTimeString('ja-JP')}</p>
+                    <p>{new Date(FIRST_BLOCK + f_epoch * 32 * 12000).toLocaleDateString('ja-JP')}</p>
+                    <p>{new Date(FIRST_BLOCK + f_epoch * 32 * 12000).toLocaleTimeString('ja-JP')}</p>
                 </div>
                 <div className='w-[11%]'>
                     <LinkEpoch epoch={f_epoch} mxAuto />
@@ -203,8 +203,8 @@ const Statitstics = () => {
                     </div>
 
                     <div>
-                        <p>{new Date(firstBlock + f_epoch * 32 * 12000).toLocaleDateString('ja-JP')}</p>
-                        <p>{new Date(firstBlock + f_epoch * 32 * 12000).toLocaleTimeString('ja-JP')}</p>
+                        <p>{new Date(FIRST_BLOCK + f_epoch * 32 * 12000).toLocaleDateString('ja-JP')}</p>
+                        <p>{new Date(FIRST_BLOCK + f_epoch * 32 * 12000).toLocaleTimeString('ja-JP')}</p>
                     </div>
                 </div>
 
@@ -487,8 +487,8 @@ const Statitstics = () => {
                             }}
                         >
                             <div className='flex flex-col w-[10%]'>
-                                <p>{new Date(firstBlock + epoch.f_epoch * 32 * 12000).toLocaleDateString('ja-JP')}</p>
-                                <p>{new Date(firstBlock + epoch.f_epoch * 32 * 12000).toLocaleTimeString('ja-JP')}</p>
+                                <p>{new Date(FIRST_BLOCK + epoch.f_epoch * 32 * 12000).toLocaleDateString('ja-JP')}</p>
+                                <p>{new Date(FIRST_BLOCK + epoch.f_epoch * 32 * 12000).toLocaleTimeString('ja-JP')}</p>
                             </div>
                             <div className='w-[11%]'>
                                 <LinkEpoch epoch={epoch.f_epoch} mxAuto />
@@ -657,8 +657,8 @@ const Statitstics = () => {
                                 </TooltipContainer>
                             </div>
                             <div>
-                                <p>{new Date(firstBlock + epoch.f_epoch * 32 * 12000).toLocaleDateString('ja-JP')}</p>
-                                <p>{new Date(firstBlock + epoch.f_epoch * 32 * 12000).toLocaleTimeString('ja-JP')}</p>
+                                <p>{new Date(FIRST_BLOCK + epoch.f_epoch * 32 * 12000).toLocaleDateString('ja-JP')}</p>
+                                <p>{new Date(FIRST_BLOCK + epoch.f_epoch * 32 * 12000).toLocaleTimeString('ja-JP')}</p>
                             </div>
                         </div>
 
