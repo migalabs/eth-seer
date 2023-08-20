@@ -340,7 +340,7 @@ const Graffitis = () => {
                 </div>
             )}
 
-            <ViewMoreButton onClick={handleViewMore} />
+            {!disableViewMore && <ViewMoreButton onClick={handleViewMore} />}
         </div>
     );
 
