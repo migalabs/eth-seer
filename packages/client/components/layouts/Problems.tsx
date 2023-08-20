@@ -51,9 +51,9 @@ const Problems = () => {
             <CustomImage
                 src='/static/images/icons/ethseer_logo_problems.webp'
                 alt='Big logo of Ethseer with floating cubes for technical problems page'
-                width={700}
-                height={700}
-                className='mx-auto max-h-[70%]'
+                width={500}
+                height={500}
+                className='mx-auto'
             />
 
             <p className='uppercase text-white text-center text-lg md:text-2xl'>
