@@ -32,15 +32,15 @@ const ChainOverview = () => {
             setLastEpoch(lastEpochAux || 0);
         }
 
-        if (window !== undefined) {
-            if (window.innerWidth > 768) setNumberEpochsViewed(2);
+        if (window !== undefined && window.innerWidth > 768) {
+            setNumberEpochsViewed(2);
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [blocks]);
 
     const handleLeft = () => {
-        if (blocks && blocks.epochs && Object.entries(blocks.epochs).length - numberEpochsViewed - count === 1) {
+        if (blocks && blocks.epochs && Object.entries(blocks.epochs).length - numberEpochsViewed - count === 5) {
             getBlocks?.(currentPage + 1);
             setCurrentPage(prevState => prevState + 1);
         }
