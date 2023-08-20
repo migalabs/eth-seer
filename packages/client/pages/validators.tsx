@@ -82,10 +82,10 @@ const Validators = () => {
 
             <div
                 ref={containerRef}
-                className='flex flex-col my-6 px-2 xl:px-20 overflow-x-scroll overflow-y-hidden scrollbar-thin text-center mx-auto min-w-[700px] max-w-[1100px]'
+                className='flex flex-col my-6 px-2 xl:px-20 overflow-x-scroll overflow-y-hidden scrollbar-thin text-center mx-auto'
                 onMouseMove={handleMouseMove}
             >
-                <div className='flex gap-x-1 justify-around px-2 xl:px-8 py-3 uppercase text-sm text-white'>
+                <div className='flex gap-x-1 justify-around px-2 xl:px-8 py-3 uppercase text-sm text-white min-w-[700px] max-w-[1100px]'>
                     <p className='w-[25%]'>Validator ID</p>
                     <p className='w-[25%]'>Balance</p>
                     <p className='w-[25%]'>Entity</p>
@@ -93,7 +93,7 @@ const Validators = () => {
                 </div>
 
                 <div
-                    className='flex flex-col justify-center gap-y-4 rounded-[22px] py-5 px-2 xl:px-8'
+                    className='flex flex-col justify-center gap-y-4 rounded-[22px] py-5 px-2 xl:px-8 min-w-[700px] max-w-[1100px]'
                     style={{
                         backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
                         boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
