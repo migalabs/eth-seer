@@ -18,31 +18,11 @@ const SummaryOverview = () => {
     const { themeMode } = React.useContext(ThemeModeContext) ?? {};
 
     // Blocks Context
-    const { blocks, getBlocks } = React.useContext(BlocksContext) ?? {};
+    const { blocks } = React.useContext(BlocksContext) ?? {};
 
     // States
     const [summary, setSummary] = useState<Summary>() ?? {};
-    const [lastValidator, setLastValidator] = useState(0);
-
-    useEffect(() => {
-        if (blocks && !blocks.epochs) {
-            getBlocks?.(0);
-        }
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [blocks]);
-
-    useEffect(() => {
-        getBlocks?.(0);
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    useEffect(() => {
-        if (lastValidator == 0) getLastValidator();
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [lastValidator]);
+    const [lastValidator, setLastValidator] = useState(null);
 
     useEffect(() => {
         if (blocks && blocks.epochs) {
@@ -59,12 +39,22 @@ const SummaryOverview = () => {
 
             setSummary({ epoch: lastEpochAux, slot: lastSlotAux, block_height: lastBlockAux });
         }
+
+        if (!lastValidator) {
+            getLastValidator();
+        }
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [blocks]);
 
     const getLastValidator = async () => {
-        const response = await axiosClient.get('/api/validators/last');
-        if (response.data.number_active_validators) setLastValidator(response.data.number_active_validators);
+        try {
+            const response = await axiosClient.get('/api/validators/last');
+
+            setLastValidator(response.data.number_active_validators);
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (
@@ -82,7 +72,7 @@ const SummaryOverview = () => {
                         <p className='flex-shrink-0'>Epoch: {summary.epoch}</p>
                         <p className='flex-shrink-0'>Slot: {summary.slot}</p>
                         <p className='flex-shrink-0'>Block Height: {summary.block_height}</p>
-                        <p className='flex-shrink-0'>Active Validators: {lastValidator}</p>
+                        <p className='flex-shrink-0'>Active Validators: {lastValidator ?? 0}</p>
                     </div>
                 </div>
             )}
