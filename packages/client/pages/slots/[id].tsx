@@ -21,9 +21,8 @@ import Arrow from '../../components/ui/Arrow';
 // Types
 import { Block, Withdrawal } from '../../types';
 
-const firstBlock: number = Number(process.env.NEXT_PUBLIC_NETWORK_GENESIS);
-const zeroAddress = '0x0000000000000000000000000000000000000000000000000000000000000000';
-const zeroAddressShort = '0x0000000000000000000000000000000000000000';
+// Constants
+import { FIRST_BLOCK, ADDRESS_ZERO, ADDRESS_ZERO_SHORT } from '../../constants';
 
 type CardProps = {
     title: string;
@@ -131,7 +130,7 @@ const Slot = () => {
             setBlock(blockResponse);
 
             if (!blockResponse) {
-                const expectedTimestamp = (firstBlock + Number(id) * 12000) / 1000;
+                const expectedTimestamp = (FIRST_BLOCK + Number(id) * 12000) / 1000;
 
                 setBlock({
                     f_epoch: Math.floor(Number(id) / 32),
@@ -195,7 +194,7 @@ const Slot = () => {
             if (block.f_timestamp) {
                 text = new Date(block.f_timestamp * 1000).toLocaleString('ja-JP');
             } else {
-                text = new Date(firstBlock + Number(id) * 12000).toLocaleString('ja-JP');
+                text = new Date(FIRST_BLOCK + Number(id) * 12000).toLocaleString('ja-JP');
             }
         }
 
@@ -206,7 +205,7 @@ const Slot = () => {
         let text = '';
 
         if (!existsBlockRef.current) {
-            const expectedTimestamp = (firstBlock + slotRef.current * 12000) / 1000;
+            const expectedTimestamp = (FIRST_BLOCK + slotRef.current * 12000) / 1000;
             const timeDifference = new Date(expectedTimestamp * 1000).getTime() - new Date().getTime();
 
             const minutesMiliseconds = 1000 * 60;
@@ -421,11 +420,11 @@ const Slot = () => {
                 <Card
                     title='Block hash'
                     content={
-                        block?.f_proposed && block?.f_el_block_hash !== zeroAddress
+                        block?.f_proposed && block?.f_el_block_hash !== ADDRESS_ZERO
                             ? getShortAddress(block?.f_el_block_hash)
                             : '---'
                     }
-                    icon={block?.f_proposed && block?.f_el_block_hash !== zeroAddress ? 'etherscan-icon' : undefined}
+                    icon={block?.f_proposed && block?.f_el_block_hash !== ADDRESS_ZERO ? 'etherscan-icon' : undefined}
                     iconSize={35}
                     link={`https://etherscan.io/block/${block?.f_el_block_hash}`}
                     target='_blank'
@@ -434,7 +433,7 @@ const Slot = () => {
                 <Card
                     title='Fee Recipient'
                     content={
-                        block?.f_proposed && block?.f_el_fee_recp !== zeroAddressShort
+                        block?.f_proposed && block?.f_el_fee_recp !== ADDRESS_ZERO_SHORT
                             ? getShortAddress(block?.f_el_fee_recp)
                             : '---'
                     }
