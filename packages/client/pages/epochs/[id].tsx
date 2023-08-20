@@ -21,7 +21,7 @@ import Arrow from '../../components/ui/Arrow';
 import { Epoch, Slot } from '../../types';
 
 // Constants
-const firstBlock: number = Number(process.env.NEXT_PUBLIC_NETWORK_GENESIS); // 1606824023000
+import { FIRST_BLOCK } from '../../constants';
 
 type Props = {
     content: string;
@@ -89,7 +89,7 @@ const EpochComponent = () => {
             if (Number(response.data.epoch.proposed_blocks) === 0) {
                 setAnimation(true);
 
-                const expectedTimestamp = (firstBlock + Number(id) * 12000 * 32 + 12000 * 64) / 1000;
+                const expectedTimestamp = (FIRST_BLOCK + Number(id) * 12000 * 32 + 12000 * 64) / 1000;
 
                 existsEpochRef.current = false;
 
@@ -190,7 +190,7 @@ const EpochComponent = () => {
                 <div className='flex flex-row items-center gap-x-5'>
                     <p className='w-40 sm:w-60'>DateTime (Local):</p>
                     <p className='leading-3'>
-                        {new Date(firstBlock + Number(epoch?.f_slot) * 12000).toLocaleString('ja-JP')}
+                        {new Date(FIRST_BLOCK + Number(epoch?.f_slot) * 12000).toLocaleString('ja-JP')}
                     </p>
                 </div>
                 <div className='flex flex-col sm:flex-row gap-x-5'>
