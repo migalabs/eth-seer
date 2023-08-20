@@ -304,7 +304,7 @@ const Graffitis = () => {
                                 </TooltipContainer>
                             </div>
                             <div>
-                                <p>{block.f_proposer_index}</p>
+                                <LinkValidator validator={block.f_proposer_index} mxAuto />
                             </div>
                         </div>
 
