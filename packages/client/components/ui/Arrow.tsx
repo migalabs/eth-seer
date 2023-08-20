@@ -3,9 +3,6 @@ import React, { useContext } from 'react';
 // Contexts
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
-// Components
-import CustomImage from './CustomImage';
-
 // Props
 type Props = {
     direction: 'right' | 'left';
@@ -15,19 +12,33 @@ type Props = {
     onClick?: () => void;
 };
 
-const Arrow = ({ direction, height = 15, width = 15, className, onClick }: Props) => {
+const Arrow = ({ direction, height = 30, width = 30, className, onClick }: Props) => {
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
 
+    const getPath = () => {
+        if (direction === 'left') {
+            return 'M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z';
+        } else {
+            return 'M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z';
+        }
+    };
+
     return (
-        <CustomImage
-            src={themeMode?.darkMode ? '/static/images/arrow.svg' : '/static/images/arrow-blue.svg'}
-            alt='Navigation arrow'
+        <svg
+            xmlns='http://www.w3.org/2000/svg'
             width={width}
             height={height}
-            onClick={() => onClick?.()}
-            className={`mb-1 cursor-pointer ${direction === 'right' ? 'rotate-180' : ''} ${className ?? ''}`}
-        />
+            viewBox='0 0 16 16'
+            className={`stroke-1 dark-mode-class cursor-pointer ${className ?? ''}`}
+            style={{
+                stroke: themeMode?.darkMode ? 'var(--yellow1)' : 'var(--blue2)',
+                fill: themeMode?.darkMode ? 'var(--yellow1)' : 'var(--blue2)',
+            }}
+            onClick={onClick}
+        >
+            <path fillRule='evenodd' d={getPath()} />
+        </svg>
     );
 };
 

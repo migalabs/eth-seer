@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState, useContext } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 // Axios
@@ -108,7 +107,7 @@ const Graffitis = () => {
                     <p className='mt-0.5'>Time</p>
                     <TooltipContainer>
                         <CustomImage
-                            src='/static/images/information.svg'
+                            src='/static/images/icons/information_icon.webp'
                             alt='Time information'
                             width={24}
                             height={24}
@@ -134,7 +133,7 @@ const Graffitis = () => {
                     <p className='mt-0.5'>Slot</p>
                     <TooltipContainer>
                         <CustomImage
-                            src='/static/images/information.svg'
+                            src='/static/images/icons/information_icon.webp'
                             alt='Time information'
                             width={24}
                             height={24}
@@ -154,7 +153,7 @@ const Graffitis = () => {
                     <p className='mt-0.5'>Validator</p>
                     <TooltipContainer>
                         <CustomImage
-                            src='/static/images/information.svg'
+                            src='/static/images/icons/information_icon.webp'
                             alt='Blocks information'
                             width={24}
                             height={24}
@@ -174,7 +173,7 @@ const Graffitis = () => {
                     <p className='mt-0.5'>Graffiti</p>
                     <TooltipContainer>
                         <CustomImage
-                            src='/static/images/information.svg'
+                            src='/static/images/icons/information_icon.webp'
                             alt='Attestation Accuracy information'
                             width={24}
                             height={24}
@@ -255,7 +254,7 @@ const Graffitis = () => {
                                 <p className='text-xs mt-1'>Time</p>
                                 <TooltipContainer>
                                     <CustomImage
-                                        src='/static/images/information.svg'
+                                        src='/static/images/icons/information_icon.webp'
                                         alt='Time information'
                                         width={24}
                                         height={24}
@@ -288,7 +287,7 @@ const Graffitis = () => {
                                 <p className='text-xs mt-1'>Validator</p>
                                 <TooltipContainer>
                                     <CustomImage
-                                        src='/static/images/information.svg'
+                                        src='/static/images/icons/information_icon.webp'
                                         alt='Time information'
                                         width={24}
                                         height={24}
@@ -313,7 +312,7 @@ const Graffitis = () => {
                                 <p className='text-xs mt-1'>Graffiti</p>
                                 <TooltipContainer>
                                     <CustomImage
-                                        src='/static/images/information.svg'
+                                        src='/static/images/icons/information_icon.webp'
                                         alt='Time information'
                                         width={24}
                                         height={24}
