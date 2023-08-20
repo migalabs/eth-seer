@@ -38,7 +38,7 @@ const NotFoundPage = () => {
                         alt='Ghost illustration for error page'
                         width={250}
                         height={250}
-                        className='absolute top-[-60px] right-[-250px] hidden md:block ghost'
+                        className='absolute top-[-80px] right-[-250px] hidden md:block ghost'
                     />
                 </div>
             </div>
