@@ -10,7 +10,7 @@ import Layout from '../components/layouts/Layout';
 import ChainOverview from '../components/layouts/ChainOverview';
 import Statitstics from '../components/layouts/Statitstics';
 import Problems from '../components/layouts/Problems';
-import SearchEngine from '../components/ui/SearchEngineBlack';
+import SearchEngine from '../components/ui/SearchEngine';
 import SummaryOverview from '../components/ui/SummaryOverview';
 
 export default function Home() {
