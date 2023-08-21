@@ -10,7 +10,6 @@ import Layout from '../components/layouts/Layout';
 import ChainOverview from '../components/layouts/ChainOverview';
 import Statitstics from '../components/layouts/Statitstics';
 import Problems from '../components/layouts/Problems';
-import SearchEngine from '../components/ui/SearchEngineBlack';
 import SummaryOverview from '../components/ui/SummaryOverview';
 
 export default function Home() {
@@ -65,7 +64,6 @@ export default function Home() {
         <>
             {status && status.working ? (
                 <Layout isMain>
-                    <SearchEngine />
                     <div className='text-center text-white mb-5 md:mt-0 mt-20'>
                         <h1 className='text-lg md:text-2xl uppercase'>Ethereum blockchain explorer</h1>
                     </div>
