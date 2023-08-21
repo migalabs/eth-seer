@@ -2,9 +2,9 @@ import React from 'react';
 import Link from 'next/link';
 
 // Components
-import ThemeModeSwitch from '../ui/ThemeModeSwitch';
 import CustomImage from '../ui/CustomImage';
-import Networks from './Networks';
+import Networks from '../ui/Networks';
+import Menu from '../ui/Menu';
 
 type Props = {
     isMain?: boolean;
@@ -28,8 +28,7 @@ const Header = ({ isMain }: Props) => {
                 </Link>
             </div>
             <div className='flex flex-row gap-x-5 items-start mt-2.5'>
-                <Networks />
-                <ThemeModeSwitch />
+                <Menu />
             </div>
         </div>
     );
