@@ -21,7 +21,12 @@ const Header = ({ isMain }: Props) => {
                             'bg-[#D9D9D94D] rounded-2xl  border-2 border-white mt-2 ml-2 hover:bg-[#202021e3]'
                         }`}
                     >
-                        <CustomImage src='/static/images/ethseer_logo.svg' alt='Logo' width={50} height={50} />
+                        <CustomImage
+                            src='/static/images/icons/ethseer_logo.webp'
+                            alt='Logo of Ethseer, an eye which contains Ethereum logo'
+                            width={50}
+                            height={50}
+                        />
 
                         <p className='uppercase text-white text-2xs md:text-xs mt-1 ml-2'>Ethseer.io</p>
                     </div>

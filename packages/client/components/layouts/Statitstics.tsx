@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState, useCallback, useContext } from 'react';
-import Link from 'next/link';
 
 // Contexts
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
@@ -12,14 +11,15 @@ import ProgressSmoothBar from '../ui/ProgressSmoothBar';
 import Loader from '../ui/Loader';
 import TooltipContainer from '../ui/TooltipContainer';
 import CustomImage from '../ui/CustomImage';
-import LinkIcon from '../ui/LinkIcon';
 import TooltipResponsive from '../ui/TooltipResponsive';
+import ViewMoreButton from '../ui/ViewMoreButton';
+import LinkEpoch from '../ui/LinkEpoch';
 
 // Types
 import { Epoch, Block } from '../../types';
 
 // Constants
-const firstBlock: number = Number(process.env.NEXT_PUBLIC_NETWORK_GENESIS);
+import { FIRST_BLOCK } from '../../constants';
 
 const Statitstics = () => {
     // Theme Mode Context
@@ -119,24 +119,11 @@ const Statitstics = () => {
                 }}
             >
                 <div className='flex flex-col w-[10%] pt-2.5 pb-2.5'>
-                    <p>{new Date(firstBlock + f_epoch * 32 * 12000).toLocaleDateString('ja-JP')}</p>
-                    <p>{new Date(firstBlock + f_epoch * 32 * 12000).toLocaleTimeString('ja-JP')}</p>
+                    <p>{new Date(FIRST_BLOCK + f_epoch * 32 * 12000).toLocaleDateString('ja-JP')}</p>
+                    <p>{new Date(FIRST_BLOCK + f_epoch * 32 * 12000).toLocaleTimeString('ja-JP')}</p>
                 </div>
                 <div className='w-[11%]'>
-                    <Link
-                        href={{
-                            pathname: '/epoch/[id]',
-                            query: {
-                                id: f_epoch,
-                            },
-                        }}
-                        passHref
-                        as={`/epoch/${f_epoch}`}
-                        className='flex gap-x-1 items-center w-fit mx-auto'
-                    >
-                        <p>{f_epoch?.toLocaleString()}</p>
-                        <LinkIcon />
-                    </Link>
+                    <LinkEpoch epoch={f_epoch} mxAuto />
                 </div>
                 <div className='w-[15%] pt-3.5 mb-5'>
                     <p className='uppercase'>blocks</p>
@@ -183,18 +170,9 @@ const Statitstics = () => {
                 }}
             >
                 <div className='flex gap-x-1 justify-center'>
-                    <Link
-                        href={{
-                            pathname: '/epoch/[id]',
-                            query: {
-                                id: f_epoch,
-                            },
-                        }}
-                        passHref
-                        as={`/epoch/${f_epoch}`}
-                    >
+                    <LinkEpoch epoch={f_epoch}>
                         <p className='font-bold text-sm mt-0.5'>Epoch {f_epoch?.toLocaleString()}</p>
-                    </Link>
+                    </LinkEpoch>
                 </div>
 
                 <div className='flex flex-col gap-x-4 w-full'>
@@ -202,7 +180,7 @@ const Statitstics = () => {
                         <p className='text-xs mt-1'>Time</p>
                         <TooltipContainer>
                             <CustomImage
-                                src='/static/images/information.svg'
+                                src='/static/images/icons/information_icon.webp'
                                 alt='Time information'
                                 width={24}
                                 height={24}
@@ -225,8 +203,8 @@ const Statitstics = () => {
                     </div>
 
                     <div>
-                        <p>{new Date(firstBlock + f_epoch * 32 * 12000).toLocaleDateString('ja-JP')}</p>
-                        <p>{new Date(firstBlock + f_epoch * 32 * 12000).toLocaleTimeString('ja-JP')}</p>
+                        <p>{new Date(FIRST_BLOCK + f_epoch * 32 * 12000).toLocaleDateString('ja-JP')}</p>
+                        <p>{new Date(FIRST_BLOCK + f_epoch * 32 * 12000).toLocaleTimeString('ja-JP')}</p>
                     </div>
                 </div>
 
@@ -235,7 +213,7 @@ const Statitstics = () => {
                         <p className='text-xs mt-1'>Blocks</p>
                         <TooltipContainer>
                             <CustomImage
-                                src='/static/images/information.svg'
+                                src='/static/images/icons/information_icon.webp'
                                 alt='Blocks information'
                                 width={24}
                                 height={24}
@@ -281,7 +259,7 @@ const Statitstics = () => {
                         <p className='text-xs mt-1'>Attestation Accuracy</p>
                         <TooltipContainer>
                             <CustomImage
-                                src='/static/images/information.svg'
+                                src='/static/images/icons/information_icon.webp'
                                 alt='Attestation Accuracy information'
                                 width={24}
                                 height={24}
@@ -315,7 +293,7 @@ const Statitstics = () => {
 
                         <TooltipContainer>
                             <CustomImage
-                                src='/static/images/information.svg'
+                                src='/static/images/icons/information_icon.webp'
                                 alt='Attestation Accuracy information'
                                 width={24}
                                 height={24}
@@ -356,12 +334,12 @@ const Statitstics = () => {
             className='flex flex-col px-2 xl:px-20 overflow-x-scroll overflow-y-hidden scrollbar-thin pb-4'
             onMouseMove={handleMouseMove}
         >
-            <div className='flex gap-x-1 justify-around px-2 xl:px-8 py-3 uppercase text-sm min-w-[1150px]'>
+            <div className='flex gap-x-1 justify-around px-2 xl:px-8 pb-3 uppercase text-sm min-w-[1150px]'>
                 <div className='flex w-[10%] items-center gap-x-1 justify-center'>
-                    <p className='mt-0.5'>Time</p>
+                    <p className='mt-0.5 text-xs'>Time</p>
                     <TooltipContainer>
                         <CustomImage
-                            src='/static/images/information.svg'
+                            src='/static/images/icons/information_icon.webp'
                             alt='Time information'
                             width={24}
                             height={24}
@@ -385,10 +363,10 @@ const Statitstics = () => {
                 </div>
 
                 <div className='flex w-[11%] items-center gap-x-1 justify-center'>
-                    <p className='mt-0.5'>Epoch</p>
+                    <p className='mt-0.5 text-xs'>Epoch</p>
                     <TooltipContainer>
                         <CustomImage
-                            src='/static/images/information.svg'
+                            src='/static/images/icons/information_icon.webp'
                             alt='Time information'
                             width={24}
                             height={24}
@@ -405,10 +383,10 @@ const Statitstics = () => {
                 </div>
 
                 <div className='flex w-[15%] items-center gap-x-1 justify-center'>
-                    <p className='mt-0.5'>Blocks</p>
+                    <p className='mt-0.5 text-xs'>Blocks</p>
                     <TooltipContainer>
                         <CustomImage
-                            src='/static/images/information.svg'
+                            src='/static/images/icons/information_icon.webp'
                             alt='Blocks information'
                             width={24}
                             height={24}
@@ -431,10 +409,10 @@ const Statitstics = () => {
                 </div>
 
                 <div className='flex w-[32%] items-center gap-x-1 justify-center'>
-                    <p className='mt-0.5'>Attestation Accuracy</p>
+                    <p className='mt-0.5 text-xs'>Attestation Accuracy</p>
                     <TooltipContainer>
                         <CustomImage
-                            src='/static/images/information.svg'
+                            src='/static/images/icons/information_icon.webp'
                             alt='Attestation Accuracy information'
                             width={24}
                             height={24}
@@ -457,10 +435,10 @@ const Statitstics = () => {
                 </div>
 
                 <div className='flex w-[32%] items-center gap-x-1 justify-center'>
-                    <p className='mt-0.5'>Voting Participation</p>
+                    <p className='mt-0.5 text-xs'>Voting Participation</p>
                     <TooltipContainer>
                         <CustomImage
-                            src='/static/images/information.svg'
+                            src='/static/images/icons/information_icon.webp'
                             alt='Balance information'
                             width={24}
                             height={24}
@@ -509,24 +487,11 @@ const Statitstics = () => {
                             }}
                         >
                             <div className='flex flex-col w-[10%]'>
-                                <p>{new Date(firstBlock + epoch.f_epoch * 32 * 12000).toLocaleDateString('ja-JP')}</p>
-                                <p>{new Date(firstBlock + epoch.f_epoch * 32 * 12000).toLocaleTimeString('ja-JP')}</p>
+                                <p>{new Date(FIRST_BLOCK + epoch.f_epoch * 32 * 12000).toLocaleDateString('ja-JP')}</p>
+                                <p>{new Date(FIRST_BLOCK + epoch.f_epoch * 32 * 12000).toLocaleTimeString('ja-JP')}</p>
                             </div>
                             <div className='w-[11%]'>
-                                <Link
-                                    href={{
-                                        pathname: '/epoch/[id]',
-                                        query: {
-                                            id: epoch.f_epoch,
-                                        },
-                                    }}
-                                    passHref
-                                    as={`/epoch/${epoch.f_epoch}`}
-                                    className='flex gap-x-1 items-center w-fit mx-auto'
-                                >
-                                    <p>{epoch?.f_epoch?.toLocaleString()}</p>
-                                    <LinkIcon />
-                                </Link>
+                                <LinkEpoch epoch={epoch.f_epoch} mxAuto />
                             </div>
 
                             <div className='w-[15%] pt-3.5 mb-5'>
@@ -630,16 +595,7 @@ const Statitstics = () => {
                     </div>
                 )}
 
-                <button
-                    className='cursor-pointer mx-auto w-fit text-[10px] text-black rounded-[22px] px-6 py-4'
-                    onClick={handleViewMore}
-                    style={{
-                        backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
-                        boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
-                    }}
-                >
-                    VIEW MORE
-                </button>
+                <ViewMoreButton onClick={handleViewMore} />
             </div>
         </div>
     );
@@ -670,25 +626,16 @@ const Statitstics = () => {
                         }}
                     >
                         <div className='flex gap-x-1 justify-center'>
-                            <Link
-                                href={{
-                                    pathname: '/epoch/[id]',
-                                    query: {
-                                        id: epoch.f_epoch,
-                                    },
-                                }}
-                                passHref
-                                as={`/epoch/${epoch.f_epoch}`}
-                            >
+                            <LinkEpoch epoch={epoch.f_epoch}>
                                 <p className='font-bold text-sm mt-0.5'>Epoch {epoch.f_epoch?.toLocaleString()}</p>
-                            </Link>
+                            </LinkEpoch>
                         </div>
                         <div className='flex flex-col gap-x-4 w-full'>
                             <div className='flex gap-x-1 justify-center mb-1'>
                                 <p className='text-xs mt-1'>Time</p>
                                 <TooltipContainer>
                                     <CustomImage
-                                        src='/static/images/information.svg'
+                                        src='/static/images/icons/information_icon.webp'
                                         alt='Time information'
                                         width={24}
                                         height={24}
@@ -710,8 +657,8 @@ const Statitstics = () => {
                                 </TooltipContainer>
                             </div>
                             <div>
-                                <p>{new Date(firstBlock + epoch.f_epoch * 32 * 12000).toLocaleDateString('ja-JP')}</p>
-                                <p>{new Date(firstBlock + epoch.f_epoch * 32 * 12000).toLocaleTimeString('ja-JP')}</p>
+                                <p>{new Date(FIRST_BLOCK + epoch.f_epoch * 32 * 12000).toLocaleDateString('ja-JP')}</p>
+                                <p>{new Date(FIRST_BLOCK + epoch.f_epoch * 32 * 12000).toLocaleTimeString('ja-JP')}</p>
                             </div>
                         </div>
 
@@ -720,7 +667,7 @@ const Statitstics = () => {
                                 <p className='text-xs mt-1'>Blocks</p>
                                 <TooltipContainer>
                                     <CustomImage
-                                        src='/static/images/information.svg'
+                                        src='/static/images/icons/information_icon.webp'
                                         alt='Blocks information'
                                         width={24}
                                         height={24}
@@ -759,7 +706,7 @@ const Statitstics = () => {
                                 <p className='text-xs mt-1'>Attestation Accuracy</p>
                                 <TooltipContainer>
                                     <CustomImage
-                                        src='/static/images/information.svg'
+                                        src='/static/images/icons/information_icon.webp'
                                         alt='Attestation Accuracy information'
                                         width={24}
                                         height={24}
@@ -832,7 +779,7 @@ const Statitstics = () => {
                                 <p className='text-xs mt-1'>Voting Participation</p>
                                 <TooltipContainer>
                                     <CustomImage
-                                        src='/static/images/information.svg'
+                                        src='/static/images/icons/information_icon.webp'
                                         alt='Balance information'
                                         width={24}
                                         height={24}
@@ -883,26 +830,11 @@ const Statitstics = () => {
                 </div>
             )}
 
-            <button
-                className='cursor-pointer mx-auto w-fit text-[10px] text-black rounded-[22px] px-6 py-4'
-                onClick={handleViewMore}
-                style={{
-                    backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
-                    boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
-                }}
-            >
-                VIEW MORE
-            </button>
+            <ViewMoreButton onClick={handleViewMore} />
         </div>
     );
 
-    return (
-        <div className='text-center text-white'>
-            <h1 className='text-lg md:text-3xl uppercase'>Epoch Statistics</h1>
-
-            {desktopView ? getDesktopView() : getPhoneView()}
-        </div>
-    );
+    return <div className='text-white text-center'>{desktopView ? getDesktopView() : getPhoneView()}</div>;
 };
 
 export default Statitstics;

@@ -13,7 +13,7 @@ import StatusContext from '../status/StatusContext';
 
 const EpochsState = (props: any) => {
     // Status Context
-    const { setNotWorking } = useContext(StatusContext) || {};
+    const { setNotWorking } = useContext(StatusContext) ?? {};
 
     const initialState = {
         epochs: [],
@@ -29,7 +29,7 @@ const EpochsState = (props: any) => {
         try {
             if (!eventSourceEpoch || eventSourceEpoch.readyState === eventSourceEpoch.CLOSED) {
                 eventSourceEpoch = new EventSource(
-                    `${process.env.NEXT_PUBLIC_URL_API}/api/validator-rewards-summary/new-epoch-notification`
+                    `${process.env.NEXT_PUBLIC_URL_API}/api/epochs/new-epoch-notification`
                 );
 
                 eventSourceEpoch.addEventListener('new_epoch', function (e) {
@@ -53,14 +53,18 @@ const EpochsState = (props: any) => {
         }
     };
 
+    let isFetching = false;
+
     // Get blocks
     const getEpochs = async (page: number, limit: number = 10) => {
         try {
-            if (state.lastPageFetched) {
+            if (state.lastPageFetched || isFetching) {
                 return;
             }
 
-            const response = await axiosClient.get('/api/validator-rewards-summary', {
+            isFetching = true;
+
+            const response = await axiosClient.get('/api/epochs', {
                 params: {
                     limit,
                     page,
@@ -78,9 +82,12 @@ const EpochsState = (props: any) => {
                     payload: true,
                 });
             }
+
+            isFetching = false;
         } catch (error) {
             console.log(error);
             setNotWorking?.();
+            isFetching = false;
         }
     };
 
