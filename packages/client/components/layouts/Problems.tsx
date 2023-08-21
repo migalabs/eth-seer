@@ -11,7 +11,7 @@ import CustomImage from '../ui/CustomImage';
 
 const Problems = () => {
     // Contexts
-    const { setWorking } = React.useContext(StatusContext) || {};
+    const { setWorking } = React.useContext(StatusContext) ?? {};
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -19,18 +19,20 @@ const Problems = () => {
         }, 10000);
 
         return () => clearInterval(interval);
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const checkQueries = async () => {
         try {
             await Promise.all([
-                axiosClient.get(`/api/validator-rewards-summary/blocks`, {
+                axiosClient.get(`/api/slots/blocks`, {
                     params: {
                         limit: 1,
                         page: 0,
                     },
                 }),
-                axiosClient.get('/api/validator-rewards-summary', {
+                axiosClient.get('/api/epochs', {
                     params: {
                         limit: 1,
                         page: 0,
@@ -47,11 +49,11 @@ const Problems = () => {
     return (
         <div className='flex flex-col gap-y-6 px-4 sm:px-14 max-w-[1200px] mx-auto h-screen justify-center'>
             <CustomImage
-                src='/static/images/big-logo.svg'
-                alt='Big logo of Ethseer'
-                width={700}
-                height={700}
-                className='mx-auto max-h-[70%]'
+                src='/static/images/icons/ethseer_logo_problems.webp'
+                alt='Big logo of Ethseer with floating cubes for technical problems page'
+                width={500}
+                height={500}
+                className='mx-auto'
             />
 
             <p className='uppercase text-white text-center text-lg md:text-2xl'>

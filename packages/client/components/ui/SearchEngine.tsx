@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, Fragment, useContext, useRef } from 'react';
 import Link from 'next/link';
 import styled from '@emotion/styled';
 
@@ -7,8 +7,14 @@ import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 import BlocksContext from '../../contexts/blocks/BlocksContext';
 import EpochsContext from '../../contexts/epochs/EpochsContext';
 
+// Hooks
+import useOutsideClick from '../../hooks/useOutsideClick';
+
 // Components
 import CustomImage from './CustomImage';
+
+// Constants
+import { POOLS_EXTENDED } from '../../constants';
 
 // Styled
 type PropsInput = {
@@ -16,6 +22,8 @@ type PropsInput = {
 };
 
 const SearchEngineInput = styled.input<PropsInput>`
+    color: ${props => (props.darkMode ? 'var(--yellow4)' : 'var(--blue2)')};
+
     ::placeholder {
         /* Chrome, Firefox, Opera, Safari 10.1+ */
         color: ${props => (props.darkMode ? 'var(--yellow4)' : 'var(--blue2)')};
@@ -40,18 +48,27 @@ type SearchEngineItem = {
 };
 
 const SearchEngine = () => {
+    const assetPrefix = process.env.NEXT_PUBLIC_ASSET_PREFIX ?? '';
+
     // Theme Mode Context
-    const { themeMode } = React.useContext(ThemeModeContext) || {};
+    const { themeMode } = React.useContext(ThemeModeContext) ?? {};
 
     // Blocks Context
-    const { blocks } = useContext(BlocksContext) || {};
+    const { blocks } = useContext(BlocksContext) ?? {};
 
     // Epochs Context
-    const { epochs } = useContext(EpochsContext) || {};
+    const { epochs } = useContext(EpochsContext) ?? {};
+
+    // Refs
+    const popUpRef = useRef<HTMLDivElement>(null);
+
+    // Hook Outside Click
+    useOutsideClick(popUpRef, () => setShowResults(false));
 
     // States
     const [search, setSearch] = useState('');
     const [searchResults, setSearchResults] = useState<SearchEngineItem[]>([]);
+    const [showResults, setShowResults] = useState(true);
 
     const loadResults = (searchContent: string) => {
         if (searchContent.length === 0) {
@@ -70,7 +87,7 @@ const SearchEngine = () => {
                 // It can be an epoch
                 items.push({
                     label: `Epoch: ${searchContent}`,
-                    link: `/epoch/${searchContent}`,
+                    link: `/epochs/${searchContent}`,
                 });
             }
 
@@ -80,7 +97,7 @@ const SearchEngine = () => {
                 // It can be a slot
                 items.push({
                     label: `Slot: ${searchContent}`,
-                    link: `/slot/${searchContent}`,
+                    link: `/slots/${searchContent}`,
                 });
             }
 
@@ -88,9 +105,40 @@ const SearchEngine = () => {
                 // It can be a validator
                 items.push({
                     label: `Validator: ${searchContent}`,
-                    link: `/validator/${searchContent}`,
+                    link: `/validators/${searchContent}`,
                 });
             }
+        }
+
+        if (searchContent.length >= 3) {
+            // It can be a graffiti
+            items.push({
+                label: `Graffiti: ${searchContent}`,
+                link: `/slots/graffitis/${searchContent}`,
+            });
+        }
+
+        // It can be an entity
+        const expression = new RegExp(searchContent, 'i');
+
+        if (assetPrefix === '/goerli') {
+            items.push(
+                ...['OTHERS']
+                    .filter(pool => pool.search(expression) !== -1)
+                    .map(pool => ({
+                        label: `Entity: ${pool}`,
+                        link: `/entities/${pool.toLowerCase()}`,
+                    }))
+            );
+        } else {
+            items.push(
+                ...POOLS_EXTENDED.sort((a, b) => (a > b ? 1 : -1))
+                    .filter(pool => pool.search(expression) !== -1)
+                    .map(pool => ({
+                        label: `Entity: ${pool}`,
+                        link: `/entities/${pool.toLowerCase()}`,
+                    }))
+            );
         }
 
         setSearchResults(items);
@@ -120,53 +168,72 @@ const SearchEngine = () => {
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearch(e.target.value);
         loadResults(e.target.value.trim());
+        setShowResults(true);
+    };
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Escape') {
+            setShowResults(false);
+        }
     };
 
     return (
         <div
-            className='absolute flex top-20 md:top-4 left-4 md:left-[calc(50%-210px)] items-center w-[calc(100%-2rem)] md:w-[400px] h-10 border-2 rounded-3xl py-1'
+            className='absolute flex top-20 md:top-4 left-4 md:left-[calc(50%-210px)] items-center w-[calc(100%-2rem)] md:w-[420px] h-10 border-2 rounded-3xl py-1 bg-[#736a73]'
             style={{
-                boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow3)' : 'var(--boxShadowBlue5)',
-                backgroundColor: themeMode?.darkMode ? 'var(--yellow5)' : 'var(--blue9)',
                 borderColor: themeMode?.darkMode ? 'var(--yellow4)' : 'var(--blue2)',
+                color: themeMode?.darkMode ? 'var(--yellow4)' : 'var(--blue2)',
             }}
+            ref={popUpRef}
         >
             <CustomImage
-                src={'/static/images/magnifying-glass-pixel.svg'}
+                src={'/static/images/icons/magnifying_glass_icon.webp'}
                 alt='Magnifying Glass Pixel'
-                width={30}
-                height={30}
-                className='ml-2 mt-1'
+                width={25}
+                height={25}
+                className='ml-2'
             />
 
             <SearchEngineInput
                 type='text'
                 className='w-full h-full bg-transparent text-sm m-2 outline-none'
-                style={{ color: themeMode?.darkMode ? 'var(--yellow4)' : 'var(--blue2)' }}
                 placeholder='Search'
                 value={search}
                 onChange={handleSearch}
-                darkMode={themeMode?.darkMode || false}
+                darkMode={themeMode?.darkMode ?? false}
+                onKeyDown={handleKeyDown}
             />
 
-            {searchResults.length > 0 && (
-                <div className='absolute flex flex-col top-full left-[5%] w-[90%]'>
-                    {searchResults.map((item, index) => (
-                        <div
-                            key={index}
-                            className='border-2 rounded-xl px-5 py-4 text-xs z-10'
-                            style={{
-                                boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow3)' : 'var(--boxShadowBlue5)',
-                                backgroundColor: themeMode?.darkMode ? 'var(--yellow5)' : 'var(--blue9)',
-                                borderColor: themeMode?.darkMode ? 'var(--yellow4)' : 'var(--blue2)',
-                                color: themeMode?.darkMode ? 'var(--yellow4)' : 'var(--blue2)',
-                            }}
-                        >
-                            <Link href={item.link} passHref>
-                                <span>{item.label}</span>
-                            </Link>
-                        </div>
-                    ))}
+            {searchResults.length > 0 && showResults && (
+                <div
+                    className='absolute top-full left-0 border-2 rounded-xl p-1 bg-[#736a73] z-[var(--zIndexSearchEngine)] w-full'
+                    style={{
+                        borderColor: themeMode?.darkMode ? 'var(--yellow4)' : 'var(--blue2)',
+                        color: themeMode?.darkMode ? 'var(--yellow4)' : 'var(--blue2)',
+                    }}
+                >
+                    <div
+                        className={`flex flex-col gap-y-3 w-full px-4 py-4 text-xs max-h-[400px] overflow-y-scroll scrollbar-thin ${
+                            themeMode?.darkMode ? 'scrollbar-thumb-[#f0c83a]' : 'scrollbar-thumb-[#6cc4e0]'
+                        } scrollbar-track-[#736a73] scrollbar-thumb-rounded`}
+                    >
+                        {searchResults.map((item, index) => (
+                            <Fragment key={index}>
+                                <Link href={item.link} passHref>
+                                    <span>{item.label}</span>
+                                </Link>
+
+                                {index !== searchResults.length - 1 && (
+                                    <div
+                                        className='border-b'
+                                        style={{
+                                            borderColor: themeMode?.darkMode ? 'var(--yellow4)' : 'var(--blue2)',
+                                        }}
+                                    ></div>
+                                )}
+                            </Fragment>
+                        ))}
+                    </div>
                 </div>
             )}
         </div>

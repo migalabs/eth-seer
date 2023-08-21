@@ -10,20 +10,20 @@ import Layout from '../components/layouts/Layout';
 import ChainOverview from '../components/layouts/ChainOverview';
 import Statitstics from '../components/layouts/Statitstics';
 import Problems from '../components/layouts/Problems';
-import SearchEngine from '../components/ui/SearchEngineBlack';
-import SummaryOverview from '../components/layouts/SummaryOverview';
+import SearchEngine from '../components/ui/SearchEngine';
+import SummaryOverview from '../components/ui/SummaryOverview';
 
 export default function Home() {
     // Status Context
-    const { status } = useContext(StatusContext) || {};
+    const { status } = useContext(StatusContext) ?? {};
 
     // Blocks Context
     const { startEventSource: startEventSourceBlocks, closeEventSource: closeEventSourceBlocks } =
-        useContext(BlocksContext) || {};
+        useContext(BlocksContext) ?? {};
 
     // Epochs Context
     const { startEventSource: startEventSourceEpochs, closeEventSource: closeEventSourceEpochs } =
-        useContext(EpochsContext) || {};
+        useContext(EpochsContext) ?? {};
 
     // States
     const [eventSourceBlocksCreated, setEventSourceBlocksCreated] = useState(false);
@@ -41,6 +41,8 @@ export default function Home() {
                 }
             };
         }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -55,6 +57,8 @@ export default function Home() {
                 }
             };
         }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
@@ -63,11 +67,17 @@ export default function Home() {
                 <Layout isMain>
                     <SearchEngine />
 
+                    <div className='text-center text-white mb-5 md:mt-0 mt-20'>
+                        <h1 className='text-lg md:text-2xl uppercase'>Ethereum blockchain explorer</h1>
+                    </div>
+
                     <SummaryOverview />
 
                     <ChainOverview />
 
-                    <div className='mt-8'>
+                    <div className='text-center text-white mt-3'>
+                        <h2 className='text-lg md:text-2xl uppercase mb-5'>Epoch Statistics</h2>
+
                         <Statitstics />
                     </div>
                 </Layout>
