@@ -7,7 +7,8 @@
         "app": "cd packages/client && npm run dev",
         "server": "cd packages/server && npm run dev",
         "ci": "cd packages/client && npm ci && cd ../server && npm ci",
-        "format": "cd packages/client && npm run format"
+        "format": "cd packages/client && npm run format",
+        "generate-sitemap": "node scripts/generate-sitemap.js"
     },
     "repository": {
         "type": "git",
@@ -19,5 +20,8 @@
     "bugs": {
         "url": "https://github.com/migalabs/eth-metadashboard/issues"
     },
-    "homepage": "https://github.com/migalabs/eth-metadashboard#readme"
+    "homepage": "https://github.com/migalabs/eth-metadashboard#readme",
+    "dependencies": {
+        "xmlbuilder2": "^3.1.1"
+    }
 }
