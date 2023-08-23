@@ -12,25 +12,20 @@ type Props = {
 const Dropdown = (props: Props) => {
     const [isOpen, setIsOpen] = useState(false);
 
-    const handleMenuOpen = () => {
-        setIsOpen(true);
-    };
-
-    const handleMenuClose = () => {
-        setIsOpen(false);
+    const handleMenuToggle = () => {
+        setIsOpen(!isOpen);
     };
 
     return (
-        <div className='relative'>
+        <div className='relative py-2 md:p-0'>
             <button
                 type='button'
-                className='w-full text-xs uppercase text-white flex items-center'
-                onMouseEnter={handleMenuOpen}
-                onMouseLeave={handleMenuClose}
+                className='w-full text-xs uppercase text-[#9a7b2d] md:text-white flex items-center justify-end relative'
+                onClick={handleMenuToggle}
             >
-                {props.name}
+                <span>{props.name}</span>
                 <svg
-                    className='w-3 h-3 ml-0.5'
+                    className={`w-3 h-3 ml-1 transform ${isOpen ? 'rotate-180' : 'rotate-0'}`}
                     aria-hidden='true'
                     xmlns='http://www.w3.org/2000/svg'
                     fill='none'
@@ -46,29 +41,25 @@ const Dropdown = (props: Props) => {
                 </svg>
             </button>
 
-            {isOpen && (
-                <div className='absolute z-10 shadow-lg' onMouseEnter={handleMenuOpen} onMouseLeave={handleMenuClose}>
-                    <div
-                        className='p-1 rounded-lg bg-gray-200 border-2 border-gray-900'
-                        role='menu'
-                        aria-orientation='vertical'
-                        aria-labelledby='options-menu'
-                    >
-                        {props.items.map(item => {
-                            return (
-                                <a
-                                    key={item.name}
-                                    href={`${item.route}`}
-                                    className='rounded-lg block px-4 py-2 text-sm text-gray-500 hover:bg-white hover:text-gray-900'
-                                    role='menuitem'
-                                >
-                                    {item.name}
-                                </a>
-                            );
-                        })}
+            <div
+                className={`relative md:absolute transition-opacity duration-300 ${
+                    isOpen ? 'opacity-100 h-auto' : 'opacity-0 h-0'
+                } absolute right-0 mt-1 md:mt-3`}
+            >
+                {isOpen && (
+                    <div className='p-1 md:p-2 rounded-lg md:bg-[#f2dc8e]'>
+                        {props.items.map(item => (
+                            <a
+                                key={item.name}
+                                href={`${item.route}`}
+                                className='block px-4 py-2 my-1 text-sm text-[#7d662b] rounded-lg bg-[#c57f18]/40 md:hover:bg-white transition'
+                            >
+                                {item.name}
+                            </a>
+                        ))}
                     </div>
-                </div>
-            )}
+                )}
+            </div>
         </div>
     );
 };
