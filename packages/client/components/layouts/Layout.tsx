@@ -11,10 +11,9 @@ import CookieHeartImage from '../../public/static/images/cookie_heart.svg';
 
 type PropsWithChildren = {
     children?: React.ReactNode;
-    isMain?: boolean;
 };
 
-const Layout = ({ children, isMain }: PropsWithChildren) => {
+const Layout = ({ children }: PropsWithChildren) => {
     return (
         <>
             <Head>
@@ -22,7 +21,7 @@ const Layout = ({ children, isMain }: PropsWithChildren) => {
                 <link rel='canonical' href='https://ethseer.io/' />
             </Head>
 
-            <Header isMain={isMain} />
+            <Header />
 
             <main className='mt-4 min-h-screen'>{children}</main>
 
