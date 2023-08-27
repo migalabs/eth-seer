@@ -4,6 +4,7 @@ import { check } from 'express-validator';
 import {
     getValidators,
     getValidatorById,
+    getValidatorStats,
     getLastValidator,
     getProposedBlocksByValidator,
     getWithdrawalsByValidator,
@@ -12,6 +13,8 @@ import {
 import { checkFields } from '../middlewares/check-fields';
 
 const router = Router();
+
+router.get('/stats', getValidatorStats);
 
 router.get('/last', getLastValidator);
 

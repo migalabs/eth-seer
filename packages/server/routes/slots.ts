@@ -5,6 +5,7 @@ import {
     getSlots,
     getBlocks,
     getSlotById,
+    getSlotsStats,
     getSlotsByGraffiti,
     getWithdrawalsBySlot,
     listenSlotNotification,
@@ -13,6 +14,8 @@ import {
 import { checkFields } from '../middlewares/check-fields';
 
 const router = Router();
+
+router.get('/stats', getSlotsStats);
 
 router.get('/', getSlots);
 
