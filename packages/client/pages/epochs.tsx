@@ -8,7 +8,7 @@ const Epochs = () => {
     return (
         <Layout>
             <div className='my-6 text-center text-white'>
-                <h1 className='text-lg md:text-3xl uppercase'>Epochs</h1>
+                <h1 className='text-lg md:text-3xl uppercase mb-3'>Epochs</h1>
 
                 <Statitstics />
             </div>

@@ -15,19 +15,21 @@ const BlockGif = ({ poolName, width, height }: Props) => {
 
     useEffect(() => {
         setUrlImage(`url(${getUrl()})`);
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [poolName]);
 
     const getUrl = () => {
         const assetPrefix = process.env.NEXT_PUBLIC_ASSET_PREFIX ?? '';
 
         if (poolName && POOLS.includes(poolName.toUpperCase())) {
-            return `${assetPrefix}/static/images/blocks/covers/${poolName.toLowerCase()}.svg`;
+            return `${assetPrefix}/static/images/blocks/covers/${poolName.toLowerCase()}.webp`;
         } else if (poolName && poolName.includes('lido')) {
-            return `${assetPrefix}/static/images/blocks/covers/lido.svg`;
+            return `${assetPrefix}/static/images/blocks/covers/lido.webp`;
         } else if (poolName && poolName.includes('whale')) {
-            return `${assetPrefix}/static/images/blocks/covers/whale.svg`;
+            return `${assetPrefix}/static/images/blocks/covers/whale-ethereum-entity.webp`;
         } else {
-            return `${assetPrefix}/static/images/blocks/covers/others.svg`;
+            return `${assetPrefix}/static/images/blocks/covers/unknown-ethereum-entity.webp`;
         }
     };
 

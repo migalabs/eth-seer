@@ -55,9 +55,17 @@ const BlocksState = (props: any) => {
         }
     };
 
+    let isFetching = false;
+
     // Get blocks
     const getBlocks = async (page: number, limit: number = 320, onlyLastEpoch: boolean = false) => {
         try {
+            if (isFetching) {
+                return;
+            }
+
+            isFetching = true;
+
             const response = await axiosClient.get(`/api/slots/blocks`, {
                 params: {
                     limit,
@@ -87,9 +95,12 @@ const BlocksState = (props: any) => {
                 type: ADD_BLOCKS,
                 payload: blocks,
             });
+
+            isFetching = false;
         } catch (error) {
             console.log(error);
             setNotWorking?.();
+            isFetching = false;
         }
     };
 

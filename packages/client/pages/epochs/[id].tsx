@@ -12,16 +12,16 @@ import Layout from '../../components/layouts/Layout';
 import ProgressSmoothBarEpoch from '../../components/ui/ProgressSmoothBarEpoch';
 import ProgressSmoothBar from '../../components/ui/ProgressSmoothBar';
 import EpochAnimation from '../../components/layouts/EpochAnimation';
-import CustomImage from '../../components/ui/CustomImage';
 import Loader from '../../components/ui/Loader';
 import LinkEpoch from '../../components/ui/LinkEpoch';
 import Slots from '../../components/layouts/Slots';
+import Arrow from '../../components/ui/Arrow';
 
 // Types
 import { Epoch, Slot } from '../../types';
 
 // Constants
-const firstBlock: number = Number(process.env.NEXT_PUBLIC_NETWORK_GENESIS); // 1606824023000
+import { FIRST_BLOCK } from '../../constants';
 
 type Props = {
     content: string;
@@ -89,7 +89,7 @@ const EpochComponent = () => {
             if (Number(response.data.epoch.proposed_blocks) === 0) {
                 setAnimation(true);
 
-                const expectedTimestamp = (firstBlock + Number(id) * 12000 * 32 + 12000 * 64) / 1000;
+                const expectedTimestamp = (FIRST_BLOCK + Number(id) * 12000 * 32 + 12000 * 64) / 1000;
 
                 existsEpochRef.current = false;
 
@@ -181,7 +181,7 @@ const EpochComponent = () => {
     const getContentEpochStats = () => {
         return (
             <div
-                className='flex flex-col gap-y-2 mx-2 px-6 uppercase overflow-x-scroll overflow-y-hidden scrollbar-thin text-black text-xl text-[8px] sm:text-[10px]  rounded-[22px] py-3'
+                className='flex flex-col gap-y-2 mx-2 px-6 uppercase overflow-x-scroll overflow-y-hidden scrollbar-thin text-black leading-7 text-[8px] sm:text-[10px] rounded-[22px] py-3'
                 style={{
                     backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
                     boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
@@ -190,7 +190,7 @@ const EpochComponent = () => {
                 <div className='flex flex-row items-center gap-x-5'>
                     <p className='w-40 sm:w-60'>DateTime (Local):</p>
                     <p className='leading-3'>
-                        {new Date(firstBlock + Number(epoch?.f_slot) * 12000).toLocaleString('ja-JP')}
+                        {new Date(FIRST_BLOCK + Number(epoch?.f_slot) * 12000).toLocaleString('ja-JP')}
                     </p>
                 </div>
                 <div className='flex flex-col sm:flex-row gap-x-5'>
@@ -272,13 +272,7 @@ const EpochComponent = () => {
         <Layout isMain={false}>
             <div className='flex gap-x-3 justify-center items-center mt-2 mb-5'>
                 <LinkEpoch epoch={Number(id) - 1}>
-                    <CustomImage
-                        src={themeMode?.darkMode ? '/static/images/arrow.svg' : '/static/images/arrow-blue.svg'}
-                        alt='Left arrow'
-                        width={15}
-                        height={15}
-                        className='mb-1 cursor-pointer'
-                    />
+                    <Arrow direction='left' />
                 </LinkEpoch>
 
                 <h1 className='text-white text-center text-xl md:text-3xl uppercase'>
@@ -286,13 +280,7 @@ const EpochComponent = () => {
                 </h1>
 
                 <LinkEpoch epoch={Number(id) + 1}>
-                    <CustomImage
-                        src={themeMode?.darkMode ? '/static/images/arrow.svg' : '/static/images/arrow-blue.svg'}
-                        alt='Right arrow'
-                        width={15}
-                        height={15}
-                        className='rotate-180 mb-1 cursor-pointer'
-                    />
+                    <Arrow direction='right' />
                 </LinkEpoch>
             </div>
 

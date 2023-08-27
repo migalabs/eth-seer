@@ -7,9 +7,11 @@ import LinkIcon from './LinkIcon';
 // Types
 type Props = {
     validator: number | undefined;
+    children?: React.ReactNode;
+    mxAuto?: boolean;
 };
 
-const LinkValidator = ({ validator }: Props) => {
+const LinkValidator = ({ validator, children, mxAuto }: Props) => {
     return (
         <Link
             href={{
@@ -20,10 +22,14 @@ const LinkValidator = ({ validator }: Props) => {
             }}
             passHref
             as={`/validators/${validator}`}
-            className='flex gap-x-1 items-center w-fit mx-auto'
+            className={`flex gap-x-1 items-center w-fit ${mxAuto ? 'mx-auto' : ''}`}
         >
-            <p>{validator?.toLocaleString()}</p>
-            <LinkIcon />
+            {children ?? (
+                <>
+                    <p>{validator?.toLocaleString()}</p>
+                    <LinkIcon />
+                </>
+            )}
         </Link>
     );
 };

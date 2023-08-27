@@ -18,31 +18,11 @@ const SummaryOverview = () => {
     const { themeMode } = React.useContext(ThemeModeContext) ?? {};
 
     // Blocks Context
-    const { blocks, getBlocks } = React.useContext(BlocksContext) ?? {};
+    const { blocks } = React.useContext(BlocksContext) ?? {};
 
     // States
     const [summary, setSummary] = useState<Summary>() ?? {};
-    const [lastValidator, setLastValidator] = useState(0);
-
-    useEffect(() => {
-        if (blocks && !blocks.epochs) {
-            getBlocks?.(0);
-        }
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [blocks]);
-
-    useEffect(() => {
-        getBlocks?.(0);
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    useEffect(() => {
-        if (lastValidator == 0) getLastValidator();
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [lastValidator]);
+    const [lastValidator, setLastValidator] = useState(null);
 
     useEffect(() => {
         if (blocks && blocks.epochs) {
@@ -59,29 +39,40 @@ const SummaryOverview = () => {
 
             setSummary({ epoch: lastEpochAux, slot: lastSlotAux, block_height: lastBlockAux });
         }
+
+        if (!lastValidator) {
+            getLastValidator();
+        }
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [blocks]);
 
     const getLastValidator = async () => {
-        const response = await axiosClient.get('/api/validators/last');
-        if (response.data.number_active_validators) setLastValidator(response.data.number_active_validators);
+        try {
+            const response = await axiosClient.get('/api/validators/last');
+
+            setLastValidator(response.data.number_active_validators);
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (
         <>
             {summary && lastValidator !== 0 && (
-                <div className='flex justify-center px-5 mb-5'>
+                <div className='px-4 mb-5'>
                     <div
-                        className='grid grid-cols-2 md:grid-cols-4 gap-y-1 items-center justify-around text-center text-[10px] text-black rounded-[22px] px-3 py-4 md:w-[925px]'
+                        className='grid grid-row-4 md:flex md:flex-wrap justify-between w-fit gap-2 md:gap-10 text-[10px] text-center text-white rounded-[22px] bg-white/20 py-4 px-8 md:px-8 md:py-3 mx-auto border-2'
                         style={{
-                            backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
-                            boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
+                            borderColor: themeMode?.darkMode ? 'var(--yellow4)' : 'var(--blue1)',
+                            color: themeMode?.darkMode ? 'var(--yellow4)' : 'var(--blue1)',
+                            backgroundColor: themeMode?.darkMode ? '' : 'var(--blue5)',
                         }}
                     >
-                        <p>Epoch: {summary.epoch}</p>
-                        <p>Slot: {summary.slot}</p>
-                        <p>Block Height: {summary.block_height}</p>
-                        <p>Validators: {lastValidator}</p>
+                        <p className='flex-shrink-0'>Epoch: {summary.epoch}</p>
+                        <p className='flex-shrink-0'>Slot: {summary.slot}</p>
+                        <p className='flex-shrink-0'>Block Height: {summary.block_height}</p>
+                        <p className='flex-shrink-0'>Active Validators: {lastValidator ?? 0}</p>
                     </div>
                 </div>
             )}
