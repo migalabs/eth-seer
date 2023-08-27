@@ -12,12 +12,12 @@ const dropDownLists = {
             route: '/epochs',
         },
         {
-            name: 'Entities',
-            route: '/entities',
-        },
-        {
             name: 'Slots',
             route: '/slots',
+        },
+        {
+            name: 'Entities',
+            route: '/entities',
         },
         {
             name: 'Validators',
