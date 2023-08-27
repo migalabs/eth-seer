@@ -1,34 +1,5 @@
 const distinct = (list: string[]) => Array.from(new Set(list));
 
-export const POOLS_OLD = [
-    'ANKR',
-    'AVADO',
-    'BINANCE',
-    'BITCOINSUISSE',
-    'BITFINEX',
-    'BLOXSTAKING',
-    'COINBASE',
-    'CREAM',
-    'DAPPNODE',
-    'ERIGON-GFM',
-    'HUOBI',
-    'KRAKEN',
-    'KUCOIN',
-    'LIGHTHOUSE-TEAM',
-    'LODESTAR-TEAM',
-    'NIMBUS-TEAM',
-    'OKEX',
-    'PIEDAO',
-    'POLONIEX',
-    'PRYSM-TEAM',
-    'ROCKET_POOL',
-    'STAKEFISH',
-    'STAKEWISE',
-    'TEKU-TEAM',
-    'VITALIK',
-    'WEXEXCHANGE',
-];
-
 export const POOLS = [
     '2300X',
     'ALLNODES_LIDO',

@@ -19,7 +19,7 @@ const Layout = ({ children, isMain }: PropsWithChildren) => {
         <div className='flex flex-col min-h-screen'>
             <Head>
                 <title>Ethereum Blockchain Explorer - EthSeer.io</title>
-                <link rel='canonical' href='https://ethseer.io/' />
+                <link rel='canonical' href='https://ethseer.io' />
             </Head>
 
             <Header isMain={isMain} />
