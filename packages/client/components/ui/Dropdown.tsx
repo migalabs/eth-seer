@@ -12,16 +12,30 @@ type Props = {
 const Dropdown = (props: Props) => {
     const [isOpen, setIsOpen] = useState(false);
 
-    const handleMenuToggle = () => {
-        setIsOpen(!isOpen);
+    const handleMouseEnter = () => {
+        if (window.innerWidth >= 768) {
+            setIsOpen(true);
+        }
+    };
+
+    const handleMouseLeave = () => {
+        if (window.innerWidth >= 768) {
+            setIsOpen(false);
+        }
+    };
+
+    const handleButtonClick = () => {
+        if (window.innerWidth < 768) {
+            setIsOpen(!isOpen);
+        }
     };
 
     return (
-        <div className='relative py-2 md:p-0'>
+        <div className='relative py-2 md:p-0' onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
             <button
                 type='button'
                 className='w-full text-xs uppercase text-[#9a7b2d] md:text-white flex items-center justify-end relative'
-                onClick={handleMenuToggle}
+                onClick={handleButtonClick}
             >
                 <span>{props.name}</span>
                 <svg
@@ -44,7 +58,7 @@ const Dropdown = (props: Props) => {
             <div
                 className={`relative md:absolute transition-opacity duration-300 ${
                     isOpen ? 'opacity-100 h-auto' : 'opacity-0 h-0'
-                } absolute right-0 mt-1 md:mt-3`}
+                } absolute right-0 mt-1 md:mt-0.5`}
             >
                 {isOpen && (
                     <div className='p-1 md:p-2 rounded-lg md:bg-[#f2dc8e]'>
