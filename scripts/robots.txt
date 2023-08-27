@@ -1,6 +1,0 @@
-User-agent: *
-Allow: /
-
-Host: https://www.ethseer.io
-
-Sitemap: https://www.ethseer.io/sitemap.xml
