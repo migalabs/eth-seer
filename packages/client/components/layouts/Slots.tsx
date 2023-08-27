@@ -53,20 +53,20 @@ const Slots = ({ slots }: Props) => {
         return (
             <div
                 ref={containerRef}
-                className='flex flex-col px-2 mt-10 overflow-x-scroll overflow-y-hidden scrollbar-thin'
+                className='flex flex-col px-2 overflow-x-scroll overflow-y-hidden scrollbar-thin'
                 onMouseMove={handleMouseMove}
             >
                 <div className='flex gap-x-4 justify-around px-4 xl:px-8 min-w-[1050px] py-3 uppercase text-sm text-white text-center'>
-                    <p className='mt-0.5 w-[7%]'>Block</p>
-                    <p className='mt-0.5 w-[32%]'>Entity</p>
-                    <p className='mt-0.5 w-[14%]'>Proposer</p>
-                    <p className='mt-0.5 w-[15%]'>Slot</p>
-                    <p className='mt-0.5 w-[14%]'>DateTime</p>
-                    <p className='mt-0.5 w-[18%]'>Withdrawals</p>
+                    <p className='w-[10%]'>Block</p>
+                    <p className='w-[25%]'>Entity</p>
+                    <p className='w-[14%]'>Proposer</p>
+                    <p className='w-[15%]'>Slot</p>
+                    <p className='w-[14%]'>DateTime</p>
+                    <p className='w-[18%]'>Withdrawals</p>
                 </div>
 
                 <div
-                    className='flex flex-col gap-y-2 min-w-[1050px] text-2xs sm:text-xs rounded-[22px] px-4 xl:px-8 py-3'
+                    className='flex flex-col gap-2 my-1 min-w-[1050px] text-2xs sm:text-xs rounded-[22px] px-4 xl:px-8 py-5'
                     style={{
                         backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
                         boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
@@ -74,10 +74,10 @@ const Slots = ({ slots }: Props) => {
                 >
                     {slots.map(element => (
                         <div
-                            className='flex gap-x-4 py-1 uppercase text-center items-center'
+                            className='flex gap-4 py-1 uppercase text-center items-center'
                             key={element.f_proposer_slot}
                         >
-                            <div className='flex items-center justify-center w-[7%]'>
+                            <div className='flex items-center justify-center w-[10%]'>
                                 <BlockImage
                                     poolName={element.f_pool_name}
                                     proposed={element.f_proposed}
@@ -87,25 +87,27 @@ const Slots = ({ slots }: Props) => {
                                 />
                             </div>
 
-                            <div className='w-[32%]'>
+                            <div className='w-[25%] text-[10px]'>
                                 <LinkEntity entity={element.f_pool_name || 'others'} />
                             </div>
 
-                            <div className='w-[14%]'>
-                                <LinkValidator validator={element.f_val_idx} />
+                            <div className='w-[14%] text-[10px]'>
+                                <LinkValidator validator={element.f_val_idx} mxAuto />
                             </div>
 
-                            <div className='w-[15%]'>
+                            <div className='w-[15%] text-[10px]'>
                                 <LinkSlot slot={element.f_proposer_slot} mxAuto />
                             </div>
 
-                            <p className='w-[14%]'>
+                            <p className='w-[14%] text-[10px]'>
                                 {new Date(FIRST_BLOCK + Number(element.f_proposer_slot) * 12000).toLocaleString(
                                     'ja-JP'
                                 )}
                             </p>
 
-                            <p className='w-[18%]'>{(element.withdrawals / 10 ** 9).toLocaleString()} ETH</p>
+                            <p className='w-[18%] text-[10px]'>
+                                {(element.withdrawals / 10 ** 9).toLocaleString()} ETH
+                            </p>
                         </div>
                     ))}
 
@@ -122,7 +124,7 @@ const Slots = ({ slots }: Props) => {
     const getContentSlotsMobile = () => {
         return (
             <div
-                className='mt-5 flex flex-col gap-y-2 mx-2 px-6 uppercase overflow-x-scroll overflow-y-hidden scrollbar-thin text-black text-xl text-[8px] sm:text-[10px]  rounded-[22px] py-3'
+                className='mt-5 flex flex-col gap-y-2 mx-2 px-6 uppercase overflow-x-scroll overflow-y-hidden scrollbar-thin text-black leading-7 text-[8px] sm:text-[10px]  rounded-[22px] py-3'
                 style={{
                     backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
                     boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',

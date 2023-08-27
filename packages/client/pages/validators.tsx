@@ -49,7 +49,13 @@ const Validators = () => {
                 },
             });
 
-            setValidators(prevState => [...prevState, ...response.data.validators]);
+            setValidators(prevState => [
+                ...prevState,
+                ...response.data.validators.filter(
+                    (validator: Validator) =>
+                        !prevState.find((prevValidator: Validator) => prevValidator.f_val_idx === validator.f_val_idx)
+                ),
+            ]);
         } catch (error) {
             console.log(error);
         } finally {
@@ -76,10 +82,10 @@ const Validators = () => {
 
             <div
                 ref={containerRef}
-                className='flex flex-col my-6 px-2 xl:px-20 overflow-x-scroll overflow-y-hidden scrollbar-thin text-center mx-auto min-w-[700px] max-w-[1100px]'
+                className='flex flex-col my-6 px-2 xl:px-20 overflow-x-scroll overflow-y-hidden scrollbar-thin text-center sm:items-center'
                 onMouseMove={handleMouseMove}
             >
-                <div className='flex gap-x-1 justify-around px-2 xl:px-8 py-3 uppercase text-sm text-white'>
+                <div className='flex gap-x-1 justify-around px-2 xl:px-8 py-3 uppercase text-sm text-white min-w-[700px] max-w-[1100px] w-full'>
                     <p className='w-[25%]'>Validator ID</p>
                     <p className='w-[25%]'>Balance</p>
                     <p className='w-[25%]'>Entity</p>
@@ -87,7 +93,7 @@ const Validators = () => {
                 </div>
 
                 <div
-                    className='flex flex-col justify-center gap-y-4 rounded-[22px] py-5 px-2 xl:px-8'
+                    className='flex flex-col justify-center gap-y-4 rounded-[22px] py-5 px-2 xl:px-8 min-w-[700px] max-w-[1100px] w-full'
                     style={{
                         backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
                         boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
@@ -96,10 +102,10 @@ const Validators = () => {
                     {validators.map((validator: Validator) => (
                         <div
                             key={validator.f_val_idx}
-                            className='flex gap-x-1 justify-around items-center text-[9px] text-black uppercase'
+                            className='flex gap-x-1 justify-around items-center text-[10px] text-black uppercase'
                         >
                             <div className='w-[25%]'>
-                                <LinkValidator validator={validator.f_val_idx} />
+                                <LinkValidator validator={validator.f_val_idx} mxAuto />
                             </div>
 
                             <p className='w-[25%]'>{validator.f_balance_eth} ETH</p>

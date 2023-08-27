@@ -65,8 +65,15 @@ export default function Document() {
                         --boxShadowPurple1: inset -7px -7px 8px var(--purple2), inset 7px 7px 8px var(--purple2);
                         --boxShadowPurple2: inset -4px -4px 4px var(--purple4), inset 4px 4px 4px var(--purple4);
 
-                        --background-image-light: url('${assetPrefix}/static/images/background-orange.svg');
-                        --background-image-dark: url('${assetPrefix}/static/images/background-purple.svg');
+                        --background-image-light: url('${assetPrefix}/static/images/background/background_light.webp');
+                        --background-image-dark: url('${assetPrefix}/static/images/background/background_dark.webp');
+
+                        --zIndexThemeModeSwitch: 5;
+                        --zIndexBlockImageMissed: 10;
+                        --zIndexSearchEngine: 10;
+                        --zIndexNetwork: 20;
+                        --zIndexTooltip: 20;
+                        --zIndexConsent: 30;
                     }
 
                     html {
@@ -96,7 +103,7 @@ export default function Document() {
             />
 
             <Head>
-                <link rel='shortcut icon' href={`${assetPrefix}/static/images/favicon.png`} />
+                <link rel='shortcut icon' href={`${assetPrefix}/static/images/favicon.ico`} />
                 <link rel='preconnect' href='https://fonts.googleapis.com' />
                 <link rel='preconnect' href='https://fonts.gstatic.com' />
                 <link href='https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap' rel='stylesheet' />

@@ -1,9 +1,0 @@
-<svg id="Capa_1" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="250" height="250" viewBox="0 0 250 250">
-  <defs>
-    <symbol id="Bitfinex" data-name="Bitfinex" viewBox="0 0 30.13 30.09">
-      <path d="M30,.25C29.77-.08,28.94,0,28.58,0,23.37.2,18,.35,13.09,2.42a25,25,0,0,0-8.61,6.1C2.26,11,0,14.17,0,17.61a12.76,12.76,0,0,0,.19,2.16c16.75.54,28-18,28.77-18.52C18,23.63,5.8,25.11,2.57,25.19a12.47,12.47,0,0,0,9.9,4.9,9.91,9.91,0,0,0,3-.52,20.7,20.7,0,0,0,8.67-6.05,21.06,21.06,0,0,0,4.66-9.69,1.55,1.55,0,0,0,0-.21,55.23,55.23,0,0,0,1.08-7.68c.1-1.29.14-2.58.14-3.88C30.07,1.68,30.24.55,30,.25Z" fill="#03c99a"/>
-    </symbol>
-  </defs>
-  <rect id="Figment_lido" x="-1.22" y="-1.06" width="252.5" height="252.5" transform="translate(-0.16 250.22) rotate(-90)" fill="#173c56"/>
-  <use width="30.13" height="30.09" transform="translate(48.45 48.57) scale(5.08)" xlink:href="#Bitfinex"/>
-</svg>
