@@ -22,7 +22,6 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
 };
 
 const getServerSidePropsEntities = async () => {
-    console.log('Entities', POOLS_EXTENDED.length);
     return POOLS_EXTENDED.map(pool => ({
         loc: `${webUrl}/entities/${pool.toLowerCase()}`,
         lastmod: new Date().toISOString(),
@@ -33,9 +32,7 @@ const getServerSidePropsEpochs = async () => {
     const response = await fetch(`${apiUrl}/api/epochs/stats`);
     const data = await response.json();
 
-    const { first, last, count } = data.stats;
-
-    console.log('Epochs', count);
+    const { first, last } = data.stats;
 
     const fields: ISitemapField[] = [];
 
@@ -57,9 +54,7 @@ const getServerSidePropsSlots = async () => {
     const response = await fetch(`${apiUrl}/api/slots/stats`);
     const data = await response.json();
 
-    const { first, last, count } = data.stats;
-
-    console.log('Slots', count);
+    const { first, last } = data.stats;
 
     const fields: ISitemapField[] = [];
 
@@ -81,9 +76,7 @@ const getServerSidePropsValidators = async () => {
     const response = await fetch(`${apiUrl}/api/validators/stats`);
     const data = await response.json();
 
-    const { first, last, count } = data.stats;
-
-    console.log('Validators', count);
+    const { first, last } = data.stats;
 
     const fields: ISitemapField[] = [];
 
