@@ -82,7 +82,7 @@ const EntityComponent = () => {
 
     return (
         <Layout>
-            <div className='flex gap-x-3 justify-center items-center mt-2 mb-5'>
+            <div className='flex gap-x-3 justify-center items-center mt-14 xl:mt-0 mb-5'>
                 <h1 className='text-white text-center text-xl md:text-3xl uppercase'>{name}</h1>
             </div>
 
