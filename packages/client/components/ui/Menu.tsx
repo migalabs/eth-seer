@@ -27,11 +27,11 @@ const dropDownLists = {
     Networks: [
         {
             name: 'Mainnet',
-            route: '/',
+            route: 'https://ethseer.io',
         },
         {
             name: 'Goerli',
-            route: '/goerli',
+            route: 'https://ethseer.io/goerli',
         },
     ],
 };
