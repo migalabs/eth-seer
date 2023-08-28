@@ -270,7 +270,7 @@ const EpochComponent = () => {
 
     return (
         <Layout>
-            <div className='flex gap-x-3 justify-center items-center mt-2 mb-5'>
+            <div className='flex gap-x-3 justify-center items-center mb-5 mt-14 xl:mt-0'>
                 <LinkEpoch epoch={Number(id) - 1}>
                     <Arrow direction='left' />
                 </LinkEpoch>

@@ -502,7 +502,7 @@ const Slot = () => {
 
     return (
         <Layout>
-            <div className='flex gap-x-3 justify-center items-center mt-2 mb-5'>
+            <div className='flex gap-x-3 justify-center items-center mt-14 xl:mt-0 mb-5'>
                 <LinkSlot slot={Number(id) - 1}>
                     <Arrow direction='left' />
                 </LinkSlot>
