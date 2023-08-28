@@ -5,7 +5,7 @@ import Link from 'next/link';
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
 // Components
-import CustomImage from '../ui/CustomImage';
+import CustomImage from './CustomImage';
 
 const Networks = () => {
     const assetPrefix = process.env.NEXT_PUBLIC_ASSET_PREFIX ?? '';

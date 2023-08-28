@@ -78,7 +78,7 @@ const Validators = () => {
 
     return (
         <Layout>
-            <h1 className='text-white text-center text-xl md:text-3xl uppercase'>Validators</h1>
+            <h1 className='text-white text-center text-xl md:text-3xl uppercase mt-14 xl:mt-0'>Validators</h1>
 
             <div
                 ref={containerRef}
