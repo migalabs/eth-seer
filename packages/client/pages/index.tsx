@@ -64,7 +64,7 @@ export default function Home() {
         <>
             {status && status.working ? (
                 <Layout>
-                    <div className='text-center text-white mb-5 mt-20 xl:mt-0'>
+                    <div className='text-center text-white mb-5 mt-14 xl:mt-0'>
                         <h1 className='text-lg md:text-2xl uppercase'>Ethereum blockchain explorer</h1>
                     </div>
 
