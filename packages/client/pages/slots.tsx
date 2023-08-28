@@ -55,7 +55,7 @@ const Slots = () => {
 
     return (
         <Layout>
-            <h1 className='text-white text-center text-xl md:text-3xl uppercase'>Slots</h1>
+            <h1 className='text-white text-center text-xl md:text-3xl uppercase mt-14 xl:mt-0'>Slots</h1>
 
             <div className='mx-auto max-w-[1100px] my-6'>{slots.length > 0 && <SlotsList slots={slots} />}</div>
 
