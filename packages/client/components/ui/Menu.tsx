@@ -27,7 +27,7 @@ const dropDownLists = {
     Networks: [
         {
             name: 'Mainnet',
-            route: '/mainnet',
+            route: '/',
         },
         {
             name: 'Goerli',
