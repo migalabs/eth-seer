@@ -53,12 +53,16 @@ const EpochsState = (props: any) => {
         }
     };
 
+    let isFetching = false;
+
     // Get blocks
     const getEpochs = async (page: number, limit: number = 10) => {
         try {
-            if (state.lastPageFetched) {
+            if (state.lastPageFetched || isFetching) {
                 return;
             }
+
+            isFetching = true;
 
             const response = await axiosClient.get('/api/epochs', {
                 params: {
@@ -78,9 +82,12 @@ const EpochsState = (props: any) => {
                     payload: true,
                 });
             }
+
+            isFetching = false;
         } catch (error) {
             console.log(error);
             setNotWorking?.();
+            isFetching = false;
         }
     };
 

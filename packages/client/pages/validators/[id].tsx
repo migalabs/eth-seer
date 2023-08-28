@@ -26,7 +26,7 @@ import Arrow from '../../components/ui/Arrow';
 import { Validator, Slot, Withdrawal } from '../../types';
 
 // Constants
-const firstBlock: number = Number(process.env.NEXT_PUBLIC_NETWORK_GENESIS); // 1606824023000
+import { FIRST_BLOCK } from '../../constants';
 
 type Props = {
     content: string;
@@ -152,7 +152,7 @@ const ValidatorComponent = () => {
     const getContentProposedBlocksMobile = () => {
         return (
             <div
-                className='mt-5 flex flex-col gap-y-2 mx-2 px-6 uppercase overflow-x-scroll overflow-y-hidden scrollbar-thin text-black text-xl text-[8px] md:text-[10px]  rounded-[22px] py-3'
+                className='mt-5 flex flex-col gap-y-2 mx-2 px-6 uppercase overflow-x-scroll overflow-y-hidden scrollbar-thin text-black leading-7 text-[8px] md:text-[10px]  rounded-[22px] py-3'
                 style={{
                     backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
                     boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
@@ -183,7 +183,7 @@ const ValidatorComponent = () => {
                             <div className='flex flex-row items-center gap-x-10'>
                                 <p className='w-20'>DateTime:</p>
                                 <p className='leading-3'>
-                                    {new Date(firstBlock + Number(element.f_proposer_slot) * 12000).toLocaleString(
+                                    {new Date(FIRST_BLOCK + Number(element.f_proposer_slot) * 12000).toLocaleString(
                                         'ja-JP'
                                     )}
                                 </p>
@@ -258,7 +258,9 @@ const ValidatorComponent = () => {
                             </div>
 
                             <p className='w-[25%]'>
-                                {new Date(firstBlock + Number(element.f_proposer_slot) * 12000).toLocaleString('ja-JP')}
+                                {new Date(FIRST_BLOCK + Number(element.f_proposer_slot) * 12000).toLocaleString(
+                                    'ja-JP'
+                                )}
                             </p>
                         </div>
                     ))}
@@ -305,7 +307,7 @@ const ValidatorComponent = () => {
                             </div>
 
                             <p className='w-[25%]'>
-                                {new Date(firstBlock + Number(element.f_slot) * 12000).toLocaleString('ja-JP')}
+                                {new Date(FIRST_BLOCK + Number(element.f_slot) * 12000).toLocaleString('ja-JP')}
                             </p>
 
                             <p className='w-[25%]'>{(element.f_amount / 10 ** 9).toLocaleString()} ETH</p>
@@ -325,7 +327,7 @@ const ValidatorComponent = () => {
     const getContentWithdrawalsMobile = () => {
         return (
             <div
-                className='mt-5 flex flex-col gap-y-2 mx-2 px-6 uppercase overflow-x-scroll overflow-y-hidden scrollbar-thin text-black text-xl text-[8px] md:text-[10px]  rounded-[22px] py-3'
+                className='mt-5 flex flex-col gap-y-2 mx-2 px-6 uppercase overflow-x-scroll overflow-y-hidden scrollbar-thin text-black leading-7 text-[8px] md:text-[10px]  rounded-[22px] py-3'
                 style={{
                     backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
                     boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
@@ -347,7 +349,7 @@ const ValidatorComponent = () => {
                             <div className='flex flex-row items-center gap-x-8'>
                                 <p className='w-20'>DateTime:</p>
                                 <p className='leading-3'>
-                                    {new Date(firstBlock + Number(element.f_slot) * 12000).toLocaleString('ja-JP')}
+                                    {new Date(FIRST_BLOCK + Number(element.f_slot) * 12000).toLocaleString('ja-JP')}
                                 </p>
                             </div>
 
@@ -383,7 +385,7 @@ const ValidatorComponent = () => {
                         boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
                     }}
                 >
-                    <div className='flex flex-col gap-y-2 uppercase text-black text-xl text-[8px] md:text-[10px]'>
+                    <div className='flex flex-col gap-y-2 uppercase text-black leading-7 text-[8px] md:text-[10px]'>
                         <div className='flex flex-row items-center gap-x-5'>
                             <p className='w-32 sm:w-40'>Entity:</p>
                             <div>
@@ -432,7 +434,7 @@ const ValidatorComponent = () => {
                         boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
                     }}
                 >
-                    <div className='flex flex-col gap-y-2 uppercase text-black text-xl text-[8px] md:text-[10px]'>
+                    <div className='flex flex-col gap-y-2 uppercase text-black leading-7 text-[8px] md:text-[10px]'>
                         <div className='flex flex-col gap-y-4'>
                             <div className='flex flex-row'>
                                 <p>

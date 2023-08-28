@@ -67,10 +67,12 @@ export default function Home() {
                     <div className='text-center text-white mb-5 mt-20 xl:mt-0'>
                         <h1 className='text-lg md:text-2xl uppercase'>Ethereum blockchain explorer</h1>
                     </div>
+
                     <SummaryOverview />
                     <ChainOverview />
+
                     <div className='text-center text-white mt-3'>
-                        {/* <h2 className='text-lg md:text-xl uppercase'>Epoch Statistics</h2> */}
+                        <h2 className='text-lg md:text-xl uppercase mb-3'>Epoch Statistics</h2>
                         <Statitstics />
                     </div>
                 </Layout>
