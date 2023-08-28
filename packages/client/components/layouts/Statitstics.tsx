@@ -21,7 +21,12 @@ import { Epoch, Block } from '../../types';
 // Constants
 import { FIRST_BLOCK } from '../../constants';
 
-const Statitstics = () => {
+// Props
+type Props = {
+    showCalculatingEpochs?: boolean;
+};
+
+const Statitstics = ({ showCalculatingEpochs }: Props) => {
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
 
@@ -463,7 +468,7 @@ const Statitstics = () => {
             </div>
 
             <div className='flex flex-col justify-center gap-y-4 min-w-[1150px]'>
-                {epochs && epochs.epochs.length > 0 && blocks && blocks.epochs && (
+                {showCalculatingEpochs && epochs && epochs.epochs.length > 0 && blocks && blocks.epochs && (
                     <>
                         {getCalculatingEpochDesktop(
                             epochs.epochs[0].f_epoch + 2,
@@ -606,7 +611,7 @@ const Statitstics = () => {
 
     const getPhoneView = () => (
         <div className='flex flex-col gap-y-4 uppercase px-4 mt-3'>
-            {epochs && epochs.epochs.length > 0 && blocks && blocks.epochs && (
+            {showCalculatingEpochs && epochs && epochs.epochs.length > 0 && blocks && blocks.epochs && (
                 <>
                     {getCalculatingEpochMobile(
                         epochs.epochs[0].f_epoch + 2,
