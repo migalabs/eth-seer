@@ -10,7 +10,7 @@ import { POOLS } from '../constants';
 const Entities = () => {
     return (
         <Layout>
-            <h1 className='uppercase text-center text-3xl text-white'>Entities</h1>
+            <h1 className='uppercase text-center text-3xl text-white mt-14 xl:mt-0'>Entities</h1>
 
             <div
                 className='grid gap-4 max-w-[1200px] mx-auto mt-4'
