@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 
 // Contexts
-import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 import BlocksContext from '../../contexts/blocks/BlocksContext';
 
 // Components
@@ -9,11 +8,8 @@ import EpochOverview from './EpochOverview';
 import Arrow from '../ui/Arrow';
 
 const ChainOverview = () => {
-    // Theme Mode Context
-    const { themeMode } = React.useContext(ThemeModeContext) ?? {};
-
     // Blocks Context
-    const { blocks, getBlocks } = React.useContext(BlocksContext) ?? {};
+    const { blocks, getBlocks } = useContext(BlocksContext) ?? {};
 
     // States
     const [lastEpoch, setLastEpoch] = useState(0);
@@ -28,20 +24,6 @@ const ChainOverview = () => {
             getBlocks?.(0);
         }
 
-        if (window !== undefined) {
-            if (window.innerWidth > 768) setNumberEpochsViewed(2);
-        }
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [blocks]);
-
-    useEffect(() => {
-        getBlocks?.(0);
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    useEffect(() => {
         if (blocks && blocks.epochs) {
             // Set the last epoch
             const lastEpochAux = Object.keys(blocks.epochs)
@@ -49,10 +31,16 @@ const ChainOverview = () => {
                 .sort((a, b) => b - a)[0];
             setLastEpoch(lastEpochAux || 0);
         }
+
+        if (window !== undefined && window.innerWidth > 768) {
+            setNumberEpochsViewed(2);
+        }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [blocks]);
 
     const handleLeft = () => {
-        if (blocks && blocks.epochs && Object.entries(blocks.epochs).length - numberEpochsViewed - count === 1) {
+        if (blocks && blocks.epochs && Object.entries(blocks.epochs).length - numberEpochsViewed - count === 5) {
             getBlocks?.(currentPage + 1);
             setCurrentPage(prevState => prevState + 1);
         }
@@ -81,8 +69,8 @@ const ChainOverview = () => {
             <div className='flex items-center mt-8'>
                 <Arrow
                     direction='left'
-                    width={30}
-                    height={30}
+                    width={50}
+                    height={50}
                     onClick={() => arrowLeftHidden || handleLeft()}
                     className={`h-fit ${arrowLeftHidden ? 'opacity-0' : ''}`}
                 />
@@ -107,8 +95,8 @@ const ChainOverview = () => {
             <div className='flex items-center mt-8'>
                 <Arrow
                     direction='right'
-                    width={30}
-                    height={30}
+                    width={50}
+                    height={50}
                     onClick={() => arrowRightHidden || handleRight()}
                     className={`h-fit ${arrowRightHidden ? 'opacity-0' : ''}`}
                 />

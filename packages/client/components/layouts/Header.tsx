@@ -4,7 +4,7 @@ import Link from 'next/link';
 // Components
 import CustomImage from '../ui/CustomImage';
 import Menu from '../ui/Menu';
-import SearchEngine from '../ui/SearchEngineBlack';
+import SearchEngine from '../ui/SearchEngine';
 
 const Header = () => {
     return (
@@ -12,7 +12,7 @@ const Header = () => {
             <div className='w-fit'>
                 <Link href='/' passHref>
                     <div className='flex flex-row justify-start items-center p-2'>
-                        <CustomImage src='/static/images/ethseer_logo.svg' alt='Logo' width={50} height={50} />
+                        <CustomImage src='/static/images/icons/ethseer_logo.webp' alt='Logo' width={50} height={50} />
 
                         <p className='uppercase text-white text-2xs md:text-xs mt-1 ml-2'>Ethseer.io</p>
                     </div>

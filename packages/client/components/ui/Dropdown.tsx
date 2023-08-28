@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
+import Link from 'next/link';
 
 // Types
-type Props = {
+type Item = {
     name: string;
-    items: {
-        name: string;
-        route: string;
-    }[];
+    route: string;
 };
 
-const Dropdown = (props: Props) => {
+type Props = {
+    name: string;
+    items: Item[];
+};
+
+const Dropdown = ({ name, items }: Props) => {
     const [isOpen, setIsOpen] = useState(false);
 
     const handleMouseEnter = () => {
@@ -37,7 +40,7 @@ const Dropdown = (props: Props) => {
                 className='w-full text-xs uppercase text-[#9a7b2d] md:text-white flex items-center justify-end relative'
                 onClick={handleButtonClick}
             >
-                <span>{props.name}</span>
+                <span>{name}</span>
                 <svg
                     className={`w-3 h-3 ml-1 transform ${isOpen ? 'rotate-180' : 'rotate-0'}`}
                     aria-hidden='true'
@@ -62,14 +65,14 @@ const Dropdown = (props: Props) => {
             >
                 {isOpen && (
                     <div className='p-1 md:p-2 rounded-lg md:bg-[#f2dc8e]'>
-                        {props.items.map(item => (
-                            <a
+                        {items.map(item => (
+                            <Link
                                 key={item.name}
-                                href={`${item.route}`}
+                                href={item.route}
                                 className='block px-4 py-2 my-1 text-sm text-[#7d662b] rounded-lg bg-[#c57f18]/40 md:hover:bg-white transition'
                             >
                                 {item.name}
-                            </a>
+                            </Link>
                         ))}
                     </div>
                 )}

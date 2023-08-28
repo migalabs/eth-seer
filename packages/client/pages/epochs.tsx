@@ -7,7 +7,11 @@ import Statitstics from '../components/layouts/Statitstics';
 const Epochs = () => {
     return (
         <Layout>
-            <Statitstics />
+            <div className='my-6 text-center text-white'>
+                <h1 className='text-lg md:text-3xl uppercase mb-3'>Epochs</h1>
+
+                <Statitstics />
+            </div>
         </Layout>
     );
 };
