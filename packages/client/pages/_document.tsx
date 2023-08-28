@@ -118,6 +118,7 @@ export default function Document() {
                 />
                 <meta property='og:image' content='http://ethseer.com/static/images/ethseer_metadata.png' />
                 <meta httpEquiv='Content-Security-Policy' content='upgrade-insecure-requests' />
+                <meta name='robots' content='noindex' />
                 <link href={`${assetPrefix}/static/css/theme-mode-switch.css`} rel='stylesheet' />
             </Head>
 
