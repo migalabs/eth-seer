@@ -3,7 +3,7 @@ import { getServerSideSitemapLegacy, ISitemapField } from 'next-sitemap';
 
 // Constants
 const limit = 10000;
-const webUrl = `https://ethseer.io${process.env.NEXT_PUBLIC_ASSET_PREFIX ?? ''}`;
+const webUrl = process.env.NEXT_PUBLIC_SITE_URL;
 const apiUrl = process.env.NEXT_PUBLIC_URL_API;
 
 import { POOLS_EXTENDED } from '../../constants';
