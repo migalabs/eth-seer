@@ -1,4 +1,4 @@
-const siteUrl = 'https://www.ethseer.io';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
 
 module.exports = {
     siteUrl,
