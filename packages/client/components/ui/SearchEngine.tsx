@@ -179,7 +179,7 @@ const SearchEngine = () => {
 
     return (
         <div
-            className='absolute flex top-20 md:top-4 left-4 md:left-[calc(50%-210px)] items-center w-[calc(100%-2rem)] md:w-[420px] h-10 border-2 rounded-3xl py-1 bg-[#736a73]'
+            className='absolute flex top-20 xl:top-4 left-4 xl:left-[calc(50%-200px)] items-center w-[calc(100%-2rem)] xl:w-[400px] h-10 border-2 rounded-3xl py-1 bg-[#736a73]'
             style={{
                 borderColor: themeMode?.darkMode ? 'var(--yellow4)' : 'var(--blue2)',
                 color: themeMode?.darkMode ? 'var(--yellow4)' : 'var(--blue2)',

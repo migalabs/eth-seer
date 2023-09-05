@@ -10,7 +10,6 @@ import Layout from '../components/layouts/Layout';
 import ChainOverview from '../components/layouts/ChainOverview';
 import Statitstics from '../components/layouts/Statitstics';
 import Problems from '../components/layouts/Problems';
-import SearchEngine from '../components/ui/SearchEngine';
 import SummaryOverview from '../components/ui/SummaryOverview';
 
 export default function Home() {
@@ -64,21 +63,17 @@ export default function Home() {
     return (
         <>
             {status && status.working ? (
-                <Layout isMain>
-                    <SearchEngine />
-
-                    <div className='text-center text-white mb-5 md:mt-0 mt-20'>
+                <Layout>
+                    <div className='text-center text-white mb-5 mt-14 xl:mt-0'>
                         <h1 className='text-lg md:text-2xl uppercase'>Ethereum blockchain explorer</h1>
                     </div>
 
                     <SummaryOverview />
-
                     <ChainOverview />
 
                     <div className='text-center text-white mt-3'>
-                        <h2 className='text-lg md:text-2xl uppercase mb-5'>Epoch Statistics</h2>
-
-                        <Statitstics />
+                        <h2 className='text-lg md:text-xl uppercase mb-3'>Epoch Statistics</h2>
+                        <Statitstics showCalculatingEpochs />
                     </div>
                 </Layout>
             ) : (
