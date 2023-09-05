@@ -595,8 +595,8 @@ const ValidatorComponent = () => {
     };
 
     return (
-        <Layout isMain={false}>
-            <div className='flex gap-x-3 justify-center items-center mt-2 mb-5'>
+        <Layout>
+            <div className='flex gap-x-3 justify-center items-center mt-14 xl:mt-0 mb-5'>
                 <LinkValidator validator={Number(id) - 1}>
                     <Arrow direction='left' />
                 </LinkValidator>

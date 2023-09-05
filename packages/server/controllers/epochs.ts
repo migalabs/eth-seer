@@ -96,6 +96,28 @@ export const getEpochById = async (req: Request, res: Response) => {
     }
 };
 
+export const getEpochStats = async (req: Request, res: Response) => {
+
+    try {
+        
+        const stats = 
+            await pgPool.query(`
+                SELECT MIN(f_epoch) AS first, MAX(f_epoch) AS last, COUNT(DISTINCT(f_epoch)) AS count
+                FROM t_epoch_metrics_summary
+            `);
+
+        res.json({
+            stats: stats.rows[0]
+        });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            msg: 'An error occurred on the server'
+        });
+    }
+};
+
 export const getSlotsByEpoch = async (req: Request, res: Response) => {
 
     try {

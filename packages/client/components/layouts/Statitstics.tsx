@@ -21,7 +21,12 @@ import { Epoch, Block } from '../../types';
 // Constants
 import { FIRST_BLOCK } from '../../constants';
 
-const Statitstics = () => {
+// Props
+type Props = {
+    showCalculatingEpochs?: boolean;
+};
+
+const Statitstics = ({ showCalculatingEpochs }: Props) => {
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
 
@@ -331,7 +336,7 @@ const Statitstics = () => {
     const getDesktopView = () => (
         <div
             ref={containerRef}
-            className='flex flex-col px-2 xl:px-20 overflow-x-scroll overflow-y-hidden scrollbar-thin pb-4'
+            className='flex flex-col px-2 xl:px-20 overflow-x-scroll overflow-y-hidden scrollbar-thin'
             onMouseMove={handleMouseMove}
         >
             <div className='flex gap-x-1 justify-around px-2 xl:px-8 pb-3 uppercase text-sm min-w-[1150px]'>
@@ -463,7 +468,7 @@ const Statitstics = () => {
             </div>
 
             <div className='flex flex-col justify-center gap-y-4 min-w-[1150px]'>
-                {epochs && epochs.epochs.length > 0 && blocks && blocks.epochs && (
+                {showCalculatingEpochs && epochs && epochs.epochs.length > 0 && blocks && blocks.epochs && (
                     <>
                         {getCalculatingEpochDesktop(
                             epochs.epochs[0].f_epoch + 2,
@@ -589,20 +594,24 @@ const Statitstics = () => {
                         </div>
                     ))}
 
-                {loadingEpochs && (
-                    <div className='mt-6'>
-                        <Loader />
-                    </div>
-                )}
+                <div>
+                    {loadingEpochs && (
+                        <div className='mt-4 mb-6'>
+                            <Loader />
+                        </div>
+                    )}
 
-                <ViewMoreButton onClick={handleViewMore} />
+                    <div className='mt-4'>
+                        <ViewMoreButton onClick={handleViewMore} />
+                    </div>
+                </div>
             </div>
         </div>
     );
 
     const getPhoneView = () => (
         <div className='flex flex-col gap-y-4 uppercase px-4 mt-3'>
-            {epochs && epochs.epochs.length > 0 && blocks && blocks.epochs && (
+            {showCalculatingEpochs && epochs && epochs.epochs.length > 0 && blocks && blocks.epochs && (
                 <>
                     {getCalculatingEpochMobile(
                         epochs.epochs[0].f_epoch + 2,
@@ -824,17 +833,21 @@ const Statitstics = () => {
                     </div>
                 ))}
 
-            {loadingEpochs && (
-                <div className='mt-6'>
-                    <Loader />
-                </div>
-            )}
+            <div>
+                {loadingEpochs && (
+                    <div className='mt-4 mb-6'>
+                        <Loader />
+                    </div>
+                )}
 
-            <ViewMoreButton onClick={handleViewMore} />
+                <div className='mt-2'>
+                    <ViewMoreButton onClick={handleViewMore} />
+                </div>
+            </div>
         </div>
     );
 
-    return <div className='text-white text-center'>{desktopView ? getDesktopView() : getPhoneView()}</div>;
+    return <div>{desktopView ? getDesktopView() : getPhoneView()}</div>;
 };
 
 export default Statitstics;

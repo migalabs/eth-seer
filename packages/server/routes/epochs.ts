@@ -4,6 +4,7 @@ import { check } from 'express-validator';
 import {
     getEpochsStatistics,
     getEpochById,
+    getEpochStats,
     getSlotsByEpoch,
     listenEpochNotification,
 } from '../controllers/epochs';
@@ -11,6 +12,8 @@ import {
 import { checkFields } from '../middlewares/check-fields';
 
 const router = Router();
+
+router.get('/stats', getEpochStats);
 
 router.get('/', getEpochsStatistics);
 
