@@ -346,7 +346,9 @@ const Graffitis = () => {
 
     return (
         <div className='text-center text-white'>
-            <h1 className='text-lg md:text-3xl uppercase'>Graffiti &quot;{graffiti}&quot; Search Result</h1>
+            <h1 className='text-lg md:text-3xl uppercase mt-14 xl:mt-0'>
+                Graffiti &quot;{graffiti}&quot; Search Result
+            </h1>
 
             <div className='mt-6'>
                 {blocks.length === 0 && loading && <Loader />}
