@@ -60,9 +60,9 @@ const ValidatorComponent = () => {
     const containerRef = useRef<HTMLInputElement>(null);
 
     // States
-    const [validator, setValidator] = useState<Validator | null>(null);
-    const [validator2, setValidator2] = useState<Validator | null>(null);
-    const [validator3, setValidator3] = useState<Validator | null>(null);
+    const [validatorHour, setValidatorHour] = useState<Validator | null>(null);
+    const [validatorDay, setValidatorDay] = useState<Validator | null>(null);
+    const [validatorWeek, setValidatorWeek] = useState<Validator | null>(null);
     const [proposedBlocks, setProposedBlocks] = useState<Slot[]>([]);
     const [withdrawals, setWithdrawals] = useState<Withdrawal[]>([]);
     const [animation, setAnimation] = useState(false);
@@ -79,7 +79,7 @@ const ValidatorComponent = () => {
             validatorRef.current = Number(id);
         }
 
-        if ((id && !validator) || (validator && validator.f_val_idx !== Number(id))) {
+        if ((id && !validatorHour) || (validatorHour && validatorHour.f_val_idx !== Number(id))) {
             getValidator();
             getProposedBlocks();
             getWithdrawals();
@@ -98,31 +98,29 @@ const ValidatorComponent = () => {
             const day = 225;
             const week = 1575;
 
-            const response = await axiosClient.get(`/api/validators/${id}`, {
-                params: {
-                    numberEpochs: hour,
-                },
-            });
+            const [responseHour, responseDay, responseWeek] = await Promise.all([
+                axiosClient.get(`/api/validators/${id}`, {
+                    params: {
+                        numberEpochs: hour,
+                    },
+                }),
+                axiosClient.get(`/api/validators/${id}`, {
+                    params: {
+                        numberEpochs: day,
+                    },
+                }),
+                axiosClient.get(`/api/validators/${id}`, {
+                    params: {
+                        numberEpochs: week,
+                    },
+                }),
+            ]);
 
-            setValidator(response.data.validator);
+            setValidatorHour(responseHour.data.validator);
+            setValidatorDay(responseDay.data.validator);
+            setValidatorWeek(responseWeek.data.validator);
 
-            const response2 = await axiosClient.get(`/api/validators/${id}`, {
-                params: {
-                    numberEpochs: day,
-                },
-            });
-
-            setValidator2(response2.data.validator);
-
-            const response3 = await axiosClient.get(`/api/validators/${id}`, {
-                params: {
-                    numberEpochs: week,
-                },
-            });
-
-            setValidator3(response3.data.validator);
-
-            if (response.data.validator) {
+            if (responseHour.data.validator) {
                 setAnimation(false);
             } else {
                 setAnimation(true);
@@ -402,7 +400,7 @@ const ValidatorComponent = () => {
         return Math.floor(minutes / 60);
     };
 
-    const return_validator_performance = (validator: Validator | null) => {
+    const getValidatorPerformance = (validator: Validator) => {
         return (
             <>
                 <div className='flex flex-col md:flex-row gap-x-4 ml-4 md:ml-10'>
@@ -505,18 +503,18 @@ const ValidatorComponent = () => {
                         <div className='flex flex-row items-center gap-x-5'>
                             <p className='w-32 sm:w-40'>Entity:</p>
                             <div>
-                                <LinkEntity entity={validator?.f_pool_name ?? 'others'} />
+                                <LinkEntity entity={validatorHour?.f_pool_name ?? 'others'} />
                             </div>
                         </div>
 
                         <div className='flex flex-row items-center gap-x-5'>
                             <p className='w-32 sm:w-40'>Current balance:</p>
-                            <p className='leading-3'>{validator?.f_balance_eth} eth</p>
+                            <p className='leading-3'>{validatorHour?.f_balance_eth} eth</p>
                         </div>
 
                         <div className='flex md:flex-row gap-x-5'>
                             <p className='w-32 sm:w-40'>Current status:</p>
-                            {validator?.f_status && <ValidatorStatus status={validator?.f_status} />}
+                            {validatorHour?.f_status && <ValidatorStatus status={validatorHour?.f_status} />}
                         </div>
                         <div className='flex flex-col sm:flex-row gap-x-5'>
                             <p className='w-32 sm:w-40'>Blocks:</p>
@@ -539,7 +537,7 @@ const ValidatorComponent = () => {
                         </div>
                     </div>
                     <div className='hidden md:block'>
-                        <BlockGif poolName={validator?.f_pool_name ?? 'others'} width={125} height={125} />
+                        <BlockGif poolName={validatorHour?.f_pool_name ?? 'others'} width={125} height={125} />
                     </div>
                 </div>
 
@@ -579,22 +577,25 @@ const ValidatorComponent = () => {
                             <div className='flex flex-row'>
                                 <p>Validator performance:</p>
                             </div>
-                            {tabPageIndexValidatorPerformance === 0 && return_validator_performance(validator)}
-                            {tabPageIndexValidatorPerformance === 1 && return_validator_performance(validator2)}
-                            {tabPageIndexValidatorPerformance === 2 && return_validator_performance(validator3)}
+                            {tabPageIndexValidatorPerformance === 0 &&
+                                getValidatorPerformance(validatorHour as Validator)}
+                            {tabPageIndexValidatorPerformance === 1 &&
+                                getValidatorPerformance(validatorDay as Validator)}
+                            {tabPageIndexValidatorPerformance === 2 &&
+                                getValidatorPerformance(validatorWeek as Validator)}
                             <div className='flex flex-col md:flex-row gap-x-4 gap-y-2 md:w-full ml-4 md:ml-10'>
                                 <p className='md:w-52 lg:w-80'>Blocks:</p>
 
                                 <div className='flex justify-center'>
                                     <div className='flex flex-col md:flex-row gap-x-4 gap-y-2'>
                                         <CardContent
-                                            content={`Proposed: ${validator?.proposed_blocks_performance}`}
+                                            content={`Proposed: ${validatorHour?.proposed_blocks_performance}`}
                                             bg={'#00720B'}
                                             color={'#83E18C'}
                                         />
 
                                         <CardContent
-                                            content={`Missed: ${validator?.missed_blocks_performance}`}
+                                            content={`Missed: ${validatorHour?.missed_blocks_performance}`}
                                             bg={'#980E0E'}
                                             color={'#FF9090'}
                                         />
@@ -656,7 +657,7 @@ const ValidatorComponent = () => {
                 </div>
             )}
 
-            {!loadingValidator && validator && (
+            {!loadingValidator && validatorHour && (
                 <div className='flex flex-col gap-4 mx-auto max-w-[1100px]'>
                     <div>{getContentValidator()}</div>
 
