@@ -11,18 +11,17 @@ import FooterHeartImage from '../../public/static/images/footer/footer_heart.svg
 
 type PropsWithChildren = {
     children?: React.ReactNode;
-    isMain?: boolean;
 };
 
-const Layout = ({ children, isMain }: PropsWithChildren) => {
+const Layout = ({ children }: PropsWithChildren) => {
     return (
         <div className='flex flex-col min-h-screen'>
             <Head>
                 <title>Ethereum Blockchain Explorer - EthSeer.io</title>
-                <link rel='canonical' href='https://ethseer.io/' />
+                <link rel='canonical' href='https://ethseer.io' />
             </Head>
 
-            <Header isMain={isMain} />
+            <Header />
 
             <main className='my-6 flex-1'>{children}</main>
 

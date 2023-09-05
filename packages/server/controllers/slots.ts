@@ -162,6 +162,28 @@ export const getSlotById = async (req: Request, res: Response) => {
     }
 };
 
+export const getSlotsStats = async (req: Request, res: Response) => {
+
+    try {
+        
+        const stats = 
+            await pgPool.query(`
+                SELECT MIN(f_proposer_slot) AS first, MAX(f_proposer_slot) AS last, COUNT(DISTINCT(f_proposer_slot)) AS count
+                FROM t_proposer_duties
+            `);
+
+        res.json({
+            stats: stats.rows[0]
+        });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            msg: 'An error occurred on the server'
+        });
+    }
+};
+
 export const getSlotsByGraffiti = async (req: Request, res: Response) => {
 
     try {
