@@ -112,10 +112,6 @@ export default function Document() {
                 <meta name='twitter:image' content='http://ethseer.com/static/images/ethseer_metadata.png' />
                 <meta property='og:url' content='http://ethseer.com/' />
                 <meta property='og:title' content='Ethereum (ETH) blockchain explorer - EthSeer.io' />
-                <meta
-                    name='description'
-                    content="Ethseer is an Ethereum Blockchain Explorer. It provides real-time data and statistics on Ethereum's latest epochs and blocks."
-                />
                 <meta property='og:image' content='http://ethseer.com/static/images/ethseer_metadata.png' />
                 <meta httpEquiv='Content-Security-Policy' content='upgrade-insecure-requests' />
                 <link href={`${assetPrefix}/static/css/theme-mode-switch.css`} rel='stylesheet' />

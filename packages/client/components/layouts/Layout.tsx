@@ -11,13 +11,22 @@ import FooterHeartImage from '../../public/static/images/footer/footer_heart.svg
 
 type PropsWithChildren = {
     children?: React.ReactNode;
+    hideMetaDescription?: boolean;
 };
 
-const Layout = ({ children }: PropsWithChildren) => {
+const Layout = ({ hideMetaDescription, children }: PropsWithChildren) => {
     return (
         <div className='flex flex-col min-h-screen'>
             <Head>
                 <title>Ethereum Blockchain Explorer - EthSeer.io</title>
+
+                {!hideMetaDescription && (
+                    <meta
+                        name='description'
+                        content="Ethseer is an Ethereum Blockchain Explorer. It provides real-time data and statistics on Ethereum's latest epochs and blocks."
+                    />
+                )}
+
                 <link rel='canonical' href='https://ethseer.io' />
             </Head>
 
