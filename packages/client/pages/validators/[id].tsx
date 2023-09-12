@@ -481,6 +481,25 @@ const ValidatorComponent = () => {
                         </div>
                     )}
                 </div>
+                <div className='flex flex-col md:flex-row gap-x-4 gap-y-2 md:w-full ml-4 md:ml-10'>
+                    <p className='md:w-52 lg:w-80'>Blocks:</p>
+
+                    <div className='flex justify-center'>
+                        <div className='flex flex-col md:flex-row gap-x-4 gap-y-2'>
+                            <CardContent
+                                content={`Proposed: ${validator.proposed_blocks_performance}`}
+                                bg={'#00720B'}
+                                color={'#83E18C'}
+                            />
+
+                            <CardContent
+                                content={`Missed: ${validator.missed_blocks_performance}`}
+                                bg={'#980E0E'}
+                                color={'#FF9090'}
+                            />
+                        </div>
+                    </div>
+                </div>
             </>
         );
     };
@@ -579,25 +598,6 @@ const ValidatorComponent = () => {
                                 getValidatorPerformance(validatorDay as Validator)}
                             {tabPageIndexValidatorPerformance === 2 &&
                                 getValidatorPerformance(validatorWeek as Validator)}
-                            <div className='flex flex-col md:flex-row gap-x-4 gap-y-2 md:w-full ml-4 md:ml-10'>
-                                <p className='md:w-52 lg:w-80'>Blocks:</p>
-
-                                <div className='flex justify-center'>
-                                    <div className='flex flex-col md:flex-row gap-x-4 gap-y-2'>
-                                        <CardContent
-                                            content={`Proposed: ${validatorHour?.proposed_blocks_performance}`}
-                                            bg={'#00720B'}
-                                            color={'#83E18C'}
-                                        />
-
-                                        <CardContent
-                                            content={`Missed: ${validatorHour?.missed_blocks_performance}`}
-                                            bg={'#980E0E'}
-                                            color={'#FF9090'}
-                                        />
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
