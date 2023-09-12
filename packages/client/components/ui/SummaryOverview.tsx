@@ -71,7 +71,7 @@ const SummaryOverview = () => {
                             backgroundColor: themeMode?.darkMode ? '' : 'var(--blue5)',
                         }}
                     >
-                        <p className='flex-shrink-0'>Network: {assetPrefix !== '/goerli' ? 'MAINNET' : 'GOERLI'}</p>
+                        <p className='flex-shrink-0'>Network: {assetPrefix !== '/goerli' ? 'Mainnet' : 'Goerli'}</p>
                         <p className='flex-shrink-0'>Epoch: {summary.epoch}</p>
                         <p className='flex-shrink-0'>Slot: {summary.slot}</p>
                         <p className='flex-shrink-0'>Block Height: {summary.block_height}</p>
