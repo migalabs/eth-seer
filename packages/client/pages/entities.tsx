@@ -5,7 +5,7 @@ import Layout from '../components/layouts/Layout';
 import EntityCard from '../components/ui/EntitiyCard';
 
 // Constants
-import { POOLS } from '../constants';
+import { POOLS_EXTENDED } from '../constants';
 
 const Entities = () => {
     return (
@@ -16,7 +16,7 @@ const Entities = () => {
                 className='grid gap-4 max-w-[1200px] mx-auto mt-4'
                 style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))' }}
             >
-                {POOLS.map((pool, index) => (
+                {POOLS_EXTENDED.map((pool, index) => (
                     <EntityCard key={pool} index={index + 1} pool={pool} />
                 ))}
             </div>
