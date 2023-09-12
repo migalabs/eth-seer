@@ -5,6 +5,7 @@ import Image from 'next/image';
 // Components
 import Header from './Header';
 import Consent from './Consent';
+import Background from './Background';
 
 // Images
 import FooterHeartImage from '../../public/static/images/footer/footer_heart.svg';
@@ -31,6 +32,8 @@ const Layout = ({ hideMetaDescription, children }: PropsWithChildren) => {
             </Head>
 
             <Header />
+
+            <Background />
 
             <main className='my-6 flex-1'>{children}</main>
 
