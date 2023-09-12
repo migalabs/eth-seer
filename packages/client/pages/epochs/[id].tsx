@@ -1,5 +1,6 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 
 // Axios
 import axiosClient from '../../config/axios';
@@ -9,7 +10,6 @@ import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
 // Components
 import Layout from '../../components/layouts/Layout';
-import ProgressSmoothBarEpoch from '../../components/ui/ProgressSmoothBarEpoch';
 import ProgressSmoothBar from '../../components/ui/ProgressSmoothBar';
 import EpochAnimation from '../../components/layouts/EpochAnimation';
 import Loader from '../../components/ui/Loader';
@@ -136,48 +136,6 @@ const EpochComponent = () => {
         }
     };
 
-    const getAttestation = (
-        title: string,
-        primaryColor: string,
-        secundaryColor: string,
-        value: number,
-        attestations: number
-    ) => {
-        return (
-            <div className='flex flex-col md:flex-row gap-x-10 gap-y-2 items-center md:justify-end md:w-full'>
-                <div className='flex flex-col md:flex-row gap-x-3 justify-between w-full md:w-auto flex-grow max-w-[350px] min-w-[200px]'>
-                    <p className='w-20' style={{ color: primaryColor }}>
-                        {title}
-                    </p>
-                    <div className='flex-grow mx-6 md:mx-0'>
-                        <ProgressSmoothBarEpoch
-                            backgroundColor={secundaryColor}
-                            color={primaryColor}
-                            percent={1 - value / attestations}
-                        />
-                    </div>
-                </div>
-
-                <div className='flex flex-col md:flex-row gap-x-10 gap-y-2'>
-                    <div className='md:w-[275px]'>
-                        <CardContent
-                            content={`Missing ${title}: ${value.toLocaleString()}`}
-                            bg={primaryColor}
-                            color={secundaryColor}
-                        />
-                    </div>
-                    <div className='flex-shrink'>
-                        <CardContent
-                            content={`Attestations: ${attestations.toLocaleString()}`}
-                            bg={primaryColor}
-                            color={secundaryColor}
-                        />
-                    </div>
-                </div>
-            </div>
-        );
-    };
-
     const getContentEpochStats = () => {
         return (
             <div
@@ -257,28 +215,6 @@ const EpochComponent = () => {
                             />
                         </div>
                     )}
-
-                    {/* {getAttestation(
-                        'Target',
-                        '#E86506',
-                        '#FFC163',
-                        Number(epoch?.f_missing_target),
-                        Number(epoch?.f_num_att_vals)
-                    )}
-                    {getAttestation(
-                        'Source',
-                        '#14946e',
-                        '#BDFFEB',
-                        Number(epoch?.f_missing_source),
-                        Number(epoch?.f_num_att_vals)
-                    )}
-                    {getAttestation(
-                        'Head',
-                        '#532BC5',
-                        '#E6DDFF',
-                        Number(epoch?.f_missing_head),
-                        Number(epoch?.f_num_att_vals)
-                    )} */}
                 </div>
                 <div className='flex flex-col gap-y-2 uppercase text-black leading-7 text-[8px] md:text-[10px]'>
                     <p>Voting Participation:</p>
@@ -300,34 +236,6 @@ const EpochComponent = () => {
                             />
                         )}
                     </div>
-                    {/* <div className='flex flex-col md:flex-row gap-x-10 gap-y-2 items-center md:justify-end md:w-full mb-4 mt-2'>
-                        <div>
-                            <ProgressSmoothBar
-                                percent={
-                                    Number(epoch?.f_att_effective_balance_eth) /
-                                    Number(epoch?.f_total_effective_balance_eth)
-                                }
-                                color='#0016D8'
-                                backgroundColor='#BDC4FF'
-                                width={170}
-                                widthTooltip={220}
-                            />
-                        </div>
-                        <div className='flex flex-col gap-y-2 w-[270px] md:w-fit'>
-                            <CardContent
-                                content={`Att. Balance: ${epoch?.f_att_effective_balance_eth?.toLocaleString()} ETH`}
-                                bg='#0016D8'
-                                color='#BDC4FF'
-                            />
-                        </div>
-                        <div className='flex flex-col gap-y-2 w-[270px] md:w-fit'>
-                            <CardContent
-                                content={`Act. Balance: ${epoch?.f_total_effective_balance_eth?.toLocaleString()} ETH`}
-                                bg='#0016D8'
-                                color='#BDC4FF'
-                            />
-                        </div>
-                    </div> */}
                 </div>
                 <div className='flex flex-row items-center gap-x-5'>
                     <p className='w-40 sm:w-60'>Withdrawals:</p>
@@ -339,6 +247,10 @@ const EpochComponent = () => {
 
     return (
         <Layout>
+            <Head>
+                <meta name='robots' property='noindex' />
+            </Head>
+
             <div className='flex gap-x-3 justify-center items-center mb-5 mt-14 xl:mt-0'>
                 <LinkEpoch epoch={Number(id) - 1}>
                     <Arrow direction='left' />

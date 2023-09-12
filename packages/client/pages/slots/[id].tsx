@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef, useCallback, useContext } from 'react';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 
 // Axios
 import axiosClient from '../../config/axios';
@@ -502,6 +503,10 @@ const Slot = () => {
 
     return (
         <Layout>
+            <Head>
+                <meta name='robots' property='noindex' />
+            </Head>
+
             <div className='flex gap-x-3 justify-center items-center mt-14 xl:mt-0 mb-5'>
                 <LinkSlot slot={Number(id) - 1}>
                     <Arrow direction='left' />
