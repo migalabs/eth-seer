@@ -13,6 +13,7 @@ import Loader from '../components/ui/Loader';
 import ViewMoreButton from '../components/ui/ViewMoreButton';
 import LinkValidator from '../components/ui/LinkValidator';
 import LinkEntity from '../components/ui/LinkEntity';
+import CustomImage from '../components/ui/CustomImage';
 
 // Types
 import { Validator } from '../types';
@@ -78,7 +79,19 @@ const Validators = () => {
 
     return (
         <Layout>
-            <h1 className='text-white text-center text-xl md:text-3xl uppercase'>Validators</h1>
+            <h1 className='text-white text-center text-xl md:text-2xl uppercase'>Validators</h1>
+            <div className="mx-auto py-4 px-6 bg-white/30 border-2 border-dashed rounded-xl flex w-11/12 lg:w-3/5 my-3">
+                <CustomImage
+                    src='/static/images/info.webp'
+                    alt='More information icon'
+                    width={50}
+                    height={50}
+                    className='object-contain relative bottom-4 right-2'
+                />
+                <h3 className='text-white text-xs text-center'>
+                Validators are nodes that participate in the consensus and security by proposing and validating blocks. They are subject to rewards and penalties based on their behaviour. Ethseer displays information about the current validators in the Beacon Chain, including detailed information about each validator.
+                </h3>
+            </div>
 
             <div
                 ref={containerRef}
