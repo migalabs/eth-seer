@@ -1,5 +1,6 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 
 // Axios
 import axiosClient from '../../config/axios';
@@ -395,11 +396,6 @@ const ValidatorComponent = () => {
         );
     };
 
-    const convertToHours = (epochs: number) => {
-        let minutes = epochs * 6.4;
-        return Math.floor(minutes / 60);
-    };
-
     const getValidatorPerformance = (validator: Validator) => {
         return (
             <>
@@ -637,6 +633,10 @@ const ValidatorComponent = () => {
 
     return (
         <Layout>
+            <Head>
+                <meta name='robots' property='noindex' />
+            </Head>
+
             <div className='flex gap-x-3 justify-center items-center mt-14 xl:mt-0 mb-5'>
                 <LinkValidator validator={Number(id) - 1}>
                     <Arrow direction='left' />

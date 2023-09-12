@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
+import Head from 'next/head';
 
 // Axios
 import axiosClient from '../config/axios';
@@ -77,8 +78,18 @@ const Validators = () => {
     };
 
     return (
-        <Layout>
-            <h1 className='text-white text-center text-xl md:text-3xl uppercase mt-14 xl:mt-0'>Validators</h1>
+        <Layout hideMetaDescription>
+            <Head>
+                <title>Understanding Validators: Blockchain Security Contributors</title>
+                <meta
+                    name='description'
+                    content="Explore validator roles in blockchain consensus, behavior-based rewards, and Ethseer's detailed insights into Beacon Chain validator"
+                />
+            </Head>
+
+            <h1 className='text-white text-center text-xl md:text-3xl uppercase mt-14 xl:mt-0'>
+                Understanding Validators: Blockchain Security Contributors
+            </h1>
 
             <div
                 ref={containerRef}
