@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Head from 'next/head';
 
 // Axios
 import axiosClient from '../config/axios';
@@ -54,8 +55,18 @@ const Slots = () => {
     };
 
     return (
-        <Layout>
-            <h1 className='text-white text-center text-xl md:text-3xl uppercase mt-14 xl:mt-0'>Slots</h1>
+        <Layout hideMetaDescription>
+            <Head>
+                <title>Slots Storing Key Blockchain State and Validator Information</title>
+                <meta
+                    name='description'
+                    content='Discover how validators and committees utilize 12-second slots in blockchain epochs, enhancing efficiency and security for network validation and management.'
+                />
+            </Head>
+
+            <h1 className='text-white text-center text-xl md:text-3xl uppercase mt-14 xl:mt-0'>
+                Slots Storing Key Blockchain State and Validator Information
+            </h1>
 
             <div className='mx-auto max-w-[1100px] my-6'>{slots.length > 0 && <SlotsList slots={slots} />}</div>
 
