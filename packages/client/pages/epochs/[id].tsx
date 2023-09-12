@@ -283,7 +283,7 @@ const EpochComponent = () => {
                 <div className='flex flex-col gap-y-2 uppercase text-black leading-7 text-[8px] md:text-[10px]'>
                     <p>Voting Participation:</p>
                     <div className='w-72 md:w-80 text-[9px] text-center leading-3'>
-                    {epoch && (
+                        {epoch && (
                             <ProgressSmoothBar
                                 title=''
                                 color='#1194BD'
@@ -328,12 +328,11 @@ const EpochComponent = () => {
                             />
                         </div>
                     </div> */}
-                    
                 </div>
                 <div className='flex flex-row items-center gap-x-5'>
-                        <p className='w-40 sm:w-60'>Withdrawals:</p>
-                        <p className='leading-3'>{((epoch?.withdrawals ?? 0) / 10 ** 9).toLocaleString()} ETH</p>
-                    </div>
+                    <p className='w-40 sm:w-60'>Withdrawals:</p>
+                    <p className='leading-3'>{((epoch?.withdrawals ?? 0) / 10 ** 9).toLocaleString()} ETH</p>
+                </div>
             </div>
         );
     };
