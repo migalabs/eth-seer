@@ -79,4 +79,13 @@ export type Entity = {
     slashed: number;
     exited: number;
     proposed_blocks: Proposed;
+    aggregated_rewards: number;
+    aggregated_max_rewards: number;
+    count_sync_committee: number;
+    count_missing_source: number;
+    count_missing_target: number;
+    count_missing_head: number;
+    count_expected_attestations: number;
+    proposed_blocks_performance: number;
+    missed_blocks_performance: number;
 };
