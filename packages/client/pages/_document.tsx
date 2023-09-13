@@ -65,8 +65,20 @@ export default function Document() {
                         --boxShadowPurple1: inset -7px -7px 8px var(--purple2), inset 7px 7px 8px var(--purple2);
                         --boxShadowPurple2: inset -4px -4px 4px var(--purple4), inset 4px 4px 4px var(--purple4);
 
-                        --background-image-light: url('${assetPrefix}/static/images/background/background_light.webp');
-                        --background-image-dark: url('${assetPrefix}/static/images/background/background_dark.webp');
+                        --background-light: radial-gradient(
+                            circle,
+                            rgba(255, 222, 178, 1) 0%,
+                            rgba(255, 199, 127, 1) 26%,
+                            rgba(249, 182, 96, 1) 62%,
+                            rgba(193, 127, 42, 1) 100%
+                        );
+                        --background-dark: radial-gradient(
+                            circle,
+                            rgba(141, 72, 231, 1) 0%,
+                            rgba(67, 10, 145, 1) 32%,
+                            rgba(7, 7, 97, 1) 60%,
+                            rgba(14, 1, 31, 1) 100%
+                        );
 
                         --zIndexThemeModeSwitch: 5;
                         --zIndexBlockImageMissed: 10;
@@ -87,7 +99,7 @@ export default function Document() {
                     }
 
                     body {
-                        background-image: var(--background-image-light);
+                        background-image: var(--background-light);
                         background-repeat: no-repeat;
                         background-size: cover;
                         background-attachment: fixed;
