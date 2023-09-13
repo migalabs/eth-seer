@@ -63,15 +63,8 @@ const SummaryOverview = () => {
         <>
             {summary && lastValidator !== 0 && (
                 <div className='px-4 mb-5'>
-                    <div
-                        className='grid grid-row-5 xl:flex xl:flex-wrap justify-between w-fit gap-2 xl:gap-10 text-[10px] text-center text-white rounded-[22px] bg-white/20 py-4 px-8 xl:px-8 xl:py-3 mx-auto border-2'
-                        style={{
-                            borderColor: themeMode?.darkMode ? 'var(--yellow4)' : '#FFFFFF',
-                            color: themeMode?.darkMode ? 'var(--yellow4)' : '#FFFFFF',
-                            backgroundColor: themeMode?.darkMode ? '' : '#FFFFFF30',
-                        }}
-                    >
-                        <p className='flex-shrink-0'>Network: {assetPrefix !== '/goerli' ? 'Mainnet' : 'Goerli'}</p>
+                    <div className='grid grid-row-5 text-white border-white xl:flex xl:flex-wrap justify-between w-fit gap-2 xl:gap-10 text-[10px] text-center rounded-[22px] bg-white/20 py-4 px-8 xl:px-8 xl:py-3 mx-auto border-2'>
+                        <p className='flex-shrink-0'>Network: {assetPrefix !== '/goerli' ? 'MAINNET' : 'GOERLI'}</p>
                         <p className='flex-shrink-0'>Epoch: {summary.epoch}</p>
                         <p className='flex-shrink-0'>Slot: {summary.slot}</p>
                         <p className='flex-shrink-0'>Block Height: {summary.block_height}</p>
