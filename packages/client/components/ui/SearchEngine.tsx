@@ -22,22 +22,22 @@ type PropsInput = {
 };
 
 const SearchEngineInput = styled.input<PropsInput>`
-    color: ${props => (props.darkMode ? 'var(--yellow4)' : 'var(--blue2)')};
+    color: ${props => (props.darkMode ? 'var(--yellow4)' : '#FFFFFF')};
 
     ::placeholder {
         /* Chrome, Firefox, Opera, Safari 10.1+ */
-        color: ${props => (props.darkMode ? 'var(--yellow4)' : 'var(--blue2)')};
+        color: ${props => (props.darkMode ? 'var(--yellow4)' : '#FFFFFF')};
         opacity: 1; /* Firefox */
     }
 
     :-ms-input-placeholder {
         /* Internet Explorer 10-11 */
-        color: ${props => (props.darkMode ? 'var(--yellow4)' : 'var(--blue2)')};
+        color: ${props => (props.darkMode ? 'var(--yellow4)' : '#FFFFFF')};
     }
 
     ::-ms-input-placeholder {
         /* Microsoft Edge */
-        color: ${props => (props.darkMode ? 'var(--yellow4)' : 'var(--blue2)')};
+        color: ${props => (props.darkMode ? 'var(--yellow4)' : '#FFFFFF')};
     }
 `;
 
@@ -179,10 +179,10 @@ const SearchEngine = () => {
 
     return (
         <div
-            className='absolute flex top-20 xl:top-4 left-4 xl:left-[calc(50%-200px)] items-center w-[calc(100%-2rem)] xl:w-[400px] h-10 border-2 rounded-3xl py-1 bg-[#736a73]'
+            className='absolute z-40 flex top-20 xl:top-4 left-4 xl:left-[calc(50%-200px)] items-center w-[calc(100%-2rem)] xl:w-[400px] h-10 border-2 rounded-3xl py-1 bg-white/30'
             style={{
-                borderColor: themeMode?.darkMode ? 'var(--yellow4)' : 'var(--blue2)',
-                color: themeMode?.darkMode ? 'var(--yellow4)' : 'var(--blue2)',
+                borderColor: themeMode?.darkMode ? 'var(--yellow4)' : '#FFFFFF',
+                color: themeMode?.darkMode ? 'var(--yellow4)' : '#FFFFFF',
             }}
             ref={popUpRef}
         >
@@ -206,10 +206,10 @@ const SearchEngine = () => {
 
             {searchResults.length > 0 && showResults && (
                 <div
-                    className='absolute top-full left-0 border-2 rounded-xl p-1 bg-[#736a73] z-[var(--zIndexSearchEngine)] w-full'
+                    className='absolute top-full left-0 border-2 rounded-xl p-1 bg-[#9c909c] z-[var(--zIndexSearchEngine)] w-full'
                     style={{
                         borderColor: themeMode?.darkMode ? 'var(--yellow4)' : 'var(--blue2)',
-                        color: themeMode?.darkMode ? 'var(--yellow4)' : 'var(--blue2)',
+                        color: themeMode?.darkMode ? 'var(--yellow4)' : '#FFFFFF',
                     }}
                 >
                     <div
