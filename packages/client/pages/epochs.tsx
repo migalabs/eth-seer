@@ -27,4 +27,3 @@ const Epochs = () => {
 };
 
 export default Epochs;
-
