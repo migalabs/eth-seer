@@ -1,9 +1,12 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import Link from 'next/link';
 
 //Components
 import Dropdown from './Dropdown';
 import ThemeModeSwitch from './ThemeModeSwitch';
+
+// Contexts
+import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
 const dropDownLists = {
     Explore: [
@@ -39,6 +42,8 @@ const dropDownLists = {
 function Menu() {
     const [isOpen, setIsOpen] = useState(false);
 
+    const { themeMode } = useContext(ThemeModeContext) ?? {};
+
     const handleMenuToggle = () => {
         setIsOpen(!isOpen);
     };
@@ -64,12 +69,12 @@ function Menu() {
                 </button>
             </div>
             <ul
-                className={`flex items-end absolute md:relative ${
-                    isOpen ? 'flex-col' : 'invisible'
-                } md:visible md:flex-row md:gap-10 p-6 mt-10 md:mt-0 bg-[#f2dc8e] md:bg-transparent border-4 rounded-lg border-[#9a7b2d] md:border-none`}
+                className={`flex items-end absolute md:relative ${isOpen ? 'flex-col' : 'invisible'} md:visible bg-[${
+                    themeMode?.darkMode ? '#f2dc8e' : 'var(--blue3)'
+                }] md:bg-transparent md:flex-row md:gap-10 p-6 mt-10 md:mt-0 rounded-lg md:border-none`}
             >
-                <li className='flex py-2 md:py-0'>
-                    <Link href='/' className='text-xs uppercase text-[#9a7b2d] md:text-white'>
+                <li className='flex py-2 md:py-0 text-white'>
+                    <Link href='/' className='text-xs uppercase'>
                         Home
                     </Link>
                 </li>
