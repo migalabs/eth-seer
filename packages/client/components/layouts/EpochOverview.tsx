@@ -42,7 +42,7 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
                 className={`flex items-center my-2 p-2 h-full border-[4px] ${lastEpoch && 'rounded-3xl'}`}
                 style={{
                     borderColor: lastEpoch
-                        ? `${themeMode?.darkMode ? 'var(--yellow4)' : 'var(--blue2)'}`
+                        ? `${themeMode?.darkMode ? 'var(--yellow4)' : 'var(--blue1)'}`
                         : 'transparent',
                 }}
             >
