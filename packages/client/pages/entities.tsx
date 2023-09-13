@@ -12,17 +12,12 @@ const Entities = () => {
     return (
         <Layout>
             <h1 className='uppercase text-center text-2xl text-white'>List of Entities</h1>
-            <div className="mx-auto py-4 px-6 bg-white/30 border-2 border-dashed rounded-xl flex w-11/12 lg:w-3/5 my-3">
-                <CustomImage
-                    src='/static/images/info.webp'
-                    alt='More information icon'
-                    width={50}
-                    height={50}
-                    className='object-contain relative bottom-4 right-2'
-                />
-                <h3 className='text-white text-xs text-center'>
-                An entity can range from an individual validator to a validators organization, as long as they meet the requirements to be validators of the Blockchain. Ethseer obtains information about the entities to which validators belong to through graffiti.
-                </h3>
+            <div className='mx-auto py-4 px-6 bg-white/30 border-2 border-dashed rounded-xl flex w-11/12 lg:w-3/5 my-3'>
+                <h2 className='text-white text-xs text-center'>
+                    An entity can range from an individual validator to a validators organization, as long as they meet
+                    the requirements to be validators of the Blockchain. Ethseer obtains information about the entities
+                    to which validators belong to through graffiti.
+                </h2>
             </div>
 
             <div
@@ -33,7 +28,6 @@ const Entities = () => {
                     <EntityCard key={pool} index={index + 1} pool={pool} />
                 ))}
             </div>
-
         </Layout>
     );
 };

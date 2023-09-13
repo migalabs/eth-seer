@@ -57,16 +57,11 @@ const Slots = () => {
     return (
         <Layout>
             <h1 className='text-white text-center text-xl md:text-2xl uppercase'>Slots</h1>
-            <div className="mx-auto py-4 px-6 bg-white/30 border-2 border-dashed rounded-xl flex w-11/12 lg:w-3/5 my-3">
-                <CustomImage
-                    src='/static/images/info.webp'
-                    alt='More information icon'
-                    width={50}
-                    height={50}
-                    className='object-contain relative bottom-4 right-2'
-                />
+            <div className='mx-auto py-4 px-6 bg-white/30 border-2 border-dashed rounded-xl flex w-11/12 lg:w-3/5 my-3'>
                 <h2 className='text-white text-xs text-center'>
-                Every epoch is divided into regular interval called slots, which occur every 12 seconds. Slots store information about the current state of the blockchain, such as the current set of validators and signatures for the proposed block.
+                    Every epoch is divided into regular interval called slots, which occur every 12 seconds. Slots store
+                    information about the current state of the blockchain, such as the current set of validators and
+                    signatures for the proposed block.
                 </h2>
             </div>
 

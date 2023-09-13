@@ -837,7 +837,7 @@ const Statitstics = () => {
     return (
         <div className='text-center text-white'>
             {/* <h2 className='text-lg md:text-2xl uppercase mb-5'>Epoch Statistics</h2> */}
-            
+
             {desktopView ? getDesktopView() : getPhoneView()}
         </div>
     );
