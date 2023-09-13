@@ -69,9 +69,12 @@ export default function Home() {
                     <div className='text-center text-white mb-5 md:mt-0 mt-20'>
                         <h1 className='text-lg md:text-2xl uppercase'>Ethereum blockchain explorer</h1>
                     </div>
-                    <div className="mx-auto py-4 px-6 bg-white/30 border-2 border-dashed rounded-xl w-11/12 mb-5">
+                    <div className='mx-auto py-4 px-6 bg-white/30 border-2 border-dashed rounded-xl w-11/12 lg:w-10/12 mb-5'>
                         <h2 className='text-white text-xs text-center'>
-                        Ethseer.io provides information about the Beacon Chain of Ethereum. It displays the blocks in real-time being produced with a user-friendly interface and allows users to search for information in an engaging manner, simulating an arcade game to understand the Blockchain.</h2>
+                            Ethseer.io provides information about the Beacon Chain of Ethereum. It displays the blocks
+                            in real-time being produced with a user-friendly interface and allows users to search for
+                            information in an engaging manner, simulating an arcade game to understand the Blockchain.
+                        </h2>
                     </div>
                     <SummaryOverview />
                     <ChainOverview />
