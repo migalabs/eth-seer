@@ -23,6 +23,14 @@ const Entities = () => {
                 Exploring Entities in Blockchain: Ethseer&apos;s Insights
             </h1>
 
+            <div className='mx-auto py-4 px-6 bg-white/30 border-2 border-dashed rounded-xl flex w-11/12 lg:w-3/5 my-3'>
+                <h2 className='text-white text-xs text-center'>
+                    An entity can range from an individual validator to a validators organization, as long as they meet
+                    the requirements to be validators of the Blockchain. Ethseer obtains information about the entities
+                    to which validators belong to through graffiti.
+                </h2>
+            </div>
+
             <div
                 className='grid gap-4 max-w-[1200px] mx-auto mt-4'
                 style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))' }}

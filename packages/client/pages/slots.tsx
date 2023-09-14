@@ -68,6 +68,14 @@ const Slots = () => {
                 Slots Storing Key Blockchain State and Validator Information
             </h1>
 
+            <div className='mx-auto py-4 px-6 bg-white/30 border-2 border-dashed rounded-xl flex w-11/12 lg:w-3/5 my-3'>
+                <h2 className='text-white text-xs text-center'>
+                    Every epoch is divided into regular interval called slots, which occur every 12 seconds. Slots store
+                    information about the current state of the blockchain, such as the current set of validators and
+                    signatures for the proposed block.
+                </h2>
+            </div>
+
             <div className='mx-auto max-w-[1100px] my-6'>{slots.length > 0 && <SlotsList slots={slots} />}</div>
 
             {loading && (
