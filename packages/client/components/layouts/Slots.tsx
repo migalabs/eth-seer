@@ -124,7 +124,7 @@ const Slots = ({ slots }: Props) => {
     const getContentSlotsMobile = () => {
         return (
             <div
-                className='mt-5 flex flex-col gap-y-2 mx-2 px-6 uppercase overflow-x-scroll overflow-y-hidden scrollbar-thin text-black text-xl text-[8px] sm:text-[10px]  rounded-[22px] py-3'
+                className='mt-5 flex flex-col gap-y-2 mx-2 px-6 uppercase overflow-x-scroll overflow-y-hidden scrollbar-thin text-black leading-7 text-[8px] sm:text-[10px]  rounded-[22px] py-3'
                 style={{
                     backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
                     boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
@@ -143,7 +143,7 @@ const Slots = ({ slots }: Props) => {
                         </div>
                         <div className='flex flex-col items-start '>
                             <div className='flex flex-row items-center gap-x-8'>
-                                <p className='w-24'>Validator:</p>
+                                <p className='w-24'>Proposer:</p>
                                 <LinkValidator validator={slot.f_val_idx} />
                             </div>
 

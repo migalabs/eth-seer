@@ -10,7 +10,6 @@ import Layout from '../components/layouts/Layout';
 import ChainOverview from '../components/layouts/ChainOverview';
 import Statitstics from '../components/layouts/Statitstics';
 import Problems from '../components/layouts/Problems';
-import SearchEngine from '../components/ui/SearchEngineBlack';
 import SummaryOverview from '../components/ui/SummaryOverview';
 
 export default function Home() {
@@ -64,11 +63,11 @@ export default function Home() {
     return (
         <>
             {status && status.working ? (
-                <Layout isMain>
-                    <SearchEngine />
-                    <div className='text-center text-white mb-5 md:mt-0 mt-20'>
+                <Layout>
+                    <div className='text-center text-white mb-5 mt-14 xl:mt-0'>
                         <h1 className='text-lg md:text-2xl uppercase'>Ethereum blockchain explorer</h1>
                     </div>
+                    
                     <div className='mx-auto py-4 px-6 bg-white/30 border-2 border-dashed rounded-xl w-11/12 lg:w-10/12 mb-5'>
                         <h2 className='text-white text-xs text-center'>
                             Ethseer.io provides information about the Beacon Chain of Ethereum. It displays the blocks
@@ -76,11 +75,13 @@ export default function Home() {
                             information in an engaging manner, simulating an arcade game to understand the Blockchain.
                         </h2>
                     </div>
+
                     <SummaryOverview />
                     <ChainOverview />
+
                     <div className='text-center text-white mt-3'>
-                        <h2 className='text-lg md:text-xl uppercase'>Epoch Statistics</h2>
-                        <Statitstics />
+                        <h2 className='text-lg md:text-xl uppercase mb-3'>Epoch Statistics</h2>
+                        <Statitstics showCalculatingEpochs />
                     </div>
                 </Layout>
             ) : (

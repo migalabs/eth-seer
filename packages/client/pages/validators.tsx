@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
+import Head from 'next/head';
 
 // Axios
 import axiosClient from '../config/axios';
@@ -78,8 +79,19 @@ const Validators = () => {
     };
 
     return (
-        <Layout>
-            <h1 className='text-white text-center text-xl md:text-2xl uppercase'>Validators</h1>
+        <Layout hideMetaDescription>
+            <Head>
+                <title>Understanding Validators: Blockchain Security Contributors</title>
+                <meta
+                    name='description'
+                    content="Explore validator roles in blockchain consensus, behavior-based rewards, and Ethseer's detailed insights into Beacon Chain validator"
+                />
+            </Head>
+
+            <h1 className='text-white text-center text-xl md:text-3xl uppercase mt-14 xl:mt-0'>
+                Understanding Validators: Blockchain Security Contributors
+            </h1>
+
             <div className='mx-auto py-4 px-6 bg-white/30 border-2 border-dashed rounded-xl flex w-11/12 lg:w-3/5 my-3'>
                 <h2 className='text-white text-xs text-center'>
                     Validators are nodes that participate in the consensus and security by proposing and validating
@@ -91,10 +103,10 @@ const Validators = () => {
 
             <div
                 ref={containerRef}
-                className='flex flex-col my-6 px-2 xl:px-20 overflow-x-scroll overflow-y-hidden scrollbar-thin text-center mx-auto min-w-[700px] max-w-[1100px]'
+                className='flex flex-col my-6 px-2 xl:px-20 overflow-x-scroll overflow-y-hidden scrollbar-thin text-center sm:items-center'
                 onMouseMove={handleMouseMove}
             >
-                <div className='flex gap-x-1 justify-around px-2 xl:px-8 py-3 uppercase text-sm text-white'>
+                <div className='flex gap-x-1 justify-around px-2 xl:px-8 py-3 uppercase text-sm text-white min-w-[700px] max-w-[1100px] w-full'>
                     <p className='w-[25%]'>Validator ID</p>
                     <p className='w-[25%]'>Balance</p>
                     <p className='w-[25%]'>Entity</p>
@@ -102,7 +114,7 @@ const Validators = () => {
                 </div>
 
                 <div
-                    className='flex flex-col justify-center gap-y-4 rounded-[22px] py-5 px-2 xl:px-8'
+                    className='flex flex-col justify-center gap-y-4 rounded-[22px] py-5 px-2 xl:px-8 min-w-[700px] max-w-[1100px] w-full'
                     style={{
                         backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
                         boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',

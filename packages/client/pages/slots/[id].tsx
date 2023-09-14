@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef, useCallback, useContext } from 'react';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 
 // Axios
 import axiosClient from '../../config/axios';
@@ -21,9 +22,8 @@ import Arrow from '../../components/ui/Arrow';
 // Types
 import { Block, Withdrawal } from '../../types';
 
-const firstBlock: number = Number(process.env.NEXT_PUBLIC_NETWORK_GENESIS);
-const zeroAddress = '0x0000000000000000000000000000000000000000000000000000000000000000';
-const zeroAddressShort = '0x0000000000000000000000000000000000000000';
+// Constants
+import { FIRST_BLOCK, ADDRESS_ZERO, ADDRESS_ZERO_SHORT } from '../../constants';
 
 type CardProps = {
     title: string;
@@ -52,7 +52,7 @@ const Card = ({ title, content, icon, iconSize, link, target }: CardProps) => {
                                 <LinkIcon />
                             ) : (
                                 <CustomImage
-                                    src={`/static/images/${icon}.svg`}
+                                    src={`/static/images/icons/${icon}.webp`}
                                     width={iconSize ?? 35}
                                     height={iconSize ?? 35}
                                     alt='Icon'
@@ -131,7 +131,7 @@ const Slot = () => {
             setBlock(blockResponse);
 
             if (!blockResponse) {
-                const expectedTimestamp = (firstBlock + Number(id) * 12000) / 1000;
+                const expectedTimestamp = (FIRST_BLOCK + Number(id) * 12000) / 1000;
 
                 setBlock({
                     f_epoch: Math.floor(Number(id) / 32),
@@ -195,7 +195,7 @@ const Slot = () => {
             if (block.f_timestamp) {
                 text = new Date(block.f_timestamp * 1000).toLocaleString('ja-JP');
             } else {
-                text = new Date(firstBlock + Number(id) * 12000).toLocaleString('ja-JP');
+                text = new Date(FIRST_BLOCK + Number(id) * 12000).toLocaleString('ja-JP');
             }
         }
 
@@ -206,7 +206,7 @@ const Slot = () => {
         let text = '';
 
         if (!existsBlockRef.current) {
-            const expectedTimestamp = (firstBlock + slotRef.current * 12000) / 1000;
+            const expectedTimestamp = (FIRST_BLOCK + slotRef.current * 12000) / 1000;
             const timeDifference = new Date(expectedTimestamp * 1000).getTime() - new Date().getTime();
 
             const minutesMiliseconds = 1000 * 60;
@@ -421,20 +421,16 @@ const Slot = () => {
                 <Card
                     title='Block hash'
                     content={
-                        block?.f_proposed && block?.f_el_block_hash !== zeroAddress
+                        block?.f_proposed && block?.f_el_block_hash !== ADDRESS_ZERO
                             ? getShortAddress(block?.f_el_block_hash)
                             : '---'
                     }
-                    icon={block?.f_proposed && block?.f_el_block_hash !== zeroAddress ? 'etherscan-icon' : undefined}
-                    iconSize={35}
-                    link={`https://etherscan.io/block/${block?.f_el_block_hash}`}
-                    target='_blank'
                 />
 
                 <Card
                     title='Fee Recipient'
                     content={
-                        block?.f_proposed && block?.f_el_fee_recp !== zeroAddressShort
+                        block?.f_proposed && block?.f_el_fee_recp !== ADDRESS_ZERO_SHORT
                             ? getShortAddress(block?.f_el_fee_recp)
                             : '---'
                     }
@@ -459,7 +455,7 @@ const Slot = () => {
                 className='flex flex-col px-2 mt-2.5 overflow-x-scroll overflow-y-hidden scrollbar-thin'
                 onMouseMove={handleMouseMove}
             >
-                <div className='flex gap-x-4 justify-around px-4 xl:px-8 min-w-[400px] sm:min-w-[500px] py-3 uppercase text-sm text-[12px] sm:text-[14px] text-white text-center'>
+                <div className='flex gap-x-4 justify-around px-4 xl:px-8 min-w-[470px] py-3 uppercase text-sm text-[12px] sm:text-[14px] text-white text-center'>
                     <p className='mt-0.5 w-1/3'>Validator</p>
                     <p className='mt-0.5 w-1/3'>Address</p>
                     <p className='mt-0.5 w-1/3'>Amount</p>
@@ -471,7 +467,7 @@ const Slot = () => {
                     </div>
                 ) : (
                     <div
-                        className='flex flex-col gap-y-2 min-w-[400px] sm:min-w-[500px] text-sm text-[8px] sm:text-[10px] rounded-[22px] px-4 xl:px-8 py-3'
+                        className='flex flex-col gap-y-2 min-w-[470px] leading-5 text-[8px] sm:text-[10px] rounded-[22px] px-4 xl:px-8 py-3'
                         style={{
                             backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
                             boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
@@ -483,7 +479,7 @@ const Slot = () => {
                                 key={element.f_val_idx}
                             >
                                 <div className='w-1/3'>
-                                    <LinkValidator validator={element.f_val_idx} />
+                                    <LinkValidator validator={element.f_val_idx} mxAuto />
                                 </div>
 
                                 <div className='w-1/3'>
@@ -506,8 +502,12 @@ const Slot = () => {
     };
 
     return (
-        <Layout isMain={false}>
-            <div className='flex gap-x-3 justify-center items-center mt-2 mb-5'>
+        <Layout>
+            <Head>
+                <meta name='robots' property='noindex' />
+            </Head>
+
+            <div className='flex gap-x-3 justify-center items-center mt-14 xl:mt-0 mb-5'>
                 <LinkSlot slot={Number(id) - 1}>
                     <Arrow direction='left' />
                 </LinkSlot>
