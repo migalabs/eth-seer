@@ -40,7 +40,10 @@ const Dropdown = ({ name, items }: Props) => {
 
     return (
         <div
-            className='relative py-2 md:p-0 text-white'
+            className='relative py-2 md:p-0'
+            style={{
+                color: themeMode?.darkMode ? 'var(--white)' : '#000000',
+            }}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
         >
@@ -76,16 +79,17 @@ const Dropdown = ({ name, items }: Props) => {
                     <div
                         className='p-1 md:p-2 rounded-lg'
                         style={{
-                            background: themeMode?.darkMode ? '#f2dc8e' : 'var(--blue3)',
+                            background: themeMode?.darkMode ? '#f2dc8e' : '#ecb77b',
                         }}
                     >
                         {items.map(item => (
                             <Link
                                 key={item.name}
                                 href={item.route}
-                                className='block px-4 py-2 my-1 text-sm rounded-lg transition text-white'
+                                className='block px-4 py-2 my-1 text-sm rounded-lg transition'
                                 style={{
                                     background: themeMode?.darkMode ? '#c57f1860' : 'var(--blue2)',
+                                    color: themeMode?.darkMode ? 'var(--white)' : '#000000',
                                 }}
                             >
                                 {item.name}
