@@ -25,12 +25,12 @@ export default function Document() {
                         --orange2: #ffcea1;
                         --orange3: #f18d30;
                         --orange4: #ffb16866;
-                        --blue1: #c6ecf8;
-                        --blue2: #6cc4e0;
-                        --blue3: #86d4ed;
-                        --blue4: #86d4ed99;
-                        --blue5: #4fc1e480;
-                        --blue6: #4089a080;
+                        --blue1: #fff0dd;
+                        --blue2: #ffd19b;
+                        --blue3: #ffce99;
+                        --blue4: #ecb77b;
+                        --blue5: #cd8f47;
+                        --blue6: #cb8e46;
                         --blue7: #0080a9;
                         --blue8: #0080a94d;
                         --blue9: #2b6d83;
@@ -44,6 +44,8 @@ export default function Document() {
                         --purple2: #886ed2;
                         --purple3: #bdc4ff;
                         --purple4: #886ed280;
+                        --newOrange: #000000;
+                        --white: #ffffff;
 
                         --boxShadowYellow1: inset -7px -7px 8px var(--yellow3), inset 7px 7px 8px var(--yellow3);
                         --boxShadowYellow2: inset -2.8px -2.8px 3.2px var(--yellow4),
@@ -53,25 +55,19 @@ export default function Document() {
                         --boxShadowOrange1: inset -7px -7px 8px var(--orange1), inset 7px 7px 8px var(--orange1);
                         --boxShadowOrange2: inset -7px -7px 8px var(--orange2), inset 7px 7px 8px var(--orange2);
                         --boxShadowOrange3: inset -4px -4px 4px var(--orange3), inset 4px 4px 4px var(--orange3);
-                        --boxShadowBlue1: inset -5px -5px 4px var(--blue5), inset 5px 5px 4px var(--blue5);
+                        --boxShadowBlue1: inset -5px -5px 4px var(--blue2), inset 5px 5px 4px var(--blue2);
                         --boxShadowBlue2: inset -5px -5px 4px var(--blue6), inset 5px 5px 4px var(--blue6);
                         --boxShadowBlue3: inset -7px -7px 8px var(--blue3), inset 7px 7px 8px var(--blue3);
-                        --boxShadowBlue4: inset 4px 4px 4px var(--blue8), inset -4px -4px 4px var(--blue8);
-                        --boxShadowBlue5: inset -2.76px -2.76px 3.15px var(--blue10),
-                            inset 2.76px 2.76px 3.15px var(--blue10);
+                        --boxShadowBlue4: inset 4px 4px 4px var(--blue4), inset -4px -4px 4px var(--blue4);
+                        --boxShadowBlue5: inset -2.76px -2.76px 3.15px var(--blue6),
+                            inset 2.76px 2.76px 3.15px var(--blue6);
                         --boxShadowGreen1: inset -7px -7px 8px var(--green2), inset 7px 7px 8px var(--green2);
                         --boxShadowGreen2: inset -7px -7px 8px var(--green3), inset 7px 7px 8px var(--green3);
                         --boxShadowGreen3: inset 4px 4px 4px var(--green3), inset -4px -4px 4px var(--green3);
                         --boxShadowPurple1: inset -7px -7px 8px var(--purple2), inset 7px 7px 8px var(--purple2);
                         --boxShadowPurple2: inset -4px -4px 4px var(--purple4), inset 4px 4px 4px var(--purple4);
 
-                        --background-light: radial-gradient(
-                            circle,
-                            rgba(255, 222, 178, 1) 0%,
-                            rgba(255, 199, 127, 1) 26%,
-                            rgba(249, 182, 96, 1) 62%,
-                            rgba(193, 127, 42, 1) 100%
-                        );
+                        --background-light: radial-gradient(circle, rgba(255,161,72,1) 0%, rgba(255,194,127,1) 47%, rgba(255,224,187,1) 82%, rgba(255,239,219,1) 100%);
                         --background-dark: radial-gradient(
                             circle,
                             rgba(141, 72, 231, 1) 0%,
