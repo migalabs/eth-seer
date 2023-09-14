@@ -154,22 +154,22 @@ const EpochComponent = () => {
                 <div className='flex flex-col sm:flex-row gap-x-5'>
                     <p className='w-40 sm:w-60'>Blocks (out of 32):</p>
                     <div className='flex justify-center gap-x-4 '>
-                        <CardContent content={`Proposed: ${epoch?.proposed_blocks}`} bg='#00720B' color='#83E18C' />
+                        <CardContent content={`Proposed: ${epoch?.proposed_blocks}`} bg='#00720B' color='#D3FFD7' />
                         <CardContent
                             content={`Missed: ${32 - Number(epoch?.proposed_blocks)}`}
                             bg='#980E0E'
-                            color='#FF9090'
+                            color='#FFB7B7'
                         />
                     </div>
                 </div>
                 <div className='flex flex-col gap-y-2 uppercase text-black leading-7 text-[8px] md:text-[10px]'>
                     <p className='items-start'>Attestation Accuracy:</p>
                     {epoch && (
-                        <div className='flex flex-col md:flex-row items-center gap-x-4 gap-y-2 text-[9px]'>
+                        <div className='flex flex-col md:flex-row items-center gap-x-4 gap-y-2 text-[10px]'>
                             <ProgressSmoothBar
                                 title='Target'
-                                color='#E86506'
-                                backgroundColor='#FFC163'
+                                color='#B14E2A'
+                                backgroundColor='#FFE8C6'
                                 percent={1 - epoch.f_missing_target / epoch.f_num_att_vals}
                                 width={150}
                                 tooltipColor='orange'
@@ -184,8 +184,8 @@ const EpochComponent = () => {
 
                             <ProgressSmoothBar
                                 title='Source'
-                                color='#14946e'
-                                backgroundColor='#BDFFEB'
+                                color='#117658'
+                                backgroundColor='#E2F3EE'
                                 percent={1 - epoch.f_missing_source / epoch.f_num_att_vals}
                                 width={150}
                                 tooltipColor='blue'
@@ -200,8 +200,8 @@ const EpochComponent = () => {
 
                             <ProgressSmoothBar
                                 title='Head'
-                                color='#532BC5'
-                                backgroundColor='#E6DDFF'
+                                color='#813F93'
+                                backgroundColor='#F0ECFD'
                                 percent={1 - epoch.f_missing_head / epoch.f_num_att_vals}
                                 width={150}
                                 tooltipColor='purple'
@@ -218,12 +218,12 @@ const EpochComponent = () => {
                 </div>
                 <div className='flex flex-col gap-y-2 uppercase text-black leading-7 text-[8px] md:text-[10px]'>
                     <p>Voting Participation:</p>
-                    <div className='w-72 md:w-80 text-[9px] text-center leading-3'>
+                    <div className='w-72 md:w-80 text-[10px] text-center leading-3'>
                         {epoch && (
                             <ProgressSmoothBar
                                 title=''
-                                color='#1194BD'
-                                backgroundColor='#BDFFEB'
+                                color='#0F6A85'
+                                backgroundColor='#E7F9FF'
                                 percent={epoch.f_att_effective_balance_eth / epoch.f_total_effective_balance_eth || 0}
                                 tooltipColor='blue'
                                 tooltipContent={
