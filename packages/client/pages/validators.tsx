@@ -91,6 +91,15 @@ const Validators = () => {
                 Understanding Validators: Blockchain Security Contributors
             </h1>
 
+            <div className='mx-auto py-4 px-6 bg-white/30 border-2 border-dashed rounded-xl flex w-11/12 lg:w-3/5 my-3'>
+                <h2 className='text-white text-xs text-center'>
+                    Validators are nodes that participate in the consensus and security by proposing and validating
+                    blocks. They are subject to rewards and penalties based on their behaviour. Ethseer displays
+                    information about the current validators in the Beacon Chain, including detailed information about
+                    each validator.
+                </h2>
+            </div>
+
             <div
                 ref={containerRef}
                 className='flex flex-col my-6 px-2 xl:px-20 overflow-x-scroll overflow-y-hidden scrollbar-thin text-center sm:items-center'
