@@ -57,22 +57,21 @@ const Slots = () => {
     return (
         <Layout hideMetaDescription>
             <Head>
-                <title>Slots Storing Key Blockchain State and Validator Information</title>
+                <title>Slots - EthSeer</title>
                 <meta
                     name='description'
-                    content='Discover how validators and committees utilize 12-second slots in blockchain epochs, enhancing efficiency and security for network validation and management.'
+                    content='At every slots a block is produced, which can update the blockchain state and validator information. Validators and committees utilize 12-second slots in blockchain epochs, enhancing efficiency and security for network validation and management.'
                 />
+                <meta name='keywords' content='ethereum, slots, state, block, validator, proposer, attestations' />
             </Head>
 
-            <h1 className='text-white text-center text-xl md:text-3xl uppercase mt-14 xl:mt-0'>
-                Slots Storing Key Blockchain State and Validator Information
-            </h1>
+            <h1 className='text-white text-center text-xl md:text-3xl uppercase mt-14 xl:mt-0'>Ethereum Slots</h1>
 
             <div className='mx-auto py-4 px-6 bg-white/30 border-2 border-dashed rounded-xl flex w-11/12 lg:w-3/5 my-3'>
                 <h2 className='text-white text-xs text-center'>
-                    Every epoch is divided into regular interval called slots, which occur every 12 seconds. Slots store
-                    information about the current state of the blockchain, such as the current set of validators and
-                    signatures for the proposed block.
+                    Every epoch is divided into regular interval called slots, which occur every 12 seconds. At every
+                    slot, one validator can propose a block, and the other validators need to attest on the canonical
+                    chain.
                 </h2>
             </div>
 
