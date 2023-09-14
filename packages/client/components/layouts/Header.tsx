@@ -6,15 +6,28 @@ import CustomImage from '../ui/CustomImage';
 import Menu from '../ui/Menu';
 import SearchEngine from '../ui/SearchEngine';
 
+// Contexts
+import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
+
 const Header = () => {
+    // Theme Mode Context
+    const { themeMode } = React.useContext(ThemeModeContext) ?? {};
+
     return (
         <div className='flex justify-between'>
             <div className='w-fit'>
                 <Link href='/' passHref>
                     <div className='flex flex-row justify-start items-center p-2'>
-                        <CustomImage src='/static/images/icons/ethseer_logo.webp' alt='Logo' width={50} height={50} />
+                        <CustomImage src={`/static/images/icons/ethseer_logo_${ themeMode?.darkMode ? 'dark' : 'light'}.webp`} alt='Logo' width={50} height={50} />
 
-                        <p className='uppercase text-white text-2xs md:text-xs mt-1 ml-2'>Ethseer.io</p>
+                        <p
+                            className='uppercase text-2xs md:text-xs mt-1 ml-2'
+                            style={{
+                                color: themeMode?.darkMode ? 'var(--white)' : 'var(--newOrange)',
+                            }}
+                        >
+                            Ethseer.io
+                        </p>
                     </div>
                 </Link>
             </div>
