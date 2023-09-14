@@ -17,13 +17,13 @@ const TabHeader = ({ header, isSelected, onClick }: Props) => {
         if (isSelected) {
             return themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)';
         } else {
-            return themeMode?.darkMode ? 'var(--yellow6)' : 'var(--blue11)';
+            return themeMode?.darkMode ? 'var(--yellow6)' : 'var(--blue2)';
         }
     };
 
     const getBoxShadow = () => {
         if (isSelected) {
-            return themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)';
+            return themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue4)';
         } else {
             return 'none';
         }
