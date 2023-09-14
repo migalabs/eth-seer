@@ -18,7 +18,7 @@ type PropsWithChildren = {
     hideMetaDescription?: boolean;
 };
 
-const Layout = ({ children }: PropsWithChildren) => {
+const Layout = ({ hideMetaDescription, children }: PropsWithChildren) => {
     // Theme Mode Context
     const { themeMode } = React.useContext(ThemeModeContext) ?? {};
 
