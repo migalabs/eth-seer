@@ -37,7 +37,14 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
 
     return (
         <div className='flex flex-col'>
-            <span className='uppercase text-white text-center text-xs'>Epoch {epoch?.toLocaleString()}</span>
+            <span
+                className='uppercase text-center text-xs'
+                style={{
+                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--newOrange)',
+                }}
+            >
+                Epoch {epoch?.toLocaleString()}
+            </span>
             <div
                 className={`flex items-center my-2 p-2 h-full border-[4px] ${lastEpoch && 'rounded-3xl'}`}
                 style={{
@@ -50,7 +57,7 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
                     className='grid grid-cols-4 md:grid-cols-8 w-fit  md:max-h-full  mx-auto gap-2 rounded-2xl bg-[var(--yellow2)] p-4'
                     style={{
                         backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
-                        boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
+                        boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue5)',
                     }}
                 >
                     {blocks.map(block => (
