@@ -80,23 +80,22 @@ const Validators = () => {
     return (
         <Layout hideMetaDescription>
             <Head>
-                <title>Understanding Validators: Blockchain Security Contributors</title>
+                <title>Validators - EthSeer</title>
                 <meta
                     name='description'
-                    content="Explore validator roles in blockchain consensus, behavior-based rewards, and Ethseer's detailed insights into Beacon Chain validator"
+                    content="Validators are the blockchain security contributors. Explore validator roles in blockchain consensus, behavior-based rewards, and Ethseer's detailed insights into Beacon Chain validator."
                 />
+                <meta name='keywords' content='ethereum, staking, validators, PoS, rewards, performance, slashing' />
             </Head>
 
-            <h1 className='text-white text-center text-xl md:text-3xl uppercase mt-14 xl:mt-0'>
-                Understanding Validators: Blockchain Security Contributors
-            </h1>
+            <h1 className='text-white text-center text-xl md:text-3xl uppercase mt-14 xl:mt-0'>Ethereum Validators</h1>
 
             <div className='mx-auto py-4 px-6 bg-white/30 border-2 border-dashed rounded-xl flex w-11/12 lg:w-3/5 my-3'>
                 <h2 className='text-white text-xs text-center'>
-                    Validators are nodes that participate in the consensus and security by proposing and validating
-                    blocks. They are subject to rewards and penalties based on their behaviour. Ethseer displays
-                    information about the current validators in the Beacon Chain, including detailed information about
-                    each validator.
+                    Validators participate in the consensus protocol by proposing and validating blocks. They are
+                    subject to rewards and penalties based on their behaviour. Ethseer displays information about the
+                    current validators in the Beacon Chain, including detailed information about each validator and its
+                    performance.
                 </h2>
             </div>
 
