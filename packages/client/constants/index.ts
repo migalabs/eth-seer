@@ -1,34 +1,5 @@
 const distinct = (list: string[]) => Array.from(new Set(list));
 
-export const POOLS_OLD = [
-    'ANKR',
-    'AVADO',
-    'BINANCE',
-    'BITCOINSUISSE',
-    'BITFINEX',
-    'BLOXSTAKING',
-    'COINBASE',
-    'CREAM',
-    'DAPPNODE',
-    'ERIGON-GFM',
-    'HUOBI',
-    'KRAKEN',
-    'KUCOIN',
-    'LIGHTHOUSE-TEAM',
-    'LODESTAR-TEAM',
-    'NIMBUS-TEAM',
-    'OKEX',
-    'PIEDAO',
-    'POLONIEX',
-    'PRYSM-TEAM',
-    'ROCKET_POOL',
-    'STAKEFISH',
-    'STAKEWISE',
-    'TEKU-TEAM',
-    'VITALIK',
-    'WEXEXCHANGE',
-];
-
 export const POOLS = [
     '2300X',
     'ALLNODES_LIDO',
@@ -184,3 +155,5 @@ const POOLS_WHALE = [
 export const POOLS_EXTENDED = distinct([...POOLS, ...POOLS_LIDO, ...POOLS_WHALE, 'OTHERS']);
 
 export const FIRST_BLOCK: number = Number(process.env.NEXT_PUBLIC_NETWORK_GENESIS); // 1606824023000
+export const ADDRESS_ZERO = '0x0000000000000000000000000000000000000000000000000000000000000000';
+export const ADDRESS_ZERO_SHORT = '0x0000000000000000000000000000000000000000';

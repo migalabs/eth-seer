@@ -12,11 +12,12 @@ type Props = {
 
 const Screen = styled.div<Props>`
     display: ${props => (props.consent ? 'none' : 'block')};
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: calc(100vw - 17px);
     height: 100vh;
+    z-index: 40;
 `;
 
 const Container = styled.div<Props>`
@@ -26,11 +27,11 @@ const Container = styled.div<Props>`
     left: 2.7%;
     height: 350px;
     width: 100%;
-    padding: 20px 10px 5px;
+    padding: 10px 20px;
     text-align: center;
     background-color: var(--brown1);
-    box-shadow: inset 6.13061px 6.13061px 7.00641px var(--brown3), inset -6.13061px -6.13061px 7.00641px var(--brown3);
-    border-radius: 30px;
+    box-shadow: inset 3px 3px 5px var(--brown3), inset -3px -3px 5px var(--brown3);
+    border-radius: 1.5rem;
     z-index: var(--zIndexConsent);
     animation-duration: 1s;
     animation-name: slidein;
@@ -49,9 +50,7 @@ const Container = styled.div<Props>`
 
     .text {
         font-family: var(--headingFont);
-        margin-top: 24px;
         font-size: 12px;
-        text-transform: uppercase;
     }
 
     .buttons-container {
@@ -59,12 +58,11 @@ const Container = styled.div<Props>`
         flex-direction: column;
         justify-content: center;
         row-gap: 5px;
-        margin: 20px 0;
+        margin: 10px 0;
     }
 
     button {
-        box-shadow: inset 6.13061px 6.13061px 7.00641px var(--brown3),
-            inset -6.13061px -6.13061px 7.00641px var(--brown3);
+        box-shadow: inset 3px 3px 5px var(--brown3), inset -3px -3px 5px var(--brown3);
         border-radius: 40px;
         font-size: 10px;
         text-transform: uppercase;
@@ -77,8 +75,7 @@ const Container = styled.div<Props>`
         color: white;
 
         &:hover {
-            box-shadow: inset 6.13061px 6.13061px 7.00641px var(--brown5),
-                inset -6.13061px -6.13061px 7.00641px var(--brown5);
+            box-shadow: inset 3px 3px 5px var(--brown5), inset -3px -3px 5px var(--brown5);
             background-color: var(--yellow1);
         }
     }
@@ -88,11 +85,9 @@ const Container = styled.div<Props>`
         left: calc(50% - 350px);
         height: 370px;
         width: 700px;
-        border-radius: 70px;
-        padding: 30px 50px 10px;
+        padding: 20px 50px;
 
         .text {
-            margin-top: 24px;
             font-size: 16px;
         }
 
@@ -109,8 +104,6 @@ const Container = styled.div<Props>`
 `;
 
 const Consent = () => {
-    const screenRef = useRef(null);
-
     const [consent, setConsent] = useState(true);
     const [generalVisisble, setGeneralVisible] = useState(true);
     const [necessaryVisible, setNecessaryVisible] = useState(false);
@@ -127,17 +120,6 @@ const Consent = () => {
             ad_storage: 'granted',
             analytics_storage: 'granted',
         });
-    };
-
-    const handleScreenClient = (e: any) => {
-        if (e.target === screenRef.current) {
-            closeP();
-        }
-    };
-
-    const closeP = () => {
-        setConsent(true);
-        setCookie('localConsent', 'false', { maxAge: 60 * 60 });
     };
 
     const handleMouseEnterNecessary = () => {
@@ -163,105 +145,35 @@ const Consent = () => {
     }
 
     return (
-        <Screen ref={screenRef} consent={consent} onClick={handleScreenClient}>
+        <Screen consent={consent}>
             <Container consent={consent}>
                 <div className='flex flex-col justify-between h-full'>
                     <div>
                         <div className={generalVisisble ? 'flex' : 'hidden'}>
                             <CustomImage
-                                src='/static/images/pacman.svg'
-                                alt='Pacman'
-                                width={100}
-                                height={100}
-                                className='md:w-36'
-                            />
-
-                            <div className='flex justify-around w-full'>
-                                <CustomImage
-                                    src='/static/images/cookie.svg'
-                                    alt='Cookie'
-                                    width={40}
-                                    height={40}
-                                    className='md:w-12'
-                                />
-                                <CustomImage
-                                    src='/static/images/cookie.svg'
-                                    alt='Cookie'
-                                    width={40}
-                                    height={40}
-                                    className='md:w-12'
-                                />
-                                <CustomImage
-                                    src='/static/images/cookie.svg'
-                                    alt='Cookie'
-                                    width={40}
-                                    height={40}
-                                    className='md:w-12'
-                                />
-                            </div>
-                        </div>
-
-                        <div className={`relative w-fit mx-auto ${necessaryVisible ? 'block' : 'hidden'}`}>
-                            <CustomImage src='/static/images/pacman-eating.svg' alt='Logo' width={150} height={150} />
-
-                            <CustomImage
-                                src='/static/images/cookie-bitten-right.svg'
-                                alt='Cookie bitten'
-                                width={50}
-                                height={50}
-                                className='absolute top-11 -left-9'
-                            />
-                            <CustomImage
-                                src='/static/images/cookie-bitten-left.svg'
-                                alt='Cookie bitten'
-                                width={65}
-                                height={65}
-                                className='absolute top-12 -right-10'
-                            />
-                            <CustomImage
-                                src='/static/images/cookie-crumbs.svg'
-                                alt='Cookie crumbs'
-                                width={50}
-                                height={50}
-                                className='absolute top-28 left-0'
+                                src='/static/images/cookies/cookies.webp'
+                                alt='Pacman on its way to eat and accept some cookies'
+                                width={400}
+                                height={400}
+                                className='mx-auto'
                             />
                         </div>
-
-                        <div className={`relative w-fit mx-auto ${allVisible ? 'block' : 'hidden'}`}>
+                        <div className={`relative ${necessaryVisible ? 'block' : 'hidden'}`}>
                             <CustomImage
-                                src='/static/images/pacman-happy.svg'
-                                alt='Pacman happy'
-                                width={150}
-                                height={150}
+                                src='/static/images/cookies/necessary_cookies.webp'
+                                alt='Pacman eating the necessary amount of cookies '
+                                width={180}
+                                height={180}
+                                className='mx-auto'
                             />
-
+                        </div>
+                        <div className={`relative ${allVisible ? 'block' : 'hidden'}`}>
                             <CustomImage
-                                src='/static/images/heart.svg'
-                                alt='Heart'
-                                width={40}
-                                height={40}
-                                className='absolute -top-2 -left-2 rotate-6'
-                            />
-                            <CustomImage
-                                src='/static/images/heart.svg'
-                                alt='Heart'
-                                width={65}
-                                height={65}
-                                className='absolute top-9 -left-16 -rotate-12'
-                            />
-                            <CustomImage
-                                src='/static/images/heart.svg'
-                                alt='Heart'
-                                width={65}
-                                height={65}
-                                className='absolute top-0 -right-12 rotate-12'
-                            />
-                            <CustomImage
-                                src='/static/images/heart.svg'
-                                alt='Heart'
-                                width={40}
-                                height={40}
-                                className='absolute top-[84px] -right-10 rotate-[30deg]'
+                                src='/static/images/cookies/all_cookies.webp'
+                                alt='Happy pacman accepting all cookies'
+                                width={180}
+                                height={180}
+                                className='mx-auto'
                             />
                         </div>
                     </div>
@@ -269,7 +181,7 @@ const Consent = () => {
                     <div>
                         <p className={`text ${generalVisisble ? 'flex' : 'hidden'}`}>
                             We use cookies to know how users interact with our website to deliver a better user
-                            experience. READ MORE.
+                            experience.
                         </p>
 
                         <p className={`text ${necessaryVisible ? 'block' : 'hidden'}`}>

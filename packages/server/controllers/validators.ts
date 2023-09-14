@@ -39,6 +39,8 @@ export const getValidatorById = async (req: Request, res: Response) => {
 
         const { id } = req.params;
 
+        const { numberEpochs = 225 } = req.query;
+
         const [ validatorStats, validatorPerformance ] = 
             await Promise.all([
                 pgPool.query(`
@@ -57,7 +59,7 @@ export const getValidatorById = async (req: Request, res: Response) => {
                         FROM t_validator_rewards_summary 
                         WHERE f_val_idx = '${id}'
                         ORDER BY f_epoch DESC
-                        LIMIT 225
+                        LIMIT ${numberEpochs}
                     ) AS sub
                 )
                 
@@ -102,6 +104,28 @@ export const getValidatorById = async (req: Request, res: Response) => {
 
         res.json({
             validator
+        });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            msg: 'An error occurred on the server'
+        });
+    }
+};
+
+export const getValidatorStats = async (req: Request, res: Response) => {
+
+    try {
+        
+        const stats = 
+            await pgPool.query(`
+                SELECT MIN(f_val_idx) AS first, MAX(f_val_idx) AS last, COUNT(DISTINCT(f_val_idx)) AS count
+                FROM t_validator_last_status
+            `);
+
+        res.json({
+            stats: stats.rows[0]
         });
 
     } catch (error) {

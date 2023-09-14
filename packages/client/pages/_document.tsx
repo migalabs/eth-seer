@@ -65,8 +65,8 @@ export default function Document() {
                         --boxShadowPurple1: inset -7px -7px 8px var(--purple2), inset 7px 7px 8px var(--purple2);
                         --boxShadowPurple2: inset -4px -4px 4px var(--purple4), inset 4px 4px 4px var(--purple4);
 
-                        --background-image-light: url('${assetPrefix}/static/images/background-orange.svg');
-                        --background-image-dark: url('${assetPrefix}/static/images/background-purple.svg');
+                        --background-image-light: url('${assetPrefix}/static/images/background/background_light.webp');
+                        --background-image-dark: url('${assetPrefix}/static/images/background/background_dark.webp');
 
                         --zIndexThemeModeSwitch: 5;
                         --zIndexBlockImageMissed: 10;
@@ -103,7 +103,7 @@ export default function Document() {
             />
 
             <Head>
-                <link rel='shortcut icon' href={`${assetPrefix}/static/images/favicon.png`} />
+                <link rel='shortcut icon' href={`${assetPrefix}/static/images/favicon.ico`} />
                 <link rel='preconnect' href='https://fonts.googleapis.com' />
                 <link rel='preconnect' href='https://fonts.gstatic.com' />
                 <link href='https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap' rel='stylesheet' />
@@ -112,10 +112,6 @@ export default function Document() {
                 <meta name='twitter:image' content='http://ethseer.com/static/images/ethseer_metadata.png' />
                 <meta property='og:url' content='http://ethseer.com/' />
                 <meta property='og:title' content='Ethereum (ETH) blockchain explorer - EthSeer.io' />
-                <meta
-                    property='og:description'
-                    content="Ethseer is an Ethereum Blockchain Explorer. It provides real-time data and statistics on Ethereum's latest epochs and blocks."
-                />
                 <meta property='og:image' content='http://ethseer.com/static/images/ethseer_metadata.png' />
                 <meta httpEquiv='Content-Security-Policy' content='upgrade-insecure-requests' />
                 <link href={`${assetPrefix}/static/css/theme-mode-switch.css`} rel='stylesheet' />

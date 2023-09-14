@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState, useContext } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 // Axios
@@ -22,7 +21,7 @@ import LinkSlot from '../ui/LinkSlot';
 import { Block } from '../../types';
 
 // Constants
-const firstBlock: number = Number(process.env.NEXT_PUBLIC_NETWORK_GENESIS);
+import { FIRST_BLOCK } from '../../constants';
 
 const Graffitis = () => {
     // Router
@@ -108,7 +107,7 @@ const Graffitis = () => {
                     <p className='mt-0.5'>Time</p>
                     <TooltipContainer>
                         <CustomImage
-                            src='/static/images/information.svg'
+                            src='/static/images/icons/information_icon.webp'
                             alt='Time information'
                             width={24}
                             height={24}
@@ -134,7 +133,7 @@ const Graffitis = () => {
                     <p className='mt-0.5'>Slot</p>
                     <TooltipContainer>
                         <CustomImage
-                            src='/static/images/information.svg'
+                            src='/static/images/icons/information_icon.webp'
                             alt='Time information'
                             width={24}
                             height={24}
@@ -154,7 +153,7 @@ const Graffitis = () => {
                     <p className='mt-0.5'>Validator</p>
                     <TooltipContainer>
                         <CustomImage
-                            src='/static/images/information.svg'
+                            src='/static/images/icons/information_icon.webp'
                             alt='Blocks information'
                             width={24}
                             height={24}
@@ -174,7 +173,7 @@ const Graffitis = () => {
                     <p className='mt-0.5'>Graffiti</p>
                     <TooltipContainer>
                         <CustomImage
-                            src='/static/images/information.svg'
+                            src='/static/images/icons/information_icon.webp'
                             alt='Attestation Accuracy information'
                             width={24}
                             height={24}
@@ -203,8 +202,8 @@ const Graffitis = () => {
                             }}
                         >
                             <div className='flex flex-col w-[20%]'>
-                                <p>{new Date(firstBlock + block.f_slot * 12000).toLocaleDateString('ja-JP')}</p>
-                                <p>{new Date(firstBlock + block.f_slot * 12000).toLocaleTimeString('ja-JP')}</p>
+                                <p>{new Date(FIRST_BLOCK + block.f_slot * 12000).toLocaleDateString('ja-JP')}</p>
+                                <p>{new Date(FIRST_BLOCK + block.f_slot * 12000).toLocaleTimeString('ja-JP')}</p>
                             </div>
 
                             <div className='w-[20%]'>
@@ -255,7 +254,7 @@ const Graffitis = () => {
                                 <p className='text-xs mt-1'>Time</p>
                                 <TooltipContainer>
                                     <CustomImage
-                                        src='/static/images/information.svg'
+                                        src='/static/images/icons/information_icon.webp'
                                         alt='Time information'
                                         width={24}
                                         height={24}
@@ -278,8 +277,8 @@ const Graffitis = () => {
                             </div>
 
                             <div>
-                                <p>{new Date(firstBlock + block.f_slot * 12000).toLocaleDateString('ja-JP')}</p>
-                                <p>{new Date(firstBlock + block.f_slot * 12000).toLocaleTimeString('ja-JP')}</p>
+                                <p>{new Date(FIRST_BLOCK + block.f_slot * 12000).toLocaleDateString('ja-JP')}</p>
+                                <p>{new Date(FIRST_BLOCK + block.f_slot * 12000).toLocaleTimeString('ja-JP')}</p>
                             </div>
                         </div>
 
@@ -288,7 +287,7 @@ const Graffitis = () => {
                                 <p className='text-xs mt-1'>Validator</p>
                                 <TooltipContainer>
                                     <CustomImage
-                                        src='/static/images/information.svg'
+                                        src='/static/images/icons/information_icon.webp'
                                         alt='Time information'
                                         width={24}
                                         height={24}
@@ -304,7 +303,7 @@ const Graffitis = () => {
                                 </TooltipContainer>
                             </div>
                             <div>
-                                <p>{block.f_proposer_index}</p>
+                                <LinkValidator validator={block.f_proposer_index} mxAuto />
                             </div>
                         </div>
 
@@ -313,7 +312,7 @@ const Graffitis = () => {
                                 <p className='text-xs mt-1'>Graffiti</p>
                                 <TooltipContainer>
                                     <CustomImage
-                                        src='/static/images/information.svg'
+                                        src='/static/images/icons/information_icon.webp'
                                         alt='Time information'
                                         width={24}
                                         height={24}
@@ -341,13 +340,15 @@ const Graffitis = () => {
                 </div>
             )}
 
-            <ViewMoreButton onClick={handleViewMore} />
+            {!disableViewMore && <ViewMoreButton onClick={handleViewMore} />}
         </div>
     );
 
     return (
         <div className='text-center text-white'>
-            <h1 className='text-lg md:text-3xl uppercase'>Graffiti &quot;{graffiti}&quot; Search Result</h1>
+            <h1 className='text-lg md:text-3xl uppercase mt-14 xl:mt-0'>
+                Graffiti &quot;{graffiti}&quot; Search Result
+            </h1>
 
             <div className='mt-6'>
                 {blocks.length === 0 && loading && <Loader />}
