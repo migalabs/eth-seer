@@ -70,10 +70,15 @@ function Menu() {
             </div>
             <ul
                 className={`flex items-end absolute md:relative ${isOpen ? 'flex-col' : 'invisible'} md:visible bg-[${
-                    themeMode?.darkMode ? '#f2dc8e' : 'var(--blue3)'
+                    themeMode?.darkMode ? '#f2dc8e' : 'var(--white)'
                 }] md:bg-transparent md:flex-row md:gap-10 p-6 mt-10 md:mt-0 rounded-lg md:border-none`}
             >
-                <li className='flex py-2 md:py-0 text-white'>
+                <li
+                    className='flex py-2 md:py-0 text-white'
+                    style={{
+                        color: themeMode?.darkMode ? 'var(--white)' : '#000000',
+                    }}
+                >
                     <Link href='/' className='text-xs uppercase'>
                         Home
                     </Link>
