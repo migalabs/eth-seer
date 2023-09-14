@@ -22,22 +22,22 @@ type PropsInput = {
 };
 
 const SearchEngineInput = styled.input<PropsInput>`
-    color: ${props => (props.darkMode ? 'var(--yellow4)' : '#FFFFFF')};
+    color: ${props => (props.darkMode ? 'var(--yellow4)' : '#d5872f')};
 
     ::placeholder {
         /* Chrome, Firefox, Opera, Safari 10.1+ */
-        color: ${props => (props.darkMode ? 'var(--yellow4)' : '#FFFFFF')};
+        color: ${props => (props.darkMode ? 'var(--yellow4)' : '#d5872f')};
         opacity: 1; /* Firefox */
     }
 
     :-ms-input-placeholder {
         /* Internet Explorer 10-11 */
-        color: ${props => (props.darkMode ? 'var(--yellow4)' : '#FFFFFF')};
+        color: ${props => (props.darkMode ? 'var(--yellow4)' : '#d5872f')};
     }
 
     ::-ms-input-placeholder {
         /* Microsoft Edge */
-        color: ${props => (props.darkMode ? 'var(--yellow4)' : '#FFFFFF')};
+        color: ${props => (props.darkMode ? 'var(--yellow4)' : '#d5872f')};
     }
 `;
 
@@ -181,8 +181,8 @@ const SearchEngine = () => {
         <div
             className='absolute z-40 flex top-20 xl:top-4 left-4 xl:left-[calc(50%-200px)] items-center w-[calc(100%-2rem)] xl:w-[400px] h-10 border-2 rounded-3xl py-1 bg-white/30'
             style={{
-                borderColor: themeMode?.darkMode ? 'var(--yellow4)' : '#FFFFFF',
-                color: themeMode?.darkMode ? 'var(--yellow4)' : '#FFFFFF',
+                borderColor: themeMode?.darkMode ? 'var(--yellow4)' : '#d5872f',
+                color: themeMode?.darkMode ? 'var(--yellow4)' : '#d5872f',
             }}
             ref={popUpRef}
         >
@@ -208,13 +208,14 @@ const SearchEngine = () => {
                 <div
                     className='absolute top-full left-0 border-2 rounded-xl p-1 bg-[#9c909c] z-[var(--zIndexSearchEngine)] w-full'
                     style={{
-                        borderColor: themeMode?.darkMode ? 'var(--yellow4)' : 'var(--blue2)',
-                        color: themeMode?.darkMode ? 'var(--yellow4)' : '#FFFFFF',
+                        borderColor: themeMode?.darkMode ? 'var(--yellow4)' : '#d5872f',
+                        color: themeMode?.darkMode ? 'var(--yellow4)' : '#d5872f',
+                        background: themeMode?.darkMode ? '#9c909c' : '#fff0dd',
                     }}
                 >
                     <div
                         className={`flex flex-col gap-y-3 w-full px-4 py-4 text-xs max-h-[400px] overflow-y-scroll scrollbar-thin ${
-                            themeMode?.darkMode ? 'scrollbar-thumb-[#f0c83a]' : 'scrollbar-thumb-[#6cc4e0]'
+                            themeMode?.darkMode ? 'scrollbar-thumb-[#f0c83a]' : 'scrollbar-thumb-[#d5872f]'
                         } scrollbar-track-[#736a73] scrollbar-thumb-rounded`}
                     >
                         {searchResults.map((item, index) => (
@@ -227,7 +228,7 @@ const SearchEngine = () => {
                                     <div
                                         className='border-b'
                                         style={{
-                                            borderColor: themeMode?.darkMode ? 'var(--yellow4)' : 'var(--blue2)',
+                                            borderColor: themeMode?.darkMode ? 'var(--yellow4)' : '#d5872f',
                                         }}
                                     ></div>
                                 )}
