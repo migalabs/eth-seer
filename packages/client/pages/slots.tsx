@@ -9,7 +9,6 @@ import Layout from '../components/layouts/Layout';
 import SlotsList from '../components/layouts/Slots';
 import Loader from '../components/ui/Loader';
 import ViewMoreButton from '../components/ui/ViewMoreButton';
-import CustomImage from '../components/ui/CustomImage';
 
 // Types
 import { Slot } from '../types';
@@ -76,7 +75,7 @@ const Slots = () => {
                     signatures for the proposed block.
                 </h2>
             </div>
-            
+
             <div className='mx-auto max-w-[1100px] my-6'>{slots.length > 0 && <SlotsList slots={slots} />}</div>
 
             {loading && (

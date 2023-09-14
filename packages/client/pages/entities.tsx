@@ -4,7 +4,6 @@ import Head from 'next/head';
 // Components
 import Layout from '../components/layouts/Layout';
 import EntityCard from '../components/ui/EntitiyCard';
-import CustomImage from '../components/ui/CustomImage';
 
 // Constants
 import { POOLS_EXTENDED } from '../constants';
@@ -31,7 +30,7 @@ const Entities = () => {
                     to which validators belong to through graffiti.
                 </h2>
             </div>
-            
+
             <div
                 className='grid gap-4 max-w-[1200px] mx-auto mt-4'
                 style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))' }}

@@ -14,7 +14,6 @@ import Loader from '../components/ui/Loader';
 import ViewMoreButton from '../components/ui/ViewMoreButton';
 import LinkValidator from '../components/ui/LinkValidator';
 import LinkEntity from '../components/ui/LinkEntity';
-import CustomImage from '../components/ui/CustomImage';
 
 // Types
 import { Validator } from '../types';
