@@ -423,7 +423,7 @@ const ValidatorComponent = () => {
 
                 <div className='flex flex-col md:flex-row gap-x-4 gap-y-2 md:items-center ml-4 md:ml-10'>
                     <p className='md:w-52 lg:w-80'>Sync committee participation:</p>
-                    <p className='leading-3'>{validator?.count_missing_source} epochs</p>
+                    <p className='leading-3'>{validator?.count_missing_source} duties</p>
                 </div>
 
                 <div className='flex flex-col md:flex-row gap-x-4 gap-y-2 md:items-center ml-4 md:ml-10'>
