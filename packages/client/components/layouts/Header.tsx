@@ -18,7 +18,12 @@ const Header = () => {
             <div className='w-fit'>
                 <Link href='/' passHref>
                     <div className='flex flex-row justify-start items-center p-2'>
-                        <CustomImage src={`/static/images/icons/ethseer_logo_${ themeMode?.darkMode ? 'dark' : 'light'}.webp`} alt='Logo' width={50} height={50} />
+                        <CustomImage
+                            src={`/static/images/icons/ethseer_logo_${themeMode?.darkMode ? 'dark' : 'light'}.webp`}
+                            alt='Logo'
+                            width={50}
+                            height={50}
+                        />
 
                         <p
                             className='uppercase text-2xs md:text-xs mt-1 ml-2'

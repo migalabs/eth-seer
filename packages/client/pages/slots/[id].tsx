@@ -332,11 +332,11 @@ const Slot = () => {
                             title='Status'
                             content={
                                 block?.f_proposed ? (
-                                    <span className='uppercase bg-[#83E18C] border-2 border-[#00720B] text-[#00720B] px-5 py-1.5 rounded-2xl font-bold'>
+                                    <span className='uppercase bg-[#D3FFD7] border-2 border-[#00720B] text-[#00720B] px-5 py-1.5 rounded-2xl font-bold'>
                                         Proposed
                                     </span>
                                 ) : (
-                                    <span className='uppercase bg-[#FF9090] border-2 border-[#980E0E] text-[#980E0E] px-5 py-1.5 rounded-2xl font-bold'>
+                                    <span className='uppercase bg-[#FFB7B7] border-2 border-[#980E0E] text-[#980E0E] px-5 py-1.5 rounded-2xl font-bold'>
                                         Missed
                                     </span>
                                 )
