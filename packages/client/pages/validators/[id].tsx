@@ -1,5 +1,6 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 
 // Axios
 import axiosClient from '../../config/axios';
@@ -60,12 +61,15 @@ const ValidatorComponent = () => {
     const containerRef = useRef<HTMLInputElement>(null);
 
     // States
-    const [validator, setValidator] = useState<Validator | null>(null);
+    const [validatorHour, setValidatorHour] = useState<Validator | null>(null);
+    const [validatorDay, setValidatorDay] = useState<Validator | null>(null);
+    const [validatorWeek, setValidatorWeek] = useState<Validator | null>(null);
     const [proposedBlocks, setProposedBlocks] = useState<Slot[]>([]);
     const [withdrawals, setWithdrawals] = useState<Withdrawal[]>([]);
     const [animation, setAnimation] = useState(false);
     const [desktopView, setDesktopView] = useState(true);
     const [tabPageIndex, setTabPageIndex] = useState(0);
+    const [tabPageIndexValidatorPerformance, setTabPageIndexValidatorPerformance] = useState(0);
     const [loadingValidator, setLoadingValidator] = useState(true);
     const [loadingProposedBlocks, setLoadingProposedBlocks] = useState(true);
     const [loadingWithdrawals, setLoadingWithdrawals] = useState(true);
@@ -76,7 +80,7 @@ const ValidatorComponent = () => {
             validatorRef.current = Number(id);
         }
 
-        if ((id && !validator) || (validator && validator.f_val_idx !== Number(id))) {
+        if ((id && !validatorHour) || (validatorHour && validatorHour.f_val_idx !== Number(id))) {
             getValidator();
             getProposedBlocks();
             getWithdrawals();
@@ -91,11 +95,33 @@ const ValidatorComponent = () => {
         try {
             setLoadingValidator(true);
 
-            const response = await axiosClient.get(`/api/validators/${id}`);
+            const hour = 9;
+            const day = 225;
+            const week = 1575;
 
-            setValidator(response.data.validator);
+            const [responseHour, responseDay, responseWeek] = await Promise.all([
+                axiosClient.get(`/api/validators/${id}`, {
+                    params: {
+                        numberEpochs: hour,
+                    },
+                }),
+                axiosClient.get(`/api/validators/${id}`, {
+                    params: {
+                        numberEpochs: day,
+                    },
+                }),
+                axiosClient.get(`/api/validators/${id}`, {
+                    params: {
+                        numberEpochs: week,
+                    },
+                }),
+            ]);
 
-            if (response.data.validator) {
+            setValidatorHour(responseHour.data.validator);
+            setValidatorDay(responseDay.data.validator);
+            setValidatorWeek(responseWeek.data.validator);
+
+            if (responseHour.data.validator) {
                 setAnimation(false);
             } else {
                 setAnimation(true);
@@ -370,9 +396,112 @@ const ValidatorComponent = () => {
         );
     };
 
-    const convertToHours = (epochs: number) => {
-        let minutes = epochs * 6.4;
-        return Math.floor(minutes / 60);
+    const getValidatorPerformance = (validator: Validator) => {
+        return (
+            <>
+                <div className='flex flex-col md:flex-row gap-x-4 ml-4 md:ml-10'>
+                    <p className='md:w-52 lg:w-80'>Rewards:</p>
+                    <div className='w-72 md:w-80 text-[9px] text-center leading-3'>
+                        {validator && (
+                            <ProgressSmoothBar
+                                title=''
+                                color='#1194BD'
+                                backgroundColor='#BDFFEB'
+                                percent={validator.aggregated_rewards / validator.aggregated_max_rewards || 0}
+                                tooltipColor='blue'
+                                tooltipContent={
+                                    <>
+                                        <span>Agg. Rewards: {validator?.aggregated_rewards}</span>
+                                        <span>Max. Rewards: {validator?.aggregated_max_rewards}</span>
+                                    </>
+                                }
+                                widthTooltip={220}
+                            />
+                        )}
+                    </div>
+                </div>
+
+                <div className='flex flex-col md:flex-row gap-x-4 gap-y-2 md:items-center ml-4 md:ml-10'>
+                    <p className='md:w-52 lg:w-80'>Sync committee participation:</p>
+                    <p className='leading-3'>{validator?.count_missing_source} epochs</p>
+                </div>
+
+                <div className='flex flex-col md:flex-row gap-x-4 gap-y-2 md:items-center ml-4 md:ml-10'>
+                    <p className='md:w-52 lg:w-80'>attestation flags:</p>
+
+                    {validator && (
+                        <div className='flex flex-col md:flex-row items-center gap-x-4 gap-y-2 text-[9px]'>
+                            <ProgressSmoothBar
+                                title='Target'
+                                color='#E86506'
+                                backgroundColor='#FFC163'
+                                percent={1 - validator.count_missing_target / validator.count_attestations}
+                                width={150}
+                                tooltipColor='orange'
+                                tooltipContent={
+                                    <>
+                                        <span>Missing Target: {validator.count_missing_target?.toLocaleString()}</span>
+                                        <span>Attestations: {validator.count_attestations?.toLocaleString()}</span>
+                                    </>
+                                }
+                                widthTooltip={220}
+                            />
+
+                            <ProgressSmoothBar
+                                title='Source'
+                                color='#14946e'
+                                backgroundColor='#BDFFEB'
+                                percent={1 - validator.count_missing_source / validator.count_attestations}
+                                width={150}
+                                tooltipColor='blue'
+                                tooltipContent={
+                                    <>
+                                        <span>Missing Source: {validator.count_missing_source?.toLocaleString()}</span>
+                                        <span>Attestations: {validator.count_attestations?.toLocaleString()}</span>
+                                    </>
+                                }
+                                widthTooltip={220}
+                            />
+
+                            <ProgressSmoothBar
+                                title='Head'
+                                color='#532BC5'
+                                backgroundColor='#E6DDFF'
+                                percent={1 - validator.count_missing_head / validator.count_attestations}
+                                width={150}
+                                tooltipColor='purple'
+                                tooltipContent={
+                                    <>
+                                        <span>Missing Head: {validator.count_missing_head?.toLocaleString()}</span>
+                                        <span>Attestations: {validator.count_attestations?.toLocaleString()}</span>
+                                    </>
+                                }
+                                widthTooltip={220}
+                            />
+                        </div>
+                    )}
+                </div>
+                <div className='flex flex-col md:flex-row gap-x-4 gap-y-2 md:w-full ml-4 md:ml-10'>
+                    <p className='md:w-52 lg:w-80'>Blocks:</p>
+
+                    <div className='flex justify-center'>
+                        <div className='flex flex-col md:flex-row gap-x-4 gap-y-2'>
+                            <CardContent
+                                content={`Proposed: ${validator.proposed_blocks_performance}`}
+                                bg={'#00720B'}
+                                color={'#83E18C'}
+                            />
+
+                            <CardContent
+                                content={`Missed: ${validator.missed_blocks_performance}`}
+                                bg={'#980E0E'}
+                                color={'#FF9090'}
+                            />
+                        </div>
+                    </div>
+                </div>
+            </>
+        );
     };
 
     const getContentValidator = () => {
@@ -389,18 +518,18 @@ const ValidatorComponent = () => {
                         <div className='flex flex-row items-center gap-x-5'>
                             <p className='w-32 sm:w-40'>Entity:</p>
                             <div>
-                                <LinkEntity entity={validator?.f_pool_name ?? 'others'} />
+                                <LinkEntity entity={validatorHour?.f_pool_name ?? 'others'} />
                             </div>
                         </div>
 
                         <div className='flex flex-row items-center gap-x-5'>
                             <p className='w-32 sm:w-40'>Current balance:</p>
-                            <p className='leading-3'>{validator?.f_balance_eth} eth</p>
+                            <p className='leading-3'>{validatorHour?.f_balance_eth} eth</p>
                         </div>
 
                         <div className='flex md:flex-row gap-x-5'>
                             <p className='w-32 sm:w-40'>Current status:</p>
-                            {validator?.f_status && <ValidatorStatus status={validator?.f_status} />}
+                            {validatorHour?.f_status && <ValidatorStatus status={validatorHour?.f_status} />}
                         </div>
                         <div className='flex flex-col sm:flex-row gap-x-5'>
                             <p className='w-32 sm:w-40'>Blocks:</p>
@@ -423,8 +552,32 @@ const ValidatorComponent = () => {
                         </div>
                     </div>
                     <div className='hidden md:block'>
-                        <BlockGif poolName={validator?.f_pool_name ?? 'others'} width={125} height={125} />
+                        <BlockGif poolName={validatorHour?.f_pool_name ?? 'others'} width={125} height={125} />
                     </div>
+                </div>
+
+                <div className='flex flex-col md:flex-row gap-4 mx-2 mb-5'>
+                    <TabHeader
+                        header='1 Hour'
+                        isSelected={tabPageIndexValidatorPerformance === 0}
+                        onClick={() => {
+                            setTabPageIndexValidatorPerformance(0);
+                        }}
+                    />
+                    <TabHeader
+                        header='24 Hours'
+                        isSelected={tabPageIndexValidatorPerformance === 1}
+                        onClick={() => {
+                            setTabPageIndexValidatorPerformance(1);
+                        }}
+                    />
+                    <TabHeader
+                        header='1 week'
+                        isSelected={tabPageIndexValidatorPerformance === 2}
+                        onClick={() => {
+                            setTabPageIndexValidatorPerformance(2);
+                        }}
+                    />
                 </div>
 
                 <div
@@ -437,130 +590,14 @@ const ValidatorComponent = () => {
                     <div className='flex flex-col gap-y-2 uppercase text-black leading-7 text-[8px] md:text-[10px]'>
                         <div className='flex flex-col gap-y-4'>
                             <div className='flex flex-row'>
-                                <p>
-                                    Validator performance (Data from last{' '}
-                                    {convertToHours(validator?.count_attestations ?? 0)} hour):
-                                </p>
+                                <p>Validator performance:</p>
                             </div>
-
-                            <div className='flex flex-col md:flex-row gap-x-4 ml-4 md:ml-10'>
-                                <p className='md:w-52 lg:w-80'>Rewards:</p>
-                                <div className='w-72 md:w-80 text-[9px] text-center leading-3'>
-                                    {validator && (
-                                        <ProgressSmoothBar
-                                            title=''
-                                            color='#1194BD'
-                                            backgroundColor='#BDFFEB'
-                                            percent={
-                                                validator.aggregated_rewards / validator.aggregated_max_rewards || 0
-                                            }
-                                            tooltipColor='blue'
-                                            tooltipContent={
-                                                <>
-                                                    <span>Agg. Rewards: {validator?.aggregated_rewards}</span>
-                                                    <span>Max. Rewards: {validator?.aggregated_max_rewards}</span>
-                                                </>
-                                            }
-                                            widthTooltip={220}
-                                        />
-                                    )}
-                                </div>
-                            </div>
-
-                            <div className='flex flex-col md:flex-row gap-x-4 gap-y-2 md:items-center ml-4 md:ml-10'>
-                                <p className='md:w-52 lg:w-80'>Sync committee participation:</p>
-                                <p className='leading-3'>{validator?.count_missing_source} epochs</p>
-                            </div>
-
-                            <div className='flex flex-col md:flex-row gap-x-4 gap-y-2 md:items-center ml-4 md:ml-10'>
-                                <p className='md:w-52 lg:w-80'>attestation flags:</p>
-
-                                {validator && (
-                                    <div className='flex flex-col md:flex-row items-center gap-x-4 gap-y-2 text-[9px]'>
-                                        <ProgressSmoothBar
-                                            title='Target'
-                                            color='#E86506'
-                                            backgroundColor='#FFC163'
-                                            percent={1 - validator.count_missing_target / validator.count_attestations}
-                                            width={150}
-                                            tooltipColor='orange'
-                                            tooltipContent={
-                                                <>
-                                                    <span>
-                                                        Missing Target:{' '}
-                                                        {validator.count_missing_target?.toLocaleString()}
-                                                    </span>
-                                                    <span>
-                                                        Attestations: {validator.count_attestations?.toLocaleString()}
-                                                    </span>
-                                                </>
-                                            }
-                                            widthTooltip={220}
-                                        />
-
-                                        <ProgressSmoothBar
-                                            title='Source'
-                                            color='#14946e'
-                                            backgroundColor='#BDFFEB'
-                                            percent={1 - validator.count_missing_source / validator.count_attestations}
-                                            width={150}
-                                            tooltipColor='blue'
-                                            tooltipContent={
-                                                <>
-                                                    <span>
-                                                        Missing Source:{' '}
-                                                        {validator.count_missing_source?.toLocaleString()}
-                                                    </span>
-                                                    <span>
-                                                        Attestations: {validator.count_attestations?.toLocaleString()}
-                                                    </span>
-                                                </>
-                                            }
-                                            widthTooltip={220}
-                                        />
-
-                                        <ProgressSmoothBar
-                                            title='Head'
-                                            color='#532BC5'
-                                            backgroundColor='#E6DDFF'
-                                            percent={1 - validator.count_missing_head / validator.count_attestations}
-                                            width={150}
-                                            tooltipColor='purple'
-                                            tooltipContent={
-                                                <>
-                                                    <span>
-                                                        Missing Head: {validator.count_missing_head?.toLocaleString()}
-                                                    </span>
-                                                    <span>
-                                                        Attestations: {validator.count_attestations?.toLocaleString()}
-                                                    </span>
-                                                </>
-                                            }
-                                            widthTooltip={220}
-                                        />
-                                    </div>
-                                )}
-                            </div>
-
-                            <div className='flex flex-col md:flex-row gap-x-4 gap-y-2 md:w-full ml-4 md:ml-10'>
-                                <p className='md:w-52 lg:w-80'>Blocks:</p>
-
-                                <div className='flex justify-center'>
-                                    <div className='flex flex-col md:flex-row gap-x-4 gap-y-2'>
-                                        <CardContent
-                                            content={`Proposed: ${validator?.proposed_blocks_performance}`}
-                                            bg={'#00720B'}
-                                            color={'#83E18C'}
-                                        />
-
-                                        <CardContent
-                                            content={`Missed: ${validator?.missed_blocks_performance}`}
-                                            bg={'#980E0E'}
-                                            color={'#FF9090'}
-                                        />
-                                    </div>
-                                </div>
-                            </div>
+                            {tabPageIndexValidatorPerformance === 0 &&
+                                getValidatorPerformance(validatorHour as Validator)}
+                            {tabPageIndexValidatorPerformance === 1 &&
+                                getValidatorPerformance(validatorDay as Validator)}
+                            {tabPageIndexValidatorPerformance === 2 &&
+                                getValidatorPerformance(validatorWeek as Validator)}
                         </div>
                     </div>
                 </div>
@@ -596,6 +633,10 @@ const ValidatorComponent = () => {
 
     return (
         <Layout>
+            <Head>
+                <meta name='robots' property='noindex' />
+            </Head>
+
             <div className='flex gap-x-3 justify-center items-center mt-14 xl:mt-0 mb-5'>
                 <LinkValidator validator={Number(id) - 1}>
                     <Arrow direction='left' />
@@ -616,7 +657,7 @@ const ValidatorComponent = () => {
                 </div>
             )}
 
-            {!loadingValidator && validator && (
+            {!loadingValidator && validatorHour && (
                 <div className='flex flex-col gap-4 mx-auto max-w-[1100px]'>
                     <div>{getContentValidator()}</div>
 
