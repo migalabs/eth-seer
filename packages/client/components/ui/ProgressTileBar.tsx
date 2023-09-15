@@ -10,7 +10,6 @@ type Props = {
 };
 
 const ProgressTileBar = ({ tooltipContent, totalBlocks }: Props) => {
-    console.log(totalBlocks);
     const addBars = (restBlocks: Array<number>) => {
         return restBlocks.map((element, idx) => (
             <div key={idx} className={`w-[3px] h-2.5 ${element === 1 && 'bg-gray-400'}`} />

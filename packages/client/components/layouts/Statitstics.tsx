@@ -119,8 +119,8 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
             <div
                 className='flex gap-x-1 justify-around items-center text-[10px] text-black rounded-[22px] px-2 xl:px-8 py-3'
                 style={{
-                    backgroundColor: themeMode?.darkMode ? 'var(--brown1)' : 'var(--blue3)',
-                    boxShadow: themeMode?.darkMode ? 'var(--boxShadowOrange1)' : 'var(--boxShadowBlue2)',
+                    backgroundColor: themeMode?.darkMode ? 'var(--brown1)' : 'var(--blue4)',
+                    boxShadow: themeMode?.darkMode ? 'var(--boxShadowOrange1)' : 'var(--boxShadowBlue5)',
                 }}
             >
                 <div className='flex flex-col w-[10%] pt-2.5 pb-2.5'>
@@ -171,7 +171,7 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
                 className='flex flex-col gap-y-4 justify-around items-center text-[10px] text-black rounded-[22px] px-3 py-4'
                 style={{
                     backgroundColor: themeMode?.darkMode ? 'var(--brown1)' : 'var(--blue3)',
-                    boxShadow: themeMode?.darkMode ? 'var(--boxShadowOrange1)' : 'var(--boxShadowBlue2)',
+                    boxShadow: themeMode?.darkMode ? 'var(--boxShadowOrange1)' : 'var(--boxShadowBlue4)',
                 }}
             >
                 <div className='flex gap-x-1 justify-center'>
@@ -339,7 +339,12 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
             className='flex flex-col px-2 xl:px-20 overflow-x-scroll overflow-y-hidden scrollbar-thin'
             onMouseMove={handleMouseMove}
         >
-            <div className='flex gap-x-1 justify-around px-2 xl:px-8 pb-3 uppercase text-sm min-w-[1150px]'>
+            <div
+                className='flex gap-x-1 justify-around px-2 xl:px-8 pb-3 uppercase text-sm min-w-[1150px]'
+                style={{
+                    color: themeMode?.darkMode ? 'var(--white)' : '',
+                }}
+            >
                 <div className='flex w-[10%] items-center gap-x-1 justify-center'>
                     <p className='mt-0.5 text-xs'>Time</p>
                     <TooltipContainer>
