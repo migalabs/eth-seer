@@ -107,12 +107,16 @@ export default function Document() {
                 <link rel='preconnect' href='https://fonts.googleapis.com' />
                 <link rel='preconnect' href='https://fonts.gstatic.com' />
                 <link href='https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap' rel='stylesheet' />
+                <meta
+                    name='keywords'
+                    content='ethereum, ethereum blockchain explorer, ethereum block explorer, search'
+                />
                 <meta name='twitter:card' content='summary' />
                 <meta name='twitter:site' content='@miga_labs' />
-                <meta name='twitter:image' content='http://ethseer.com/static/images/ethseer_metadata.png' />
-                <meta property='og:url' content='http://ethseer.com/' />
-                <meta property='og:title' content='Ethereum (ETH) blockchain explorer - EthSeer.io' />
-                <meta property='og:image' content='http://ethseer.com/static/images/ethseer_metadata.png' />
+                <meta name='twitter:image' content='http://ethseer.io/static/images/ethseer_metadata.png' />
+                <meta property='og:url' content='http://ethseer.io/' />
+                <meta property='og:title' content='Ethereum Blockchain Explorer - EthSeer.io' />
+                <meta property='og:image' content='http://ethseer.io/static/images/ethseer_metadata.png' />
                 <meta httpEquiv='Content-Security-Policy' content='upgrade-insecure-requests' />
                 <link href={`${assetPrefix}/static/css/theme-mode-switch.css`} rel='stylesheet' />
             </Head>

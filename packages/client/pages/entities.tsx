@@ -12,22 +12,22 @@ const Entities = () => {
     return (
         <Layout hideMetaDescription>
             <Head>
-                <title>Exploring Entities in Blockchain: Ethseer&apos;s Insights</title>
+                <title>Staking Entities - EthSeer</title>
                 <meta
                     name='description'
-                    content="Explore blockchain entities and Ethseer's role in gathering essential data, from validators to Ethereum accounts"
+                    content="Explore blockchain entities and Ethseer's role in gathering essential data, from validators to Ethereum accounts."
                 />
+                <meta name='keywords' content='ethereum, staking, pool, validators, slashing, PoS' />
             </Head>
 
-            <h1 className='uppercase text-center text-3xl text-white mt-14 xl:mt-0'>
-                Exploring Entities in Blockchain: Ethseer&apos;s Insights
-            </h1>
+            <h1 className='uppercase text-center text-3xl text-white mt-14 xl:mt-0'>Ethereum Staking Entities</h1>
 
-            <div className='mx-auto py-4 px-6 bg-white/30 border-2 border-dashed rounded-xl flex w-11/12 lg:w-3/5 my-3'>
+            <div className='mx-auto py-4 px-6 bg-white/30 border-2 border-dashed rounded-xl flex w-11/12 lg:w-10/12 my-3'>
                 <h2 className='text-white text-xs text-center'>
-                    An entity can range from an individual validator to a validators organization, as long as they meet
-                    the requirements to be validators of the Blockchain. Ethseer obtains information about the entities
-                    to which validators belong to through graffiti.
+                    An entity can range from an individual running many validators to an institutional organization
+                    providing staking services. If it is running at least 100 validators, we catalog it as an entity.
+                    Ethseer obtains information about the entities to which validators belong to through graffiti,
+                    deposit address analysis, among others. EthSeer also monitors their performance.
                 </h2>
             </div>
 
