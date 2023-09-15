@@ -143,7 +143,7 @@ const Slots = ({ slots }: Props) => {
                         </div>
                         <div className='flex flex-col items-start '>
                             <div className='flex flex-row items-center gap-x-8'>
-                                <p className='w-24'>Validator:</p>
+                                <p className='w-24'>Proposer:</p>
                                 <LinkValidator validator={slot.f_val_idx} />
                             </div>
 

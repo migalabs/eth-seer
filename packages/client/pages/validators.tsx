@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
+import Head from 'next/head';
 
 // Axios
 import axiosClient from '../config/axios';
@@ -77,8 +78,29 @@ const Validators = () => {
     };
 
     return (
-        <Layout>
-            <h1 className='text-white text-center text-xl md:text-3xl uppercase mt-14 xl:mt-0'>Validators</h1>
+        <Layout hideMetaDescription>
+            <Head>
+                <title>Understanding Validators: Blockchain Security Contributors</title>
+                <meta
+                    name='description'
+                    content="Explore validator roles in blockchain consensus, behavior-based rewards, and Ethseer's detailed insights into Beacon Chain validator"
+                />
+            </Head>
+
+            <h1 className='text-white text-center text-xl md:text-3xl uppercase mt-14 xl:mt-0'>
+                Understanding Validators: Blockchain Security Contributors
+            </h1>
+
+            <div className='mx-auto py-4 px-6 bg-white/30 border-2 border-dashed rounded-xl flex w-11/12 lg:w-3/5 my-3'>
+                <h2 className='text-xs text-center' style={{
+                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--newOrange)'
+                }}>
+                    Validators are nodes that participate in the consensus and security by proposing and validating
+                    blocks. They are subject to rewards and penalties based on their behaviour. Ethseer displays
+                    information about the current validators in the Beacon Chain, including detailed information about
+                    each validator.
+                </h2>
+            </div>
 
             <div
                 ref={containerRef}
