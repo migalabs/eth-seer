@@ -32,8 +32,8 @@ const Arrow = ({ direction, height = 30, width = 30, className, onClick }: Props
             viewBox='0 0 16 16'
             className={`stroke-1 dark-mode-class cursor-pointer ${className ?? ''}`}
             style={{
-                stroke: themeMode?.darkMode ? 'var(--yellow1)' : 'var(--blue2)',
-                fill: themeMode?.darkMode ? 'var(--yellow1)' : 'var(--blue2)',
+                stroke: themeMode?.darkMode ? 'var(--yellow1)' : 'var(--white)',
+                fill: themeMode?.darkMode ? 'var(--yellow1)' : 'var(--white)',
             }}
             onClick={onClick}
         >

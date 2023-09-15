@@ -1,5 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Head from 'next/head';
+
+// Contexts
+import ThemeModeContext from '.././contexts/theme-mode/ThemeModeContext';
 
 // Axios
 import axiosClient from '../config/axios';
@@ -14,6 +17,9 @@ import ViewMoreButton from '../components/ui/ViewMoreButton';
 import { Slot } from '../types';
 
 const Slots = () => {
+    // Theme Mode Context
+    const { themeMode } = useContext(ThemeModeContext) ?? {};
+
     // States
     const [slots, setSlots] = useState<Slot[]>([]);
     const [currentPage, setCurrentPage] = useState(0);
@@ -67,8 +73,13 @@ const Slots = () => {
 
             <h1 className='text-white text-center text-xl md:text-3xl uppercase mt-14 xl:mt-0'>Ethereum Slots</h1>
 
-            <div className='mx-auto py-4 px-6 bg-white/30 border-2 border-dashed rounded-xl flex w-11/12 lg:w-10/12 my-3'>
-                <h2 className='text-white text-xs text-center'>
+            <div className='mx-auto py-4 px-6 bg-white/30 border-2 border-dashed rounded-xl flex w-11/12 lg:w-3/5 my-3'>
+                <h2
+                    className='text-xs text-center'
+                    style={{
+                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--newOrange)',
+                    }}
+                >
                     Every epoch is divided into regular interval called slots, which occur every 12 seconds. At every
                     slot, one validator can propose a block, and the other validators need to attest on the canonical
                     chain.
