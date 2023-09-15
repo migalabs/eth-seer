@@ -401,12 +401,12 @@ const ValidatorComponent = () => {
             <>
                 <div className='flex flex-col md:flex-row gap-x-4 ml-4 md:ml-10'>
                     <p className='md:w-52 lg:w-80'>Rewards:</p>
-                    <div className='w-72 md:w-80 text-[9px] text-center leading-3'>
+                    <div className='w-72 md:w-80 text-[10px] text-center leading-3'>
                         {validator && (
                             <ProgressSmoothBar
                                 title=''
-                                color='#1194BD'
-                                backgroundColor='#BDFFEB'
+                                color='#28587B'
+                                backgroundColor='#EEF8FF'
                                 percent={validator.aggregated_rewards / validator.aggregated_max_rewards || 0}
                                 tooltipColor='blue'
                                 tooltipContent={
@@ -423,18 +423,18 @@ const ValidatorComponent = () => {
 
                 <div className='flex flex-col md:flex-row gap-x-4 gap-y-2 md:items-center ml-4 md:ml-10'>
                     <p className='md:w-52 lg:w-80'>Sync committee participation:</p>
-                    <p className='leading-3'>{validator?.count_missing_source} epochs</p>
+                    <p className='leading-3'>{validator?.count_missing_source} duties</p>
                 </div>
 
                 <div className='flex flex-col md:flex-row gap-x-4 gap-y-2 md:items-center ml-4 md:ml-10'>
                     <p className='md:w-52 lg:w-80'>attestation flags:</p>
 
                     {validator && (
-                        <div className='flex flex-col md:flex-row items-center gap-x-4 gap-y-2 text-[9px]'>
+                        <div className='flex flex-col md:flex-row items-center gap-x-4 gap-y-2 text-[10px]'>
                             <ProgressSmoothBar
                                 title='Target'
-                                color='#E86506'
-                                backgroundColor='#FFC163'
+                                color='#B14E2A'
+                                backgroundColor='#FFE8C6'
                                 percent={1 - validator.count_missing_target / validator.count_attestations}
                                 width={150}
                                 tooltipColor='orange'
@@ -449,8 +449,8 @@ const ValidatorComponent = () => {
 
                             <ProgressSmoothBar
                                 title='Source'
-                                color='#14946e'
-                                backgroundColor='#BDFFEB'
+                                color='#117658'
+                                backgroundColor='#E2F3EE'
                                 percent={1 - validator.count_missing_source / validator.count_attestations}
                                 width={150}
                                 tooltipColor='blue'
@@ -465,8 +465,8 @@ const ValidatorComponent = () => {
 
                             <ProgressSmoothBar
                                 title='Head'
-                                color='#532BC5'
-                                backgroundColor='#E6DDFF'
+                                color='#813F93'
+                                backgroundColor='#F0ECFD'
                                 percent={1 - validator.count_missing_head / validator.count_attestations}
                                 width={150}
                                 tooltipColor='purple'
@@ -489,13 +489,13 @@ const ValidatorComponent = () => {
                             <CardContent
                                 content={`Proposed: ${validator.proposed_blocks_performance}`}
                                 bg={'#00720B'}
-                                color={'#83E18C'}
+                                color={'#D3FFD7'}
                             />
 
                             <CardContent
                                 content={`Missed: ${validator.missed_blocks_performance}`}
                                 bg={'#980E0E'}
-                                color={'#FF9090'}
+                                color={'#FFB7B7'}
                             />
                         </div>
                     </div>
@@ -537,12 +537,12 @@ const ValidatorComponent = () => {
                                 <CardContent
                                     content={`Proposed: ${getNumberProposedBlocks(proposedBlocks)}`}
                                     bg='#00720B'
-                                    color='#83E18C'
+                                    color='#D3FFD7'
                                 />
                                 <CardContent
                                     content={`Missed:  ${getNumberMissedBlocks(proposedBlocks)}`}
                                     bg='#980E0E'
-                                    color='#FF9090'
+                                    color='#FFB7B7'
                                 />
                             </div>
                         </div>

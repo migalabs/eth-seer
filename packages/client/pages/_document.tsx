@@ -67,7 +67,13 @@ export default function Document() {
                         --boxShadowPurple1: inset -7px -7px 8px var(--purple2), inset 7px 7px 8px var(--purple2);
                         --boxShadowPurple2: inset -4px -4px 4px var(--purple4), inset 4px 4px 4px var(--purple4);
 
-                        --background-light: radial-gradient(circle, rgba(255,161,72,1) 0%, rgba(255,194,127,1) 47%, rgba(255,224,187,1) 82%, rgba(255,239,219,1) 100%);
+                        --background-light: radial-gradient(
+                            circle,
+                            rgba(255, 161, 72, 1) 0%,
+                            rgba(255, 194, 127, 1) 47%,
+                            rgba(255, 224, 187, 1) 82%,
+                            rgba(255, 239, 219, 1) 100%
+                        );
                         --background-dark: radial-gradient(
                             circle,
                             rgba(141, 72, 231, 1) 0%,
@@ -115,12 +121,16 @@ export default function Document() {
                 <link rel='preconnect' href='https://fonts.googleapis.com' />
                 <link rel='preconnect' href='https://fonts.gstatic.com' />
                 <link href='https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap' rel='stylesheet' />
+                <meta
+                    name='keywords'
+                    content='ethereum, ethereum blockchain explorer, ethereum block explorer, search'
+                />
                 <meta name='twitter:card' content='summary' />
                 <meta name='twitter:site' content='@miga_labs' />
-                <meta name='twitter:image' content='http://ethseer.com/static/images/ethseer_metadata.png' />
-                <meta property='og:url' content='http://ethseer.com/' />
-                <meta property='og:title' content='Ethereum (ETH) blockchain explorer - EthSeer.io' />
-                <meta property='og:image' content='http://ethseer.com/static/images/ethseer_metadata.png' />
+                <meta name='twitter:image' content='http://ethseer.io/static/images/ethseer_metadata.png' />
+                <meta property='og:url' content='http://ethseer.io/' />
+                <meta property='og:title' content='Ethereum Blockchain Explorer - EthSeer.io' />
+                <meta property='og:image' content='http://ethseer.io/static/images/ethseer_metadata.png' />
                 <meta httpEquiv='Content-Security-Policy' content='upgrade-insecure-requests' />
                 <link href={`${assetPrefix}/static/css/theme-mode-switch.css`} rel='stylesheet' />
             </Head>

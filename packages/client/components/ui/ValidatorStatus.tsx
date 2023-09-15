@@ -15,19 +15,19 @@ const ValidatorStatus = ({ status }: Props) => {
         if (status === 'active') {
             setText(status);
             setColor('#00720B');
-            setBackgroundColor('#83E18C');
+            setBackgroundColor('#D3FFD7');
         } else if (status === 'slashed') {
             setText(status);
             setColor('#980E0E');
-            setBackgroundColor('#FF9090');
+            setBackgroundColor('#FFB7B7');
         } else if (status === 'exit') {
             setText('exited');
             setColor('#0016D8');
-            setBackgroundColor('#BDC4FF');
+            setBackgroundColor('#BCC2FF');
         } else if (status === 'in queue to activation') {
             setText('deposited');
             setColor('#E86506');
-            setBackgroundColor('#FFC163');
+            setBackgroundColor('#FFE5D2');
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
