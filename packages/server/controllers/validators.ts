@@ -39,6 +39,8 @@ export const getValidatorById = async (req: Request, res: Response) => {
 
         const { id } = req.params;
 
+        const { numberEpochs = 225 } = req.query;
+
         const [ validatorStats, validatorPerformance ] = 
             await Promise.all([
                 pgPool.query(`
@@ -57,7 +59,7 @@ export const getValidatorById = async (req: Request, res: Response) => {
                         FROM t_validator_rewards_summary 
                         WHERE f_val_idx = '${id}'
                         ORDER BY f_epoch DESC
-                        LIMIT 225
+                        LIMIT ${numberEpochs}
                     ) AS sub
                 )
                 

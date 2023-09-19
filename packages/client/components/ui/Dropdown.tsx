@@ -1,5 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Link from 'next/link';
+
+// Contexts
+import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
 // Types
 type Item = {
@@ -14,6 +17,8 @@ type Props = {
 
 const Dropdown = ({ name, items }: Props) => {
     const [isOpen, setIsOpen] = useState(false);
+
+    const { themeMode } = useContext(ThemeModeContext) ?? {};
 
     const handleMouseEnter = () => {
         if (window.innerWidth >= 768) {
@@ -34,10 +39,17 @@ const Dropdown = ({ name, items }: Props) => {
     };
 
     return (
-        <div className='relative py-2 md:p-0' onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+        <div
+            className='relative py-2 md:p-0'
+            style={{
+                color: themeMode?.darkMode ? 'var(--white)' : '#000000',
+            }}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+        >
             <button
                 type='button'
-                className='w-full text-xs uppercase text-[#9a7b2d] md:text-white flex items-center justify-end relative'
+                className='w-full text-xs uppercase flex items-center justify-end relative'
                 onClick={handleButtonClick}
             >
                 <span>{name}</span>
@@ -64,12 +76,21 @@ const Dropdown = ({ name, items }: Props) => {
                 } absolute right-0 mt-1 md:mt-0.5`}
             >
                 {isOpen && (
-                    <div className='p-1 md:p-2 rounded-lg md:bg-[#f2dc8e]'>
+                    <div
+                        className='p-1 md:p-2 rounded-lg'
+                        style={{
+                            background: themeMode?.darkMode ? '#f2dc8e' : '#ecb77b',
+                        }}
+                    >
                         {items.map(item => (
                             <Link
                                 key={item.name}
                                 href={item.route}
-                                className='block px-4 py-2 my-1 text-sm text-[#7d662b] rounded-lg bg-[#c57f18]/40 md:hover:bg-white transition'
+                                className='block px-4 py-2 my-1 text-sm rounded-lg transition'
+                                style={{
+                                    background: themeMode?.darkMode ? '#c57f1860' : 'var(--blue2)',
+                                    color: themeMode?.darkMode ? 'var(--white)' : '#000000',
+                                }}
                             >
                                 {item.name}
                             </Link>

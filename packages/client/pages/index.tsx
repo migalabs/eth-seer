@@ -4,6 +4,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import StatusContext from '../contexts/status/StatusContext';
 import BlocksContext from '../contexts/blocks/BlocksContext';
 import EpochsContext from '../contexts/epochs/EpochsContext';
+import ThemeModeContext from '.././contexts/theme-mode/ThemeModeContext';
 
 // Components
 import Layout from '../components/layouts/Layout';
@@ -13,6 +14,9 @@ import Problems from '../components/layouts/Problems';
 import SummaryOverview from '../components/ui/SummaryOverview';
 
 export default function Home() {
+    // Theme Mode Context
+    const { themeMode } = React.useContext(ThemeModeContext) ?? {};
+
     // Status Context
     const { status } = useContext(StatusContext) ?? {};
 
@@ -64,15 +68,42 @@ export default function Home() {
         <>
             {status && status.working ? (
                 <Layout>
-                    <div className='text-center text-white mb-5 mt-14 xl:mt-0'>
-                        <h1 className='text-lg md:text-2xl uppercase'>Ethereum blockchain explorer</h1>
+                    <div className='text-center mb-5 mt-14 xl:mt-0'>
+                        <h1
+                            className='text-lg md:text-2xl uppercase text-[#da8742]'
+                            style={{
+                                color: themeMode?.darkMode ? 'var(--white)' : 'var(--newOrange)',
+                            }}
+                        >
+                            Ethereum blockchain explorer
+                        </h1>
+                    </div>
+
+                    <div className='mx-auto py-4 px-6 bg-white/30 border-2 border-dashed rounded-xl w-11/12 lg:w-10/12 mb-5'>
+                        <h2
+                            className='text-xs text-center'
+                            style={{
+                                color: themeMode?.darkMode ? 'var(--white)' : 'var(--newOrange)',
+                            }}
+                        >
+                            EthSeer provides information about the Beacon Chain of Ethereum. It displays the blocks
+                            being produced in real-time with a user-friendly interface and allows users to search for
+                            information in an engaging manner to understand the Blockchain.
+                        </h2>
                     </div>
 
                     <SummaryOverview />
                     <ChainOverview />
 
-                    <div className='text-center text-white mt-3'>
-                        <h2 className='text-lg md:text-xl uppercase mb-3'>Epoch Statistics</h2>
+                    <div className='text-center mt-3'>
+                        <h2
+                            className='text-lg md:text-xl uppercase mb-3'
+                            style={{
+                                color: themeMode?.darkMode ? 'var(--white)' : 'var(--newOrange)',
+                            }}
+                        >
+                            Epoch Statistics
+                        </h2>
                         <Statitstics showCalculatingEpochs />
                     </div>
                 </Layout>

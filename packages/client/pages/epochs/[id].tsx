@@ -1,5 +1,6 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 
 // Axios
 import axiosClient from '../../config/axios';
@@ -9,7 +10,6 @@ import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
 // Components
 import Layout from '../../components/layouts/Layout';
-import ProgressSmoothBarEpoch from '../../components/ui/ProgressSmoothBarEpoch';
 import ProgressSmoothBar from '../../components/ui/ProgressSmoothBar';
 import EpochAnimation from '../../components/layouts/EpochAnimation';
 import Loader from '../../components/ui/Loader';
@@ -32,7 +32,7 @@ type Props = {
 const CardContent = ({ content, bg, color }: Props) => {
     return (
         <span
-            className='block uppercase border-2 px-5 rounded-2xl font-bold leading-5 py-0.5 sm:py-1'
+            className='block uppercase border-2 rounded-3xl font-bold leading-3 pt-2 pb-1 md:pt-[7px] px-3 md:px-5'
             style={{ background: color, borderColor: bg, color: bg }}
         >
             {content}
@@ -136,52 +136,10 @@ const EpochComponent = () => {
         }
     };
 
-    const getAttestation = (
-        title: string,
-        primaryColor: string,
-        secundaryColor: string,
-        value: number,
-        attestations: number
-    ) => {
-        return (
-            <div className='flex flex-col md:flex-row gap-x-10 gap-y-2 items-center md:justify-end md:w-full'>
-                <div className='flex flex-col md:flex-row gap-x-3 justify-between w-full md:w-auto flex-grow max-w-[350px] min-w-[200px]'>
-                    <p className='w-20' style={{ color: primaryColor }}>
-                        {title}
-                    </p>
-                    <div className='flex-grow mx-6 md:mx-0'>
-                        <ProgressSmoothBarEpoch
-                            backgroundColor={secundaryColor}
-                            color={primaryColor}
-                            percent={1 - value / attestations}
-                        />
-                    </div>
-                </div>
-
-                <div className='flex flex-col md:flex-row gap-x-10 gap-y-2'>
-                    <div className='md:w-[275px]'>
-                        <CardContent
-                            content={`Missing ${title}: ${value.toLocaleString()}`}
-                            bg={primaryColor}
-                            color={secundaryColor}
-                        />
-                    </div>
-                    <div className='flex-shrink'>
-                        <CardContent
-                            content={`Attestations: ${attestations.toLocaleString()}`}
-                            bg={primaryColor}
-                            color={secundaryColor}
-                        />
-                    </div>
-                </div>
-            </div>
-        );
-    };
-
     const getContentEpochStats = () => {
         return (
             <div
-                className='flex flex-col gap-y-2 mx-2 px-6 uppercase overflow-x-scroll overflow-y-hidden scrollbar-thin text-black leading-7 text-[8px] sm:text-[10px] rounded-[22px] py-3'
+                className='flex flex-col gap-y-2 mx-2 px-6 uppercase  text-black leading-7 text-[8px] sm:text-[10px] rounded-[22px] py-3'
                 style={{
                     backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
                     boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
@@ -196,73 +154,92 @@ const EpochComponent = () => {
                 <div className='flex flex-col sm:flex-row gap-x-5'>
                     <p className='w-40 sm:w-60'>Blocks (out of 32):</p>
                     <div className='flex justify-center gap-x-4 '>
-                        <CardContent content={`Proposed: ${epoch?.proposed_blocks}`} bg='#00720B' color='#83E18C' />
+                        <CardContent content={`Proposed: ${epoch?.proposed_blocks}`} bg='#00720B' color='#D3FFD7' />
                         <CardContent
                             content={`Missed: ${32 - Number(epoch?.proposed_blocks)}`}
                             bg='#980E0E'
-                            color='#FF9090'
+                            color='#FFB7B7'
                         />
                     </div>
                 </div>
-                <div className='flex flex-col gap-y-2'>
+                <div className='flex flex-col gap-y-2 uppercase text-black leading-7 text-[8px] md:text-[10px]'>
                     <p className='items-start'>Attestation Accuracy:</p>
-
-                    {getAttestation(
-                        'Target',
-                        '#E86506',
-                        '#FFC163',
-                        Number(epoch?.f_missing_target),
-                        Number(epoch?.f_num_att_vals)
-                    )}
-                    {getAttestation(
-                        'Source',
-                        '#14946e',
-                        '#BDFFEB',
-                        Number(epoch?.f_missing_source),
-                        Number(epoch?.f_num_att_vals)
-                    )}
-                    {getAttestation(
-                        'Head',
-                        '#532BC5',
-                        '#E6DDFF',
-                        Number(epoch?.f_missing_head),
-                        Number(epoch?.f_num_att_vals)
-                    )}
-                </div>
-                <div className='flex flex-col'>
-                    <p>Voting Participation:</p>
-                    <div className='flex flex-col md:flex-row gap-x-10 gap-y-2 items-center md:justify-end md:w-full mb-4 mt-2'>
-                        <div>
+                    {epoch && (
+                        <div className='flex flex-col md:flex-row items-center gap-x-4 gap-y-2 text-[10px]'>
                             <ProgressSmoothBar
-                                percent={
-                                    Number(epoch?.f_att_effective_balance_eth) /
-                                    Number(epoch?.f_total_effective_balance_eth)
+                                title='Target'
+                                color='#B14E2A'
+                                backgroundColor='#FFE8C6'
+                                percent={1 - epoch.f_missing_target / epoch.f_num_att_vals}
+                                width={150}
+                                tooltipColor='orange'
+                                tooltipContent={
+                                    <>
+                                        <span>Missing Target: {epoch.f_missing_target?.toLocaleString()}</span>
+                                        <span>Attestations: {epoch.f_num_att_vals?.toLocaleString()}</span>
+                                    </>
                                 }
-                                color='#0016D8'
-                                backgroundColor='#BDC4FF'
-                                width={170}
+                                widthTooltip={220}
+                            />
+
+                            <ProgressSmoothBar
+                                title='Source'
+                                color='#117658'
+                                backgroundColor='#E2F3EE'
+                                percent={1 - epoch.f_missing_source / epoch.f_num_att_vals}
+                                width={150}
+                                tooltipColor='blue'
+                                tooltipContent={
+                                    <>
+                                        <span>Missing Source: {epoch.f_missing_source?.toLocaleString()}</span>
+                                        <span>Attestations: {epoch.f_num_att_vals?.toLocaleString()}</span>
+                                    </>
+                                }
+                                widthTooltip={220}
+                            />
+
+                            <ProgressSmoothBar
+                                title='Head'
+                                color='#813F93'
+                                backgroundColor='#F0ECFD'
+                                percent={1 - epoch.f_missing_head / epoch.f_num_att_vals}
+                                width={150}
+                                tooltipColor='purple'
+                                tooltipContent={
+                                    <>
+                                        <span>Missing Head: {epoch.f_missing_head?.toLocaleString()}</span>
+                                        <span>Attestations: {epoch.f_num_att_vals?.toLocaleString()}</span>
+                                    </>
+                                }
                                 widthTooltip={220}
                             />
                         </div>
-                        <div className='flex flex-col gap-y-2 w-[270px] md:w-fit'>
-                            <CardContent
-                                content={`Att. Balance: ${epoch?.f_att_effective_balance_eth?.toLocaleString()} ETH`}
-                                bg='#0016D8'
-                                color='#BDC4FF'
+                    )}
+                </div>
+                <div className='flex flex-col gap-y-2 uppercase text-black leading-7 text-[8px] md:text-[10px]'>
+                    <p>Voting Participation:</p>
+                    <div className='w-72 md:w-80 text-[10px] text-center leading-3'>
+                        {epoch && (
+                            <ProgressSmoothBar
+                                title=''
+                                color='#0F6A85'
+                                backgroundColor='#E7F9FF'
+                                percent={epoch.f_att_effective_balance_eth / epoch.f_total_effective_balance_eth || 0}
+                                tooltipColor='blue'
+                                tooltipContent={
+                                    <>
+                                        <span>Agg. Rewards: {epoch?.f_att_effective_balance_eth}</span>
+                                        <span>Max. Rewards: {epoch?.f_total_effective_balance_eth}</span>
+                                    </>
+                                }
+                                widthTooltip={220}
                             />
-                        </div>
-                        <div className='flex flex-col gap-y-2 w-[270px] md:w-fit'>
-                            <CardContent
-                                content={`Act. Balance: ${epoch?.f_total_effective_balance_eth?.toLocaleString()} ETH`}
-                                bg='#0016D8'
-                                color='#BDC4FF'
-                            />
-                        </div>
+                        )}
                     </div>
-                    <div className='flex flex-row items-center gap-x-5'>
-                        <p className='w-40 sm:w-60'>Withdrawals:</p>
-                        <p className='leading-3'>{((epoch?.withdrawals ?? 0) / 10 ** 9).toLocaleString()} ETH</p>
-                    </div>
+                </div>
+                <div className='flex flex-row items-center gap-x-5'>
+                    <p className='w-40 sm:w-60'>Withdrawals:</p>
+                    <p className='leading-3'>{((epoch?.withdrawals ?? 0) / 10 ** 9).toLocaleString()} ETH</p>
                 </div>
             </div>
         );
@@ -270,6 +247,10 @@ const EpochComponent = () => {
 
     return (
         <Layout>
+            <Head>
+                <meta name='robots' property='noindex' />
+            </Head>
+
             <div className='flex gap-x-3 justify-center items-center mb-5 mt-14 xl:mt-0'>
                 <LinkEpoch epoch={Number(id) - 1}>
                     <Arrow direction='left' />
