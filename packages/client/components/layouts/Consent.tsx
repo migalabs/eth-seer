@@ -12,11 +12,12 @@ type Props = {
 
 const Screen = styled.div<Props>`
     display: ${props => (props.consent ? 'none' : 'block')};
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: calc(100vw - 17px);
     height: 100vh;
+    z-index: 40;
 `;
 
 const Container = styled.div<Props>`
@@ -103,8 +104,6 @@ const Container = styled.div<Props>`
 `;
 
 const Consent = () => {
-    const screenRef = useRef(null);
-
     const [consent, setConsent] = useState(true);
     const [generalVisisble, setGeneralVisible] = useState(true);
     const [necessaryVisible, setNecessaryVisible] = useState(false);
@@ -121,17 +120,6 @@ const Consent = () => {
             ad_storage: 'granted',
             analytics_storage: 'granted',
         });
-    };
-
-    const handleScreenClient = (e: any) => {
-        if (e.target === screenRef.current) {
-            closeP();
-        }
-    };
-
-    const closeP = () => {
-        setConsent(true);
-        setCookie('localConsent', 'false', { maxAge: 60 * 60 });
     };
 
     const handleMouseEnterNecessary = () => {
@@ -157,7 +145,7 @@ const Consent = () => {
     }
 
     return (
-        <Screen ref={screenRef} consent={consent} onClick={handleScreenClient}>
+        <Screen consent={consent}>
             <Container consent={consent}>
                 <div className='flex flex-col justify-between h-full'>
                     <div>

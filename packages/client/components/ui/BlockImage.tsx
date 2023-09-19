@@ -18,9 +18,9 @@ const BlockImage = ({ poolName, proposed = true, width, height, showCheck }: Pro
     const getUrl = () => {
         if (poolName && POOLS.includes(poolName.toUpperCase())) {
             return `/static/images/blocks/cubes/${poolName.toLowerCase()}.webp`;
-        } else if (poolName && poolName.includes('lido')) {
+        } else if (poolName && poolName.toLowerCase().includes('lido')) {
             return `/static/images/blocks/cubes/lido.webp`;
-        } else if (poolName && poolName.includes('whale')) {
+        } else if (poolName && poolName.toLowerCase().includes('whale')) {
             return `/static/images/blocks/cubes/whale-ethereum-entity.webp`;
         } else {
             return `/static/images/blocks/cubes/unknown-ethereum-entity.webp`;

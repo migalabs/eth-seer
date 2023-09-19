@@ -16,6 +16,10 @@ const ProgressTileBar = ({ tooltipContent, totalBlocks }: Props) => {
         ));
     };
 
+    const staticArray = Array.from({ length: 32 }, (_, index) => {
+        return 1;
+    });
+
     return (
         <div className='flex flex-col gap-y-1'>
             <TooltipContainer>
@@ -28,6 +32,13 @@ const ProgressTileBar = ({ tooltipContent, totalBlocks }: Props) => {
                                     className={`w-[3px] h-2.5 ${element === 1 ? 'bg-green-500' : 'bg-red-500'}`}
                                 />
                             ))}
+                            {totalBlocks === undefined &&
+                                staticArray.map((element, idx) => (
+                                    <div
+                                        key={idx}
+                                        className={`w-[3px] h-2.5 ${element === 1 ? 'bg-green-500' : 'bg-red-500'}`}
+                                    />
+                                ))}
 
                             {totalBlocks?.length < 32 && addBars(Array(32 - totalBlocks.length).fill(1))}
                         </div>

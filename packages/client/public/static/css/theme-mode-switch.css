@@ -27,7 +27,7 @@
 
 .theme__icon-part {
     border-radius: 50%;
-    box-shadow: 4px -4px 0 5px hsl(0, 0%, 100%) inset;
+    box-shadow: 4px -4px 0 5px #c2741b inset;
     top: calc(50% - 5px);
     left: calc(50% - 5px);
     width: 10px;
@@ -88,7 +88,7 @@
 }
 
 .theme__toggle {
-    background-color: hsl(48, 90%, 85%);
+    background-color: #ecb77b;
     border-radius: 25% / 50%;
     box-shadow: 0 0 0 1.25px var(--primaryT);
     padding: 2.5px;
@@ -102,7 +102,7 @@
 }
 
 .theme__toggle:before {
-    background-color: hsl(48, 90%, 55%);
+    background-color: #fff0dd;
     border-radius: 50%;
     content: '';
     width: 25px;

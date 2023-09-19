@@ -25,12 +25,12 @@ export default function Document() {
                         --orange2: #ffcea1;
                         --orange3: #f18d30;
                         --orange4: #ffb16866;
-                        --blue1: #c6ecf8;
-                        --blue2: #6cc4e0;
-                        --blue3: #86d4ed;
-                        --blue4: #86d4ed99;
-                        --blue5: #4fc1e480;
-                        --blue6: #4089a080;
+                        --blue1: #fff0dd;
+                        --blue2: #ffd19b;
+                        --blue3: #ffce99;
+                        --blue4: #ecb77b;
+                        --blue5: #cd8f47;
+                        --blue6: #cb8e46;
                         --blue7: #0080a9;
                         --blue8: #0080a94d;
                         --blue9: #2b6d83;
@@ -44,6 +44,8 @@ export default function Document() {
                         --purple2: #886ed2;
                         --purple3: #bdc4ff;
                         --purple4: #886ed280;
+                        --newOrange: #000000;
+                        --white: #ffffff;
 
                         --boxShadowYellow1: inset -7px -7px 8px var(--yellow3), inset 7px 7px 8px var(--yellow3);
                         --boxShadowYellow2: inset -2.8px -2.8px 3.2px var(--yellow4),
@@ -53,20 +55,32 @@ export default function Document() {
                         --boxShadowOrange1: inset -7px -7px 8px var(--orange1), inset 7px 7px 8px var(--orange1);
                         --boxShadowOrange2: inset -7px -7px 8px var(--orange2), inset 7px 7px 8px var(--orange2);
                         --boxShadowOrange3: inset -4px -4px 4px var(--orange3), inset 4px 4px 4px var(--orange3);
-                        --boxShadowBlue1: inset -5px -5px 4px var(--blue5), inset 5px 5px 4px var(--blue5);
+                        --boxShadowBlue1: inset -5px -5px 4px var(--blue2), inset 5px 5px 4px var(--blue2);
                         --boxShadowBlue2: inset -5px -5px 4px var(--blue6), inset 5px 5px 4px var(--blue6);
                         --boxShadowBlue3: inset -7px -7px 8px var(--blue3), inset 7px 7px 8px var(--blue3);
-                        --boxShadowBlue4: inset 4px 4px 4px var(--blue8), inset -4px -4px 4px var(--blue8);
-                        --boxShadowBlue5: inset -2.76px -2.76px 3.15px var(--blue10),
-                            inset 2.76px 2.76px 3.15px var(--blue10);
+                        --boxShadowBlue4: inset 4px 4px 4px var(--blue4), inset -4px -4px 4px var(--blue4);
+                        --boxShadowBlue5: inset -2.76px -2.76px 3.15px var(--blue6),
+                            inset 2.76px 2.76px 3.15px var(--blue6);
                         --boxShadowGreen1: inset -7px -7px 8px var(--green2), inset 7px 7px 8px var(--green2);
                         --boxShadowGreen2: inset -7px -7px 8px var(--green3), inset 7px 7px 8px var(--green3);
                         --boxShadowGreen3: inset 4px 4px 4px var(--green3), inset -4px -4px 4px var(--green3);
                         --boxShadowPurple1: inset -7px -7px 8px var(--purple2), inset 7px 7px 8px var(--purple2);
                         --boxShadowPurple2: inset -4px -4px 4px var(--purple4), inset 4px 4px 4px var(--purple4);
 
-                        --background-image-light: url('${assetPrefix}/static/images/background/background_light.webp');
-                        --background-image-dark: url('${assetPrefix}/static/images/background/background_dark.webp');
+                        --background-light: radial-gradient(
+                            circle,
+                            rgba(255, 161, 72, 1) 0%,
+                            rgba(255, 194, 127, 1) 47%,
+                            rgba(255, 224, 187, 1) 82%,
+                            rgba(255, 239, 219, 1) 100%
+                        );
+                        --background-dark: radial-gradient(
+                            circle,
+                            rgba(141, 72, 231, 1) 0%,
+                            rgba(67, 10, 145, 1) 32%,
+                            rgba(7, 7, 97, 1) 60%,
+                            rgba(14, 1, 31, 1) 100%
+                        );
 
                         --zIndexThemeModeSwitch: 5;
                         --zIndexBlockImageMissed: 10;
@@ -87,7 +101,7 @@ export default function Document() {
                     }
 
                     body {
-                        background-image: var(--background-image-light);
+                        background-image: var(--background-light);
                         background-repeat: no-repeat;
                         background-size: cover;
                         background-attachment: fixed;
@@ -107,16 +121,16 @@ export default function Document() {
                 <link rel='preconnect' href='https://fonts.googleapis.com' />
                 <link rel='preconnect' href='https://fonts.gstatic.com' />
                 <link href='https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap' rel='stylesheet' />
+                <meta
+                    name='keywords'
+                    content='ethereum, ethereum blockchain explorer, ethereum block explorer, search'
+                />
                 <meta name='twitter:card' content='summary' />
                 <meta name='twitter:site' content='@miga_labs' />
-                <meta name='twitter:image' content='http://ethseer.com/static/images/ethseer_metadata.png' />
-                <meta property='og:url' content='http://ethseer.com/' />
-                <meta property='og:title' content='Ethereum (ETH) blockchain explorer - EthSeer.io' />
-                <meta
-                    name='description'
-                    content="Ethseer is an Ethereum Blockchain Explorer. It provides real-time data and statistics on Ethereum's latest epochs and blocks."
-                />
-                <meta property='og:image' content='http://ethseer.com/static/images/ethseer_metadata.png' />
+                <meta name='twitter:image' content='http://ethseer.io/static/images/ethseer_metadata.png' />
+                <meta property='og:url' content='http://ethseer.io/' />
+                <meta property='og:title' content='Ethereum Blockchain Explorer - EthSeer.io' />
+                <meta property='og:image' content='http://ethseer.io/static/images/ethseer_metadata.png' />
                 <meta httpEquiv='Content-Security-Policy' content='upgrade-insecure-requests' />
                 <link href={`${assetPrefix}/static/css/theme-mode-switch.css`} rel='stylesheet' />
             </Head>

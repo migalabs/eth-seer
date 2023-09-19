@@ -64,11 +64,10 @@ const SummaryOverview = () => {
             {summary && lastValidator !== 0 && (
                 <div className='px-4 mb-5'>
                     <div
-                        className='grid grid-row-5 xl:flex xl:flex-wrap justify-between w-fit gap-2 xl:gap-10 text-[10px] text-center text-white rounded-[22px] bg-white/20 py-4 px-8 xl:px-8 xl:py-3 mx-auto border-2'
+                        className='grid grid-row-5 xl:flex xl:flex-wrap justify-between w-fit gap-2 xl:gap-10 text-[10px] text-center rounded-[22px] bg-white/20 py-4 px-8 xl:px-8 xl:py-3 mx-auto border-2'
                         style={{
-                            borderColor: themeMode?.darkMode ? 'var(--yellow4)' : 'var(--blue1)',
-                            color: themeMode?.darkMode ? 'var(--yellow4)' : 'var(--blue1)',
-                            backgroundColor: themeMode?.darkMode ? '' : 'var(--blue5)',
+                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--newOrange)',
+                            borderColor: themeMode?.darkMode ? 'var(--white)' : 'var(--newOrange)',
                         }}
                     >
                         <p className='flex-shrink-0'>Network: {assetPrefix !== '/goerli' ? 'MAINNET' : 'GOERLI'}</p>

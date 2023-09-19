@@ -117,10 +117,10 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
 
         return (
             <div
-                className='flex gap-x-1 justify-around items-center text-[9px] text-black rounded-[22px] px-2 xl:px-8 py-3'
+                className='flex gap-x-1 justify-around items-center text-[10px] text-black rounded-[22px] px-2 xl:px-8 py-3'
                 style={{
-                    backgroundColor: themeMode?.darkMode ? 'var(--brown1)' : 'var(--blue3)',
-                    boxShadow: themeMode?.darkMode ? 'var(--boxShadowOrange1)' : 'var(--boxShadowBlue2)',
+                    backgroundColor: themeMode?.darkMode ? 'var(--brown1)' : 'var(--blue4)',
+                    boxShadow: themeMode?.darkMode ? 'var(--boxShadowOrange1)' : 'var(--boxShadowBlue5)',
                 }}
             >
                 <div className='flex flex-col w-[10%] pt-2.5 pb-2.5'>
@@ -171,7 +171,7 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
                 className='flex flex-col gap-y-4 justify-around items-center text-[10px] text-black rounded-[22px] px-3 py-4'
                 style={{
                     backgroundColor: themeMode?.darkMode ? 'var(--brown1)' : 'var(--blue3)',
-                    boxShadow: themeMode?.darkMode ? 'var(--boxShadowOrange1)' : 'var(--boxShadowBlue2)',
+                    boxShadow: themeMode?.darkMode ? 'var(--boxShadowOrange1)' : 'var(--boxShadowBlue4)',
                 }}
             >
                 <div className='flex gap-x-1 justify-center'>
@@ -339,7 +339,12 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
             className='flex flex-col px-2 xl:px-20 overflow-x-scroll overflow-y-hidden scrollbar-thin'
             onMouseMove={handleMouseMove}
         >
-            <div className='flex gap-x-1 justify-around px-2 xl:px-8 pb-3 uppercase text-sm min-w-[1150px]'>
+            <div
+                className='flex gap-x-1 justify-around px-2 xl:px-8 pb-3 uppercase text-sm min-w-[1150px]'
+                style={{
+                    color: themeMode?.darkMode ? 'var(--white)' : '',
+                }}
+            >
                 <div className='flex w-[10%] items-center gap-x-1 justify-center'>
                     <p className='mt-0.5 text-xs'>Time</p>
                     <TooltipContainer>
@@ -485,7 +490,7 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
                     epochs.epochs.map((epoch: Epoch) => (
                         <div
                             key={epoch.f_epoch}
-                            className='flex gap-x-1 justify-around items-center text-[9px] text-black rounded-[22px] px-2 xl:px-8 py-3'
+                            className='flex gap-x-1 justify-around items-center text-[10px] text-black rounded-[22px] px-2 xl:px-8 py-3'
                             style={{
                                 backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
                                 boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
@@ -518,8 +523,8 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
                                     <div className='flex-1'>
                                         <ProgressSmoothBar
                                             title='Target'
-                                            color='#E86506'
-                                            backgroundColor='#FFC163'
+                                            color='#B14E2A'
+                                            backgroundColor='#FFE8C6'
                                             percent={1 - epoch.f_missing_target / epoch.f_num_vals}
                                             tooltipColor='orange'
                                             tooltipContent={
@@ -536,8 +541,8 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
                                     <div className='flex-1'>
                                         <ProgressSmoothBar
                                             title='Source'
-                                            color='#14946e'
-                                            backgroundColor='#BDFFEB'
+                                            color='#117658'
+                                            backgroundColor='#E2F3EE'
                                             percent={1 - epoch.f_missing_source / epoch.f_num_vals}
                                             tooltipColor='blue'
                                             tooltipContent={
@@ -554,8 +559,8 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
                                     <div className='flex-1'>
                                         <ProgressSmoothBar
                                             title='Head'
-                                            color='#532BC5'
-                                            backgroundColor='#E6DDFF'
+                                            color='#813F93'
+                                            backgroundColor='#F0ECFD'
                                             percent={1 - epoch.f_missing_head / epoch.f_num_vals}
                                             tooltipColor='purple'
                                             tooltipContent={
@@ -573,8 +578,8 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
                             <div className='mb-2 w-[32%]'>
                                 <ProgressSmoothBar
                                     title='Attesting/total active'
-                                    color='#0016D8'
-                                    backgroundColor='#BDC4FF'
+                                    color='#0011A7'
+                                    backgroundColor='#E9EBFF'
                                     percent={epoch.f_att_effective_balance_eth / epoch.f_total_effective_balance_eth}
                                     tooltipColor='bluedark'
                                     tooltipContent={
@@ -739,8 +744,8 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
                             </div>
                             <ProgressSmoothBar
                                 title='Target'
-                                color='#E86506'
-                                backgroundColor='#FFC163'
+                                color='#B14E2A'
+                                backgroundColor='#FFE8C6'
                                 percent={1 - epoch.f_missing_target / epoch.f_num_vals}
                                 tooltipColor='orange'
                                 tooltipContent={
@@ -754,8 +759,8 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
 
                             <ProgressSmoothBar
                                 title='Source'
-                                color='#14946e'
-                                backgroundColor='#BDFFEB'
+                                color='#117658'
+                                backgroundColor='#E2F3EE'
                                 percent={1 - epoch.f_missing_source / epoch.f_num_vals}
                                 tooltipColor='blue'
                                 tooltipContent={
@@ -769,8 +774,8 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
 
                             <ProgressSmoothBar
                                 title='Head'
-                                color='#532BC5'
-                                backgroundColor='#E6DDFF'
+                                color='#813F93'
+                                backgroundColor='#F0ECFD'
                                 percent={1 - epoch.f_missing_head / epoch.f_num_vals}
                                 tooltipColor='purple'
                                 tooltipContent={
