@@ -34,7 +34,7 @@ const BlockImage = ({ poolName, proposed = true, width, height, showCheck }: Pro
                 alt='Logo'
                 width={width}
                 height={height}
-                className={`${proposed ? '' : 'brightness-75'}`}
+                className={`${proposed ? '' : 'brightness-90'}`}
             />
 
             {!proposed && (
