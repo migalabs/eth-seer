@@ -1,13 +1,13 @@
 import React from 'react';
-import Link from 'next/link';
+
+// Contexts
+import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
 // Components
 import CustomImage from '../ui/CustomImage';
 import Menu from '../ui/Menu';
 import SearchEngine from '../ui/SearchEngine';
-
-// Contexts
-import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
+import NetworkLink from '../ui/NetworkLink';
 
 const Header = () => {
     // Theme Mode Context
@@ -19,7 +19,7 @@ const Header = () => {
             style={{ background: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--white)' }}
         >
             <div className='w-fit'>
-                <Link href='/' passHref>
+                <NetworkLink href='/' passHref>
                     <div className='flex flex-row justify-start items-center p-2'>
                         <CustomImage
                             src={`/static/images/icons/ethseer_logo_${themeMode?.darkMode ? 'dark' : 'light'}.webp`}
@@ -36,7 +36,7 @@ const Header = () => {
                             <b>Ethseer</b>.io
                         </p>
                     </div>
-                </Link>
+                </NetworkLink>
             </div>
             <SearchEngine />
             <Menu />

@@ -2,19 +2,19 @@ import React, { useState, useEffect, useContext } from 'react';
 import Head from 'next/head';
 
 // Contexts
-import ThemeModeContext from '.././contexts/theme-mode/ThemeModeContext';
+import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
 // Axios
-import axiosClient from '../config/axios';
+import axiosClient from '../../config/axios';
 
 // Components
-import Layout from '../components/layouts/Layout';
-import SlotsList from '../components/layouts/Slots';
-import Loader from '../components/ui/Loader';
-import ViewMoreButton from '../components/ui/ViewMoreButton';
+import Layout from '../../components/layouts/Layout';
+import SlotsList from '../../components/layouts/Slots';
+import Loader from '../../components/ui/Loader';
+import ViewMoreButton from '../../components/ui/ViewMoreButton';
 
 // Types
-import { Slot } from '../types';
+import { Slot } from '../../types';
 
 const Slots = () => {
     // Theme Mode Context

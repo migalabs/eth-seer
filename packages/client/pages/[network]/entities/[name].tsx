@@ -2,21 +2,21 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
 // Axios
-import axiosClient from '../../config/axios';
+import axiosClient from '../../../config/axios';
 
 // Contexts
-import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
+import ThemeModeContext from '../../../contexts/theme-mode/ThemeModeContext';
 
 // Components
-import Layout from '../../components/layouts/Layout';
-import BlockGif from '../../components/ui/BlockGif';
-import Animation from '../../components/layouts/Animation';
-import Loader from '../../components/ui/Loader';
+import Layout from '../../../components/layouts/Layout';
+import BlockGif from '../../../components/ui/BlockGif';
+import Animation from '../../../components/layouts/Animation';
+import Loader from '../../../components/ui/Loader';
+import ProgressSmoothBar from '../../../components/ui/ProgressSmoothBar';
+import TabHeader from '../../../components/ui/TabHeader';
 
 // Types
-import { Entity } from '../../types';
-import ProgressSmoothBar from '../../components/ui/ProgressSmoothBar';
-import TabHeader from '../../components/ui/TabHeader';
+import { Entity } from '../../../types';
 
 type Props = {
     content: string;

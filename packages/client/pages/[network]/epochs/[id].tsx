@@ -3,25 +3,25 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 
 // Axios
-import axiosClient from '../../config/axios';
+import axiosClient from '../../../config/axios';
 
 // Contexts
-import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
+import ThemeModeContext from '../../../contexts/theme-mode/ThemeModeContext';
 
 // Components
-import Layout from '../../components/layouts/Layout';
-import ProgressSmoothBar from '../../components/ui/ProgressSmoothBar';
-import EpochAnimation from '../../components/layouts/EpochAnimation';
-import Loader from '../../components/ui/Loader';
-import LinkEpoch from '../../components/ui/LinkEpoch';
-import Slots from '../../components/layouts/Slots';
-import Arrow from '../../components/ui/Arrow';
+import Layout from '../../../components/layouts/Layout';
+import ProgressSmoothBar from '../../../components/ui/ProgressSmoothBar';
+import EpochAnimation from '../../../components/layouts/EpochAnimation';
+import Loader from '../../../components/ui/Loader';
+import LinkEpoch from '../../../components/ui/LinkEpoch';
+import Slots from '../../../components/layouts/Slots';
+import Arrow from '../../../components/ui/Arrow';
 
 // Types
-import { Epoch, Slot } from '../../types';
+import { Epoch, Slot } from '../../../types';
 
 // Constants
-import { FIRST_BLOCK } from '../../constants';
+import { FIRST_BLOCK } from '../../../constants';
 
 type Props = {
     content: string;
