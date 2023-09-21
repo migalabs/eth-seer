@@ -79,7 +79,7 @@ function Menu() {
                         color: themeMode?.darkMode ? 'var(--white)' : '#000000',
                     }}
                 >
-                    <Link href='/' className='text-xs uppercase'>
+                    <Link href='/' className='text-xs lg:text-[16px]'>
                         Home
                     </Link>
                 </li>

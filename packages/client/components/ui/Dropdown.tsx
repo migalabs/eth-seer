@@ -49,7 +49,7 @@ const Dropdown = ({ name, items }: Props) => {
         >
             <button
                 type='button'
-                className='w-full text-xs uppercase flex items-center justify-end relative'
+                className='w-full text-xs lg:text-[16px] flex items-center justify-end relative'
                 onClick={handleButtonClick}
             >
                 <span>{name}</span>
