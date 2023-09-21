@@ -17,11 +17,13 @@ const LinkIcon = ({ forceOrange, forceBlue }: Props) => {
 
     const getUrl = () => {
         if (forceOrange) {
-            return '/static/images/icons/link_light.webp';
+            return '/static/images/icons/link_orange.webp';
         } else if (forceBlue) {
-            return '/static/images/icons/link_dark.webp';
+            return '/static/images/icons/link_blue.webp';
         } else {
-            return themeMode?.darkMode ? '/static/images/icons/link_dark.webp' : '/static/images/icons/link_light.webp';
+            return themeMode?.darkMode
+                ? '/static/images/icons/link_blue.webp'
+                : '/static/images/icons/link_orange.webp';
         }
     };
 
