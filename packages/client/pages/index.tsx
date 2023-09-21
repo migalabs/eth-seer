@@ -70,18 +70,24 @@ export default function Home() {
                 <Layout>
                     <div className='text-center mb-5 mt-14 xl:mt-0'>
                         <h1
-                            className='text-lg md:text-2xl uppercase text-[#da8742]'
+                            className='text-[30px] md:text-[40px] capitalize font-semibold'
                             style={{
-                                color: themeMode?.darkMode ? 'var(--white)' : 'var(--newOrange)',
+                                color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                             }}
                         >
                             Ethereum blockchain explorer
                         </h1>
                     </div>
 
-                    <div className='mx-auto py-4 px-6 bg-white/30 border-2 border-dashed rounded-xl w-11/12 lg:w-10/12 mb-5'>
+                    <div
+                        className='mx-auto py-4 px-6 text-[12px] md:text-[16px] border rounded-md w-10/12 lg:w-10/12 mb-5'
+                        style={{
+                            background: themeMode?.darkMode ? 'var(--bgStrongDarkMode)' : 'var(--bgMainLightMode)',
+                            borderColor: themeMode?.darkMode ? 'var(--white)' : 'var(--lightGray)',
+                        }}
+                    >
                         <h2
-                            className='text-xs text-center'
+                            className='text- text-center'
                             style={{
                                 color: themeMode?.darkMode ? 'var(--white)' : 'var(--newOrange)',
                             }}
@@ -97,12 +103,12 @@ export default function Home() {
 
                     <div className='text-center mt-3'>
                         <h2
-                            className='text-lg md:text-xl uppercase mb-3'
+                            className='text-lg md:text-[28px] font-medium capitalize mb-3'
                             style={{
-                                color: themeMode?.darkMode ? 'var(--white)' : 'var(--newOrange)',
+                                color: themeMode?.darkMode ? 'var(--white)' : '',
                             }}
                         >
-                            Epoch Statistics
+                            Epoch statistics
                         </h2>
                         <Statitstics showCalculatingEpochs />
                     </div>
