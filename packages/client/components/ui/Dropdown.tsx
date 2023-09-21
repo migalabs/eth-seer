@@ -1,8 +1,10 @@
 import React, { useState, useContext } from 'react';
-import Link from 'next/link';
 
 // Contexts
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
+
+//Components
+import NetworkLink from './NetworkLink';
 
 // Types
 type Item = {
@@ -84,7 +86,7 @@ const Dropdown = ({ name, items }: Props) => {
                         }}
                     >
                         {items.map(item => (
-                            <Link
+                            <NetworkLink
                                 key={item.name}
                                 href={item.route}
                                 className={`block px-4 py-2 my-1 text-[16px] rounded-md bg-[#a19f9f] md:bg-transparent md:hover:bg-[#c9b6f8] transition md:font-semibold md:hover:text-${
@@ -92,7 +94,7 @@ const Dropdown = ({ name, items }: Props) => {
                                 }`}
                             >
                                 {item.name}
-                            </Link>
+                            </NetworkLink>
                         ))}
                     </div>
                 )}

@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
-import Link from 'next/link';
 
 // Contexts
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
 // Components
 import LinkIcon from './LinkIcon';
+import NetworkLink from './NetworkLink';
 
 // Types
 type Props = {
@@ -22,19 +22,18 @@ const LinkValidator = ({ validator, children, mxAuto }: Props) => {
         color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)',
     };
     return (
-        <Link
-            href={{
-                pathname: '/validators/[id]',
-                query: {
-                    id: validator,
-                },
-            }}
+        <NetworkLink
+            href={`/validators/${validator}`}
             passHref
+<<<<<<< HEAD
             as={`/validators/${validator}`}
             className={`flex gap-x-1 items-center font-medium md:hover:underline underline-offset-4 decoration-2 w-fit ${
                 mxAuto ? 'mx-auto' : ''
             }`}
             style={baseStyle}
+=======
+            className={`flex gap-x-1 items-center w-fit ${mxAuto ? 'mx-auto' : ''}`}
+>>>>>>> ea71594 (Create [network] folder and adapt all next/Link)
         >
             {children ?? (
                 <>
@@ -42,7 +41,7 @@ const LinkValidator = ({ validator, children, mxAuto }: Props) => {
                     <LinkIcon />
                 </>
             )}
-        </Link>
+        </NetworkLink>
     );
 };
 

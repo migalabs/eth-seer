@@ -2,11 +2,11 @@ import React, { useContext } from 'react';
 import Head from 'next/head';
 
 // Contexts
-import ThemeModeContext from '.././contexts/theme-mode/ThemeModeContext';
+import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
 // Components
-import Layout from '../components/layouts/Layout';
-import Statitstics from '../components/layouts/Statitstics';
+import Layout from '../../components/layouts/Layout';
+import Statitstics from '../../components/layouts/Statitstics';
 
 const Epochs = () => {
     // Theme Mode Context

@@ -2,21 +2,21 @@ import React, { useState, useEffect, useContext, useRef } from 'react';
 import Head from 'next/head';
 
 // Axios
-import axiosClient from '../config/axios';
+import axiosClient from '../../config/axios';
 
 // Contexts
-import ThemeModeContext from '../contexts/theme-mode/ThemeModeContext';
+import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
 // Components
-import Layout from '../components/layouts/Layout';
-import ValidatorStatus from '../components/ui/ValidatorStatus';
-import Loader from '../components/ui/Loader';
-import ViewMoreButton from '../components/ui/ViewMoreButton';
-import LinkValidator from '../components/ui/LinkValidator';
-import LinkEntity from '../components/ui/LinkEntity';
+import Layout from '../../components/layouts/Layout';
+import ValidatorStatus from '../../components/ui/ValidatorStatus';
+import Loader from '../../components/ui/Loader';
+import ViewMoreButton from '../../components/ui/ViewMoreButton';
+import LinkValidator from '../../components/ui/LinkValidator';
+import LinkEntity from '../../components/ui/LinkEntity';
 
 // Types
-import { Validator } from '../types';
+import { Validator } from '../../types';
 
 const Validators = () => {
     // Theme Mode Context

@@ -3,27 +3,27 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 
 // Axios
-import axiosClient from '../../config/axios';
+import axiosClient from '../../../config/axios';
 
 // Contexts
-import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
+import ThemeModeContext from '../../../contexts/theme-mode/ThemeModeContext';
 
 // Components
-import Layout from '../../components/layouts/Layout';
-import CustomImage from '../../components/ui/CustomImage';
-import LinkIcon from '../../components/ui/LinkIcon';
-import BlockGif from '../../components/ui/BlockGif';
-import TabHeader from '../../components/ui/TabHeader';
-import Loader from '../../components/ui/Loader';
-import LinkValidator from '../../components/ui/LinkValidator';
-import LinkSlot from '../../components/ui/LinkSlot';
-import Arrow from '../../components/ui/Arrow';
+import Layout from '../../../components/layouts/Layout';
+import CustomImage from '../../../components/ui/CustomImage';
+import LinkIcon from '../../../components/ui/LinkIcon';
+import BlockGif from '../../../components/ui/BlockGif';
+import TabHeader from '../../../components/ui/TabHeader';
+import Loader from '../../../components/ui/Loader';
+import LinkValidator from '../../../components/ui/LinkValidator';
+import LinkSlot from '../../../components/ui/LinkSlot';
+import Arrow from '../../../components/ui/Arrow';
 
 // Types
-import { Block, Withdrawal } from '../../types';
+import { Block, Withdrawal } from '../../../types';
 
 // Constants
-import { FIRST_BLOCK, ADDRESS_ZERO, ADDRESS_ZERO_SHORT } from '../../constants';
+import { FIRST_BLOCK, ADDRESS_ZERO, ADDRESS_ZERO_SHORT } from '../../../constants';
 
 type CardProps = {
     title: string;

@@ -1,9 +1,9 @@
 import { useState, useContext } from 'react';
-import Link from 'next/link';
 
 //Components
 import Dropdown from './Dropdown';
 import ThemeModeSwitch from './ThemeModeSwitch';
+import NetworkLink from './NetworkLink';
 
 // Contexts
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
@@ -83,9 +83,9 @@ function Menu() {
                         color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                     }}
                 >
-                    <Link href='/' className='text-[14px] lg:text-[16px]'>
+                    <NetworkLink href='/' className='text-[14px] lg:text-[16px]'>
                         Home
-                    </Link>
+                    </NetworkLink>
                 </li>
                 <li>
                     <Dropdown name='Explore' items={dropDownLists.Explore} />

@@ -2,14 +2,14 @@ import React, { useContext } from 'react';
 import Head from 'next/head';
 
 // Contexts
-import ThemeModeContext from '.././contexts/theme-mode/ThemeModeContext';
+import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
 // Components
-import Layout from '../components/layouts/Layout';
-import EntityCard from '../components/ui/EntitiyCard';
+import Layout from '../../components/layouts/Layout';
+import EntityCard from '../../components/ui/EntitiyCard';
 
 // Constants
-import { POOLS_EXTENDED } from '../constants';
+import { POOLS_EXTENDED } from '../../constants';
 
 const Entities = () => {
     // Theme Mode Context

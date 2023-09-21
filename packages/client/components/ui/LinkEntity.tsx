@@ -1,8 +1,8 @@
 import React from 'react';
-import Link from 'next/link';
 
 // Components
 import LinkIcon from './LinkIcon';
+import NetworkLink from './NetworkLink';
 
 // Types
 type Props = {
@@ -12,24 +12,14 @@ type Props = {
 
 const LinkEntity = ({ entity, children }: Props) => {
     return (
-        <Link
-            href={{
-                pathname: '/entities/[name]',
-                query: {
-                    name: entity,
-                },
-            }}
-            passHref
-            as={`/entities/${entity}`}
-            className='flex gap-x-1 items-center w-fit mx-auto'
-        >
+        <NetworkLink href={`/entities/${entity}`} passHref className='flex gap-x-1 items-center w-fit mx-auto'>
             {children ?? (
                 <>
                     <p>{entity}</p>
                     <LinkIcon />
                 </>
             )}
-        </Link>
+        </NetworkLink>
     );
 };
 

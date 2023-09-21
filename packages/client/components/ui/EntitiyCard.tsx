@@ -5,7 +5,7 @@ import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
 // Components
 import BlockImage from './BlockImage';
-import Link from 'next/link';
+import NetworkLink from './NetworkLink';
 
 type Props = {
     index: number;
@@ -29,7 +29,7 @@ const EntityCard = ({ index, pool }: Props) => {
     // }, [pool]);
 
     return (
-        <Link href={`/entities/${pool.toLocaleLowerCase()}`}>
+        <NetworkLink href={`/entities/${pool.toLocaleLowerCase()}`}>
             <div
                 className='flex md:flex-row flex-col bg-[var(--bgFairLightMode)] md:hover:bg-[var(--white)] transition md:justify-start items-center py-4 px-2 border-2 gap-2 rounded-md'
                 style={{
@@ -50,7 +50,7 @@ const EntityCard = ({ index, pool }: Props) => {
                     <span className='font-light text-[18px] md:text-[20px]'>{String(index).padStart(3, '0')}</span>
                 </div>
             </div>
-        </Link>
+        </NetworkLink>
     );
 };
 

@@ -1,5 +1,4 @@
 import React, { useState, Fragment, useContext, useRef } from 'react';
-import Link from 'next/link';
 import styled from '@emotion/styled';
 
 // Context
@@ -12,6 +11,7 @@ import useOutsideClick from '../../hooks/useOutsideClick';
 
 // Components
 import CustomImage from './CustomImage';
+import NetworkLink from './NetworkLink';
 
 // Constants
 import { POOLS_EXTENDED } from '../../constants';
@@ -217,7 +217,7 @@ const SearchEngine = () => {
                     >
                         {searchResults.map((item, index) => (
                             <Fragment key={index}>
-                                <Link
+                                <NetworkLink
                                     className={`transition-all pl-1 md:hover:bg-[var(--purple)] py-2 rounded-md md:hover:text-${
                                         themeMode?.darkMode ? 'black' : 'white'
                                     }`}
@@ -225,7 +225,7 @@ const SearchEngine = () => {
                                     passHref
                                 >
                                     <span>{item.label}</span>
-                                </Link>
+                                </NetworkLink>
 
                                 {index !== searchResults.length - 1 && (
                                     <div className='border-b border-[var(--purple)] '></div>
