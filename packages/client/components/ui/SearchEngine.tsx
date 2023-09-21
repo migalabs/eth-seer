@@ -22,22 +22,22 @@ type PropsInput = {
 };
 
 const SearchEngineInput = styled.input<PropsInput>`
-    color: ${props => (props.darkMode ? 'var(--yellow4)' : '#d5872f')};
+    color: ${props => (props.darkMode ? 'var(--white)' : 'var(--white)')};
 
     ::placeholder {
         /* Chrome, Firefox, Opera, Safari 10.1+ */
-        color: ${props => (props.darkMode ? 'var(--yellow4)' : '#d5872f')};
+        color: ${props => (props.darkMode ? 'var(--white)' : 'var(--white)')};
         opacity: 1; /* Firefox */
     }
 
     :-ms-input-placeholder {
         /* Internet Explorer 10-11 */
-        color: ${props => (props.darkMode ? 'var(--yellow4)' : '#d5872f')};
+        color: ${props => (props.darkMode ? 'var(--white)' : 'var(--white)')};
     }
 
     ::-ms-input-placeholder {
         /* Microsoft Edge */
-        color: ${props => (props.darkMode ? 'var(--yellow4)' : '#d5872f')};
+        color: ${props => (props.darkMode ? 'var(--white)' : 'var(--white)')};
     }
 `;
 
@@ -179,10 +179,10 @@ const SearchEngine = () => {
 
     return (
         <div
-            className='absolute z-40 flex top-20 xl:top-4 left-4 xl:left-[calc(50%-200px)] items-center w-[calc(100%-2rem)] xl:w-[400px] h-10 border-2 rounded-3xl py-1 bg-white/30'
+            className='absolute z-40 flex top-20 xl:top-4 left-4 xl:left-[calc(50%-200px)] items-center w-[calc(100%-2rem)] xl:w-[400px] h-10 border-2 rounded-md py-1'
             style={{
-                borderColor: themeMode?.darkMode ? 'var(--yellow4)' : '#d5872f',
-                color: themeMode?.darkMode ? 'var(--yellow4)' : '#d5872f',
+                borderColor: themeMode?.darkMode ? 'var(--white)' : 'transparent',
+                background: themeMode?.darkMode ? '' : 'var(--purple)'
             }}
             ref={popUpRef}
         >
@@ -196,7 +196,7 @@ const SearchEngine = () => {
 
             <SearchEngineInput
                 type='text'
-                className='w-full h-full bg-transparent text-sm m-2 outline-none'
+                className='w-full h-full bg-transparent text-[16px] m-2 outline-none'
                 placeholder='Search'
                 value={search}
                 onChange={handleSearch}
@@ -206,16 +206,14 @@ const SearchEngine = () => {
 
             {searchResults.length > 0 && showResults && (
                 <div
-                    className='absolute top-full left-0 border-2 rounded-xl p-1 bg-[#9c909c] z-[var(--zIndexSearchEngine)] w-full'
+                    className='absolute top-full left-0 border-2 rounded-md p-1 z-[var(--zIndexSearchEngine)] w-full border-[#c9b6f8]'
                     style={{
-                        borderColor: themeMode?.darkMode ? 'var(--yellow4)' : '#d5872f',
-                        color: themeMode?.darkMode ? 'var(--yellow4)' : '#d5872f',
-                        background: themeMode?.darkMode ? '#9c909c' : '#fff0dd',
+                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
+                        background: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--white)',
                     }}
                 >
                     <div
-                        className={`flex flex-col gap-y-3 w-full px-4 py-4 text-xs max-h-[400px] overflow-y-scroll scrollbar-thin ${
-                            themeMode?.darkMode ? 'scrollbar-thumb-[#f0c83a]' : 'scrollbar-thumb-[#d5872f]'
+                        className={`flex flex-col gap-y-3 w-full px-4 py-4 text-xs md:text-[14px] max-h-[400px] scrollbar-thumb-[#c9b6f8] overflow-y-scroll scrollbar-thin
                         } scrollbar-track-[#736a73] scrollbar-thumb-rounded`}
                     >
                         {searchResults.map((item, index) => (
@@ -226,10 +224,7 @@ const SearchEngine = () => {
 
                                 {index !== searchResults.length - 1 && (
                                     <div
-                                        className='border-b'
-                                        style={{
-                                            borderColor: themeMode?.darkMode ? 'var(--yellow4)' : '#d5872f',
-                                        }}
+                                        className='border-b border-[#c9b6f8]'
                                     ></div>
                                 )}
                             </Fragment>
