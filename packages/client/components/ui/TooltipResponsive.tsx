@@ -31,7 +31,7 @@ const TooltipResponsive = ({ width, backgroundColor, colorLetter, content, top, 
 
     return (
         <div
-            className='absolute flex-col border-2 rounded-2xl py-4 px-4 mt-2 mx-auto hidden z-[var(--zIndexTooltip)] text-[8px] uppercase leading-4'
+            className='absolute flex-col border-2 rounded-2xl py-4 px-4 mt-2 mx-auto hidden z-[var(--zIndexTooltip)] text-[12px] uppercase leading-4'
             style={{
                 width,
                 left: GetParentLeftPosition(),
