@@ -73,7 +73,7 @@ const Dropdown = ({ name, items }: Props) => {
             <div
                 className={`relative md:absolute transition-opacity duration-300 ${
                     isOpen ? 'opacity-100 h-auto' : 'opacity-0 h-0'
-                } absolute right-0 mt-1 md:mt-0.5`}
+                } absolute right-0`}
             >
                 {isOpen && (
                     <div
