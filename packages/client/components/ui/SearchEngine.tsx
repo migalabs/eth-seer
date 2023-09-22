@@ -182,7 +182,7 @@ const SearchEngine = () => {
             className='absolute z-40 flex top-20 xl:top-4 left-4 xl:left-[calc(50%-200px)] items-center w-[calc(100%-2rem)] xl:w-[400px] h-10 border-2 rounded-md py-1'
             style={{
                 borderColor: themeMode?.darkMode ? 'var(--white)' : 'transparent',
-                background: themeMode?.darkMode ? '' : 'var(--purple)'
+                background: themeMode?.darkMode ? '' : 'var(--purple)',
             }}
             ref={popUpRef}
         >
@@ -223,9 +223,7 @@ const SearchEngine = () => {
                                 </Link>
 
                                 {index !== searchResults.length - 1 && (
-                                    <div
-                                        className='border-b border-[#c9b6f8]'
-                                    ></div>
+                                    <div className='border-b border-[#c9b6f8]'></div>
                                 )}
                             </Fragment>
                         ))}
