@@ -54,7 +54,7 @@ function Menu() {
                 <button type='button' className='md:hidden absolute top-2 right-2 m-2' onClick={handleMenuToggle}>
                     <svg
                         className='w-8 h-8'
-                        style={{color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)'}}
+                        style={{ color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)' }}
                         fill='none'
                         stroke='currentColor'
                         viewBox='0 0 24 24'
@@ -71,9 +71,11 @@ function Menu() {
             </div>
             <ul
                 className={`flex items-end absolute md:relative ${isOpen ? 'flex-col' : 'invisible'} md:visible
-                }] md:bg-transparent md:flex-row md:gap-10 p-6 mt-10 md:mt-0 rounded-md border md:border-none`} 
-                style={{ background: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--white)',
-            borderColor: themeMode?.darkMode ? 'var(--white)': 'var(--black)'}}
+                }] md:bg-transparent md:flex-row md:gap-10 p-6 mt-10 md:mt-0 rounded-md border md:border-none`}
+                style={{
+                    background: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--white)',
+                    borderColor: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
+                }}
             >
                 <li
                     className='flex py-2 md:py-0'

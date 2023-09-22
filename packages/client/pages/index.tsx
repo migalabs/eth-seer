@@ -69,9 +69,7 @@ export default function Home() {
             {status && status.working ? (
                 <Layout>
                     <div className='text-center mb-5 mt-14 xl:mt-0'>
-                        <h1
-                            className='text-[30px] md:text-[40px] capitalize font-semibold text-black'
-                        >
+                        <h1 className='text-[30px] md:text-[40px] capitalize font-semibold text-black'>
                             Ethereum blockchain explorer
                         </h1>
                     </div>

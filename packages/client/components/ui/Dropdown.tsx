@@ -80,7 +80,7 @@ const Dropdown = ({ name, items }: Props) => {
                         className='p-1 md:p-3 rounded-md md:border'
                         style={{
                             background: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--white)',
-                            borderColor: themeMode?.darkMode ? 'var(--white)' : 'var(----darkGray)'
+                            borderColor: themeMode?.darkMode ? 'var(--white)' : 'var(----darkGray)',
                         }}
                     >
                         {items.map(item => (
