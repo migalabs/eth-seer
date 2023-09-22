@@ -15,7 +15,7 @@ const Header = () => {
 
     return (
         <div
-            className='flex justify-between'
+            className='flex justify-between items-center'
             style={{ background: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--white)' }}
         >
             <div className='w-fit'>
@@ -27,7 +27,6 @@ const Header = () => {
                             width={50}
                             height={50}
                         />
-
                         <p
                             className='uppercase text-[16px] md:text-[30px] mt-1 ml-2'
                             style={{
@@ -39,10 +38,8 @@ const Header = () => {
                     </div>
                 </Link>
             </div>
-            <div className='flex flex-row gap-x-5 items-start mt-2.5'>
-                <SearchEngine />
-                <Menu />
-            </div>
+            <SearchEngine />
+            <Menu />
         </div>
     );
 };

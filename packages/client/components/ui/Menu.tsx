@@ -94,7 +94,7 @@ function Menu() {
                     <Dropdown name='Networks' items={dropDownLists.Networks} />
                 </li>
             </ul>
-            <div className='absolute right-14 md:right-0 md:relative md:pr-2'>
+            <div className='relative right-8 md:right-0'>
                 <ThemeModeSwitch />
             </div>
         </div>
