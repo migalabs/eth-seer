@@ -48,9 +48,7 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
             <div
                 className={`flex items-center my-2 p-2 h-full border-2 ${lastEpoch && 'rounded-md'}`}
                 style={{
-                    borderColor: lastEpoch
-                        ? `${themeMode?.darkMode ? 'var(--white)' : 'var(--white)'}`
-                        : 'transparent',
+                    borderColor: lastEpoch ? `${themeMode?.darkMode ? 'var(--white)' : 'var(--white)'}` : 'transparent',
                 }}
             >
                 <div
@@ -58,7 +56,7 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
                     style={{
                         backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
                         borderColor: themeMode?.darkMode ? 'var(--white)' : 'var(--white)',
-                        boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)'
+                        boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
                     }}
                 >
                     {blocks.map(block => (
