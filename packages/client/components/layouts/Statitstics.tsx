@@ -119,7 +119,7 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
             <div
                 className='flex gap-x-1 justify-around items-center text-[14px] rounded-md border-2 border-[#c9b6f8] px-2 xl:px-8 py-3'
                 style={{
-                    backgroundColor: themeMode?.darkMode ? 'var( --bgStrongDarkMode)' : 'var(--bgMainLightMode)',
+                    backgroundColor: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--bgFairDarkMode)',
                     boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
                     color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                 }}
@@ -171,7 +171,7 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
             <div
                 className='flex flex-col gap-y-4 justify-around items-center text-[12px] border-2 border-[#c9b6f8] rounded-md px-3 py-4'
                 style={{
-                    backgroundColor: themeMode?.darkMode ? 'var( --bgStrongDarkMode)' : 'var(--bgMainLightMode)',
+                    backgroundColor: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--bgFairDarkMode)',
                     boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
                     color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                 }}
@@ -494,9 +494,13 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
                             key={epoch.f_epoch}
                             className='flex gap-x-1 justify-around items-center text-[14px] rounded-md border-2 border-[#c9b6f8] px-2 xl:px-8 py-3'
                             style={{
-                                backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgFairLightMode)',
-                                boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardLDark)' : 'var(--boxShadowCardLight)',
-                                color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)'
+                                backgroundColor: themeMode?.darkMode
+                                    ? 'var(--bgFairDarkMode)'
+                                    : 'var(--bgFairLightMode)',
+                                boxShadow: themeMode?.darkMode
+                                    ? 'var(--boxShadowCardDark)'
+                                    : 'var(--boxShadowCardLight)',
+                                color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                             }}
                         >
                             <div className='flex flex-col w-[10%]'>
@@ -640,12 +644,14 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
                         style={{
                             backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgFairLightMode)',
                             boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardLDark)' : 'var(--boxShadowCardLight)',
-                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)'
+                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                         }}
                     >
                         <div className='flex gap-x-1 justify-center'>
                             <LinkEpoch epoch={epoch.f_epoch}>
-                                <p className='font-semibold text-[16px] mt-0.5'>Epoch {epoch.f_epoch?.toLocaleString()}</p>
+                                <p className='font-semibold text-[16px] mt-0.5'>
+                                    Epoch {epoch.f_epoch?.toLocaleString()}
+                                </p>
                             </LinkEpoch>
                         </div>
                         <div className='flex flex-col gap-x-4 w-full'>
