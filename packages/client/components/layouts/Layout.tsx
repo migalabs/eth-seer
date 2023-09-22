@@ -49,9 +49,12 @@ const Layout = ({ hideMetaDescription, children }: PropsWithChildren) => {
                     background: themeMode?.darkMode ? 'var(--bgFairLightMode)' : 'var(--bgStrongLightMode)',
                 }}
             >
-                <div className='flex flex-row justify-center items-center' style={{
-                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                }}>
+                <div
+                    className='flex flex-row justify-center items-center'
+                    style={{
+                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
+                    }}
+                >
                     <p>Powered with</p>
                     <Image src={FooterHeartImage} alt='Heart illustration' className='mx-1' />
                     <p>

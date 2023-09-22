@@ -85,7 +85,15 @@ export default function Document() {
                             rgba(235, 227, 255, 1) 74%,
                             rgba(253, 253, 255, 1) 100%
                         );
-                        --background-dark: linear-gradient(180deg, rgba(200,181,255,1) 0%, rgba(205,198,224,1) 18%, rgba(159,159,159,1) 41%, rgba(85,85,85,1) 62%, rgba(65,65,65,1) 79%, rgba(52,52,52,1) 100%);
+                        --background-dark: linear-gradient(
+                            180deg,
+                            rgba(203, 184, 250, 1) 0%,
+                            rgba(145, 132, 179, 1) 16%,
+                            rgba(103, 92, 130, 1) 38%,
+                            rgba(85, 85, 85, 1) 61%,
+                            rgba(52, 52, 52, 1) 87%,
+                            rgba(52, 52, 52, 1) 100%
+                        );
 
                         --boxShadowYellow1: inset -7px -7px 8px var(--yellow3), inset 7px 7px 8px var(--yellow3);
                         --boxShadowYellow2: inset -2.8px -2.8px 3.2px var(--yellow4),
