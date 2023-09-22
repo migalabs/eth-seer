@@ -181,7 +181,7 @@ const SearchEngine = () => {
         <div
             className='absolute z-40 flex top-20 xl:top-4 left-4 xl:left-[calc(50%-200px)] items-center w-[calc(100%-2rem)] xl:w-[400px] h-10 border-2 rounded-md py-1'
             style={{
-                borderColor: themeMode?.darkMode ? 'var(--white)' : 'transparent',
+                borderColor: themeMode?.darkMode ? 'var(--white)' : '',
                 background: themeMode?.darkMode ? '' : 'var(--purple)',
             }}
             ref={popUpRef}
