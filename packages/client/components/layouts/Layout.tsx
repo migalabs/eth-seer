@@ -11,7 +11,7 @@ import Background from './Background';
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
 // Images
-import FooterHeartImage from '../../public/static/images/footer/footer_heart.svg';
+import FooterHeartImage from '../../public/static/images/footer/footer_heart.webp';
 
 type PropsWithChildren = {
     children?: React.ReactNode;
@@ -43,13 +43,13 @@ const Layout = ({ hideMetaDescription, children }: PropsWithChildren) => {
 
             <main className='my-6 flex-1'>{children}</main>
 
-            <footer className='text-center text-[7.5px] md:text-sm p-2 bg-[#ffffff7a]'>
-                <div
-                    className='flex flex-row justify-center items-center text-white'
-                    style={{
-                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--newOrange)',
-                    }}
-                >
+            <footer
+                className='text-center text-[12px] md:text-[15px] p-2'
+                style={{
+                    background: themeMode?.darkMode ? 'var(--bgFairLightMode)' : 'var(--bgStrongLightMode)',
+                }}
+            >
+                <div className='flex flex-row justify-center items-center text-black'>
                     <p>Powered with</p>
                     <Image src={FooterHeartImage} alt='Heart illustration' className='mx-1' />
                     <p>
