@@ -46,8 +46,8 @@ const ProgressTileBar = ({ tooltipContent, totalBlocks }: Props) => {
 
                     <TooltipResponsive
                         width={200}
-                        backgroundColor='#FEE351'
-                        colorLetter='#D88D1C'
+                        backgroundColor='#ffffff'
+                        colorLetter='#000000'
                         content={tooltipContent}
                         top='35px'
                     />
