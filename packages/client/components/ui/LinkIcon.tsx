@@ -21,9 +21,7 @@ const LinkIcon = ({ forceOrange, forceBlue }: Props) => {
         } else if (forceBlue) {
             return '/static/images/icons/link_dark.webp';
         } else {
-            return themeMode?.darkMode
-                ? '/static/images/icons/link_dark.webp'
-                : '/static/images/icons/link_light.webp';
+            return themeMode?.darkMode ? '/static/images/icons/link_dark.webp' : '/static/images/icons/link_light.webp';
         }
     };
 
