@@ -6,6 +6,7 @@ import Image from 'next/image';
 import Header from './Header';
 import Consent from './Consent';
 import Background from './Background';
+import Footer from './Footer';
 
 // Contexts
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
@@ -43,29 +44,7 @@ const Layout = ({ hideMetaDescription, children }: PropsWithChildren) => {
 
             <main className='my-6 flex-1'>{children}</main>
 
-            <footer
-                className='text-center text-[12px] md:text-[15px] p-2'
-                style={{
-                    background: themeMode?.darkMode ? 'var(--bgFairLightMode)' : 'var(--bgStrongLightMode)',
-                }}
-            >
-                <div
-                    className='flex flex-row justify-center items-center'
-                    style={{
-                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                    }}
-                >
-                    <p>Powered with</p>
-                    <Image src={FooterHeartImage} alt='Heart illustration' className='mx-1' />
-                    <p>
-                        by&nbsp;
-                        <a className='underline uppercase' href='https://migalabs.io/' target='_blank' rel='noreferrer'>
-                            MigaLabs
-                        </a>
-                        &nbsp;® 2023-2024
-                    </p>
-                </div>
-            </footer>
+            <Footer></Footer>
 
             <Consent />
         </div>
