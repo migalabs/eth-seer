@@ -23,7 +23,7 @@ const Layout = ({ hideMetaDescription, children }: PropsWithChildren) => {
                 {!hideMetaDescription && (
                     <meta
                         name='description'
-                        content="Ethseer is an Ethereum Blockchain Explorer. It provides real-time data and statistics on Ethereum's latest epochs and blocks."
+                        content="Ethseer is an Ethereum Blockchain Explorer. It provides real-time data and statistics on Ethereum's latest epochs, slots, validators and staking entities."
                     />
                 )}
 
