@@ -80,12 +80,13 @@ const Validators = () => {
     return (
         <Layout hideMetaDescription>
             <Head>
-                <title>Validators - EthSeer</title>
+                <title>Validators of the Ethereum Beacon Chain - EthSeer.io</title>
                 <meta
                     name='description'
-                    content="Validators are the blockchain security contributors. Explore validator roles in blockchain consensus, behavior-based rewards, and Ethseer's detailed insights into Beacon Chain validator."
+                    content="Explore Ethereum validators, the entity they belong to, the blocks they have proposed, and their performance over the last week."
                 />
-                <meta name='keywords' content='ethereum, staking, validators, PoS, rewards, performance, slashing' />
+                <meta name='keywords' content='Ethereum, Staking, Validators, PoS, Rewards, Performance, Slashing' />
+                <link rel='canonical' href='https://ethseer.io/validators' />
             </Head>
 
             <h1 className='text-white text-center text-xl md:text-3xl uppercase mt-14 xl:mt-0'>Ethereum Validators</h1>
