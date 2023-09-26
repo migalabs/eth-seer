@@ -102,10 +102,7 @@ const Validators = () => {
                         color: themeMode?.darkMode ? 'var(--white)' : 'var(--newOrange)',
                     }}
                 >
-                    Validators participate in the consensus protocol by proposing and validating blocks. They are
-                    subject to rewards and penalties based on their behaviour. Ethseer displays information about the
-                    current validators in the Beacon Chain, including detailed information about each validator and its
-                    performance.
+                    Validators participate in the consensus protocol by proposing and validating blocks. They are subject to rewards and penalties based on their behavior. Ethseer displays information about the current validators in the Beacon Chain, including detailed information about each validator and its performance.
                 </h2>
             </div>
 
