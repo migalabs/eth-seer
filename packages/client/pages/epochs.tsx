@@ -25,6 +25,7 @@ const Epochs = () => {
             </Head>
 
             <div className='my-6 text-center text-white mt-14 xl:mt-0'>
+<<<<<<< HEAD
                 <h1 className='text-lg md:text-3xl uppercase mb-3'>Ethereum Epochs</h1>
 
                 <div className='mx-auto py-4 px-6 bg-white/30 border-2 border-dashed rounded-xl flex w-11/12 lg:w-3/5 mb-5'>
@@ -33,6 +34,17 @@ const Epochs = () => {
                         style={{
                             color: themeMode?.darkMode ? 'var(--white)' : 'var(--newOrange)',
                         }}
+=======
+                <h1 className='text-lg md:text-3xl uppercase mb-3'>
+                    Ethereum Epochs
+                </h1>
+
+                <div
+                    className='mx-auto py-4 px-6 bg-white/30 border-2 border-dashed rounded-xl flex w-11/12 lg:w-10/12 mb-5'
+                >
+                    <h2
+                        className='text-white text-xs text-center'
+>>>>>>> f3f3092 (Update SEO)
                     >
                         Epochs in Ethereum refer to a specific period of time in the Beacon Chain. Each epoch is
                         composed of 32 slots and has a duration of 6.4 minutes.
