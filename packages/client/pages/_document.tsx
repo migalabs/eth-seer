@@ -123,7 +123,7 @@ export default function Document() {
                 <link href='https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap' rel='stylesheet' />
                 <meta
                     name='keywords'
-                    content='ethereum, ethereum blockchain explorer, ethereum block explorer, search'
+                    content='Ethereum, Ethereum Blockchain Explorer, Ethereum Block Explorer, Search'
                 />
                 <meta name='twitter:card' content='summary' />
                 <meta name='twitter:site' content='@miga_labs' />
