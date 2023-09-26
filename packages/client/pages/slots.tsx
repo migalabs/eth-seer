@@ -63,21 +63,26 @@ const Slots = () => {
     return (
         <Layout hideMetaDescription>
             <Head>
-                <title>Slots - EthSeer</title>
+                <title>Slots of the Ethereum Beacon Chain - EthSeer.io</title>
                 <meta
                     name='description'
-                    content='At every slots a block is produced, which can update the blockchain state and validator information. Validators and committees utilize 12-second slots in blockchain epochs, enhancing efficiency and security for network validation and management.'
+                    content='Check the Ethereum chain slots, to find the block proposer, the number of attestations, the gas used, number of transactions and withdrawals.'
                 />
-                <meta name='keywords' content='ethereum, slots, state, block, validator, proposer, attestations' />
+                <meta name='keywords' content='Ethereum, Slots, State, Block, Validator, Proposer, Attestations' />
+                <link rel='canonical' href='https://ethseer.io/slots' />
             </Head>
 
-            <h1 className='text-white text-center text-xl md:text-3xl uppercase mt-14 xl:mt-0'>Ethereum Slots</h1>
+            <h1 className='text-[30px] md:text-[40px] text-center capitalize font-semibold text-black mt-10 mb-4 md:mb-4 md:mt-0'>Ethereum Slots</h1>
 
-            <div className='mx-auto py-4 px-6 bg-white/30 border-2 border-dashed rounded-xl flex w-11/12 lg:w-3/5 my-3'>
+            <div className='mx-auto py-4 px-6 text-[12px] md:text-[16px] border rounded-md w-11/12 lg:w-10/12 mb-5'
+                        style={{
+                            background: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--bgMainLightMode)',
+                            borderColor: themeMode?.darkMode ? 'var(--white)' : 'var(--lightGray)',
+                        }}>
                 <h2
-                    className='text-xs text-center'
+                    className='text-center'
                     style={{
-                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--newOrange)',
+                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                     }}
                 >
                     Every epoch is divided into regular interval called slots, which occur every 12 seconds. At every
