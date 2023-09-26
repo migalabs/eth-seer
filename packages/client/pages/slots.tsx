@@ -66,18 +66,15 @@ const Slots = () => {
                 <link rel='canonical' href='https://ethseer.io/slots' />
             </Head>
 
-            <h1 className='text-[30px] md:text-[40px] text-center capitalize font-semibold text-black mt-10 mb-4 md:mb-4 md:mt-0'>Ethereum Slots</h1>
+            <h1 className='text-white text-center text-xl md:text-3xl uppercase mt-14 xl:mt-0'>
+                Ethereum Slots
+            </h1>
 
-            <div className='mx-auto py-4 px-6 text-[12px] md:text-[16px] border rounded-md w-11/12 lg:w-10/12 mb-5'
-                        style={{
-                            background: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--bgMainLightMode)',
-                            borderColor: themeMode?.darkMode ? 'var(--white)' : 'var(--lightGray)',
-                        }}>
+            <div
+                className='mx-auto py-4 px-6 bg-white/30 border-2 border-dashed rounded-xl flex w-11/12 lg:w-10/12 my-3'
+            >
                 <h2
-                    className='text-center'
-                    style={{
-                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                    }}
+                    className='text-white text-xs text-center'
                 >
                     Every epoch is divided into regular interval called slots, which occur every 12 seconds. At every
                     slot, one validator can propose a block, and the other validators need to attest on the canonical
