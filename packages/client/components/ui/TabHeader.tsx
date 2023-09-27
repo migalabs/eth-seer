@@ -15,30 +15,31 @@ const TabHeader = ({ header, isSelected, onClick }: Props) => {
 
     const getBackgroundColor = () => {
         if (isSelected) {
-            return themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)';
+            return themeMode?.darkMode ? 'var(--white)' : 'var(--white)';
         } else {
-            return themeMode?.darkMode ? 'var(--yellow6)' : 'var(--blue2)';
+            return themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgFairLightMode)';
         }
     };
 
-    const getBoxShadow = () => {
+    const getColor = () => {
         if (isSelected) {
-            return themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue4)';
+            return themeMode?.darkMode ? 'var(--black)' : 'var(--black)';
         } else {
-            return 'none';
+            return themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)'
         }
     };
+
 
     return (
         <div
-            className='flex items-center justify-center py-3 px-7 rounded-3xl cursor-pointer'
+            className='flex items-center justify-center border border-white py-4 px-8 rounded-md cursor-pointer shadow-md'
             style={{
                 backgroundColor: getBackgroundColor(),
-                boxShadow: getBoxShadow(),
+                color: getColor()
             }}
             onClick={onClick}
         >
-            <p className='text-black text-center uppercase text-xs text-[10px] sm:text-[12px]'>{header}</p>
+            <p className='text-center text-xs font-medium text-[16px]'>{header}</p>
         </div>
     );
 };
