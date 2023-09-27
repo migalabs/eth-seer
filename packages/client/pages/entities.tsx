@@ -43,8 +43,7 @@ const Entities = () => {
             </div>
 
             <div
-                className='grid gap-4 max-w-[1200px] mx-auto mt-4'
-                style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))' }}
+                className='grid grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 w-11/12 md:w-10/12 gap-3 mx-auto mt-4'
             >
                 {POOLS_EXTENDED.map((pool, index) => (
                     <EntityCard key={pool} index={index + 1} pool={pool} />
