@@ -89,20 +89,19 @@ const Validators = () => {
                 <link rel='canonical' href='https://ethseer.io/validators' />
             </Head>
 
-            <h1 className='text-white text-center text-xl md:text-3xl uppercase mt-14 xl:mt-0'>
-                Ethereum Validators
-            </h1>
+            <h1 className='text-white text-center text-xl md:text-3xl uppercase mt-14 xl:mt-0'>Ethereum Validators</h1>
 
-            <div
-                className='mx-auto py-4 px-6 bg-white/30 border-2 border-dashed rounded-xl flex w-11/12 lg:w-10/12 my-3'
-            >
+            <div className='mx-auto py-4 px-6 bg-white/30 border-2 border-dashed rounded-xl flex w-11/12 lg:w-10/12 my-3'>
                 <h2
                     className='text-white text-xs text-center'
                     style={{
                         color: themeMode?.darkMode ? 'var(--white)' : 'var(--newOrange)',
                     }}
                 >
-                    Validators participate in the consensus protocol by proposing and validating blocks. They are subject to rewards and penalties based on their behavior. Ethseer displays information about the current validators in the Beacon Chain, including detailed information about each validator and its performance.
+                    Validators participate in the consensus protocol by proposing and validating blocks. They are
+                    subject to rewards and penalties based on their behavior. Ethseer displays information about the
+                    current validators in the Beacon Chain, including detailed information about each validator and its
+                    performance.
                 </h2>
             </div>
 
