@@ -25,7 +25,7 @@ const Footer = () => {
                 }}
             >
                 <p>Powered with</p>
-                <Image src={FooterHeartImage} alt='Heart illustration' className='mx-1' />
+                <Image src={FooterHeartImage} alt='Heart illustration' className='mx-1 w-6' />
                 <p>
                     by&nbsp;
                     <a className='underline uppercase' href='https://migalabs.io/' target='_blank' rel='noreferrer'>
