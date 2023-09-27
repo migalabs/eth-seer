@@ -13,8 +13,8 @@ type Props = {
 };
 
 const EntityCard = ({ index, pool }: Props) => {
-       // Theme Mode Context
-       const { themeMode } = useContext(ThemeModeContext) ?? {};
+    // Theme Mode Context
+    const { themeMode } = useContext(ThemeModeContext) ?? {};
 
     const spanRef = useRef<HTMLSpanElement>(null);
 
@@ -30,16 +30,19 @@ const EntityCard = ({ index, pool }: Props) => {
 
     return (
         <Link href={`/entities/${pool.toLocaleLowerCase()}`}>
-            <div className='flex md:flex-row flex-col md:justify-start items-center py-4 px-2 bg-white border-2 gap-2 rounded-md' style={{
-                            backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
-                            boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
-                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                            borderColor: themeMode?.darkMode ? 'var(--white)' : 'var(--purple)'
-                        }}>
+            <div
+                className='flex md:flex-row flex-col md:justify-start items-center py-4 px-2 bg-white border-2 gap-2 rounded-md'
+                style={{
+                    backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
+                    boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
+                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
+                    borderColor: themeMode?.darkMode ? 'var(--white)' : 'var(--purple)',
+                }}
+            >
                 <div style={{ minWidth: '60px', minHeight: '60px' }}>
                     <BlockImage poolName={pool} width={60} height={60} />
                 </div>
-                
+
                 <div className='flex flex-col items-center md:items-start'>
                     <span className='font-semibold text-[18px] md:text-[20px]'>{String(index).padStart(3, '0')}</span>
                     <span ref={spanRef} className='text-[14px] md:text-[16px] font-light'>

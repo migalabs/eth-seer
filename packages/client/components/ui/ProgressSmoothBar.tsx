@@ -31,7 +31,7 @@ const ProgressSmoothBar = ({
         <div className='text-center'>
             {title && <p className='py-1'>{title}</p>}
 
-            <div className='rounded-md p-1' style={{ backgroundColor: color, width: width ?? 'auto' }}>
+            <div className='rounded-md p-1 text-[12px]' style={{ backgroundColor: color, width: width ?? 'auto' }}>
                 <div className='rounded-sm' style={{ backgroundColor, width: `${widthInnerDiv}%` }}>
                     {tooltipColor && tooltipContent ? (
                         <TooltipContainer>
