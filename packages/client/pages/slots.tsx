@@ -86,7 +86,7 @@ const Slots = () => {
                 </h2>
             </div>
 
-            <div className='mx-auto max-w-[1100px] my-6'>{slots.length > 0 && <SlotsList slots={slots} />}</div>
+            <div className='mx-auto w-11/12 md:w-10/12 my-6'>{slots.length > 0 && <SlotsList slots={slots} />}</div>
 
             {loading && (
                 <div className='my-6'>
