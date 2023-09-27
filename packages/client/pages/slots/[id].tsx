@@ -35,12 +35,29 @@ type CardProps = {
 };
 
 const Card = ({ title, content, icon, iconSize, link, target }: CardProps) => {
+    // Theme Mode Context
+    const { themeMode } = useContext(ThemeModeContext) ?? {};
+
     return (
         <>
-            <div className='flex gap-3 items-center'>
-                <p className={`uppercase text-[8px] md:text-[10px] text-black w-28 md:w-[15rem]`}>{title}:</p>
+            <div className='flex flex-row items-center justify-between gap-5 md:gap-20'>
+                <p
+                    className='text-xs md:text-[14px] font-medium'
+                    style={{
+                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
+                    }}
+                >
+                    {title}:
+                </p>
                 <div className='flex gap-2 items-center'>
-                    <p className='uppercase text-black text-[8px] md:text-[10px]'>{content}</p>
+                    <p
+                        className='uppercase text-xs md:text-[14px] font-semibold'
+                        style={{
+                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
+                        }}
+                    >
+                        {content}
+                    </p>
                     {icon && (
                         <a
                             href={link ?? 'none'}
@@ -267,7 +284,7 @@ const Slot = () => {
 
     const getInformationView = () => {
         return (
-            <div className='flex flex-col px-8 max-w-[1000px] mx-auto'>
+            <div className='flex flex-col w-11/12 md:w-1/2 mx-auto'>
                 <div className='flex flex-col sm:flex-row gap-4'>
                     <TabHeader
                         header='Consensus Layer'
@@ -298,13 +315,14 @@ const Slot = () => {
     const getConsensusLayerView = () => {
         return (
             <div
-                className='flex justify-between mb-10 rounded-[22px] mt-4 p-4 md:p-8'
+                className='rounded-md mt-4 p-8 border-2 border-white'
                 style={{
-                    backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
-                    boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow3)' : 'var(--boxShadowBlue1)',
+                    backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
+                    boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
+                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
                 }}
             >
-                <div className='flex flex-col gap-y-5'>
+                <div className='flex flex-col mx-auto gap-y-4 md:gap-y-8'>
                     <Card
                         title='Epoch'
                         content={block?.f_epoch?.toLocaleString()}
@@ -332,11 +350,11 @@ const Slot = () => {
                             title='Status'
                             content={
                                 block?.f_proposed ? (
-                                    <span className='uppercase bg-[#D3FFD7] border-2 border-[#00720B] text-[#00720B] px-5 py-1.5 rounded-2xl font-bold'>
+                                    <span className='bg-[#53945a] text-white px-6 py-2 rounded-md capitalize font-semibold'>
                                         Proposed
                                     </span>
                                 ) : (
-                                    <span className='uppercase bg-[#FFB7B7] border-2 border-[#980E0E] text-[#980E0E] px-5 py-1.5 rounded-2xl font-bold'>
+                                    <span className='bg-[#e86666] text-white px-6 py-2 rounded-md capitalize font-semibold'>
                                         Missed
                                     </span>
                                 )
@@ -402,9 +420,9 @@ const Slot = () => {
                     )}
                 </div>
 
-                <div className='hidden md:block flex-shrink'>
+                {/* <div className='hidden md:block flex-shrink'>
                     <BlockGif poolName={block?.f_pool_name ?? 'others'} width={150} height={150} />
-                </div>
+                </div> */}
             </div>
         );
     };
@@ -412,10 +430,11 @@ const Slot = () => {
     const getExecutionLayerView = () => {
         return (
             <div
-                className='flex flex-col mt-4 mb-10 gap-y-5 rounded-[22px] p-4 md:p-8'
+                className='flex flex-col mt-4 p-8 mb-10 gap-y-4 md:gap-y-8 rounded-md border-2 border-white'
                 style={{
-                    backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
-                    boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow3)' : 'var(--boxShadowBlue1)',
+                    backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
+                    boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
+                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
                 }}
             >
                 <Card
@@ -452,10 +471,15 @@ const Slot = () => {
         return (
             <div
                 ref={containerRef}
-                className='flex flex-col px-2 mt-2.5 overflow-x-scroll overflow-y-hidden scrollbar-thin'
+                className='flex flex-col mt-2.5 overflow-x-scroll overflow-y-hidden scrollbar-thin'
                 onMouseMove={handleMouseMove}
             >
-                <div className='flex gap-x-4 justify-around px-4 xl:px-8 min-w-[470px] py-3 uppercase text-sm text-[12px] sm:text-[14px] text-white text-center'>
+                <div
+                    className='flex gap-x-4 justify-around px-4 xl:px-8 min-w-[470px] font-medium py-3 text-sm text-[12px] md:text-[14px] text-center'
+                    style={{
+                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
+                    }}
+                >
                     <p className='mt-0.5 w-1/3'>Validator</p>
                     <p className='mt-0.5 w-1/3'>Address</p>
                     <p className='mt-0.5 w-1/3'>Amount</p>
@@ -467,10 +491,11 @@ const Slot = () => {
                     </div>
                 ) : (
                     <div
-                        className='flex flex-col gap-y-2 min-w-[470px] leading-5 text-[8px] sm:text-[10px] rounded-[22px] px-4 xl:px-8 py-3'
+                        className='flex flex-col gap-y-2 min-w-[470px] text-[12px] sm:text-[14px] rounded-md border-2 border-white px-4 xl:px-8 py-3'
                         style={{
-                            backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
-                            boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
+                            backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
+                            boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
+                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
                         }}
                     >
                         {withdrawals.map(element => (
@@ -512,7 +537,7 @@ const Slot = () => {
                     <Arrow direction='left' />
                 </LinkSlot>
 
-                <h1 className='text-white text-center text-xl md:text-3xl uppercase'>
+                <h1 className='text-black text-center font-medium md:text-[40px] text-[30px]'>
                     Slot {Number(id)?.toLocaleString()}
                 </h1>
 
