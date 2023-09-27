@@ -80,27 +80,29 @@ const Validators = () => {
     return (
         <Layout hideMetaDescription>
             <Head>
-                <title>Validators - EthSeer</title>
+                <title>Validators of the Ethereum Beacon Chain - EthSeer.io</title>
                 <meta
                     name='description'
-                    content="Validators are the blockchain security contributors. Explore validator roles in blockchain consensus, behavior-based rewards, and Ethseer's detailed insights into Beacon Chain validator."
+                    content='Explore Ethereum validators, the entity they belong to, the blocks they have proposed, and their performance over the last week.'
                 />
-                <meta name='keywords' content='ethereum, staking, validators, PoS, rewards, performance, slashing' />
+                <meta name='keywords' content='Ethereum, Staking, Validators, PoS, Rewards, Performance, Slashing' />
+                <link rel='canonical' href='https://ethseer.io/validators' />
             </Head>
 
-            <h1 className='text-white text-center text-xl md:text-3xl uppercase mt-14 xl:mt-0'>Ethereum Validators</h1>
+            <h1 className='text-white text-center text-xl md:text-3xl uppercase mt-14 xl:mt-0'>
+                Ethereum Validators
+            </h1>
 
-            <div className='mx-auto py-4 px-6 bg-white/30 border-2 border-dashed rounded-xl flex w-11/12 lg:w-3/5 my-3'>
+            <div
+                className='mx-auto py-4 px-6 bg-white/30 border-2 border-dashed rounded-xl flex w-11/12 lg:w-10/12 my-3'
+            >
                 <h2
-                    className='text-xs text-center'
+                    className='text-white text-xs text-center'
                     style={{
                         color: themeMode?.darkMode ? 'var(--white)' : 'var(--newOrange)',
                     }}
                 >
-                    Validators participate in the consensus protocol by proposing and validating blocks. They are
-                    subject to rewards and penalties based on their behaviour. Ethseer displays information about the
-                    current validators in the Beacon Chain, including detailed information about each validator and its
-                    performance.
+                    Validators participate in the consensus protocol by proposing and validating blocks. They are subject to rewards and penalties based on their behavior. Ethseer displays information about the current validators in the Beacon Chain, including detailed information about each validator and its performance.
                 </h2>
             </div>
 
