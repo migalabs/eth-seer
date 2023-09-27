@@ -50,7 +50,6 @@ const EntityComponent = () => {
     const { themeMode } = useContext(ThemeModeContext) ?? {};
 
     // States
-    const [entity, setEntity] = useState<Entity | null>(null);
     const [entityHour, setEntityHour] = useState<Entity | null>(null);
     const [entityDay, setEntityDay] = useState<Entity | null>(null);
     const [entityWeek, setEntityWeek] = useState<Entity | null>(null);
@@ -60,7 +59,7 @@ const EntityComponent = () => {
 
     // UseEffect
     useEffect(() => {
-        if (name && !entity) {
+        if (name && !entityHour && !entityDay && !entityWeek) {
             getEntity();
         }
 
@@ -93,8 +92,6 @@ const EntityComponent = () => {
                 }),
             ]);
 
-            console.log(responseHour, responseDay, responseWeek);
-
             setEntityHour(responseHour.data.entity);
             setEntityDay(responseDay.data.entity);
             setEntityWeek(responseWeek.data.entity);
@@ -114,7 +111,6 @@ const EntityComponent = () => {
     };
 
     const getEntityPerformance = (entity: Entity) => {
-        console.log(entity);
         return (
             <>
                 <div className='flex flex-col md:flex-row gap-x-4 ml-4 md:ml-10'>
