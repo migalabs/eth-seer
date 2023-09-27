@@ -12,7 +12,7 @@ type Props = {
 
 const LinkEntity = ({ entity, children }: Props) => {
     return (
-        <NetworkLink href={`/entities/${entity}`} passHref className='flex gap-x-1 items-center w-fit mx-auto'>
+        <NetworkLink href={`/entity/${entity}`} passHref className='flex gap-x-1 items-center w-fit mx-auto'>
             {children ?? (
                 <>
                     <p>{entity}</p>

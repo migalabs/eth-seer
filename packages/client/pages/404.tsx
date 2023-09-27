@@ -9,6 +9,8 @@ import CustomImage from '../components/ui/CustomImage';
 
 //Context
 import ThemeModeContext from '.././contexts/theme-mode/ThemeModeContext';
+// Constants
+import { DEFAULT_NETWORK } from '../constants';
 
 const NotFoundPage = () => {
     // Theme Mode Context
@@ -39,7 +41,7 @@ const NotFoundPage = () => {
                     <span className='md:text-[30px] text-[20px] uppercase text-center'>
                         Sorry. We couldn&apos;t find the page you were looking for.
                     </span>
-                    <Link href='/' passHref className='p-4 my-4 rounded-md bg-[#c9b6f8] md:hover:bg-white transition'>
+                    <Link href={`/${DEFAULT_NETWORK}`} passHref className='p-4 my-4 rounded-md bg-[#c9b6f8] md:hover:bg-white transition'>
                         <span
                             className='md:text-2xl text-lg'
                             style={{

@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useCallback, useContext } from 'react';
+import React, { useEffect, useState, useRef, useCallback, useContext } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 
@@ -10,14 +10,14 @@ import ThemeModeContext from '../../../contexts/theme-mode/ThemeModeContext';
 
 // Components
 import Layout from '../../../components/layouts/Layout';
-import CustomImage from '../../../components/ui/CustomImage';
-import LinkIcon from '../../../components/ui/LinkIcon';
 import BlockGif from '../../../components/ui/BlockGif';
 import TabHeader from '../../../components/ui/TabHeader';
 import Loader from '../../../components/ui/Loader';
 import LinkValidator from '../../../components/ui/LinkValidator';
 import LinkSlot from '../../../components/ui/LinkSlot';
 import Arrow from '../../../components/ui/Arrow';
+import LinkEpoch from '../../../components/ui/LinkEpoch';
+import LinkEntity from '../../../components/ui/LinkEntity';
 
 // Types
 import { Block, Withdrawal } from '../../../types';
@@ -27,57 +27,27 @@ import { FIRST_BLOCK, ADDRESS_ZERO, ADDRESS_ZERO_SHORT } from '../../../constant
 
 type CardProps = {
     title: string;
-    content: any;
-    icon?: string;
-    iconSize?: number;
-    link?: string;
-    target?: string;
+    text?: string;
+    content?: React.ReactNode;
 };
 
-const Card = ({ title, content, icon, iconSize, link, target }: CardProps) => {
+const Card = ({ title, text, content }: CardProps) => {
     // Theme Mode Context
-    const { themeMode } = useContext(ThemeModeContext) ?? {};
-
+    const { themeMode } = React.useContext(ThemeModeContext) ?? {};
     return (
         <>
             <div className='flex flex-row items-center justify-between gap-5 md:gap-20'>
-                <p
-                    className='text-xs md:text-[14px] font-semibold'
+                <p className='text-xs md:text-[14px] font-semibold'
                     style={{
                         color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                    }}
-                >
-                    {title}:
-                </p>
+                    }}>{title}:</p>
                 <div className='flex gap-2 items-center'>
-                    <p
-                        className='uppercase text-xs md:text-[14px] font-semibold'
+                    {text && <p className='uppercase text-xs md:text-[14px] font-semibold'
                         style={{
                             color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                        }}
-                    >
-                        {content}
-                    </p>
-                    {icon && (
-                        <a
-                            href={link ?? 'none'}
-                            target={target}
-                            rel='noreferrer'
-                            style={{ textDecoration: 'none', color: 'black' }}
-                        >
-                            {icon === 'link' ? (
-                                <LinkIcon />
-                            ) : (
-                                <CustomImage
-                                    src={`/static/images/icons/${icon}.webp`}
-                                    width={iconSize ?? 35}
-                                    height={iconSize ?? 35}
-                                    alt='Icon'
-                                    className={link && 'cursor-pointer'}
-                                />
-                            )}
-                        </a>
-                    )}
+                        }}>{text}</p>}
+
+                    {content && <>{content}</>}
                 </div>
             </div>
         </>
@@ -323,25 +293,13 @@ const Slot = () => {
                 }}
             >
                 <div className='flex flex-col mx-auto gap-y-4 md:gap-y-8'>
-                    <Card
-                        title='Epoch'
-                        content={block?.f_epoch?.toLocaleString()}
-                        link={`${assetPrefix}/epochs/${block?.f_epoch}`}
-                        icon='link'
-                        iconSize={25}
-                        target='_self'
-                    />
-
-                    <Card title='Slot' content={block?.f_slot?.toLocaleString()} />
+                    <Card title='Epoch' content={<LinkEpoch epoch={block?.f_epoch} />} />
+                    <Card title='Slot' text={block?.f_slot?.toLocaleString()} />
 
                     {existsBlock && (
                         <Card
                             title='Entity'
-                            content={block?.f_pool_name?.toLocaleString() ?? 'others'}
-                            icon='link'
-                            iconSize={25}
-                            link={`${assetPrefix}/entities/${block?.f_pool_name?.toLocaleString() ?? 'others'}`}
-                            target='_self'
+                            content={<LinkEntity entity={block?.f_pool_name?.toLocaleString() ?? 'others'} />}
                         />
                     )}
 
@@ -362,61 +320,51 @@ const Slot = () => {
                         />
                     )}
 
-                    <Card title='Date Time (Local)' content={getTimeBlock()} />
+                    <Card title='Date Time (Local)' text={getTimeBlock()} />
 
                     {existsBlock && (
-                        <Card
-                            title='Proposer Index'
-                            content={block?.f_proposer_index?.toLocaleString()}
-                            icon='link'
-                            iconSize={25}
-                            link={`${assetPrefix}/validators/${block?.f_proposer_index}`}
-                            target='_self'
-                        />
+                        <Card title='Proposer Index' content={<LinkValidator validator={block?.f_proposer_index} />} />
                     )}
 
-                    {existsBlock && <Card title='Graffiti' content={block?.f_proposed ? block?.f_graffiti : '---'} />}
+                    {existsBlock && <Card title='Graffiti' text={block?.f_proposed ? block?.f_graffiti : '---'} />}
 
                     {existsBlock && (
                         <Card
                             title='Sync bits'
-                            content={block?.f_proposed ? block?.f_sync_bits?.toLocaleString() : '---'}
+                            text={block?.f_proposed ? block?.f_sync_bits?.toLocaleString() : '---'}
                         />
                     )}
 
                     {existsBlock && (
                         <Card
                             title='Attestations'
-                            content={block?.f_proposed ? block?.f_attestations?.toLocaleString() : '---'}
+                            text={block?.f_proposed ? block?.f_attestations?.toLocaleString() : '---'}
                         />
                     )}
 
                     {existsBlock && (
                         <Card
                             title='Voluntary exits'
-                            content={block?.f_proposed ? block?.f_voluntary_exits?.toLocaleString() : '---'}
+                            text={block?.f_proposed ? block?.f_voluntary_exits?.toLocaleString() : '---'}
                         />
                     )}
 
                     {existsBlock && (
                         <Card
                             title='Proposer slashings'
-                            content={block?.f_proposed ? block?.f_proposer_slashings?.toLocaleString() : '---'}
+                            text={block?.f_proposed ? block?.f_proposer_slashings?.toLocaleString() : '---'}
                         />
                     )}
 
                     {existsBlock && (
                         <Card
                             title='Attestation Slashing'
-                            content={block?.f_proposed ? block?.f_att_slashings?.toLocaleString() : '---'}
+                            text={block?.f_proposed ? block?.f_att_slashings?.toLocaleString() : '---'}
                         />
                     )}
 
                     {existsBlock && (
-                        <Card
-                            title='Deposits'
-                            content={block?.f_proposed ? block?.f_deposits?.toLocaleString() : '---'}
-                        />
+                        <Card title='Deposits' text={block?.f_proposed ? block?.f_deposits?.toLocaleString() : '---'} />
                     )}
                 </div>
 
@@ -439,7 +387,7 @@ const Slot = () => {
             >
                 <Card
                     title='Block hash'
-                    content={
+                    text={
                         block?.f_proposed && block?.f_el_block_hash !== ADDRESS_ZERO
                             ? getShortAddress(block?.f_el_block_hash)
                             : '---'
@@ -448,20 +396,20 @@ const Slot = () => {
 
                 <Card
                     title='Fee Recipient'
-                    content={
+                    text={
                         block?.f_proposed && block?.f_el_fee_recp !== ADDRESS_ZERO_SHORT
                             ? getShortAddress(block?.f_el_fee_recp)
                             : '---'
                     }
                 />
 
-                <Card title='Gas used' content={block?.f_proposed ? block?.f_el_gas_used?.toLocaleString() : '---'} />
+                <Card title='Gas used' text={block?.f_proposed ? block?.f_el_gas_used?.toLocaleString() : '---'} />
 
-                <Card title='Gas limit' content={block?.f_proposed ? block?.f_el_gas_limit?.toLocaleString() : '---'} />
+                <Card title='Gas limit' text={block?.f_proposed ? block?.f_el_gas_limit?.toLocaleString() : '---'} />
 
                 <Card
                     title='Transactions'
-                    content={block?.f_proposed ? block?.f_el_transactions?.toLocaleString() : '---'}
+                    text={block?.f_proposed ? block?.f_el_transactions?.toLocaleString() : '---'}
                 />
             </div>
         );
