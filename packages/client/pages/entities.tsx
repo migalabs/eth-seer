@@ -27,16 +27,10 @@ const Entities = () => {
                 <link rel='canonical' href='https://ethseer.io/entities' />
             </Head>
 
-            <h1 className='uppercase text-center text-3xl text-white mt-14 xl:mt-0'>
-                Ethereum Staking Entities
-            </h1>
+            <h1 className='uppercase text-center text-3xl text-white mt-14 xl:mt-0'>Ethereum Staking Entities</h1>
 
-            <div
-                className='mx-auto py-4 px-6 bg-white/30 border-2 border-dashed rounded-xl flex w-11/12 lg:w-10/12 my-3'
-            >
-                <h2
-                    className='text-white text-xs text-center'
-                >
+            <div className='mx-auto py-4 px-6 bg-white/30 border-2 border-dashed rounded-xl flex w-11/12 lg:w-10/12 my-3'>
+                <h2 className='text-white text-xs text-center'>
                     An entity can range from an individual running many validators to an institutional organization
                     providing staking services. If it is running at least 100 validators, we catalog it as an entity.
                     Ethseer obtains information about the entities to which validators belong to through graffiti,
