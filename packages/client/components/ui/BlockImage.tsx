@@ -3,6 +3,9 @@ import React from 'react';
 // Components
 import CustomImage from './CustomImage';
 
+// Contexts
+import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
+
 // Constants
 import { POOLS } from '../../constants';
 
@@ -15,6 +18,10 @@ type Props = {
 };
 
 const BlockImage = ({ poolName, proposed = true, width, height, showCheck }: Props) => {
+
+    // Theme Mode Context
+    const { themeMode } = React.useContext(ThemeModeContext) ?? {};
+
     const getUrl = () => {
         if (poolName && POOLS.includes(poolName.toUpperCase())) {
             return `/static/images/blocks/cubes/${poolName.toLowerCase()}.webp`;
@@ -49,11 +56,11 @@ const BlockImage = ({ poolName, proposed = true, width, height, showCheck }: Pro
 
             {proposed && showCheck && (
                 <CustomImage
-                    src='/static/images/icons/proposed_block.webp'
+                    src={`/static/images/icons/proposed_block_${themeMode?.darkMode ? 'dark' : 'light'}.webp`}
                     alt='Proposed block check illustration'
-                    width={40}
-                    height={40}
-                    className='absolute -bottom-2 -right-2'
+                    width={30}
+                    height={30}
+                    className='absolute -bottom-0 -right-5'
                 />
             )}
         </div>
