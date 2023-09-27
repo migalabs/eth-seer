@@ -23,7 +23,7 @@ const LinkValidator = ({ validator, children, mxAuto }: Props) => {
     };
     return (
         <NetworkLink
-            href={`/validators/${validator}`}
+            href={`/validator/${validator}`}
             passHref
 <<<<<<< HEAD
             as={`/validators/${validator}`}

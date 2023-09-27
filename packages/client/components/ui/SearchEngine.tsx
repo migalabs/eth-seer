@@ -87,7 +87,7 @@ const SearchEngine = () => {
                 // It can be an epoch
                 items.push({
                     label: `Epoch: ${searchContent}`,
-                    link: `/epochs/${searchContent}`,
+                    link: `/epoch/${searchContent}`,
                 });
             }
 
@@ -97,7 +97,7 @@ const SearchEngine = () => {
                 // It can be a slot
                 items.push({
                     label: `Slot: ${searchContent}`,
-                    link: `/slots/${searchContent}`,
+                    link: `/slot/${searchContent}`,
                 });
             }
 
@@ -105,7 +105,7 @@ const SearchEngine = () => {
                 // It can be a validator
                 items.push({
                     label: `Validator: ${searchContent}`,
-                    link: `/validators/${searchContent}`,
+                    link: `/validator/${searchContent}`,
                 });
             }
         }
@@ -114,7 +114,7 @@ const SearchEngine = () => {
             // It can be a graffiti
             items.push({
                 label: `Graffiti: ${searchContent}`,
-                link: `/slots/graffitis/${searchContent}`,
+                link: `/slot/graffiti/${searchContent}`,
             });
         }
 
@@ -127,7 +127,7 @@ const SearchEngine = () => {
                     .filter(pool => pool.search(expression) !== -1)
                     .map(pool => ({
                         label: `Entity: ${pool}`,
-                        link: `/entities/${pool.toLowerCase()}`,
+                        link: `/entity/${pool.toLowerCase()}`,
                     }))
             );
         } else {
@@ -136,7 +136,7 @@ const SearchEngine = () => {
                     .filter(pool => pool.search(expression) !== -1)
                     .map(pool => ({
                         label: `Entity: ${pool}`,
-                        link: `/entities/${pool.toLowerCase()}`,
+                        link: `/entity/${pool.toLowerCase()}`,
                     }))
             );
         }

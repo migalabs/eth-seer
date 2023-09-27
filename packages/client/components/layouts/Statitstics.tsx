@@ -344,7 +344,7 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
             <div
                 className='flex gap-x-1 justify-around px-2 xl:px-8 pb-3 uppercase text-sm min-w-[1150px] '
                 style={{
-                    color: themeMode?.darkMode ? 'var(--white)' : '',
+                    color: themeMode?.darkMode ? 'var(--white)' : 'black',
                 }}
             >
                 <div className='flex w-[10%] items-center gap-x-1 justify-center'>

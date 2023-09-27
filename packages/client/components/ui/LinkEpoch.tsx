@@ -23,7 +23,7 @@ const LinkEpoch = ({ epoch, children, mxAuto }: Props) => {
     };
     return (
         <NetworkLink
-            href={`/epochs/${epoch}`}
+            href={`/epoch/${epoch}`}
             passHref
             className={`flex gap-x-1 items-center font-medium md:hover:underline underline-offset-4 decoration-2 w-fit ${
                 mxAuto ? 'mx-auto' : ''
