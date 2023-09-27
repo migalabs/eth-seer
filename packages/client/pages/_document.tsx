@@ -159,7 +159,7 @@ export default function Document() {
                 />
                 <meta
                     name='keywords'
-                    content='ethereum, ethereum blockchain explorer, ethereum block explorer, search'
+                    content='Ethereum, Ethereum Blockchain Explorer, Ethereum Block Explorer, Search'
                 />
                 <meta name='twitter:card' content='summary' />
                 <meta name='twitter:site' content='@miga_labs' />
