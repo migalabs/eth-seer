@@ -42,9 +42,7 @@ const Entities = () => {
                 </h2>
             </div>
 
-            <div
-                className='grid grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 w-11/12 md:w-10/12 gap-3 mx-auto mt-4'
-            >
+            <div className='grid grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 w-11/12 md:w-10/12 gap-3 mx-auto mt-4'>
                 {POOLS_EXTENDED.map((pool, index) => (
                     <EntityCard key={pool} index={index + 1} pool={pool} />
                 ))}
