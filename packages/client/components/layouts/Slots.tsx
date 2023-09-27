@@ -21,7 +21,6 @@ type Props = {
 };
 
 const Slots = ({ slots }: Props) => {
-
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
 
@@ -51,39 +50,38 @@ const Slots = ({ slots }: Props) => {
     };
 
     const getContentSlots = () => {
-        const titles = [
-            'Block',
-            'Entity',
-            'Proposer',
-            'Slot',
-            'DateTime',
-            'Withdrawals'
-        ];
+        const titles = ['Block', 'Entity', 'Proposer', 'Slot', 'DateTime', 'Withdrawals'];
         return (
             <div
                 ref={containerRef}
                 className='flex flex-col overflow-x-scroll overflow-y-hidden scrollbar-thin my-4'
                 onMouseMove={handleMouseMove}
             >
-                <div
-                >
-                    <div className='flex gap-4 py-3 font-semibold text-center items-center flex-row justify-around md:text-[16px] text-[12px]' style={{
-                                color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)'
-                            }}>
+                <div>
+                    <div
+                        className='flex gap-4 py-3 font-semibold text-center items-center flex-row justify-around md:text-[16px] text-[12px]'
+                        style={{
+                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
+                        }}
+                    >
                         {titles.map((title, index) => (
                             <p key={index} className='w-[20%]'>
                                 {title}
                             </p>
                         ))}
                     </div>
-    
+
                     {slots.map(element => (
                         <div
                             className='flex gap-4 py-3 uppercase text-center items-center flex-row justify-around font-medium text-[12px] md:text-[14px] rounded-md border-2 border-white my-2'
                             style={{
-                                backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
-                                boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
-                                color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)'
+                                backgroundColor: themeMode?.darkMode
+                                    ? 'var(--bgFairDarkMode)'
+                                    : 'var(--bgMainLightMode)',
+                                boxShadow: themeMode?.darkMode
+                                    ? 'var(--boxShadowCardDark)'
+                                    : 'var(--boxShadowCardLight)',
+                                color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                             }}
                             key={element.f_proposer_slot}
                         >
@@ -96,29 +94,29 @@ const Slots = ({ slots }: Props) => {
                                     showCheck
                                 />
                             </div>
-    
+
                             <div className='w-[20%]'>
                                 <LinkEntity entity={element.f_pool_name || 'others'} />
                             </div>
-    
+
                             <div className='w-[20%]'>
                                 <LinkValidator validator={element.f_val_idx} mxAuto />
                             </div>
-    
+
                             <div className='w-[20%]'>
                                 <LinkSlot slot={element.f_proposer_slot} mxAuto />
                             </div>
-    
+
                             <p className='w-[20%]'>
                                 {new Date(FIRST_BLOCK + Number(element.f_proposer_slot) * 12000).toLocaleString(
                                     'ja-JP'
                                 )}
                             </p>
-    
+
                             <p className='w-[20%]'>{(element.withdrawals / 10 ** 9).toLocaleString()} ETH</p>
                         </div>
                     ))}
-    
+
                     {slots.length === 0 && (
                         <div className='flex justify-center p-2'>
                             <p className='uppercase'>No slots</p>
@@ -132,17 +130,21 @@ const Slots = ({ slots }: Props) => {
     const getContentSlotsMobile = () => {
         return (
             <div
-                className='my-6 flex flex-col gap-2 overflow-x-scroll overflow-y-hidden font-medium scrollbar-thin text-[12px]' style={{
-                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)'
+                className='my-6 flex flex-col gap-2 overflow-x-scroll overflow-y-hidden font-medium scrollbar-thin text-[12px]'
+                style={{
+                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                 }}
             >
                 {slots.map(slot => (
-                    <div className='flex flex-row gap-x-10 py-4 items-center justify-center px-2 border-2 border-white rounded-md' key={slot.f_proposer_slot} 
-                    style={{
-                        backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
-                        boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
-                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)'
-                    }}>
+                    <div
+                        className='flex flex-row gap-x-10 py-4 items-center justify-center px-2 border-2 border-white rounded-md'
+                        key={slot.f_proposer_slot}
+                        style={{
+                            backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
+                            boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
+                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
+                        }}
+                    >
                         <div className='flex items-center '>
                             <BlockImage
                                 poolName={slot.f_pool_name}
@@ -154,24 +156,38 @@ const Slots = ({ slots }: Props) => {
                         </div>
                         <div className='flex flex-col items-start'>
                             <div className='flex flex-row items-center gap-x-4'>
-                                <p className='w-24 font-semibold' style={{
-                                color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)'
-                                }}>
-                                    Proposer:</p>
+                                <p
+                                    className='w-24 font-semibold'
+                                    style={{
+                                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
+                                    }}
+                                >
+                                    Proposer:
+                                </p>
                                 <LinkValidator validator={slot.f_val_idx} />
                             </div>
 
                             <div className='flex flex-row items-center gap-x-4'>
-                                <p className='w-24 font-semibold' style={{
-                                color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)'
-                                }}>Slot:</p>
+                                <p
+                                    className='w-24 font-semibold'
+                                    style={{
+                                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
+                                    }}
+                                >
+                                    Slot:
+                                </p>
                                 <LinkSlot slot={slot.f_proposer_slot} />
                             </div>
 
                             <div className='flex flex-row items-center gap-x-4'>
-                                <p className='w-24 font-semibold' style={{
-                                color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)'
-                                }}>DateTime:</p>
+                                <p
+                                    className='w-24 font-semibold'
+                                    style={{
+                                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
+                                    }}
+                                >
+                                    DateTime:
+                                </p>
                                 <div className='flex flex-col gap-y-0.5'>
                                     <p>
                                         {new Date(
@@ -195,9 +211,14 @@ const Slots = ({ slots }: Props) => {
                             </div>
 
                             <div className='flex flex-row items-center gap-x-4'>
-                                <p className='w-24 font-semibold' style={{
-                                color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)'
-                                }}>Withdrawals:</p>
+                                <p
+                                    className='w-24 font-semibold'
+                                    style={{
+                                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
+                                    }}
+                                >
+                                    Withdrawals:
+                                </p>
                                 <p>{(slot.withdrawals / 10 ** 9).toLocaleString()} ETH</p>
                             </div>
                         </div>

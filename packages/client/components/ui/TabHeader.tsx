@@ -25,17 +25,16 @@ const TabHeader = ({ header, isSelected, onClick }: Props) => {
         if (isSelected) {
             return themeMode?.darkMode ? 'var(--black)' : 'var(--black)';
         } else {
-            return themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)'
+            return themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)';
         }
     };
-
 
     return (
         <div
             className='flex items-center justify-center border border-white py-4 px-8 rounded-md cursor-pointer shadow-md'
             style={{
                 backgroundColor: getBackgroundColor(),
-                color: getColor()
+                color: getColor(),
             }}
             onClick={onClick}
         >
