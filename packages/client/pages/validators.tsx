@@ -89,13 +89,12 @@ const Validators = () => {
                 <link rel='canonical' href='https://ethseer.io/validators' />
             </Head>
 
-            <h1 className='text-white text-center text-xl md:text-3xl uppercase mt-14 xl:mt-0'>Ethereum Validators</h1>
+            <h1 className='text-black text-center font-medium md:text-[40px] text-[30px] mt-14 xl:mt-0'>Ethereum Validators</h1>
 
-            <div className='mx-auto py-4 px-6 bg-white/30 border-2 border-dashed rounded-xl flex w-11/12 lg:w-10/12 my-3'>
+            <div className='mx-auto py-4 px-6 border-2 border-[var(--purple)] rounded-md flex w-11/12 lg:w-10/12' style={{background: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--bgMainLightMode)'}}>
                 <h2
-                    className='text-white text-xs text-center'
-                    style={{
-                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--newOrange)',
+                    className='text-xs md:text-[16px] mx-auto text-center' style={{
+                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)'
                     }}
                 >
                     Validators participate in the consensus protocol by proposing and validating blocks. They are
