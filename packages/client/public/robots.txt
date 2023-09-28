@@ -3,22 +3,22 @@ Allow: /
 
 Sitemap: https://ethseer.io/sitemap.xml
 
-Disallow:**/1
-Disallow:**/2
-Disallow:**/3
-Disallow:**/4
-Disallow:**/5
-Disallow:**/6
-Disallow:**/7
-Disallow:**/8
+Disallow:*/1
+Disallow:*/2
+Disallow:*/3
+Disallow:*/4
+Disallow:*/5
+Disallow:*/6
+Disallow:*/7
+Disallow:*/8
 Disallow:*/9
 
-NoIndex:**/1
-NoIndex:**/2
-NoIndex:**/3
-NoIndex:**/4
-NoIndex:**/5
-NoIndex:**/6
-NoIndex:**/7
-NoIndex:**/8
+NoIndex:*/1
+NoIndex:*/2
+NoIndex:*/3
+NoIndex:*/4
+NoIndex:*/5
+NoIndex:*/6
+NoIndex:*/7
+NoIndex:*/8
 NoIndex:*/9
