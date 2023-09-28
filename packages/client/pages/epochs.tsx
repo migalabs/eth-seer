@@ -28,7 +28,7 @@ const Epochs = () => {
                 <h1 className='text-black text-center font-medium md:text-[40px] text-[30px]'>Ethereum Epochs</h1>
 
                 <div className='mx-auto py-4 px-6 border-2 border-[var(--purple)] rounded-md flex w-11/12 lg:w-10/12 mb-5' style={{background: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--bgMainLightMode)'}}>
-                    <h2 className='text-xs md:text-[16px] mx-auto' style={{
+                    <h2 className='text-xs md:text-[16px] mx-auto leading-5' style={{
                             color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)'
                         }}>
                         Epochs in Ethereum refer to a specific period of time in the Beacon Chain. Each epoch is

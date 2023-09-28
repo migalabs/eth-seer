@@ -30,7 +30,7 @@ const Entities = () => {
             <h1 className='text-black text-center font-medium md:text-[40px] text-[30px] mt-14 xl:mt-0'>Ethereum Staking Entities</h1>
 
             <div className='mx-auto py-4 px-6 border-2 border-[var(--purple)] rounded-md flex w-11/12 lg:w-10/12' style={{background: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--bgMainLightMode)'}}>
-                <h2 className='text-white text-xs md:text-[16px] text-center' style={{
+                <h2 className='text-white text-xs md:text-[16px] text-center leading-5' style={{
                             color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)'
                         }}>
                     An entity can range from an individual running many validators to an institutional organization
