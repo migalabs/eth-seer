@@ -31,12 +31,12 @@ const EntityCard = ({ index, pool }: Props) => {
     return (
         <Link href={`/entities/${pool.toLocaleLowerCase()}`}>
             <div
-                className='flex md:flex-row flex-col md:justify-start items-center py-4 px-2 bg-white border-2 gap-2 rounded-md'
+                className='flex md:flex-row flex-col bg-[var(--bgFairLightMode)] md:hover:bg-[var(--white)] transition md:justify-start items-center py-4 px-2 border-2 gap-2 rounded-md'
                 style={{
-                    backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
+                    // backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
                     boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
-                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                    borderColor: themeMode?.darkMode ? 'var(--white)' : 'var(--purple)',
+                    color: themeMode?.darkMode ? 'var(--black)' : 'var(--darkGray)',
+                    borderColor: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--white)',
                 }}
             >
                 <div style={{ minWidth: '60px', minHeight: '60px' }}>
