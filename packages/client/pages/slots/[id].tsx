@@ -34,7 +34,7 @@ type CardProps = {
     target?: string;
 };
 
-const Card = ({ title, content, icon, iconSize, link, target }: CardProps) => {
+const Card = ({ title, content, icon, iconSize, link, target}: CardProps) => {
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
 
@@ -42,7 +42,7 @@ const Card = ({ title, content, icon, iconSize, link, target }: CardProps) => {
         <>
             <div className='flex flex-row items-center justify-between gap-5 md:gap-20'>
                 <p
-                    className='text-xs md:text-[14px] font-medium'
+                    className='text-xs md:text-[14px]'
                     style={{
                         color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
                     }}
@@ -51,7 +51,7 @@ const Card = ({ title, content, icon, iconSize, link, target }: CardProps) => {
                 </p>
                 <div className='flex gap-2 items-center'>
                     <p
-                        className='uppercase text-xs md:text-[14px] font-semibold'
+                        className='uppercase text-xs md:text-[14px]'
                         style={{
                             color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                         }}

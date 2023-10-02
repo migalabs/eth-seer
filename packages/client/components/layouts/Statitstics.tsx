@@ -128,7 +128,7 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
                     <p>{new Date(FIRST_BLOCK + f_epoch * 32 * 12000).toLocaleDateString('ja-JP')}</p>
                     <p>{new Date(FIRST_BLOCK + f_epoch * 32 * 12000).toLocaleTimeString('ja-JP')}</p>
                 </div>
-                <div className='w-[11%]'>
+                <div className='w-[11%] font-medium md:hover:underline underline-offset-4 decoration-2'>
                     <LinkEpoch epoch={f_epoch} mxAuto />
                 </div>
                 <div className='w-[15%] pt-3.5 mb-5'>
@@ -342,7 +342,7 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
             onMouseMove={handleMouseMove}
         >
             <div
-                className='flex gap-x-1 justify-around px-2 xl:px-8 pb-3 uppercase text-sm min-w-[1150px]'
+                className='flex gap-x-1 justify-around px-2 xl:px-8 pb-3 uppercase text-sm min-w-[1150px] '
                 style={{
                     color: themeMode?.darkMode ? 'var(--white)' : '',
                 }}
@@ -507,7 +507,7 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
                                 <p>{new Date(FIRST_BLOCK + epoch.f_epoch * 32 * 12000).toLocaleDateString('ja-JP')}</p>
                                 <p>{new Date(FIRST_BLOCK + epoch.f_epoch * 32 * 12000).toLocaleTimeString('ja-JP')}</p>
                             </div>
-                            <div className='w-[11%]'>
+                            <div className='w-[11%] font-medium md:hover:underline underline-offset-4 decoration-2' style={{color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)'}}>
                                 <LinkEpoch epoch={epoch.f_epoch} mxAuto />
                             </div>
 

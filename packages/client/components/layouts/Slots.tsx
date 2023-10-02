@@ -73,7 +73,7 @@ const Slots = ({ slots }: Props) => {
 
                     {slots.map(element => (
                         <div
-                            className='flex gap-4 py-3 uppercase text-center items-center flex-row justify-around font-medium text-[12px] md:text-[14px] rounded-md border-2 border-white my-2'
+                            className='flex gap-4 py-3 uppercase text-center items-center flex-row justify-around text-[12px] md:text-[14px] rounded-md border-2 border-white my-2'
                             style={{
                                 backgroundColor: themeMode?.darkMode
                                     ? 'var(--bgFairDarkMode)'
@@ -95,15 +95,15 @@ const Slots = ({ slots }: Props) => {
                                 />
                             </div>
 
-                            <div className='w-[20%]'>
+                            <div className='w-[20%] font-medium md:hover:underline underline-offset-4 decoration-2' style={{color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)'}}>
                                 <LinkEntity entity={element.f_pool_name || 'others'} />
                             </div>
 
-                            <div className='w-[20%]'>
+                            <div className='w-[20%] font-medium md:hover:underline underline-offset-4 decoration-2' style={{color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)'}}>
                                 <LinkValidator validator={element.f_val_idx} mxAuto />
                             </div>
 
-                            <div className='w-[20%]'>
+                            <div className='w-[20%] font-medium md:hover:underline underline-offset-4 decoration-2' style={{color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)'}}>
                                 <LinkSlot slot={element.f_proposer_slot} mxAuto />
                             </div>
 
