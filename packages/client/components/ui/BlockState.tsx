@@ -17,7 +17,7 @@ type Props = {
     showCheck?: boolean;
 };
 
-const BlockImage = ({ poolName, proposed = true, width, height, showCheck}: Props) => {
+const BlockState = ({ poolName, proposed = true, width, height, showCheck}: Props) => {
     // Theme Mode Context
     const { themeMode } = React.useContext(ThemeModeContext) ?? {};
 
@@ -45,11 +45,11 @@ const BlockImage = ({ poolName, proposed = true, width, height, showCheck}: Prop
 
             {!proposed && (
                 <CustomImage
-                    className='absolute z-[var(--zIndexBlockImageMissed)] top-0'
-                    src={`/static/images/blocks/cubes/missed_block.webp`}
+                    className='absolute -bottom-0 -right-5'
+                    src={`/static/images/icons/missed_block.webp`}
                     alt='Missed Logo'
-                    width={width}
-                    height={width}
+                    width={35}
+                    height={35}
                 />
             )}
 
@@ -66,4 +66,4 @@ const BlockImage = ({ poolName, proposed = true, width, height, showCheck}: Prop
     );
 };
 
-export default BlockImage;
+export default BlockState;

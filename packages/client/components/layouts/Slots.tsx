@@ -8,6 +8,7 @@ import BlockImage from '../../components/ui/BlockImage';
 import LinkValidator from '../../components/ui/LinkValidator';
 import LinkSlot from '../../components/ui/LinkSlot';
 import LinkEntity from '../../components/ui/LinkEntity';
+import BlockState from '../ui/BlockState';
 
 // Types
 import { Slot } from '../../types';
@@ -86,7 +87,7 @@ const Slots = ({ slots }: Props) => {
                             key={element.f_proposer_slot}
                         >
                             <div className='flex items-center justify-center w-[20%]'>
-                                <BlockImage
+                                <BlockState
                                     poolName={element.f_pool_name}
                                     proposed={element.f_proposed}
                                     width={80}
@@ -155,7 +156,7 @@ const Slots = ({ slots }: Props) => {
                         }}
                     >
                         <div className='flex items-center '>
-                            <BlockImage
+                            <BlockState
                                 poolName={slot.f_pool_name}
                                 proposed={slot.f_proposed}
                                 width={80}
