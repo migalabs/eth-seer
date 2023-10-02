@@ -12,7 +12,7 @@ type Props = {
 const ProgressTileBar = ({ tooltipContent, totalBlocks }: Props) => {
     const addBars = (restBlocks: Array<number>) => {
         return restBlocks.map((element, idx) => (
-            <div key={idx} className={`w-[3px] h-2.5 ${element === 1 && 'bg-gray-400'}`} />
+            <div key={idx} className={`w-[3px] h-2.5 ${element === 1 && 'bg-[var(--lightGray)]'}`} />
         ));
     };
 
@@ -23,20 +23,24 @@ const ProgressTileBar = ({ tooltipContent, totalBlocks }: Props) => {
     return (
         <div className='flex flex-col gap-y-1'>
             <TooltipContainer>
-                <div className='flex gap-x-2 bg-[#c9c9c9] px-2 py-1.5 w-fit rounded-md mx-auto'>
+                <div className='flex gap-x-2 bg-white px-2 py-1.5 w-fit rounded-md mx-auto'>
                     <div className='flex flex-col justify-center'>
                         <div className='flex gap-x-px'>
                             {totalBlocks?.map((element, idx) => (
                                 <div
                                     key={idx}
-                                    className={`w-[3px] h-2.5 ${element === 1 ? 'bg-[#6D6D6D]' : 'bg-black'}`}
+                                    className={`w-[3px] h-2.5 ${
+                                        element === 1 ? 'bg-[var(--proposedGreen)]' : 'bg-[var(--missedRed)]'
+                                    }`}
                                 />
                             ))}
                             {totalBlocks === undefined &&
                                 staticArray.map((element, idx) => (
                                     <div
                                         key={idx}
-                                        className={`w-[3px] h-2.5 ${element === 1 ? 'bg-[#6D6D6D]' : 'bg-black'}`}
+                                        className={`w-[3px] h-2.5 ${
+                                            element === 1 ? 'bg-[var(--proposedGreen)]' : 'bg-[var(--missedRed)]'
+                                        }`}
                                     />
                                 ))}
 
@@ -46,8 +50,8 @@ const ProgressTileBar = ({ tooltipContent, totalBlocks }: Props) => {
 
                     <TooltipResponsive
                         width={200}
-                        backgroundColor='#ffffff'
-                        colorLetter='#000000'
+                        backgroundColor=''
+                        colorLetter=''
                         content={tooltipContent}
                         top='35px'
                     />
