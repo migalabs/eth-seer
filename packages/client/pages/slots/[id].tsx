@@ -34,7 +34,7 @@ type CardProps = {
     target?: string;
 };
 
-const Card = ({ title, content, icon, iconSize, link, target}: CardProps) => {
+const Card = ({ title, content, icon, iconSize, link, target }: CardProps) => {
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
 

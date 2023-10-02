@@ -1,4 +1,3 @@
-
 import React, { useContext } from 'react';
 
 // Contexts
@@ -58,9 +57,11 @@ const TooltipResponsive = ({ width, backgroundColor, colorLetter, content, top, 
                 xmlSpace='preserve'
                 style={{ left: GetPolygonLeftPosition() }}
             >
-                <polygon style={{ fill: themeMode?.darkMode ? 'var(--darkGray)' : 'var(--white)' }} points='20,0 127.5,-107.5 235,0' />
+                <polygon
+                    style={{ fill: themeMode?.darkMode ? 'var(--darkGray)' : 'var(--white)' }}
+                    points='20,0 127.5,-107.5 235,0'
+                />
             </svg>
-            
         </div>
     );
 };
