@@ -181,8 +181,9 @@ const ValidatorComponent = () => {
             <div
                 className='mt-5 flex flex-col gap-y-2 mx-2 px-6 uppercase overflow-x-scroll overflow-y-hidden scrollbar-thin text-black leading-7 text-[8px] md:text-[10px]  rounded-[22px] py-3'
                 style={{
-                    backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
-                    boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
+                    backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
+                    boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
+                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
                 }}
             >
                 {proposedBlocks.map(element => (
@@ -308,9 +309,10 @@ const ValidatorComponent = () => {
             <div
                 ref={containerRef}
                 className='flex flex-col px-2 mt-2.5 overflow-x-scroll overflow-y-hidden scrollbar-thin'
+                
                 onMouseMove={handleMouseMove}
             >
-                <div className='flex gap-x-4 justify-around px-4 xl:px-8 min-w-[700px] py-3 uppercase text-sm text-white text-center'>
+                <div className='flex gap-x-4 justify-around px-4 xl:px-8 min-w-[700px] py-3 uppercase text-sm text-white text-center' >
                     <p className='mt-0.5 w-[25%]'>Epoch</p>
                     <p className='mt-0.5 w-[25%]'>Slot</p>
                     <p className='mt-0.5 w-[25%]'>Datetime</p>
@@ -320,8 +322,9 @@ const ValidatorComponent = () => {
                 <div
                     className='flex flex-col gap-y-2 min-w-[700px] text-2xs md:text-xs rounded-[22px] px-4 xl:px-8 py-3'
                     style={{
-                        backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
-                        boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
+                        backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
+                        boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
+                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
                     }}
                 >
                     {withdrawals.map((element, idx) => (
@@ -669,7 +672,7 @@ const ValidatorComponent = () => {
             )}
 
             {!loadingValidator && validatorHour && (
-                <div className='flex flex-col gap-4 mx-auto max-w-[1100px]'>
+                <div className='flex flex-col gap-4 mx-auto w-11/12 md:w-10/12'>
                     <div>{getContentValidator()}</div>
 
                     <div className='flex flex-col md:flex-row gap-4 mx-2'>
@@ -685,7 +688,7 @@ const ValidatorComponent = () => {
                 </div>
             )}
 
-            {animation && <Animation text={`Validator doesn't exists yet`} />}
+            {animation && <Animation text={`Validator doesn't exist yet`} />}
         </Layout>
     );
 };
