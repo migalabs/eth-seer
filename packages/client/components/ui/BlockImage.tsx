@@ -17,7 +17,7 @@ type Props = {
     showCheck?: boolean;
 };
 
-const BlockImage = ({ poolName, proposed = true, width, height, showCheck}: Props) => {
+const BlockImage = ({ poolName, proposed = true, width, height, showCheck }: Props) => {
     // Theme Mode Context
     const { themeMode } = React.useContext(ThemeModeContext) ?? {};
 
