@@ -116,7 +116,7 @@ const Validators = () => {
                 onMouseMove={handleMouseMove}
             >
                 <div
-                    className='flex gap-x-1 justify-around px-2 xl:px-8 py-3 text-xs md:text-[16px] min-w-[700px] max-w-[1100px] w-full'
+                    className='flex gap-x-1 justify-around px-2 xl:px-8 py-3 text-xs md:text-[16px] w-10/12 md:w-11/12'
                     style={{
                         color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
                     }}
@@ -128,7 +128,7 @@ const Validators = () => {
                 </div>
 
                 <div
-                    className='flex flex-col justify-center gap-y-4 rounded-md border-2 border-white py-5 px-2 xl:px-8 w-11/12 md:w-10/12'
+                    className='flex flex-col justify-center gap-y-4 rounded-md border-2 border-white py-5 px-2 xl:px-8 w-10/12 md:w-11/12'
                     style={{
                         backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
                         boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
