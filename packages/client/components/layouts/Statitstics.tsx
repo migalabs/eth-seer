@@ -507,7 +507,10 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
                                 <p>{new Date(FIRST_BLOCK + epoch.f_epoch * 32 * 12000).toLocaleDateString('ja-JP')}</p>
                                 <p>{new Date(FIRST_BLOCK + epoch.f_epoch * 32 * 12000).toLocaleTimeString('ja-JP')}</p>
                             </div>
-                            <div className='w-[11%] font-medium md:hover:underline underline-offset-4 decoration-2' style={{color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)'}}>
+                            <div
+                                className='w-[11%] font-medium md:hover:underline underline-offset-4 decoration-2'
+                                style={{ color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)' }}
+                            >
                                 <LinkEpoch epoch={epoch.f_epoch} mxAuto />
                             </div>
 

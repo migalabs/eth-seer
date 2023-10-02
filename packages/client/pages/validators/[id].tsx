@@ -517,9 +517,12 @@ const ValidatorComponent = () => {
                         color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
                     }}
                 >
-                    <div className='flex flex-col gap-y-2 text-xs md:text-[14px]' style={{
-                                color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                            }}>
+                    <div
+                        className='flex flex-col gap-y-2 text-xs md:text-[14px]'
+                        style={{
+                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
+                        }}
+                    >
                         <div className='flex flex-row items-center gap-x-5'>
                             <p className='w-32 sm:w-40 font-semibold'>Entity:</p>
                             <div className='uppercase'>

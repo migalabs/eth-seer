@@ -143,9 +143,12 @@ const EntityComponent = () => {
                     <p className='md:w-52 lg:w-80'>Attestation flags:</p>
 
                     {entity && (
-                        <div className='flex flex-col xl:flex-row items-center gap-x-4 gap-y-2 font-normal text-[12px]' style={{
-                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)'
-                        }}>
+                        <div
+                            className='flex flex-col xl:flex-row items-center gap-x-4 gap-y-2 font-normal text-[12px]'
+                            style={{
+                                color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
+                            }}
+                        >
                             <ProgressSmoothBar
                                 title='Target'
                                 color='var(--black)'

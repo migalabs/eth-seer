@@ -52,7 +52,7 @@ export default function Document() {
                         --white: #ffffff;
                         --black: #000000;
                         --purple: #c9b6f8;
-                        --darkPurple: #40467D;
+                        --darkPurple: #40467d;
                         --lightGray: #a19f9f;
                         --darkGray: #6d6d6d;
                         --bgBar: #c9c9c9;
