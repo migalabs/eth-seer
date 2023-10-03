@@ -38,6 +38,16 @@ const Card = ({ title, content, icon, iconSize, link, target }: CardProps) => {
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
 
+    // Define the base style object
+    const baseStyle = {
+        color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
+    };
+
+    // Add conditional color style for links
+    if (link) {
+        baseStyle.color = themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)';
+    }
+
     return (
         <>
             <div className='flex flex-row items-center justify-between gap-5 md:gap-20'>
@@ -51,10 +61,10 @@ const Card = ({ title, content, icon, iconSize, link, target }: CardProps) => {
                 </p>
                 <div className='flex gap-2 items-center'>
                     <p
-                        className='uppercase text-xs md:text-[14px] font-semibold'
-                        style={{
-                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                        }}
+                        className={`uppercase text-xs md:text-[14px] ${
+                            link ? 'font-medium md:hover:underline underline-offset-4 decoration-2 cursor-pointer' : ''
+                        }`}
+                        style={baseStyle}
                     >
                         {content}
                     </p>
@@ -503,7 +513,10 @@ const Slot = () => {
                                 className='flex gap-x-4 py-1 uppercase text-center items-center'
                                 key={element.f_val_idx}
                             >
-                                <div className='w-1/3'>
+                                <div
+                                    className='w-1/3 font-medium md:hover:underline underline-offset-4 decoration-2'
+                                    style={{ color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)' }}
+                                >
                                     <LinkValidator validator={element.f_val_idx} mxAuto />
                                 </div>
 
@@ -517,7 +530,7 @@ const Slot = () => {
 
                         {withdrawals.length == 0 && (
                             <div className='flex justify-center p-2'>
-                                <p className='uppercase'>No withdrawals</p>
+                                <p className='uppercase text-xs md:text-[16px]'>No withdrawals</p>
                             </div>
                         )}
                     </div>

@@ -22,22 +22,22 @@ type PropsInput = {
 };
 
 const SearchEngineInput = styled.input<PropsInput>`
-    color: ${props => (props.darkMode ? 'var(--white)' : 'var(--white)')};
+    color: ${props => (props.darkMode ? 'var(--white)' : 'var(--bgDarkMode)')};
 
     ::placeholder {
         /* Chrome, Firefox, Opera, Safari 10.1+ */
-        color: ${props => (props.darkMode ? 'var(--white)' : 'var(--white)')};
+        color: ${props => (props.darkMode ? 'var(--white)' : 'var(--bgDarkMode)')};
         opacity: 1; /* Firefox */
     }
 
     :-ms-input-placeholder {
         /* Internet Explorer 10-11 */
-        color: ${props => (props.darkMode ? 'var(--white)' : 'var(--white)')};
+        color: ${props => (props.darkMode ? 'var(--white)' : 'var(--bgDarkMode)')};
     }
 
     ::-ms-input-placeholder {
         /* Microsoft Edge */
-        color: ${props => (props.darkMode ? 'var(--white)' : 'var(--white)')};
+        color: ${props => (props.darkMode ? 'var(--white)' : 'var(--bgDarkMode)')};
     }
 `;
 
@@ -181,13 +181,12 @@ const SearchEngine = () => {
         <div
             className='absolute z-40 flex top-20 xl:top-4 left-4 xl:left-[calc(50%-200px)] items-center w-[calc(100%-2rem)] xl:w-[400px] h-10 border-2 rounded-md py-1'
             style={{
-                borderColor: themeMode?.darkMode ? 'var(--white)' : '',
-                background: themeMode?.darkMode ? '' : 'var(--purple)',
+                borderColor: themeMode?.darkMode ? 'var(--white)' : 'var(--bgDarkMode)',
             }}
             ref={popUpRef}
         >
             <CustomImage
-                src={'/static/images/icons/magnifying_glass_icon.webp'}
+                src={`/static/images/icons/magnifying_glass_icon_${themeMode?.darkMode ? 'dark' : 'light'}.webp`}
                 alt='Magnifying Glass Pixel'
                 width={25}
                 height={25}
@@ -206,24 +205,30 @@ const SearchEngine = () => {
 
             {searchResults.length > 0 && showResults && (
                 <div
-                    className='absolute top-full left-0 border-2 rounded-md p-1 z-[var(--zIndexSearchEngine)] w-full border-[#c9b6f8]'
+                    className='absolute top-full left-0 border-2 rounded-md p-1 z-[var(--zIndexSearchEngine)] w-full border-[var(--purple)]'
                     style={{
                         color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                         background: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--white)',
                     }}
                 >
                     <div
-                        className={`flex flex-col gap-y-3 w-full px-4 py-4 text-xs md:text-[14px] max-h-[400px] scrollbar-thumb-[#c9b6f8] overflow-y-scroll scrollbar-thin
-                        } scrollbar-track-[#736a73] scrollbar-thumb-rounded`}
+                        className={`flex flex-col gap-y-2 w-full px-4 py-4 text-xs md:text-[14px] max-h-[400px] overflow-y-scroll scrollbar-thin
+                        } scrollbar-thumb-rounded`}
                     >
                         {searchResults.map((item, index) => (
                             <Fragment key={index}>
-                                <Link href={item.link} passHref>
+                                <Link
+                                    className={`transition-all pl-1 md:hover:bg-[var(--purple)] py-2 rounded-md md:hover:text-${
+                                        themeMode?.darkMode ? 'black' : 'white'
+                                    }`}
+                                    href={item.link}
+                                    passHref
+                                >
                                     <span>{item.label}</span>
                                 </Link>
 
                                 {index !== searchResults.length - 1 && (
-                                    <div className='border-b border-[#c9b6f8]'></div>
+                                    <div className='border-b border-[var(--purple)] '></div>
                                 )}
                             </Fragment>
                         ))}

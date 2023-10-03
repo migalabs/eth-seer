@@ -26,7 +26,6 @@ const Entities = () => {
                 <meta name='keywords' content='Ethereum, Staking, Pool, Validators, Slashing, PoS' />
                 <link rel='canonical' href='https://ethseer.io/entities' />
             </Head>
-
             <h1 className='text-black text-center font-semibold md:text-[40px] text-[30px] mt-14 xl:mt-0 capitalize'>Ethereum Staking Entities</h1>
 
             <div className='mx-auto py-4 px-6 border-2 border-[var(--purple)] rounded-md flex w-11/12 lg:w-10/12' style={{background: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--bgMainLightMode)'}}>

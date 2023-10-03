@@ -87,7 +87,9 @@ const Dropdown = ({ name, items }: Props) => {
                             <Link
                                 key={item.name}
                                 href={item.route}
-                                className='block px-4 py-2 my-1 text-[16px] rounded-md bg-[#a19f9f] md:bg-transparent md:hover:bg-[#c9b6f8] transition md:font-semibold md:hover:text-black'
+                                className={`block px-4 py-2 my-1 text-[16px] rounded-md bg-[#a19f9f] md:bg-transparent md:hover:bg-[#c9b6f8] transition md:font-semibold md:hover:text-${
+                                    themeMode?.darkMode ? 'black' : 'white'
+                                }`}
                             >
                                 {item.name}
                             </Link>

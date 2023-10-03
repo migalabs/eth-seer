@@ -1,3 +1,8 @@
+import React, { useContext } from 'react';
+
+// Contexts
+import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
+
 type Props = {
     width: number;
     backgroundColor: string;
@@ -29,29 +34,33 @@ const TooltipResponsive = ({ width, backgroundColor, colorLetter, content, top, 
         }
     };
 
+    // Theme Mode Context
+    const { themeMode } = useContext(ThemeModeContext) ?? {};
+
     return (
         <div
-            className='absolute flex-col border-2 rounded-md py-4 px-4 mt-2 mx-auto hidden z-[var(--zIndexTooltip)] text-[12px] uppercase leading-4'
+            className='absolute flex-col rounded-md py-4 px-4 mt-2 mx-auto hidden z-[var(--zIndexTooltip)] text-[12px] leading-4 uppercase'
             style={{
                 width,
                 left: GetParentLeftPosition(),
-                backgroundColor,
-                color: colorLetter,
-                borderColor: colorLetter,
+                backgroundColor: themeMode?.darkMode ? 'var(--darkGray)' : 'var(--white)',
+                color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                 top: top ?? '30px',
             }}
         >
             {content}
             <svg
-                className='absolute h-10 top-0 overflow-visible w-10'
+                className='absolute h-5 top-0 overflow-visible w-10'
                 x='00px'
                 y='0px'
                 viewBox='0 0 255 255'
                 xmlSpace='preserve'
                 style={{ left: GetPolygonLeftPosition() }}
             >
-                <polygon style={{ fill: colorLetter }} points='0,0 127.5,-127.5 255,0' />
-                <polygon style={{ fill: backgroundColor }} points='20,0 127.5,-107.5 235,0' />
+                <polygon
+                    style={{ fill: themeMode?.darkMode ? 'var(--darkGray)' : 'var(--white)' }}
+                    points='20,0 127.5,-107.5 235,0'
+                />
             </svg>
         </div>
     );
