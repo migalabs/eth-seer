@@ -17,22 +17,22 @@ const ValidatorStatus = ({ status }: Props) => {
             setText(status);
             setColor('var(--white)');
             setBackgroundColor('var(--proposedGreen)');
-            setBoxShadow('var(--boxShadowGreen)')
+            setBoxShadow('var(--boxShadowGreen)');
         } else if (status === 'slashed') {
             setText(status);
             setColor('var(--white)');
             setBackgroundColor('var(--missedRed)');
-            setBoxShadow('var(--boxShadowRed)')
+            setBoxShadow('var(--boxShadowRed)');
         } else if (status === 'exit') {
             setText('exited');
             setColor('var(--white)');
             setBackgroundColor('var(--exitedPurple)');
-            setBoxShadow('var(--boxShadowPurple)')
+            setBoxShadow('var(--boxShadowPurple)');
         } else if (status === 'in queue to activation') {
             setText('deposited');
             setColor('var(--white)');
             setBackgroundColor('var(--depositedBlue)');
-            setBoxShadow('var(--boxShadowBlue)')
+            setBoxShadow('var(--boxShadowBlue)');
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -89,12 +89,18 @@ const Validators = () => {
                 <link rel='canonical' href='https://ethseer.io/validators' />
             </Head>
 
-            <h1 className='text-black text-center font-medium md:text-[40px] text-[30px] mt-14 xl:mt-0'>Ethereum Validators</h1>
+            <h1 className='text-black text-center font-medium md:text-[40px] text-[30px] mt-14 xl:mt-0'>
+                Ethereum Validators
+            </h1>
 
-            <div className='mx-auto py-4 px-6 border-2 border-[var(--purple)] rounded-md flex w-11/12 lg:w-10/12' style={{background: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--bgMainLightMode)'}}>
+            <div
+                className='mx-auto py-4 px-6 border-2 border-[var(--purple)] rounded-md flex w-11/12 lg:w-10/12'
+                style={{ background: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--bgMainLightMode)' }}
+            >
                 <h2
-                    className='text-xs md:text-[16px] mx-auto text-center leading-5' style={{
-                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)'
+                    className='text-xs md:text-[16px] mx-auto text-center leading-5'
+                    style={{
+                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                     }}
                 >
                     Validators participate in the consensus protocol by proposing and validating blocks. They are
@@ -106,12 +112,15 @@ const Validators = () => {
 
             <div
                 ref={containerRef}
-                className='flex flex-col my-6 px-2 xl:px-20 overflow-x-scroll overflow-y-hidden scrollbar-thin text-center sm:items-center' 
+                className='flex flex-col my-6 px-2 xl:px-20 overflow-x-scroll overflow-y-hidden scrollbar-thin text-center sm:items-center'
                 onMouseMove={handleMouseMove}
             >
-                <div className='flex gap-x-1 justify-around px-2 xl:px-8 py-3 text-xs md:text-[16px] min-w-[700px] max-w-[1100px] w-full' style={{
-                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)'
-                        }}>
+                <div
+                    className='flex gap-x-1 justify-around px-2 xl:px-8 py-3 text-xs md:text-[16px] w-10/12 md:w-11/12'
+                    style={{
+                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
+                    }}
+                >
                     <p className='w-[25%]'>Validator ID</p>
                     <p className='w-[25%]'>Balance</p>
                     <p className='w-[25%]'>Entity</p>
@@ -119,7 +128,7 @@ const Validators = () => {
                 </div>
 
                 <div
-                    className='flex flex-col justify-center gap-y-4 rounded-md border-2 border-white py-5 px-2 xl:px-8 min-w-[700px] max-w-[1100px] w-full'
+                    className='flex flex-col justify-center gap-y-4 rounded-md border-2 border-white py-5 px-2 xl:px-8 w-10/12 md:w-11/12'
                     style={{
                         backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
                         boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
@@ -129,17 +138,24 @@ const Validators = () => {
                     {validators.map((validator: Validator) => (
                         <div
                             key={validator.f_val_idx}
-                            className='flex gap-x-1 justify-around items-center text-xs md:text-[14px]' style={{
-                                color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)'
+                            className='flex gap-x-1 justify-around items-center text-xs md:text-[14px]'
+                            style={{
+                                color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
                             }}
                         >
-                            <div className='w-[25%]'>
+                            <div
+                                className='w-[25%] font-medium md:hover:underline underline-offset-4 decoration-2'
+                                style={{ color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)' }}
+                            >
                                 <LinkValidator validator={validator.f_val_idx} mxAuto />
                             </div>
 
                             <p className='w-[25%]'>{validator.f_balance_eth} ETH</p>
 
-                            <div className='w-[25%] uppercase'>
+                            <div
+                                className='w-[25%] uppercase font-medium md:hover:underline underline-offset-4 decoration-2'
+                                style={{ color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)' }}
+                            >
                                 <LinkEntity entity={validator.f_pool_name || 'others'} />
                             </div>
 
