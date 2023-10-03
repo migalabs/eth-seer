@@ -129,7 +129,7 @@ const Slots = ({ slots }: Props) => {
 
                     {slots.length === 0 && (
                         <div className='flex justify-center p-2'>
-                            <p className='uppercase'>No slots</p>
+                            <p className='uppercase text-xs md:text-[16px]'>No slots</p>
                         </div>
                     )}
                 </div>
@@ -237,7 +237,7 @@ const Slots = ({ slots }: Props) => {
 
                 {slots.length === 0 && (
                     <div className='flex justify-center p-2'>
-                        <p className='uppercase'>No slots</p>
+                        <p className='uppercase text-xs md:text-[16px]'>No slots</p>
                     </div>
                 )}
             </div>
