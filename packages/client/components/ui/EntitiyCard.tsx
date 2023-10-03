@@ -35,7 +35,7 @@ const EntityCard = ({ index, pool }: Props) => {
                 style={{
                     // backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
                     boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
-                    color: themeMode?.darkMode ? 'var(--black)' : 'var(--darkGray)',
+                    color: themeMode?.darkMode ? 'var(--black)' : 'var(--black)',
                     borderColor: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--white)',
                 }}
             >
@@ -44,10 +44,10 @@ const EntityCard = ({ index, pool }: Props) => {
                 </div>
 
                 <div className='flex flex-col items-center md:items-start'>
-                    <span className='font-semibold text-[18px] md:text-[20px]'>{String(index).padStart(3, '0')}</span>
-                    <span ref={spanRef} className='text-[14px] md:text-[16px] font-light'>
+                    <span ref={spanRef} className='text-[14px] md:text-[16px] font-semibold'>
                         {pool}
                     </span>
+                    <span className='font-light text-[18px] md:text-[20px]'>{String(index).padStart(3, '0')}</span>
                 </div>
             </div>
         </Link>
