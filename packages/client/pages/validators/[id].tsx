@@ -309,10 +309,9 @@ const ValidatorComponent = () => {
             <div
                 ref={containerRef}
                 className='flex flex-col px-2 mt-2.5 overflow-x-scroll overflow-y-hidden scrollbar-thin'
-                
                 onMouseMove={handleMouseMove}
             >
-                <div className='flex gap-x-4 justify-around px-4 xl:px-8 min-w-[700px] py-3 uppercase text-sm text-white text-center' >
+                <div className='flex gap-x-4 justify-around px-4 xl:px-8 min-w-[700px] py-3 uppercase text-sm text-white text-center'>
                     <p className='mt-0.5 w-[25%]'>Epoch</p>
                     <p className='mt-0.5 w-[25%]'>Slot</p>
                     <p className='mt-0.5 w-[25%]'>Datetime</p>

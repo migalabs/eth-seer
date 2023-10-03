@@ -143,13 +143,19 @@ const Validators = () => {
                                 color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
                             }}
                         >
-                            <div className='w-[25%] font-medium md:hover:underline underline-offset-4 decoration-2'  style={{ color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)' }}>
+                            <div
+                                className='w-[25%] font-medium md:hover:underline underline-offset-4 decoration-2'
+                                style={{ color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)' }}
+                            >
                                 <LinkValidator validator={validator.f_val_idx} mxAuto />
                             </div>
 
                             <p className='w-[25%]'>{validator.f_balance_eth} ETH</p>
 
-                            <div className='w-[25%] uppercase font-medium md:hover:underline underline-offset-4 decoration-2'  style={{ color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)' }}>
+                            <div
+                                className='w-[25%] uppercase font-medium md:hover:underline underline-offset-4 decoration-2'
+                                style={{ color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)' }}
+                            >
                                 <LinkEntity entity={validator.f_pool_name || 'others'} />
                             </div>
 
