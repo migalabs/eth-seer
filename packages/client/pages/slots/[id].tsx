@@ -38,26 +38,23 @@ const Card = ({ title, content, icon, iconSize, link, target }: CardProps) => {
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
 
-    // Define the base style object
-    const baseStyle = {
-        color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-    };
-
-    // Add conditional color style for links
-    if (link) {
-        baseStyle.color = themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)';
-    }
-
     return (
         <>
             <div className='flex flex-row items-center justify-between gap-5 md:gap-20'>
-                <p className='text-xs md:text-[14px]'>{title}:</p>
+                <p
+                    className='text-xs md:text-[14px] font-semibold'
+                    style={{
+                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
+                    }}
+                >
+                    {title}:
+                </p>
                 <div className='flex gap-2 items-center'>
                     <p
-                        className={`uppercase text-xs md:text-[14px] ${
-                            link ? 'font-medium md:hover:underline underline-offset-4 decoration-2 cursor-pointer' : ''
-                        }`}
-                        style={baseStyle}
+                        className='uppercase text-xs md:text-[14px] font-semibold'
+                        style={{
+                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
+                        }}
                     >
                         {content}
                     </p>
@@ -322,7 +319,7 @@ const Slot = () => {
                 style={{
                     backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
                     boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
-                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
+                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                 }}
             >
                 <div className='flex flex-col mx-auto gap-y-4 md:gap-y-8'>
@@ -494,11 +491,11 @@ const Slot = () => {
                     </div>
                 ) : (
                     <div
-                        className='flex flex-col gap-y-2 min-w-[470px] text-[12px] sm:text-[14px] rounded-md border-2 border-white px-4 xl:px-8 py-3'
+                        className='font-semibold flex flex-col gap-y-2 min-w-[470px] text-[12px] sm:text-[14px] rounded-md border-2 border-white px-4 xl:px-8 py-3'
                         style={{
                             backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
                             boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
-                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
+                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                         }}
                     >
                         {withdrawals.map(element => (
@@ -506,10 +503,7 @@ const Slot = () => {
                                 className='flex gap-x-4 py-1 uppercase text-center items-center'
                                 key={element.f_val_idx}
                             >
-                                <div
-                                    className='w-1/3 font-medium md:hover:underline underline-offset-4 decoration-2'
-                                    style={{ color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)' }}
-                                >
+                                <div className='w-1/3'>
                                     <LinkValidator validator={element.f_val_idx} mxAuto />
                                 </div>
 
@@ -523,7 +517,7 @@ const Slot = () => {
 
                         {withdrawals.length == 0 && (
                             <div className='flex justify-center p-2'>
-                                <p className='uppercase text-xs md:text-[16px]'>No withdrawals</p>
+                                <p className='uppercase'>No withdrawals</p>
                             </div>
                         )}
                     </div>

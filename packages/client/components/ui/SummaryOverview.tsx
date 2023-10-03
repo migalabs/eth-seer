@@ -72,7 +72,7 @@ const SummaryOverview = () => {
                         }}
                     >
                         <p className='flex-shrink-0'>
-                            <b>Network:</b> {assetPrefix !== '/goerli' ? 'MAINNET' : 'GOERLI'}
+                            <b>Network:</b> {assetPrefix !== '/goerli' ? 'Mainnet' : 'Goerli'}
                         </p>
                         <span className='lg:w-[1px] lg:h-6 lg:bg-gray-400 '></span>
                         <p className='flex-shrink-0'>
