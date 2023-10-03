@@ -89,15 +89,14 @@ const Validators = () => {
                 <link rel='canonical' href='https://ethseer.io/validators' />
             </Head>
 
-<<<<<<< HEAD
-            <h1 className='text-black text-center font-semibold md:text-[40px] text-[30px] mt-14 xl:mt-0 capitalize'>
+            <h1
+                className='text-black text-center font-semibold md:text-[40px] text-[30px] mt-14 xl:mt-0 capitalize'
+                style={{
+                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
+                }}
+            >
                 Ethereum Validators
             </h1>
-=======
-            <h1 className='text-black text-center font-semibold md:text-[40px] text-[30px] mt-14 xl:mt-0 capitalize' style={{
-                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)'
-                    }} >Ethereum Validators</h1>
->>>>>>> 8bbb332 (add changes)
 
             <div
                 className='mx-auto py-4 px-6 border-2 border-[var(--purple)] rounded-md flex w-11/12 lg:w-10/12'
@@ -121,19 +120,12 @@ const Validators = () => {
                 className='flex flex-col my-6 px-2 xl:px-20 overflow-x-scroll overflow-y-hidden scrollbar-thin text-center sm:items-center'
                 onMouseMove={handleMouseMove}
             >
-<<<<<<< HEAD
                 <div
                     className='font-semibold flex gap-x-1 justify-around px-2 xl:px-8 py-3 text-xs md:text-[16px] min-w-[700px] max-w-[1100px] w-full'
                     style={{
                         color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
                     }}
                 >
-=======
-                <div className='font-semibold flex gap-x-1 justify-around px-2 xl:px-8 py-3 text-xs md:text-[16px] min-w-[700px] max-w-[1100px] w-full' 
-                style={{
-                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)'
-                        }}>
->>>>>>> 8bbb332 (add changes)
                     <p className='w-[25%]'>Validator ID</p>
                     <p className='w-[25%]'>Balance</p>
                     <p className='w-[25%]'>Entity</p>

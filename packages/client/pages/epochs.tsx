@@ -25,9 +25,14 @@ const Epochs = () => {
             </Head>
 
             <div className='my-6 text-center text-white mt-14 xl:mt-0'>
-                <h1 className='text-[30px] md:text-[40px] capitalize font-semibold text-black' style={{
-                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)'
-                    }}>Ethereum Epochs</h1>
+                <h1
+                    className='text-[30px] md:text-[40px] capitalize font-semibold text-black'
+                    style={{
+                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
+                    }}
+                >
+                    Ethereum Epochs
+                </h1>
 
                 <div
                     className='mx-auto py-4 px-6 border-2 border-[var(--purple)] rounded-md flex w-11/12 lg:w-10/12 mb-5'

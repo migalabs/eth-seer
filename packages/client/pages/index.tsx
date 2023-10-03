@@ -69,9 +69,12 @@ export default function Home() {
             {status && status.working ? (
                 <Layout>
                     <div className='text-center mb-5 mt-14 xl:mt-0'>
-                        <h1 className='text-[30px] md:text-[40px] capitalize font-semibold text-black' style={{
-                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)'
-                    }}>
+                        <h1
+                            className='text-[30px] md:text-[40px] capitalize font-semibold text-black'
+                            style={{
+                                color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
+                            }}
+                        >
                             Ethereum blockchain explorer
                         </h1>
                     </div>
@@ -106,7 +109,7 @@ export default function Home() {
                         <h2
                             className='text-[20px] md:text-[30px] font-semibold capitalize mb-3'
                             style={{
-                                color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)'
+                                color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                             }}
                         >
                             Epoch statistics

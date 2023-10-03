@@ -537,10 +537,12 @@ const Slot = () => {
                     <Arrow direction='left' />
                 </LinkSlot>
 
-                <h1 className='text-black text-center font-medium md:text-[40px] text-[30px]' 
-                style={{
-                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)'
-                    }} >
+                <h1
+                    className='text-black text-center font-medium md:text-[40px] text-[30px]'
+                    style={{
+                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
+                    }}
+                >
                     Slot {Number(id)?.toLocaleString()}
                 </h1>
 
