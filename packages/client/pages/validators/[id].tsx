@@ -692,7 +692,10 @@ const ValidatorComponent = () => {
                     <Arrow direction='left' />
                 </LinkValidator>
 
-                <h1 className='text-black text-center font-medium md:text-[40px] text-[30px]'>
+                <h1 className='text-black text-center font-medium md:text-[40px] text-[30px]' 
+                style={{
+                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)'
+                    }} >
                     Validator {Number(id)?.toLocaleString()}
                 </h1>
 

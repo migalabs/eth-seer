@@ -51,7 +51,7 @@ const Slots = ({ slots }: Props) => {
     };
 
     const getContentSlots = () => {
-        const titles = ['Block', 'Entity', 'Proposer', 'Slot', 'DateTime', 'Withdrawals'];
+        const titles = ['Block', 'Entity', 'Proposer', 'Slot', 'Datetime', 'Withdrawals'];
         return (
             <div
                 ref={containerRef}
@@ -60,7 +60,7 @@ const Slots = ({ slots }: Props) => {
             >
                 <div>
                     <div
-                        className='flex gap-4 py-3 font-semibold text-center items-center flex-row justify-around md:text-[16px] text-[12px]'
+                        className='font-semibold flex gap-4 py-3 text-center items-center flex-row justify-around md:text-[16px] text-[12px]'
                         style={{
                             color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
                         }}
