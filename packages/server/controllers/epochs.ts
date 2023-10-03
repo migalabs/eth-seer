@@ -1,12 +1,14 @@
 import { Request, Response } from 'express';
-import { pgPool, pgListener } from '../config/db';
+import { pgPools, pgListeners } from '../config/db';
 
 export const getEpochsStatistics = async (req: Request, res: Response) => {
 
     try {
 
-        const { page = 0, limit = 10 } = req.query;
+        const { network, page = 0, limit = 10 } = req.query;
 
+        const pgPool = pgPools[network as string];
+        
         const skip = Number(page) * Number(limit);
 
         const [ epochsStats, blocksStats ] =
@@ -58,7 +60,10 @@ export const getEpochById = async (req: Request, res: Response) => {
     try {
 
         const { id } = req.params;
+        const { network } = req.query;
 
+        const pgPool = pgPools[network as string];
+        
         const [ epochStats, blocksProposed, withdrawals ] = 
             await Promise.all([
                 pgPool.query(`
@@ -99,6 +104,10 @@ export const getEpochById = async (req: Request, res: Response) => {
 export const getEpochStats = async (req: Request, res: Response) => {
 
     try {
+
+        const { network } = req.query;
+
+        const pgPool = pgPools[network as string];
         
         const stats = 
             await pgPool.query(`
@@ -123,7 +132,10 @@ export const getSlotsByEpoch = async (req: Request, res: Response) => {
     try {
 
         const { id } = req.params;
+        const { network } = req.query;
 
+        const pgPool = pgPools[network as string];
+        
         const [ slotsEpoch, withdrawals ] = 
             await Promise.all([
                 pgPool.query(`
@@ -164,13 +176,17 @@ export const listenEpochNotification = async (req: Request, res: Response) => {
 
     try {
 
+        const { network } = req.query;
+
+        const pgListener = pgListeners[network as string];
+        
         res.writeHead(200, {
             'Content-Type': 'text/event-stream',
             'Cache-Control': 'no-cache',
             'Connection': 'keep-alive'
         });
 
-        pgListener.once('new_epoch_finalized', msg => {
+        pgListener?.once('new_epoch_finalized', msg => {
             res.write('event: new_epoch\n');
             res.write(`data: ${msg.payload}`);
             res.write('\n\n');

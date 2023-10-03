@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 
 // Axios
 import axiosClient from '../../config/axios';
@@ -15,6 +16,10 @@ type Summary = {
 
 const SummaryOverview = () => {
     const assetPrefix = process.env.NEXT_PUBLIC_ASSET_PREFIX ?? '';
+
+    // Router
+    const router = useRouter();
+    const { network } = router.query;
 
     // Theme Mode Context
     const { themeMode } = React.useContext(ThemeModeContext) ?? {};
@@ -42,16 +47,20 @@ const SummaryOverview = () => {
             setSummary({ epoch: lastEpochAux, slot: lastSlotAux, block_height: lastBlockAux });
         }
 
-        if (!lastValidator) {
+        if (network && !lastValidator) {
             getLastValidator();
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [blocks]);
+    }, [network, blocks]);
 
     const getLastValidator = async () => {
         try {
-            const response = await axiosClient.get('/api/validators/last');
+            const response = await axiosClient.get('/api/validators/last', {
+                params: {
+                    network,
+                },
+            });
 
             setLastValidator(response.data.number_active_validators);
         } catch (error) {

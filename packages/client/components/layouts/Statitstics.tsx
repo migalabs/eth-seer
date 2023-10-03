@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback, useContext } from 'react';
+import { useRouter } from 'next/router';
 
 // Contexts
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
@@ -27,6 +28,10 @@ type Props = {
 };
 
 const Statitstics = ({ showCalculatingEpochs }: Props) => {
+    // Router
+    const router = useRouter();
+    const { network } = router.query;
+
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
 
@@ -48,15 +53,15 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
 
     useEffect(() => {
         // Fetching blocks
-        if (blocks && !blocks.epochs && !loadingBlocks) {
+        if (network && blocks && !blocks.epochs && !loadingBlocks) {
             setLoadingBlocks(true);
-            getBlocks?.(0);
+            getBlocks?.(network as string, 0);
         }
 
         // Fetching epochs
-        if (epochs && epochs.epochs.length === 0 && !loadingEpochs) {
+        if (network && epochs && epochs.epochs.length === 0 && !loadingEpochs) {
             setLoadingEpochs(true);
-            getEpochs?.(0);
+            getEpochs?.(network as string, 0);
         }
 
         if (epochs && epochs.epochs.length > 0 && loadingEpochs) {
@@ -66,7 +71,7 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
         setDesktopView(window !== undefined && window.innerWidth > 768);
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [blocks, epochs]);
+    }, [network, blocks, epochs]);
 
     const shuffle = useCallback(() => {
         setCalculatingText(prevState => {
@@ -98,7 +103,7 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
 
     const handleViewMore = async () => {
         setLoadingEpochs(true);
-        await getEpochs?.(currentPage + 1);
+        await getEpochs?.(network as string, currentPage + 1);
         setCurrentPage(prevState => prevState + 1);
         // setLoadingEpochs(false); -> No need to set it to false because it will be set to false in the useEffect
     };

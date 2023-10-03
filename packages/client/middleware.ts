@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 // Constants
-import { DEFAULT_NETWORK } from './constants';
+import { DEFAULT_NETWORK, NETWORKS } from './constants';
 
 export function middleware(req: NextRequest) {
     const pathsWithoutNetwork = [
@@ -70,6 +70,12 @@ export function middleware(req: NextRequest) {
         return NextResponse.redirect(newUrl);
     } else if (hasOldPath) {
         return NextResponse.redirect(replaceOldPaths(req.nextUrl.href));
+    } else if (!req.nextUrl.pathname.includes('_next') && !req.nextUrl.pathname.includes('static')) {
+        const network = req.nextUrl.pathname.split('/')[1];
+
+        if (!NETWORKS.includes(network)) {
+            return NextResponse.redirect(`${req.nextUrl.origin}/${DEFAULT_NETWORK}`);
+        }
     }
 
     return NextResponse.next();

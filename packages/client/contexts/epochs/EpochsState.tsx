@@ -25,15 +25,15 @@ const EpochsState = (props: any) => {
     let eventSourceEpoch: EventSource;
 
     // Start event source
-    const startEventSource = () => {
+    const startEventSource = (network: string) => {
         try {
             if (!eventSourceEpoch || eventSourceEpoch.readyState === eventSourceEpoch.CLOSED) {
                 eventSourceEpoch = new EventSource(
-                    `${process.env.NEXT_PUBLIC_URL_API}/api/epochs/new-epoch-notification`
+                    `${process.env.NEXT_PUBLIC_URL_API}/api/epochs/new-epoch-notification?network=${network}`
                 );
 
                 eventSourceEpoch.addEventListener('new_epoch', function (e) {
-                    getEpochs(0, 2);
+                    getEpochs(network, 0, 2);
                 });
 
                 return true;
@@ -56,7 +56,7 @@ const EpochsState = (props: any) => {
     let isFetching = false;
 
     // Get blocks
-    const getEpochs = async (page: number, limit: number = 10) => {
+    const getEpochs = async (network: string, page: number, limit: number = 10) => {
         try {
             if (state.lastPageFetched || isFetching) {
                 return;
@@ -66,6 +66,7 @@ const EpochsState = (props: any) => {
 
             const response = await axiosClient.get('/api/epochs', {
                 params: {
+                    network,
                     limit,
                     page,
                 },

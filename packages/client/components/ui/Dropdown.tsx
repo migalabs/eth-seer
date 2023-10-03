@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, Fragment } from 'react';
 
 // Contexts
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
@@ -15,9 +15,10 @@ type Item = {
 type Props = {
     name: string;
     items: Item[];
+    useNetworkLink?: boolean;
 };
 
-const Dropdown = ({ name, items }: Props) => {
+const Dropdown = ({ name, items, useNetworkLink }: Props) => {
     const [isOpen, setIsOpen] = useState(false);
 
     const { themeMode } = useContext(ThemeModeContext) ?? {};

@@ -26,7 +26,7 @@ import { FIRST_BLOCK } from '../../constants';
 const Graffitis = () => {
     // Router
     const router = useRouter();
-    const { graffiti } = router.query;
+    const { network, graffiti } = router.query;
 
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
@@ -45,12 +45,12 @@ const Graffitis = () => {
     useEffect(() => {
         setDesktopView(window !== undefined && window.innerWidth > 768);
 
-        if (graffiti && blocks.length === 0) {
+        if (network && graffiti && blocks.length === 0) {
             getGraffities(0);
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [graffiti]);
+    }, [network, graffiti]);
 
     const getGraffities = async (page: number, limit: number = 10) => {
         try {
@@ -58,6 +58,7 @@ const Graffitis = () => {
 
             const response = await axiosClient.get(`/api/slots/graffiti/${graffiti}`, {
                 params: {
+                    network,
                     limit,
                     page,
                 },

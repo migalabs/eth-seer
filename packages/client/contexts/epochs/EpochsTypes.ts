@@ -11,7 +11,7 @@ export interface IEpochs {
 
 export interface EpochsContextType {
     epochs: IEpochs;
-    startEventSource: () => boolean;
+    startEventSource: (network: string) => boolean;
     closeEventSource: () => void;
-    getEpochs: (page: number, limit?: number) => Promise<void>;
+    getEpochs: (network: string, page: number, limit?: number) => Promise<void>;
 }
