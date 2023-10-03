@@ -99,12 +99,17 @@ const Graffitis = () => {
     const getDesktopView = () => (
         <div
             ref={containerRef}
-            className='flex flex-col px-2 xl:px-20 overflow-x-scroll overflow-y-hidden scrollbar-thin pb-4 max-w-[1200px] mx-auto'
+            className='flex flex-col overflow-x-scroll overflow-y-hidden scrollbar-thin pb-4 w-11/12 md:w-10/12 mx-auto'
             onMouseMove={handleMouseMove}
         >
-            <div className='flex gap-x-1 justify-around px-2 xl:px-8 py-3 uppercase text-sm min-w-[700px]'>
+            <div
+                className='flex gap-x-1 justify-around xl:px-8 py-3 font-medium md:text-[16px] text-[12px]'
+                style={{
+                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
+                }}
+            >
                 <div className='flex w-[20%] items-center gap-x-1 justify-center'>
-                    <p className='mt-0.5'>Time</p>
+                    <p className='mt-0.5 font-semibold'>Time</p>
                     <TooltipContainer>
                         <CustomImage
                             src='/static/images/icons/information_icon.webp'
@@ -130,7 +135,7 @@ const Graffitis = () => {
                 </div>
 
                 <div className='flex w-[20%] items-center gap-x-1 justify-center'>
-                    <p className='mt-0.5'>Slot</p>
+                    <p className='mt-0.5 font-semibold'>Slot</p>
                     <TooltipContainer>
                         <CustomImage
                             src='/static/images/icons/information_icon.webp'
@@ -150,7 +155,7 @@ const Graffitis = () => {
                 </div>
 
                 <div className='flex w-[20%] items-center gap-x-1 justify-center'>
-                    <p className='mt-0.5'>Validator</p>
+                    <p className='mt-0.5 font-semibold'>Validator</p>
                     <TooltipContainer>
                         <CustomImage
                             src='/static/images/icons/information_icon.webp'
@@ -170,7 +175,7 @@ const Graffitis = () => {
                 </div>
 
                 <div className='flex w-[40%] items-center gap-x-1 justify-center'>
-                    <p className='mt-0.5'>Graffiti</p>
+                    <p className='mt-0.5 font-semibold'>Graffiti</p>
                     <TooltipContainer>
                         <CustomImage
                             src='/static/images/icons/information_icon.webp'
@@ -195,13 +200,18 @@ const Graffitis = () => {
                     blocks.map((block: Block, idx: number) => (
                         <div
                             key={block.f_slot}
-                            className='flex gap-x-1 justify-around items-center text-[9px] text-black rounded-[22px] px-2 xl:px-8 py-9'
+                            className='flex gap-x-1 justify-around items-center text-xs md:text-[14px] border-2 border-white rounded-md px-2 xl:px-8 py-9'
                             style={{
-                                backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
-                                boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
+                                backgroundColor: themeMode?.darkMode
+                                    ? 'var(--bgFairDarkMode)'
+                                    : 'var(--bgFairLightMode)',
+                                boxShadow: themeMode?.darkMode
+                                    ? 'var(--boxShadowCardDark)'
+                                    : 'var(--boxShadowCardLight)',
+                                color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                             }}
                         >
-                            <div className='flex flex-col w-[20%]'>
+                            <div className='flex flex-col w-[20%] font-medium'>
                                 <p>{new Date(FIRST_BLOCK + block.f_slot * 12000).toLocaleDateString('ja-JP')}</p>
                                 <p>{new Date(FIRST_BLOCK + block.f_slot * 12000).toLocaleTimeString('ja-JP')}</p>
                             </div>
@@ -220,7 +230,7 @@ const Graffitis = () => {
                                 <LinkValidator validator={block.f_proposer_index} mxAuto />
                             </div>
 
-                            <div className='w-[40%]'>
+                            <div className='w-[40%] font-medium'>
                                 <p>{block.f_graffiti?.toLocaleString()}</p>
                             </div>
                         </div>
@@ -243,21 +253,29 @@ const Graffitis = () => {
                 blocks.map((block: Block) => (
                     <div
                         key={block.f_slot}
-                        className='flex flex-col gap-y-4 justify-around items-center text-[10px] text-black rounded-[22px] px-3 py-7'
+                        className='flex flex-col gap-y-4 justify-around items-center md:text-[16px] text-[12px] rounded-md px-3 py-7'
                         style={{
-                            backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
-                            boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
+                            backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgFairLightMode)',
+                            boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
+                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                         }}
                     >
                         <div className='flex gap-x-1 justify-center'>
                             <LinkSlot slot={block.f_slot}>
-                                <p className='font-bold text-sm mt-0.5'>Slot {block.f_slot?.toLocaleString()}</p>
+                                <p className='font-semibold text-sm mt-0.5'>Slot {block.f_slot?.toLocaleString()}</p>
                             </LinkSlot>
                         </div>
 
-                        <div className='flex flex-col gap-x-4 w-full'>
+                        <div className='flex flex-col gap-x-4 w-full '>
                             <div className='flex gap-x-1 justify-center mb-1'>
-                                <p className='text-xs mt-1'>Time</p>
+                                <p
+                                    className='text-xs mt-1 font-semibold'
+                                    style={{
+                                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
+                                    }}
+                                >
+                                    Time
+                                </p>
                                 <TooltipContainer>
                                     <CustomImage
                                         src='/static/images/icons/information_icon.webp'
@@ -290,7 +308,14 @@ const Graffitis = () => {
 
                         <div className='flex flex-col gap-x-4 w-full'>
                             <div className='flex gap-x-1 justify-center mb-1'>
-                                <p className='text-xs mt-1'>Validator</p>
+                                <p
+                                    className='text-xs mt-1 font-semibold'
+                                    style={{
+                                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
+                                    }}
+                                >
+                                    Validator
+                                </p>
                                 <TooltipContainer>
                                     <CustomImage
                                         src='/static/images/icons/information_icon.webp'
@@ -315,7 +340,14 @@ const Graffitis = () => {
 
                         <div className='flex flex-col gap-x-4 w-full'>
                             <div className='flex gap-x-1 justify-center mb-1'>
-                                <p className='text-xs mt-1'>Graffiti</p>
+                                <p
+                                    className='text-xs mt-1 font-semibold'
+                                    style={{
+                                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
+                                    }}
+                                >
+                                    Graffiti
+                                </p>
                                 <TooltipContainer>
                                     <CustomImage
                                         src='/static/images/icons/information_icon.webp'
@@ -346,13 +378,18 @@ const Graffitis = () => {
                 </div>
             )}
 
-            {!disableViewMore && <ViewMoreButton onClick={handleViewMore} />}
+            {animation && <Animation text={`Graffiti "${graffiti}" is not found`} />}
         </div>
     );
 
     return (
         <div className='text-center text-white'>
-            <h1 className='text-lg md:text-3xl uppercase mt-14 xl:mt-0'>
+            <h1
+                className='text-black text-center mt-14 xl:mt-0 font-semibold md:text-[40px] text-[30px] capitalize'
+                style={{
+                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
+                }}
+            >
                 Graffiti &quot;{graffiti}&quot; Search Result
             </h1>
 
