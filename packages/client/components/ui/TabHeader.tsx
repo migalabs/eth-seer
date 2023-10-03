@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 
 // Contexts
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
@@ -13,11 +13,13 @@ const TabHeader = ({ header, isSelected, onClick }: Props) => {
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
 
+    const [isHovered, setIsHovered] = useState(false);
+
     const getBackgroundColor = () => {
         if (isSelected) {
             return themeMode?.darkMode ? 'var(--white)' : 'var(--white)';
         } else {
-            return themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgFairLightMode)';
+            return themeMode?.darkMode ? 'var(--bgFairLightMode)' : 'var(--bgFairLightMode)';
         }
     };
 
@@ -29,14 +31,24 @@ const TabHeader = ({ header, isSelected, onClick }: Props) => {
         }
     };
 
+    const hoverStyles = {
+        backgroundColor: isHovered && !isSelected ? 'var(--bgMainLightMode)' : getBackgroundColor(),
+        color: isHovered && !isSelected ? '' : getColor(),
+    };
+
+    const handleMouseEnter = () => {
+        if (window.innerWidth >= 768) {
+            setIsHovered(true);
+        }
+    };
+
     return (
         <div
-            className='flex items-center justify-center border border-white py-4 px-8 rounded-md cursor-pointer shadow-md'
-            style={{
-                backgroundColor: getBackgroundColor(),
-                color: getColor(),
-            }}
+            className='flex items-center justify-center border border-white py-4 px-8 rounded-md cursor-pointer shadow-md transition-all'
+            style={hoverStyles}
             onClick={onClick}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={() => setIsHovered(false)}
         >
             <p className='text-center text-xs font-medium text-[16px]'>{header}</p>
         </div>

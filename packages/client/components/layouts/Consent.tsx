@@ -27,7 +27,7 @@ const Container = styled.div<Props>`
     position: absolute;
     text-align: center;
     background-color: white;
-    border-radius: .5rem;
+    border-radius: 0.5rem;
     border: 2px #c9b6f8 solid;
     z-index: var(--zIndexConsent);
 
@@ -45,12 +45,12 @@ const Container = styled.div<Props>`
         cursor: pointer;
         background-color: var(--purple);
         color: black;
-        border-radius: .25rem;
+        border-radius: 0.25rem;
 
         &:hover {
             background-color: var(--lightGray);
             color: white;
-            transition: all .2s ease-in-out;
+            transition: all 0.2s ease-in-out;
         }
     }
 
@@ -104,33 +104,29 @@ const Consent = () => {
         <Screen consent={consent}>
             <Container consent={consent}>
                 <div>
-                    <div className="flex flex-col items-start">
-                        <div className="flex flex-row justify-start items-center mb-2 gap-2">
+                    <div className='flex flex-col items-start'>
+                        <div className='flex flex-row justify-start items-center mb-2 gap-2'>
                             <CustomImage
-                                    src='/static/images/cookies/cookie.webp'
-                                    alt='Cookie'
-                                    width={40}
-                                    height={40}
-                                    className='mx-auto'
-                                />
+                                src='/static/images/cookies/cookie.webp'
+                                alt='Cookie'
+                                width={40}
+                                height={40}
+                                className='mx-auto'
+                            />
                             <p className='capitalize font-medium text-[14px] md:text-[20px]'>cookies</p>
                         </div>
-                        <p className={`text-left text-[12px] md:text-[16px] text ${generalVisisble ? 'flex' : 'hidden'}`}>
+                        <p
+                            className={`text-left text-[12px] md:text-[16px] text ${
+                                generalVisisble ? 'flex' : 'hidden'
+                            }`}
+                        >
                             We use cookies to know how users interact with our website to deliver a better user
                             experience.
                         </p>
                     </div>
                     <div className='buttons-container'>
-                        <button
-                            onClick={acceptCookie}
-                        >
-                            Only necessary
-                        </button>
-                        <button
-                            onClick={acceptCookie}
-                        >
-                            Accept all cookies
-                        </button>
+                        <button onClick={acceptCookie}>Only necessary</button>
+                        <button onClick={acceptCookie}>Accept all cookies</button>
                     </div>
                 </div>
             </Container>
