@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { useRouter } from 'next/router';
 
 // Contexts
 import BlocksContext from '../../contexts/blocks/BlocksContext';
@@ -8,6 +9,10 @@ import EpochOverview from './EpochOverview';
 import Arrow from '../ui/Arrow';
 
 const ChainOverview = () => {
+    // Router
+    const router = useRouter();
+    const { network } = router.query;
+
     // Blocks Context
     const { blocks, getBlocks } = useContext(BlocksContext) ?? {};
 
@@ -20,8 +25,8 @@ const ChainOverview = () => {
     const [numberEpochsViewed, setNumberEpochsViewed] = useState(1);
 
     useEffect(() => {
-        if (blocks && !blocks.epochs) {
-            getBlocks?.(0);
+        if (network && blocks && !blocks.epochs) {
+            getBlocks?.(network as string, 0);
         }
 
         if (blocks && blocks.epochs) {
@@ -37,11 +42,11 @@ const ChainOverview = () => {
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [blocks]);
+    }, [network, blocks]);
 
     const handleLeft = () => {
         if (blocks && blocks.epochs && Object.entries(blocks.epochs).length - numberEpochsViewed - count === 5) {
-            getBlocks?.(currentPage + 1);
+            getBlocks?.(network as string, currentPage + 1);
             setCurrentPage(prevState => prevState + 1);
         }
 

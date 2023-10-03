@@ -1,12 +1,15 @@
 import { useState, useContext } from 'react';
 
+// Contexts
+import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
+
 //Components
 import Dropdown from './Dropdown';
 import ThemeModeSwitch from './ThemeModeSwitch';
 import NetworkLink from './NetworkLink';
 
-// Contexts
-import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
+// Constants
+import { NETWORKS } from '../../constants';
 
 const dropDownLists = {
     Explore: [
@@ -27,22 +30,18 @@ const dropDownLists = {
             route: '/validators',
         },
     ],
-    Networks: [
-        {
-            name: 'Mainnet',
-            route: 'https://ethseer.io',
-        },
-        {
-            name: 'Goerli',
-            route: 'https://ethseer.io/goerli',
-        },
-    ],
+    Networks: NETWORKS.map(network => ({
+        name: network.charAt(0).toUpperCase() + network.slice(1),
+        route: `/${network}`,
+    })),
 };
 
 function Menu() {
-    const [isOpen, setIsOpen] = useState(false);
-
+    // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
+
+    // States
+    const [isOpen, setIsOpen] = useState(false);
 
     const handleMenuToggle = () => {
         setIsOpen(!isOpen);
@@ -88,7 +87,7 @@ function Menu() {
                     </NetworkLink>
                 </li>
                 <li>
-                    <Dropdown name='Explore' items={dropDownLists.Explore} />
+                    <Dropdown name='Explore' items={dropDownLists.Explore} useNetworkLink />
                 </li>
                 <li>
                     <Dropdown name='Networks' items={dropDownLists.Networks} />

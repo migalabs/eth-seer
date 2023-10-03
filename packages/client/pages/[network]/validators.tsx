@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 
 // Axios
 import axiosClient from '../../config/axios';
@@ -19,6 +20,10 @@ import LinkEntity from '../../components/ui/LinkEntity';
 import { Validator } from '../../types';
 
 const Validators = () => {
+    // Router
+    const router = useRouter();
+    const { network } = router.query;
+
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
 
@@ -31,20 +36,21 @@ const Validators = () => {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        if (validators.length === 0) {
+        if (network && validators.length === 0) {
             getValidators(0);
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [network]);
 
     const getValidators = async (page: number) => {
         try {
             setLoading(true);
             setCurrentPage(page);
 
-            const response = await axiosClient.get('api/validators', {
+            const response = await axiosClient.get('/api/validators', {
                 params: {
+                    network,
                     page,
                     limit: 20,
                 },

@@ -44,9 +44,7 @@ const CardContent = ({ content, bg, color, boxShadow }: Props) => {
 const EpochComponent = () => {
     // Next router
     const router = useRouter();
-    const {
-        query: { id },
-    } = router;
+    const { network, id } = router.query;
 
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
@@ -69,19 +67,23 @@ const EpochComponent = () => {
             epochRef.current = Number(id);
         }
 
-        if ((id && !epoch) || (epoch && epoch.f_epoch !== Number(id))) {
+        if (network && ((id && !epoch) || (epoch && epoch.f_epoch !== Number(id)))) {
             getEpoch();
             getSlots();
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [id]);
+    }, [network, id]);
 
     const getEpoch = async () => {
         try {
             setLoadingEpoch(true);
 
-            const response = await axiosClient.get(`/api/epochs/${id}`);
+            const response = await axiosClient.get(`/api/epochs/${id}`, {
+                params: {
+                    network,
+                },
+            });
 
             setEpoch({
                 ...response.data.epoch,
@@ -127,7 +129,11 @@ const EpochComponent = () => {
         try {
             setLoadingSlots(true);
 
-            const response = await axiosClient.get(`/api/epochs/${id}/slots`);
+            const response = await axiosClient.get(`/api/epochs/${id}/slots`, {
+                params: {
+                    network,
+                },
+            });
 
             setSlots(response.data.slots);
         } catch (error) {

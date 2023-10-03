@@ -50,9 +50,7 @@ const CardContent = ({ content, bg, color, boxShadow }: Props) => {
 const ValidatorComponent = () => {
     // Next router
     const router = useRouter();
-    const {
-        query: { id },
-    } = router;
+    const { network, id } = router.query;
 
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
@@ -81,7 +79,7 @@ const ValidatorComponent = () => {
             validatorRef.current = Number(id);
         }
 
-        if ((id && !validatorHour) || (validatorHour && validatorHour.f_val_idx !== Number(id))) {
+        if (network && ((id && !validatorHour) || (validatorHour && validatorHour.f_val_idx !== Number(id)))) {
             getValidator();
             getProposedBlocks();
             getWithdrawals();
@@ -90,7 +88,7 @@ const ValidatorComponent = () => {
         setDesktopView(window !== undefined && window.innerWidth > 768);
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [id]);
+    }, [network, id]);
 
     const getValidator = async () => {
         try {
@@ -103,16 +101,19 @@ const ValidatorComponent = () => {
             const [responseHour, responseDay, responseWeek] = await Promise.all([
                 axiosClient.get(`/api/validators/${id}`, {
                     params: {
+                        network,
                         numberEpochs: hour,
                     },
                 }),
                 axiosClient.get(`/api/validators/${id}`, {
                     params: {
+                        network,
                         numberEpochs: day,
                     },
                 }),
                 axiosClient.get(`/api/validators/${id}`, {
                     params: {
+                        network,
                         numberEpochs: week,
                     },
                 }),
@@ -139,7 +140,11 @@ const ValidatorComponent = () => {
         try {
             setLoadingProposedBlocks(true);
 
-            const response = await axiosClient.get(`/api/validators/${id}/proposed-blocks`);
+            const response = await axiosClient.get(`/api/validators/${id}/proposed-blocks`, {
+                params: {
+                    network,
+                },
+            });
 
             setProposedBlocks(response.data.proposedBlocks);
         } catch (error) {
@@ -153,7 +158,11 @@ const ValidatorComponent = () => {
         try {
             setLoadingWithdrawals(true);
 
-            const response = await axiosClient.get(`/api/validators/${id}/withdrawals`);
+            const response = await axiosClient.get(`/api/validators/${id}/withdrawals`, {
+                params: {
+                    network,
+                },
+            });
 
             setWithdrawals(response.data.withdrawals);
         } catch (error) {

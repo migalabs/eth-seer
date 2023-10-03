@@ -39,9 +39,7 @@ const CardContent = ({ content, bg, color, boxShadow }: Props) => {
 const EntityComponent = () => {
     // Next router
     const router = useRouter();
-    const {
-        query: { name },
-    } = router;
+    const { network, name } = router.query;
 
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
@@ -74,16 +72,19 @@ const EntityComponent = () => {
             const [responseHour, responseDay, responseWeek] = await Promise.all([
                 axiosClient.get(`/api/entities/${(name as string).toLowerCase()}`, {
                     params: {
+                        network,
                         numberEpochs: hour,
                     },
                 }),
                 axiosClient.get(`/api/entities/${(name as string).toLowerCase()}`, {
                     params: {
+                        network,
                         numberEpochs: day,
                     },
                 }),
                 axiosClient.get(`/api/entities/${(name as string).toLowerCase()}`, {
                     params: {
+                        network,
                         numberEpochs: week,
                     },
                 }),

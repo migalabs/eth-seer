@@ -27,15 +27,15 @@ const BlocksState = (props: any) => {
     let eventSourceBlock: EventSource;
 
     // Start event source
-    const startEventSource = () => {
+    const startEventSource = (network: string) => {
         try {
             if (!eventSourceBlock || eventSourceBlock.readyState === eventSourceBlock.CLOSED) {
                 eventSourceBlock = new EventSource(
-                    `${process.env.NEXT_PUBLIC_URL_API}/api/slots/new-slot-notification`
+                    `${process.env.NEXT_PUBLIC_URL_API}/api/slots/new-slot-notification?network=${network}`
                 );
 
                 eventSourceBlock.addEventListener('new_slot', function (e) {
-                    getBlocks(0, 32, true);
+                    getBlocks(network, 0, 32, true);
                 });
 
                 return true;
@@ -58,7 +58,7 @@ const BlocksState = (props: any) => {
     let isFetching = false;
 
     // Get blocks
-    const getBlocks = async (page: number, limit: number = 320, onlyLastEpoch: boolean = false) => {
+    const getBlocks = async (network: string, page: number, limit: number = 320, onlyLastEpoch: boolean = false) => {
         try {
             if (isFetching) {
                 return;
@@ -68,6 +68,7 @@ const BlocksState = (props: any) => {
 
             const response = await axiosClient.get(`/api/slots/blocks`, {
                 params: {
+                    network,
                     limit,
                     page,
                 },

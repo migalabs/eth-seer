@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 // Axios
 import axiosClient from '../../config/axios';
@@ -11,32 +12,40 @@ import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 import CustomImage from '../ui/CustomImage';
 
 const Problems = () => {
+    // Router
+    const router = useRouter();
+    const { network } = router.query;
+
     // Contexts
     const { setWorking } = React.useContext(StatusContext) ?? {};
     // Theme Mode Context
     const { themeMode } = React.useContext(ThemeModeContext) ?? {};
 
     useEffect(() => {
-        const interval = setInterval(() => {
-            checkQueries();
-        }, 10000);
+        if (network) {
+            const interval = setInterval(() => {
+                checkQueries();
+            }, 10000);
 
-        return () => clearInterval(interval);
+            return () => clearInterval(interval);
+        }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [network]);
 
     const checkQueries = async () => {
         try {
             await Promise.all([
                 axiosClient.get(`/api/slots/blocks`, {
                     params: {
+                        network,
                         limit: 1,
                         page: 0,
                     },
                 }),
                 axiosClient.get('/api/epochs', {
                     params: {
+                        network,
                         limit: 1,
                         page: 0,
                     },

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 
 // Contexts
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
@@ -17,6 +18,10 @@ import ViewMoreButton from '../../components/ui/ViewMoreButton';
 import { Slot } from '../../types';
 
 const Slots = () => {
+    // Router
+    const router = useRouter();
+    const { network } = router.query;
+
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
 
@@ -26,12 +31,12 @@ const Slots = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        if (slots.length === 0) {
+        if (network && slots.length === 0) {
             getSlots(0);
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [network]);
 
     const getSlots = async (page: number) => {
         try {
@@ -41,6 +46,7 @@ const Slots = () => {
 
             const response = await axiosClient.get(`/api/slots`, {
                 params: {
+                    network,
                     page,
                     limit: 32,
                 },

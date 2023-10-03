@@ -55,14 +55,9 @@ const Card = ({ title, text, content }: CardProps) => {
 };
 
 const Slot = () => {
-    // Asset prefix
-    const assetPrefix = process.env.NEXT_PUBLIC_ASSET_PREFIX ?? '';
-
     // Next router
     const router = useRouter();
-    const {
-        query: { id },
-    } = router;
+    const { network, id } = router.query;
 
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
@@ -87,13 +82,13 @@ const Slot = () => {
             slotRef.current = Number(id);
         }
 
-        if ((id && !block) || (block && block.f_slot !== Number(id))) {
+        if (network && ((id && !block) || (block && block.f_slot !== Number(id)))) {
             getBlock();
             getWithdrawals();
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [id]);
+    }, [network, id]);
 
     const shuffle = useCallback(() => {
         const text: string = getCountdownText();
@@ -112,7 +107,11 @@ const Slot = () => {
         try {
             setLoadingBlock(true);
 
-            const response = await axiosClient.get(`/api/slots/${id}`);
+            const response = await axiosClient.get(`/api/slots/${id}`, {
+                params: {
+                    network,
+                },
+            });
 
             const blockResponse: Block = response.data.block;
             setBlock(blockResponse);
@@ -160,7 +159,11 @@ const Slot = () => {
         try {
             setLoadingWithdrawals(true);
 
-            const response = await axiosClient.get(`/api/slots/${id}/withdrawals`);
+            const response = await axiosClient.get(`/api/slots/${id}/withdrawals`, {
+                params: {
+                    network,
+                },
+            });
 
             setWithdrawals(response.data.withdrawals);
         } catch (error) {

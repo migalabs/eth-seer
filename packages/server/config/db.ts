@@ -4,19 +4,29 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-export const pgPool = new Pool({
-    user: process.env.DB_USER || '',
-    host: process.env.DB_HOST || '',
-    database: process.env.DB_NAME || '',
-    password: process.env.DB_PASSWORD || '',
-    port: Number(process.env.DB_PORT) || 0
-});
+export const pgPools = {};
 
 export const dbConnection = async () => {
 
     try {
 
-        await pgPool.connect();
+        const networks = JSON.parse(process.env.NETWORKS);
+
+        if (!networks) {
+            throw new Error('No networks found');
+        }
+
+        for (const network of networks) {
+            pgPools[network.network] = new Pool({
+                user: network.user || '',
+                host: network.host || '',
+                database: network.name || '',
+                password: network.password || '',
+                port: Number(network.port) || 0
+            });
+
+            startListeners(network.network);
+        }
 
         console.log('Database connected');
 
@@ -27,22 +37,21 @@ export const dbConnection = async () => {
 }
 
 class MyEmitter extends EventEmitter {}
-export const pgListener = new MyEmitter();
+export const pgListeners = {};
 
-const startListeners = async () => {
+const startListeners = async (network: string) => {
     
-    const client = await pgPool.connect();
+    const client = await pgPools[network].connect();
+    pgListeners[network] = new MyEmitter();
 
     client.query('LISTEN new_head');
     client.query('LISTEN new_epoch_finalized');
 
     client.on('notification', (msg) => {
         if (msg.channel === 'new_head') {
-            pgListener.emit('new_head', msg);
+            pgListeners[network].emit('new_head', msg);
         } else if (msg.channel === 'new_epoch_finalized') {
-            pgListener.emit('new_epoch_finalized', msg);
+            pgListeners[network].emit('new_epoch_finalized', msg);
         }
     });
 }
-
-startListeners();

@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 
 // Context
 import StatusContext from '../../contexts/status/StatusContext';
@@ -14,6 +15,10 @@ import Problems from '../../components/layouts/Problems';
 import SummaryOverview from '../../components/ui/SummaryOverview';
 
 export default function Home() {
+    // Router
+    const router = useRouter();
+    const { network } = router.query;
+
     // Theme Mode Context
     const { themeMode } = React.useContext(ThemeModeContext) ?? {};
 
@@ -33,8 +38,8 @@ export default function Home() {
     const [eventSourceEpochsCreated, setEventSourceEpochsCreated] = useState(false);
 
     useEffect(() => {
-        if (!eventSourceBlocksCreated) {
-            const eventSourceCreated = startEventSourceBlocks?.();
+        if (network && !eventSourceBlocksCreated) {
+            const eventSourceCreated = startEventSourceBlocks?.(network as string);
 
             setEventSourceBlocksCreated(true);
 
@@ -46,11 +51,11 @@ export default function Home() {
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [network]);
 
     useEffect(() => {
-        if (!eventSourceEpochsCreated) {
-            const eventSourceCreated = startEventSourceEpochs?.();
+        if (network && !eventSourceEpochsCreated) {
+            const eventSourceCreated = startEventSourceEpochs?.(network as string);
 
             setEventSourceEpochsCreated(true);
 
@@ -62,7 +67,7 @@ export default function Home() {
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [network]);
 
     return (
         <>
