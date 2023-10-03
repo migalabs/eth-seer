@@ -15,12 +15,12 @@ type Props = {
 };
 
 const LinkValidator = ({ validator, children, mxAuto }: Props) => {
-     // Theme Mode Context
-     const { themeMode } = useContext(ThemeModeContext) ?? {};
+    // Theme Mode Context
+    const { themeMode } = useContext(ThemeModeContext) ?? {};
 
-     const baseStyle = {
-         color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)',
-     };
+    const baseStyle = {
+        color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)',
+    };
     return (
         <Link
             href={{
@@ -34,7 +34,8 @@ const LinkValidator = ({ validator, children, mxAuto }: Props) => {
             className={`flex gap-x-1 items-center font-medium md:hover:underline underline-offset-4 decoration-2 w-fit ${
                 mxAuto ? 'mx-auto' : ''
             }`}
-            style={baseStyle}        >
+            style={baseStyle}
+        >
             {children ?? (
                 <>
                     <p>{validator?.toLocaleString()}</p>
