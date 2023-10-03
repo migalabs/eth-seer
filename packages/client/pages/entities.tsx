@@ -27,10 +27,25 @@ const Entities = () => {
                 <link rel='canonical' href='https://ethseer.io/entities' />
             </Head>
 
-            <h1 className='uppercase text-center text-3xl text-white mt-14 xl:mt-0'>Ethereum Staking Entities</h1>
+            <h1
+                className='text-black text-center font-semibold md:text-[40px] text-[30px] mt-14 xl:mt-0 capitalize'
+                style={{
+                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
+                }}
+            >
+                Ethereum Staking Entities
+            </h1>
 
-            <div className='mx-auto py-4 px-6 bg-white/30 border-2 border-dashed rounded-xl flex w-11/12 lg:w-10/12 my-3'>
-                <h2 className='text-white text-xs text-center'>
+            <div
+                className='mx-auto py-4 px-6 border-2 border-[var(--purple)] rounded-md flex w-11/12 lg:w-10/12'
+                style={{ background: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--bgMainLightMode)' }}
+            >
+                <h2
+                    className='text-white text-xs 2xl:text-[18px] text-center leading-5'
+                    style={{
+                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
+                    }}
+                >
                     An entity can range from an individual running many validators to an institutional organization
                     providing staking services. If it is running at least 100 validators, we catalog it as an entity.
                     Ethseer obtains information about the entities to which validators belong to through graffiti,
@@ -38,10 +53,7 @@ const Entities = () => {
                 </h2>
             </div>
 
-            <div
-                className='grid gap-4 max-w-[1200px] mx-auto mt-4'
-                style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))' }}
-            >
+            <div className='grid grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 w-11/12 md:w-10/12 gap-3 mx-auto mt-4'>
                 {POOLS_EXTENDED.map((pool, index) => (
                     <EntityCard key={pool} index={index + 1} pool={pool} />
                 ))}

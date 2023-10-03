@@ -64,17 +64,32 @@ const SummaryOverview = () => {
             {summary && lastValidator !== 0 && (
                 <div className='px-4 mb-5'>
                     <div
-                        className='grid grid-row-5 xl:flex xl:flex-wrap justify-between w-fit gap-2 xl:gap-10 text-[10px] text-center rounded-[22px] bg-white/20 py-4 px-8 xl:px-8 xl:py-3 mx-auto border-2'
+                        className='grid grid-row-5 xl:flex xl:flex-wrap justify-between w-fit gap-2 xl:gap-10 text-[14px] text-center rounded-md py-4 px-8 xl:px-8 xl:py-3 mx-auto border'
                         style={{
-                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--newOrange)',
-                            borderColor: themeMode?.darkMode ? 'var(--white)' : 'var(--newOrange)',
+                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
+                            background: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--bgMainLightMode)',
+                            borderColor: themeMode?.darkMode ? 'var(--white)' : 'var(--lightGray)',
                         }}
                     >
-                        <p className='flex-shrink-0'>Network: {assetPrefix !== '/goerli' ? 'MAINNET' : 'GOERLI'}</p>
-                        <p className='flex-shrink-0'>Epoch: {summary.epoch}</p>
-                        <p className='flex-shrink-0'>Slot: {summary.slot}</p>
-                        <p className='flex-shrink-0'>Block Height: {summary.block_height}</p>
-                        <p className='flex-shrink-0'>Active Validators: {lastValidator ?? 0}</p>
+                        <p className='flex-shrink-0'>
+                            <b>Network:</b> {assetPrefix !== '/goerli' ? 'Mainnet' : 'Goerli'}
+                        </p>
+                        <span className='lg:w-[1px] lg:h-6 lg:bg-gray-400 '></span>
+                        <p className='flex-shrink-0'>
+                            <b>Epoch:</b> {summary.epoch}
+                        </p>
+                        <span className='lg:w-[1px] lg:h-6 lg:bg-gray-400'></span>
+                        <p className='flex-shrink-0'>
+                            <b>Slot:</b> {summary.slot}
+                        </p>
+                        <span className='lg:w-[1px] lg:h-6 lg:bg-gray-400'></span>
+                        <p className='flex-shrink-0'>
+                            <b>Block Height:</b> {summary.block_height}
+                        </p>
+                        <span className='lg:w-[1px] lg:h-6 lg:bg-gray-400'></span>
+                        <p className='flex-shrink-0'>
+                            <b>Active Validators:</b> {lastValidator ?? 0}
+                        </p>
                     </div>
                 </div>
             )}

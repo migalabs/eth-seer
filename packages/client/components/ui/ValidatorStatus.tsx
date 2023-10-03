@@ -10,24 +10,29 @@ const ValidatorStatus = ({ status }: Props) => {
     const [text, setText] = useState('');
     const [color, setColor] = useState('');
     const [backgroundColor, setBackgroundColor] = useState('');
+    const [boxShadow, setBoxShadow] = useState('');
 
     useEffect(() => {
         if (status === 'active') {
             setText(status);
-            setColor('#00720B');
-            setBackgroundColor('#D3FFD7');
+            setColor('var(--white)');
+            setBackgroundColor('var(--proposedGreen)');
+            setBoxShadow('var(--boxShadowGreen)');
         } else if (status === 'slashed') {
             setText(status);
-            setColor('#980E0E');
-            setBackgroundColor('#FFB7B7');
+            setColor('var(--white)');
+            setBackgroundColor('var(--missedRed)');
+            setBoxShadow('var(--boxShadowRed)');
         } else if (status === 'exit') {
             setText('exited');
-            setColor('#0016D8');
-            setBackgroundColor('#BCC2FF');
+            setColor('var(--white)');
+            setBackgroundColor('var(--exitedPurple)');
+            setBoxShadow('var(--boxShadowPurple)');
         } else if (status === 'in queue to activation') {
             setText('deposited');
-            setColor('#E86506');
-            setBackgroundColor('#FFE5D2');
+            setColor('var(--white)');
+            setBackgroundColor('var(--depositedBlue)');
+            setBoxShadow('var(--boxShadowBlue)');
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -35,8 +40,8 @@ const ValidatorStatus = ({ status }: Props) => {
 
     return (
         <span
-            className='block uppercase border-2 rounded-3xl font-bold leading-3 pt-2 pb-1 md:pt-[7px] px-3 md:px-5'
-            style={{ backgroundColor, borderColor: color, color }}
+            className='block capitalize rounded-md font-medium pt-2 pb-1 md:pt-[7px] px-5 md:px-10'
+            style={{ backgroundColor, borderColor: color, color, boxShadow: boxShadow }}
         >
             {text}
         </span>

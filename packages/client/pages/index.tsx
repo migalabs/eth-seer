@@ -70,20 +70,26 @@ export default function Home() {
                 <Layout>
                     <div className='text-center mb-5 mt-14 xl:mt-0'>
                         <h1
-                            className='text-lg md:text-2xl uppercase text-[#da8742]'
+                            className='text-[30px] md:text-[40px] capitalize font-semibold text-black'
                             style={{
-                                color: themeMode?.darkMode ? 'var(--white)' : 'var(--newOrange)',
+                                color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                             }}
                         >
                             Ethereum blockchain explorer
                         </h1>
                     </div>
 
-                    <div className='mx-auto py-4 px-6 bg-white/30 border-2 border-dashed rounded-xl w-11/12 lg:w-10/12 mb-5'>
+                    <div
+                        className='mx-auto py-4 px-6 text-[12px] 2xl:text-[18px] border rounded-md w-11/12 lg:w-10/12 mb-5'
+                        style={{
+                            background: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--bgMainLightMode)',
+                            borderColor: themeMode?.darkMode ? 'var(--white)' : 'var(--lightGray)',
+                        }}
+                    >
                         <h2
-                            className='text-xs text-center'
+                            className='text-center'
                             style={{
-                                color: themeMode?.darkMode ? 'var(--white)' : 'var(--newOrange)',
+                                color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                             }}
                         >
                             EthSeer provides information about the Beacon Chain of Ethereum. It displays the blocks
@@ -94,15 +100,19 @@ export default function Home() {
 
                     <SummaryOverview />
                     <ChainOverview />
-
+                    <hr
+                        className={`w-11/12 mx-auto my-4 rounded-md border-${
+                            themeMode?.darkMode ? 'white' : 'darkGray'
+                        }`}
+                    ></hr>
                     <div className='text-center mt-3'>
                         <h2
-                            className='text-lg md:text-xl uppercase mb-3'
+                            className='text-[20px] md:text-[30px] font-semibold capitalize mb-3'
                             style={{
-                                color: themeMode?.darkMode ? 'var(--white)' : 'var(--newOrange)',
+                                color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                             }}
                         >
-                            Epoch Statistics
+                            Epoch statistics
                         </h2>
                         <Statitstics showCalculatingEpochs />
                     </div>

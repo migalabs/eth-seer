@@ -53,7 +53,8 @@ function Menu() {
             <div className='md:flex lg:items-center'>
                 <button type='button' className='md:hidden absolute top-2 right-2 m-2' onClick={handleMenuToggle}>
                     <svg
-                        className='w-8 h-8 text-white'
+                        className='w-8 h-8'
+                        style={{ color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)' }}
                         fill='none'
                         stroke='currentColor'
                         viewBox='0 0 24 24'
@@ -69,17 +70,20 @@ function Menu() {
                 </button>
             </div>
             <ul
-                className={`flex items-end absolute md:relative ${isOpen ? 'flex-col' : 'invisible'} md:visible bg-[${
-                    themeMode?.darkMode ? '#f2dc8e' : 'var(--white)'
-                }] md:bg-transparent md:flex-row md:gap-10 p-6 mt-10 md:mt-0 rounded-lg md:border-none`}
+                className={`flex items-end absolute md:relative ${isOpen ? 'flex-col' : 'invisible'} md:visible
+                }] md:bg-transparent md:flex-row md:gap-10 p-6 mt-10 md:mt-0 rounded-md border md:border-none`}
+                style={{
+                    background: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--white)',
+                    borderColor: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
+                }}
             >
                 <li
-                    className='flex py-2 md:py-0 text-white'
+                    className='flex py-2 md:py-0'
                     style={{
-                        color: themeMode?.darkMode ? 'var(--white)' : '#000000',
+                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                     }}
                 >
-                    <Link href='/' className='text-xs uppercase'>
+                    <Link href='/' className='text-[14px] lg:text-[16px]'>
                         Home
                     </Link>
                 </li>
@@ -90,7 +94,7 @@ function Menu() {
                     <Dropdown name='Networks' items={dropDownLists.Networks} />
                 </li>
             </ul>
-            <div className='absolute right-14 md:right-0 md:relative md:pr-2'>
+            <div className='relative right-8 md:right-0'>
                 <ThemeModeSwitch />
             </div>
         </div>

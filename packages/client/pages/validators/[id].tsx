@@ -33,13 +33,14 @@ type Props = {
     content: string;
     bg: string;
     color: string;
+    boxShadow: string;
 };
 
-const CardContent = ({ content, bg, color }: Props) => {
+const CardContent = ({ content, bg, color, boxShadow }: Props) => {
     return (
         <span
-            className='block uppercase border-2 rounded-3xl font-bold leading-3 pt-2 pb-1 md:pt-[7px] px-3 md:px-5'
-            style={{ background: color, borderColor: bg, color: bg }}
+            className='block px-5 rounded-md font-medium capitalize py-2 text-center w-52'
+            style={{ background: color, borderColor: bg, color: bg, boxShadow: boxShadow }}
         >
             {content}
         </span>
@@ -178,14 +179,15 @@ const ValidatorComponent = () => {
     const getContentProposedBlocksMobile = () => {
         return (
             <div
-                className='mt-5 flex flex-col gap-y-2 mx-2 px-6 uppercase overflow-x-scroll overflow-y-hidden scrollbar-thin text-black leading-7 text-[8px] md:text-[10px]  rounded-[22px] py-3'
+                className='mt-5 flex flex-col gap-y-2 mx-2 px-6 text-xs md:text-[16px] overflow-x-scroll overflow-y-hidden scrollbar-thin rounded-md border-2 py-3'
                 style={{
-                    backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
-                    boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
+                    backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
+                    boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
+                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
                 }}
             >
                 {proposedBlocks.map(element => (
-                    <div className='flex flex-row gap-x-6 py-1 uppercase' key={element.f_proposer_slot}>
+                    <div className='flex flex-row gap-x-6 py-1' key={element.f_proposer_slot}>
                         <div className='flex items-center'>
                             <BlockImage
                                 poolName={element.f_pool_name}
@@ -197,7 +199,7 @@ const ValidatorComponent = () => {
                         </div>
                         <div className='flex flex-col items-start'>
                             <div className='flex flex-row items-center gap-x-8'>
-                                <p className='w-20'>Epoch:</p>
+                                <p className='w-20 '>Epoch:</p>
                                 <LinkEpoch epoch={Math.floor(element.f_proposer_slot / 32)} />
                             </div>
 
@@ -208,7 +210,7 @@ const ValidatorComponent = () => {
 
                             <div className='flex flex-row items-center gap-x-10'>
                                 <p className='w-20'>DateTime:</p>
-                                <p className='leading-3'>
+                                <p className='uppercase'>
                                     {new Date(FIRST_BLOCK + Number(element.f_proposer_slot) * 12000).toLocaleString(
                                         'ja-JP'
                                     )}
@@ -243,10 +245,15 @@ const ValidatorComponent = () => {
         return (
             <div
                 ref={containerRef}
-                className='flex flex-col px-2 mt-2.5 overflow-x-scroll overflow-y-hidden scrollbar-thin'
+                className='flex flex-col px-2 overflow-x-scroll overflow-y-hidden scrollbar-thin'
                 onMouseMove={handleMouseMove}
             >
-                <div className='flex gap-x-4 justify-around px-4 xl:px-8 min-w-[700px] py-3 uppercase text-sm text-white text-center'>
+                <div
+                    className='flex gap-x-4 justify-around px-4 xl:px-8 min-w-[700px] py-3 text-xs md:text-[16px] text-center'
+                    style={{
+                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
+                    }}
+                >
                     <p className='mt-0.5 w-[25%]'>Block</p>
                     <p className='mt-0.5 w-[25%]'>Epoch</p>
                     <p className='mt-0.5 w-[25%]'>Slot</p>
@@ -254,10 +261,11 @@ const ValidatorComponent = () => {
                 </div>
 
                 <div
-                    className='flex flex-col gap-y-2 min-w-[700px] text-2xs md:text-xs rounded-[22px] px-4 xl:px-8 py-3'
+                    className='flex flex-col gap-y-2 min-w-[700px] text-xs md:text-[14px] rounded-md border-2 border-white px-4 xl:px-8 py-3'
                     style={{
-                        backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
-                        boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
+                        backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
+                        boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
+                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
                     }}
                 >
                     {proposedBlocks.map(element => (
@@ -275,11 +283,17 @@ const ValidatorComponent = () => {
                                 />
                             </div>
 
-                            <div className='w-[25%]'>
+                            <div
+                                className='w-[25%] font-medium md:hover:underline underline-offset-4 decoration-2'
+                                style={{ color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)' }}
+                            >
                                 <LinkEpoch epoch={Math.floor(element.f_proposer_slot / 32)} mxAuto />
                             </div>
 
-                            <div className='w-[25%]'>
+                            <div
+                                className='w-[25%] font-medium md:hover:underline underline-offset-4 decoration-2'
+                                style={{ color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)' }}
+                            >
                                 <LinkSlot slot={element.f_proposer_slot} mxAuto />
                             </div>
 
@@ -305,10 +319,15 @@ const ValidatorComponent = () => {
         return (
             <div
                 ref={containerRef}
-                className='flex flex-col px-2 mt-2.5 overflow-x-scroll overflow-y-hidden scrollbar-thin'
+                className='flex flex-col px-2 overflow-x-scroll overflow-y-hidden scrollbar-thin'
                 onMouseMove={handleMouseMove}
             >
-                <div className='flex gap-x-4 justify-around px-4 xl:px-8 min-w-[700px] py-3 uppercase text-sm text-white text-center'>
+                <div
+                    className='flex gap-x-4 justify-around px-4 xl:px-8 min-w-[700px] text-xs md:text-[16px] py-3 text-center'
+                    style={{
+                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
+                    }}
+                >
                     <p className='mt-0.5 w-[25%]'>Epoch</p>
                     <p className='mt-0.5 w-[25%]'>Slot</p>
                     <p className='mt-0.5 w-[25%]'>Datetime</p>
@@ -316,19 +335,26 @@ const ValidatorComponent = () => {
                 </div>
 
                 <div
-                    className='flex flex-col gap-y-2 min-w-[700px] text-2xs md:text-xs rounded-[22px] px-4 xl:px-8 py-3'
+                    className='flex flex-col gap-y-2 min-w-[700px] text-xs md:text-[14px] rounded-md border-2 border-white px-4 xl:px-8 py-3'
                     style={{
-                        backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
-                        boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
+                        backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
+                        boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
+                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
                     }}
                 >
                     {withdrawals.map((element, idx) => (
                         <div className='flex gap-x-4 py-1 uppercase text-center items-center' key={idx}>
-                            <div className='w-[25%]'>
+                            <div
+                                className='w-[25%] font-medium md:hover:underline underline-offset-4 decoration-2'
+                                style={{ color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)' }}
+                            >
                                 <LinkEpoch epoch={Math.floor(element.f_epoch ?? 0)} mxAuto />
                             </div>
 
-                            <div className='w-[25%]'>
+                            <div
+                                className='w-[25%] font-medium md:hover:underline underline-offset-4 decoration-2'
+                                style={{ color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)' }}
+                            >
                                 <LinkSlot slot={element.f_slot} mxAuto />
                             </div>
 
@@ -352,16 +378,18 @@ const ValidatorComponent = () => {
 
     const getContentWithdrawalsMobile = () => {
         return (
-            <div
-                className='mt-5 flex flex-col gap-y-2 mx-2 px-6 uppercase overflow-x-scroll overflow-y-hidden scrollbar-thin text-black leading-7 text-[8px] md:text-[10px]  rounded-[22px] py-3'
-                style={{
-                    backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
-                    boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
-                }}
-            >
+            <div>
                 {withdrawals.map((element, idx) => (
-                    <div className='flex flex-row gap-x-6 py-1 uppercase' key={idx}>
-                        <div className='flex flex-col items-start '>
+                    <div
+                        className='flex flex-row justify-center items-center gap-x-6 py-2 mt-5 gap-y-1 mx-2 px-6 text-xs md:text-[16px] overflow-x-scroll overflow-y-hidden scrollbar-thin rounded-md border-2'
+                        key={idx}
+                        style={{
+                            backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
+                            boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
+                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
+                        }}
+                    >
+                        <div className='flex flex-col items-start gap-y-2'>
                             <div className='flex flex-row items-center gap-x-8'>
                                 <p className='w-20'>Epoch:</p>
                                 <LinkEpoch epoch={Math.floor(element.f_epoch ?? 0)} />
@@ -374,14 +402,14 @@ const ValidatorComponent = () => {
 
                             <div className='flex flex-row items-center gap-x-8'>
                                 <p className='w-20'>DateTime:</p>
-                                <p className='leading-3'>
+                                <p className='uppercase'>
                                     {new Date(FIRST_BLOCK + Number(element.f_slot) * 12000).toLocaleString('ja-JP')}
                                 </p>
                             </div>
 
                             <div className='flex flex-row items-center gap-x-8'>
                                 <p className='w-20'>Amount:</p>
-                                <p className='leading-3'>{(element.f_amount / 10 ** 9).toLocaleString()} ETH</p>
+                                <p>{(element.f_amount / 10 ** 9).toLocaleString()} ETH</p>
                             </div>
                         </div>
                     </div>
@@ -389,7 +417,7 @@ const ValidatorComponent = () => {
 
                 {withdrawals.length === 0 && (
                     <div className='flex justify-center p-2'>
-                        <p className='uppercase'>No withdrawals</p>
+                        <p className='uppercase text-xs md:text-[16px]'>No withdrawals</p>
                     </div>
                 )}
             </div>
@@ -399,14 +427,14 @@ const ValidatorComponent = () => {
     const getValidatorPerformance = (validator: Validator) => {
         return (
             <>
-                <div className='flex flex-col md:flex-row gap-x-4 ml-4 md:ml-10'>
+                <div className='flex flex-col md:flex-row py-4 gap-y-2 md:gap-y-0 md:mb-0'>
                     <p className='md:w-52 lg:w-80'>Rewards:</p>
-                    <div className='w-72 md:w-80 text-[10px] text-center leading-3'>
+                    <div className='w-72 md:w-80 text-center'>
                         {validator && (
                             <ProgressSmoothBar
                                 title=''
-                                color='#28587B'
-                                backgroundColor='#EEF8FF'
+                                color='var(--black)'
+                                backgroundColor='var(--white)'
                                 percent={validator.aggregated_rewards / validator.aggregated_max_rewards || 0}
                                 tooltipColor='blue'
                                 tooltipContent={
@@ -421,22 +449,23 @@ const ValidatorComponent = () => {
                     </div>
                 </div>
 
-                <div className='flex flex-col md:flex-row gap-x-4 gap-y-2 md:items-center ml-4 md:ml-10'>
+                <div className='flex flex-col md:flex-row py-4 gap-y-2 md:gap-y-0 md:mb-0'>
                     <p className='md:w-52 lg:w-80'>Sync committee participation:</p>
-                    <p className='leading-3'>{validator?.count_missing_source} duties</p>
+                    <p className='font-normal uppercase'>{validator?.count_missing_source} duties</p>
                 </div>
 
-                <div className='flex flex-col md:flex-row gap-x-4 gap-y-2 md:items-center ml-4 md:ml-10'>
-                    <p className='md:w-52 lg:w-80'>attestation flags:</p>
+                {/* Attestation flags */}
+                <div className='flex flex-col lg:flex-row py-4 gap-y-2 md:gap-y-0 md:mb-0'>
+                    <p className='md:w-52 lg:w-80'>Attestation flags:</p>
 
                     {validator && (
-                        <div className='flex flex-col md:flex-row items-center gap-x-4 gap-y-2 text-[10px]'>
+                        <div className='flex flex-col xl:flex-row items-center gap-x-4 gap-y-2 font-normal text-[12px]'>
                             <ProgressSmoothBar
                                 title='Target'
-                                color='#B14E2A'
-                                backgroundColor='#FFE8C6'
+                                color='var(--black)'
+                                backgroundColor='var(--white)'
                                 percent={1 - validator.count_missing_target / validator.count_attestations}
-                                width={150}
+                                width={250}
                                 tooltipColor='orange'
                                 tooltipContent={
                                     <>
@@ -449,10 +478,10 @@ const ValidatorComponent = () => {
 
                             <ProgressSmoothBar
                                 title='Source'
-                                color='#117658'
-                                backgroundColor='#E2F3EE'
+                                color='var(--black)'
+                                backgroundColor='var(--white)'
                                 percent={1 - validator.count_missing_source / validator.count_attestations}
-                                width={150}
+                                width={250}
                                 tooltipColor='blue'
                                 tooltipContent={
                                     <>
@@ -465,10 +494,10 @@ const ValidatorComponent = () => {
 
                             <ProgressSmoothBar
                                 title='Head'
-                                color='#813F93'
-                                backgroundColor='#F0ECFD'
+                                color='var(--black)'
+                                backgroundColor='var(--white)'
                                 percent={1 - validator.count_missing_head / validator.count_attestations}
-                                width={150}
+                                width={250}
                                 tooltipColor='purple'
                                 tooltipContent={
                                     <>
@@ -481,21 +510,23 @@ const ValidatorComponent = () => {
                         </div>
                     )}
                 </div>
-                <div className='flex flex-col md:flex-row gap-x-4 gap-y-2 md:w-full ml-4 md:ml-10'>
+                <div className='flex flex-col md:flex-row py-4 gap-y-2 md:gap-y-0 md:mb-0'>
                     <p className='md:w-52 lg:w-80'>Blocks:</p>
 
                     <div className='flex justify-center'>
                         <div className='flex flex-col md:flex-row gap-x-4 gap-y-2'>
                             <CardContent
                                 content={`Proposed: ${validator.proposed_blocks_performance}`}
-                                bg={'#00720B'}
-                                color={'#D3FFD7'}
+                                bg='var(--white)'
+                                color='var(--proposedGreen)'
+                                boxShadow='var(--boxShadowGreen)'
                             />
 
                             <CardContent
                                 content={`Missed: ${validator.missed_blocks_performance}`}
-                                bg={'#980E0E'}
-                                color={'#FFB7B7'}
+                                bg='var(--white)'
+                                color='var(--missedRed)'
+                                boxShadow='var(--boxShadowRed)'
                             />
                         </div>
                     </div>
@@ -508,55 +539,66 @@ const ValidatorComponent = () => {
         return (
             <>
                 <div
-                    className='flex mx-2 px-4 xs:px-10 py-5 rounded-[22px] justify-between gap-x-5 mb-5'
+                    className='p-8 rounded-md gap-x-5 border-2 border-white mx-auto'
                     style={{
-                        backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
-                        boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
+                        backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
+                        boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
+                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
                     }}
                 >
-                    <div className='flex flex-col gap-y-2 uppercase text-black leading-7 text-[8px] md:text-[10px]'>
+                    <div
+                        className='flex flex-col gap-y-8 text-xs md:text-[14px] mx-auto'
+                        style={{
+                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
+                        }}
+                    >
                         <div className='flex flex-row items-center gap-x-5'>
-                            <p className='w-32 sm:w-40'>Entity:</p>
-                            <div>
+                            <p className='w-32 sm:w-40 font-semibold'>Entity:</p>
+                            <div
+                                className='uppercase font-medium md:hover:underline underline-offset-4 decoration-2'
+                                style={{ color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)' }}
+                            >
                                 <LinkEntity entity={validatorHour?.f_pool_name ?? 'others'} />
                             </div>
                         </div>
 
                         <div className='flex flex-row items-center gap-x-5'>
-                            <p className='w-32 sm:w-40'>Current balance:</p>
-                            <p className='leading-3'>{validatorHour?.f_balance_eth} eth</p>
+                            <p className='w-32 sm:w-40 font-semibold'>Current balance:</p>
+                            <p className='leading-3'>{validatorHour?.f_balance_eth} ETH</p>
                         </div>
 
                         <div className='flex md:flex-row gap-x-5'>
-                            <p className='w-32 sm:w-40'>Current status:</p>
+                            <p className='w-32 sm:w-40 font-semibold'>Current status:</p>
                             {validatorHour?.f_status && <ValidatorStatus status={validatorHour?.f_status} />}
                         </div>
                         <div className='flex flex-col sm:flex-row gap-x-5'>
-                            <p className='w-32 sm:w-40'>Blocks:</p>
+                            <p className='w-32 sm:w-40 font-semibold'>Blocks:</p>
                             <div className='flex justify-center gap-x-5 '>
                                 <CardContent
                                     content={`Proposed: ${getNumberProposedBlocks(proposedBlocks)}`}
-                                    bg='#00720B'
-                                    color='#D3FFD7'
+                                    bg='var(--white)'
+                                    color='var(--proposedGreen)'
+                                    boxShadow='var(--boxShadowGreen)'
                                 />
                                 <CardContent
                                     content={`Missed:  ${getNumberMissedBlocks(proposedBlocks)}`}
-                                    bg='#980E0E'
-                                    color='#FFB7B7'
+                                    bg='var(--white)'
+                                    color='var(--missedRed)'
+                                    boxShadow='var(--boxShadowRed)'
                                 />
                             </div>
                         </div>
                         <div className='flex flex-row items-center gap-x-5'>
-                            <p className='w-32 sm:w-40'>Withdrawals:</p>
-                            <p className='leading-3'>{getTotalWithdrawals(withdrawals).toLocaleString()} eth</p>
+                            <p className='w-32 sm:w-40 font-semibold'>Withdrawals:</p>
+                            <p className='leading-3'>{getTotalWithdrawals(withdrawals).toLocaleString()} ETH</p>
                         </div>
                     </div>
-                    <div className='hidden md:block'>
+                    {/* <div className='hidden md:block'>
                         <BlockGif poolName={validatorHour?.f_pool_name ?? 'others'} width={125} height={125} />
-                    </div>
+                    </div> */}
                 </div>
 
-                <div className='flex flex-col md:flex-row gap-4 mx-2 mb-5'>
+                <div className='flex flex-col md:flex-row gap-4 mb-5 mt-5'>
                     <TabHeader
                         header='1 Hour'
                         isSelected={tabPageIndexValidatorPerformance === 0}
@@ -581,16 +623,24 @@ const ValidatorComponent = () => {
                 </div>
 
                 <div
-                    className='flex mx-2 px-4 xs:px-10 py-5 rounded-[22px] justify-between gap-x-5'
+                    className='flex items-center justify-center mx-auto p-8 rounded-md border-2 border-white'
                     style={{
-                        backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
-                        boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
+                        backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
+                        boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
+                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
                     }}
                 >
-                    <div className='flex flex-col gap-y-2 uppercase text-black leading-7 text-[8px] md:text-[10px]'>
-                        <div className='flex flex-col gap-y-4'>
-                            <div className='flex flex-row'>
-                                <p>Validator performance:</p>
+                    <div
+                        className='flex flex-col gap-y-2 text-[12px] font-semibold md:text-[14px]'
+                        style={{
+                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
+                        }}
+                    >
+                        <div>
+                            <div className=''>
+                                <p className='text-[18px] uppercase font-medium py-4 text-center'>
+                                    Validator performance:
+                                </p>
                             </div>
                             {tabPageIndexValidatorPerformance === 0 &&
                                 getValidatorPerformance(validatorHour as Validator)}
@@ -642,7 +692,12 @@ const ValidatorComponent = () => {
                     <Arrow direction='left' />
                 </LinkValidator>
 
-                <h1 className='text-white text-center text-xl md:text-3xl uppercase max-w-full'>
+                <h1
+                    className='text-black text-center font-medium md:text-[40px] text-[30px]'
+                    style={{
+                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
+                    }}
+                >
                     Validator {Number(id)?.toLocaleString()}
                 </h1>
 
@@ -658,7 +713,7 @@ const ValidatorComponent = () => {
             )}
 
             {!loadingValidator && validatorHour && (
-                <div className='flex flex-col gap-4 mx-auto max-w-[1100px]'>
+                <div className='flex flex-col gap-4 mx-auto w-11/12 md:w-10/12'>
                     <div>{getContentValidator()}</div>
 
                     <div className='flex flex-col md:flex-row gap-4 mx-2'>
@@ -674,7 +729,7 @@ const ValidatorComponent = () => {
                 </div>
             )}
 
-            {animation && <Animation text={`Validator doesn't exists yet`} />}
+            {animation && <Animation text={`Validator doesn't exist yet`} />}
         </Layout>
     );
 };
