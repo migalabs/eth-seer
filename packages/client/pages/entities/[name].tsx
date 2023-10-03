@@ -135,7 +135,7 @@ const EntityComponent = () => {
 
                 <div className='flex flex-col md:flex-row py-4 gap-y-2 md:gap-y-0 md:mb-0'>
                     <p className='md:w-52 lg:w-80'>Sync committee participation:</p>
-                    <p className='font-normal'>{entity?.count_sync_committee} epochs</p>
+                    <p className='font-normal uppercase'>{entity?.count_sync_committee} duties</p>
                 </div>
 
                 {/* Attestation flags */}
@@ -247,7 +247,7 @@ const EntityComponent = () => {
             {entityDay && (
                 <div className='mx-auto w-11/12 md:w-10/12'>
                     <div
-                        className='flex p-8 rounded-md   gap-x-5 border-2 border-white'
+                        className='p-8 rounded-md gap-x-5 border-2 border-white'
                         style={{
                             backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
                             boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
@@ -255,12 +255,12 @@ const EntityComponent = () => {
                         }}
                     >
                         <div
-                            className='flex flex-col gap-y-8 text-xs md:text-[14px] mx-auto'
+                            className='flex flex-col justify-center gap-y-8 text-xs md:text-[14px] mx-auto'
                             style={{
                                 color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
                             }}
                         >
-                            <div className='flex flex-row items-center gap-x-5'>
+                            <div className='flex flex-row gap-x-5'>
                                 <p className='w-60 font-semibold'>Aggregate Balance:</p>
                                 <p>{entityDay && entityDay.aggregate_balance?.toLocaleString()} ETH</p>
                             </div>
