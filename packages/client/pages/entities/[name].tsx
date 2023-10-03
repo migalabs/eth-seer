@@ -112,8 +112,8 @@ const EntityComponent = () => {
             <>
                 {/* Rewards */}
                 <div className='flex flex-col md:flex-row py-4 gap-y-2 md:gap-y-0 md:mb-0'>
-                    <p className='md:w-52 lg:w-80'>Rewards:</p>
-                    <div className='w-72 md:w-80 text-center'>
+                <p className={`md:w-52 lg:w-80 text-${themeMode?.darkMode ? 'white' : 'black'}`}>Rewards:</p>
+                    <div className='w-72 md:w-80 text-center font-normal'>
                         {entity && (
                             <ProgressSmoothBar
                                 title=''
@@ -134,21 +134,18 @@ const EntityComponent = () => {
                 </div>
 
                 <div className='flex flex-col md:flex-row py-4 gap-y-2 md:gap-y-0 md:mb-0'>
-                    <p className='md:w-52 lg:w-80'>Sync committee participation:</p>
-                    <p className='font-normal uppercase'>{entity?.count_sync_committee} duties</p>
+                    <p className={`md:w-52 lg:w-80 text-${themeMode?.darkMode ? 'white' : 'black'}`}>Sync committee participation:</p>
+                    <p className={`font-semibold text-${themeMode?.darkMode ? 'white' : 'black'}`}>{entity?.count_sync_committee} duties</p>
                 </div>
 
                 {/* Attestation flags */}
                 <div className='flex flex-col lg:flex-row py-4 gap-y-2 md:gap-y-0 md:mb-0'>
-                    <p className='md:w-52 lg:w-80'>Attestation flags:</p>
+                <p className={`md:w-52 lg:w-80 text-${themeMode?.darkMode ? 'white' : 'black'}`}>Attestation flags:</p>
 
                     {entity && (
-                        <div
-                            className='flex flex-col xl:flex-row items-center gap-x-4 gap-y-2 font-normal text-[12px]'
-                            style={{
-                                color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                            }}
-                        >
+                        <div className='flex flex-col xl:flex-row items-center gap-x-4 gap-y-2 font-normal text-[12px]' style={{
+                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)'
+                        }}>
                             <ProgressSmoothBar
                                 title='Target'
                                 color='var(--black)'
@@ -208,7 +205,7 @@ const EntityComponent = () => {
 
                 {/* Blocks Entity Performance */}
                 <div className='flex flex-col md:flex-row py-4 gap-y-2 md:gap-y-0 md:mb-0'>
-                    <p className='md:w-52 lg:w-80'>Blocks:</p>
+                <p className={`md:w-52 lg:w-80 text-${themeMode?.darkMode ? 'white' : 'black'}`}>Blocks:</p>
 
                     <div className='flex justify-center'>
                         <div className='flex flex-col md:flex-row gap-x-4 gap-y-2'>
@@ -247,7 +244,7 @@ const EntityComponent = () => {
             {entityDay && (
                 <div className='mx-auto w-11/12 md:w-10/12'>
                     <div
-                        className='p-8 rounded-md gap-x-5 border-2 border-white'
+                        className='flex p-8 rounded-md   gap-x-5 border-2 border-white'
                         style={{
                             backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
                             boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
@@ -255,18 +252,18 @@ const EntityComponent = () => {
                         }}
                     >
                         <div
-                            className='flex flex-col justify-center gap-y-8 text-xs md:text-[14px] mx-auto'
+                            className='flex flex-col gap-y-8 text-xs md:text-[14px] mx-auto'
                             style={{
                                 color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
                             }}
                         >
-                            <div className='flex flex-row gap-x-5'>
-                                <p className='w-60 font-semibold'>Aggregate Balance:</p>
-                                <p>{entityDay && entityDay.aggregate_balance?.toLocaleString()} ETH</p>
+                            <div className='flex flex-row items-center gap-x-5'>
+                                <p className={`w-60 font-semibold mb-2 text-${themeMode?.darkMode ? 'white' : 'black'}`}>Aggregate Balance:</p>
+                                <p className={`font-semibold text-${themeMode?.darkMode ? 'white' : 'black'}`}>{entityDay && entityDay.aggregate_balance?.toLocaleString()} ETH</p>
                             </div>
                             {/* Blocks */}
                             <div className='flex flex-col lg:flex-row gap-x-5 gap-y-1'>
-                                <p className='w-44 sm:w-60 font-semibold'>Blocks:</p>
+                                <p className={`w-44 sm:w-60 font-semibold text-${themeMode?.darkMode ? 'white' : 'black'}`}>Blocks:</p>
                                 <div className='flex flex-col lg:flex-row items-end gap-x-4 gap-y-2'>
                                     <CardContent
                                         content={`Proposed: ${
@@ -288,7 +285,7 @@ const EntityComponent = () => {
                             </div>
                             {/* Number of validators*/}
                             <div className='flex flex-col gap-y-1 xs:gap-y-5'>
-                                <p className='w-44 sm:w-60 font-semibold mb-2'>Number of Validators:</p>
+                            <p className={`w-44 sm:w-60 font-semibold mb-2 text-${themeMode?.darkMode ? 'white' : 'black'}`}>Number of Validators:</p>
                                 <div className='flex flex-col xl:flex-row items-end gap-x-4 gap-y-2'>
                                     <CardContent
                                         content={`Deposited: ${entityDay && entityDay.deposited?.toLocaleString()}`}
@@ -364,7 +361,7 @@ const EntityComponent = () => {
                         >
                             <div>
                                 <div className='text-[18px] uppercase font-medium py-4 text-center'>
-                                    <p>Entity performance:</p>
+                                    <p className={`text-${themeMode?.darkMode ? 'white' : 'black'}`}>Entity performance:</p>
                                 </div>
                                 {tabPageIndexEntityPerformance === 0 && getEntityPerformance(entityHour as Entity)}
                                 {tabPageIndexEntityPerformance === 1 && getEntityPerformance(entityDay as Entity)}
