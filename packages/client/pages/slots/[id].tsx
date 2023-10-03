@@ -42,9 +42,9 @@ const Card = ({ title, content, icon, iconSize, link, target }: CardProps) => {
         <>
             <div className='flex flex-row items-center justify-between gap-5 md:gap-20'>
                 <p
-                    className='text-xs md:text-[14px] font-medium'
+                    className='text-xs md:text-[14px] font-semibold'
                     style={{
-                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
+                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                     }}
                 >
                     {title}:
@@ -319,7 +319,7 @@ const Slot = () => {
                 style={{
                     backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
                     boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
-                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
+                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                 }}
             >
                 <div className='flex flex-col mx-auto gap-y-4 md:gap-y-8'>
@@ -491,11 +491,11 @@ const Slot = () => {
                     </div>
                 ) : (
                     <div
-                        className='flex flex-col gap-y-2 min-w-[470px] text-[12px] sm:text-[14px] rounded-md border-2 border-white px-4 xl:px-8 py-3'
+                        className='font-semibold flex flex-col gap-y-2 min-w-[470px] text-[12px] sm:text-[14px] rounded-md border-2 border-white px-4 xl:px-8 py-3'
                         style={{
                             backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
                             boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
-                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
+                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                         }}
                     >
                         {withdrawals.map(element => (
