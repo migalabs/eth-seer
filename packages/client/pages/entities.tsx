@@ -27,15 +27,14 @@ const Entities = () => {
                 <link rel='canonical' href='https://ethseer.io/entities' />
             </Head>
 
-<<<<<<< HEAD
-            <h1 className='text-black text-center font-semibold md:text-[40px] text-[30px] mt-14 xl:mt-0 capitalize'>
+            <h1
+                className='text-black text-center font-semibold md:text-[40px] text-[30px] mt-14 xl:mt-0 capitalize'
+                style={{
+                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
+                }}
+            >
                 Ethereum Staking Entities
             </h1>
-=======
-            <h1 className='text-black text-center font-semibold md:text-[40px] text-[30px] mt-14 xl:mt-0 capitalize' style={{
-                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)'
-                    }}>Ethereum Staking Entities</h1>
->>>>>>> 8bbb332 (add changes)
 
             <div
                 className='mx-auto py-4 px-6 border-2 border-[var(--purple)] rounded-md flex w-11/12 lg:w-10/12'
