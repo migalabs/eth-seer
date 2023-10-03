@@ -75,7 +75,7 @@ export default function Home() {
                     </div>
 
                     <div
-                        className='mx-auto py-4 px-6 text-[12px] md:text-[16px] border rounded-md w-11/12 lg:w-10/12 mb-5'
+                        className='mx-auto py-4 px-6 text-[12px] 2xl:text-[18px] border rounded-md w-11/12 lg:w-10/12 mb-5'
                         style={{
                             background: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--bgMainLightMode)',
                             borderColor: themeMode?.darkMode ? 'var(--white)' : 'var(--lightGray)',
@@ -102,9 +102,9 @@ export default function Home() {
                     ></hr>
                     <div className='text-center mt-3'>
                         <h2
-                            className='text-[20px] md:text-[30px] font-medium capitalize mb-3'
+                            className='text-[20px] md:text-[30px] font-semibold capitalize mb-3'
                             style={{
-                                color: themeMode?.darkMode ? 'var(--white)' : '',
+                                color: themeMode?.darkMode ? 'var(--black)' : '',
                             }}
                         >
                             Epoch statistics
