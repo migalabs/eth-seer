@@ -299,7 +299,7 @@ const EpochComponent = () => {
                 </div>
             )}
 
-            {!loadingEpoch && <EpochAnimation notEpoch={notEpoch} />}
+            {!loadingEpoch &&  animation && <EpochAnimation notEpoch={notEpoch} />}
         </Layout>
     );
 };
