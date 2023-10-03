@@ -206,11 +206,17 @@ const Graffitis = () => {
                                 <p>{new Date(FIRST_BLOCK + block.f_slot * 12000).toLocaleTimeString('ja-JP')}</p>
                             </div>
 
-                            <div className='w-[20%]'>
+                            <div
+                                className='w-[20%] font-medium md:hover:underline underline-offset-4 decoration-2'
+                                style={{ color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)' }}
+                            >
                                 <LinkSlot slot={block.f_slot} mxAuto />
                             </div>
 
-                            <div className='w-[20%]'>
+                            <div
+                                className='w-[20%] font-medium md:hover:underline underline-offset-4 decoration-2'
+                                style={{ color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)' }}
+                            >
                                 <LinkValidator validator={block.f_proposer_index} mxAuto />
                             </div>
 

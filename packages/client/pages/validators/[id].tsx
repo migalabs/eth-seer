@@ -199,7 +199,7 @@ const ValidatorComponent = () => {
                         </div>
                         <div className='flex flex-col items-start'>
                             <div className='flex flex-row items-center gap-x-8'>
-                                <p className='w-20'>Epoch:</p>
+                                <p className='w-20 '>Epoch:</p>
                                 <LinkEpoch epoch={Math.floor(element.f_proposer_slot / 32)} />
                             </div>
 
@@ -278,11 +278,17 @@ const ValidatorComponent = () => {
                                 />
                             </div>
 
-                            <div className='w-[25%]'>
+                            <div
+                                className='w-[25%] font-medium md:hover:underline underline-offset-4 decoration-2'
+                                style={{ color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)' }}
+                            >
                                 <LinkEpoch epoch={Math.floor(element.f_proposer_slot / 32)} mxAuto />
                             </div>
 
-                            <div className='w-[25%]'>
+                            <div
+                                className='w-[25%] font-medium md:hover:underline underline-offset-4 decoration-2'
+                                style={{ color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)' }}
+                            >
                                 <LinkSlot slot={element.f_proposer_slot} mxAuto />
                             </div>
 
@@ -328,11 +334,17 @@ const ValidatorComponent = () => {
                 >
                     {withdrawals.map((element, idx) => (
                         <div className='flex gap-x-4 py-1 uppercase text-center items-center' key={idx}>
-                            <div className='w-[25%]'>
+                            <div
+                                className='w-[25%] font-medium md:hover:underline underline-offset-4 decoration-2'
+                                style={{ color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)' }}
+                            >
                                 <LinkEpoch epoch={Math.floor(element.f_epoch ?? 0)} mxAuto />
                             </div>
 
-                            <div className='w-[25%]'>
+                            <div
+                                className='w-[25%] font-medium md:hover:underline underline-offset-4 decoration-2'
+                                style={{ color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)' }}
+                            >
                                 <LinkSlot slot={element.f_slot} mxAuto />
                             </div>
 
@@ -527,7 +539,10 @@ const ValidatorComponent = () => {
                     >
                         <div className='flex flex-row items-center gap-x-5'>
                             <p className='w-32 sm:w-40 font-semibold'>Entity:</p>
-                            <div className='uppercase'>
+                            <div
+                                className='uppercase font-medium md:hover:underline underline-offset-4 decoration-2'
+                                style={{ color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)' }}
+                            >
                                 <LinkEntity entity={validatorHour?.f_pool_name ?? 'others'} />
                             </div>
                         </div>
