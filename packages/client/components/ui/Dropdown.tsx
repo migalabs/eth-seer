@@ -42,14 +42,14 @@ const Dropdown = ({ name, items }: Props) => {
         <div
             className='relative py-2 md:p-0'
             style={{
-                color: themeMode?.darkMode ? 'var(--white)' : '#000000',
+                color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
             }}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
         >
             <button
                 type='button'
-                className='w-full text-xs uppercase flex items-center justify-end relative'
+                className='w-full text-[14px] lg:text-[16px] flex items-center justify-end relative'
                 onClick={handleButtonClick}
             >
                 <span>{name}</span>
@@ -73,24 +73,23 @@ const Dropdown = ({ name, items }: Props) => {
             <div
                 className={`relative md:absolute transition-opacity duration-300 ${
                     isOpen ? 'opacity-100 h-auto' : 'opacity-0 h-0'
-                } absolute right-0 mt-1 md:mt-0.5`}
+                } absolute right-0`}
             >
                 {isOpen && (
                     <div
-                        className='p-1 md:p-2 rounded-lg'
+                        className='p-1 md:p-3 rounded-md md:border'
                         style={{
-                            background: themeMode?.darkMode ? '#f2dc8e' : '#ecb77b',
+                            background: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--white)',
+                            borderColor: themeMode?.darkMode ? 'var(--white)' : 'var(----darkGray)',
                         }}
                     >
                         {items.map(item => (
                             <Link
                                 key={item.name}
                                 href={item.route}
-                                className='block px-4 py-2 my-1 text-sm rounded-lg transition'
-                                style={{
-                                    background: themeMode?.darkMode ? '#c57f1860' : 'var(--blue2)',
-                                    color: themeMode?.darkMode ? 'var(--white)' : '#000000',
-                                }}
+                                className={`block px-4 py-2 my-1 text-[16px] rounded-md bg-[#a19f9f] md:bg-transparent md:hover:bg-[#c9b6f8] transition md:font-semibold md:hover:text-${
+                                    themeMode?.darkMode ? 'black' : 'white'
+                                }`}
                             >
                                 {item.name}
                             </Link>
