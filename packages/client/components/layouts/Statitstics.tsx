@@ -189,7 +189,7 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
 
                 <div className='flex flex-col gap-x-4 w-full'>
                     <div className='flex gap-x-1 justify-center mb-1'>
-                        <p className='text-xs mt-1 font-medium'>Time</p>
+                        <p className='text-xs mt-1 font-semibold'>Time</p>
                         <TooltipContainer>
                             <CustomImage
                                 src='/static/images/icons/information_icon.webp'
@@ -222,7 +222,7 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
 
                 <div className='flex flex-col w-full'>
                     <div className='flex gap-x-1 justify-center mb-1'>
-                        <p className='text-xs mt-1 font-medium'>Blocks</p>
+                        <p className='text-xs mt-1 font-semibold'>Blocks</p>
                         <TooltipContainer>
                             <CustomImage
                                 src='/static/images/icons/information_icon.webp'
@@ -268,7 +268,7 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
 
                 <div className='flex flex-col w-full'>
                     <div className='flex gap-x-1 items-center justify-center mb-1'>
-                        <p className='text-xs mt-1 font-medium'>Attestation Accuracy</p>
+                        <p className='text-xs mt-1 font-semibold'>Attestation Accuracy</p>
                         <TooltipContainer>
                             <CustomImage
                                 src='/static/images/icons/information_icon.webp'
@@ -301,7 +301,7 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
 
                 <div className='flex flex-col w-full'>
                     <div className='flex gap-x-1 items-center justify-center mb-1'>
-                        <p className='text-xs mt-1 font-medium'>Voting Participation</p>
+                        <p className='text-xs mt-1 font-semibold'>Voting Participation</p>
 
                         <TooltipContainer>
                             <CustomImage
@@ -347,13 +347,13 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
             onMouseMove={handleMouseMove}
         >
             <div
-                className='flex gap-x-1 justify-around px-2 xl:px-8 pb-3 uppercase text-sm min-w-[1150px] '
+                className='font-semibold flex gap-x-1 justify-around px-2 xl:px-8 pb-3 capitalize text-sm min-w-[1150px] '
                 style={{
                     color: themeMode?.darkMode ? 'var(--white)' : 'black',
                 }}
             >
                 <div className='flex w-[10%] items-center gap-x-1 justify-center'>
-                    <p className='mt-0.5 text-md font-medium'>Time</p>
+                    <p className='mt-0.5 text-md font-semibold'>Time</p>
                     <TooltipContainer>
                         <CustomImage
                             src='/static/images/icons/information_icon.webp'
@@ -380,7 +380,7 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
                 </div>
 
                 <div className='flex w-[11%] items-center gap-x-1 justify-center'>
-                    <p className='mt-0.5 text-md font-medium'>Epoch</p>
+                    <p className='mt-0.5 text-md font-semibold'>Epoch</p>
                     <TooltipContainer>
                         <CustomImage
                             src='/static/images/icons/information_icon.webp'
@@ -400,7 +400,7 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
                 </div>
 
                 <div className='flex w-[15%] items-center gap-x-1 justify-center'>
-                    <p className='mt-0.5 text-md font-medium'>Blocks</p>
+                    <p className='mt-0.5 text-md font-semibold'>Blocks</p>
                     <TooltipContainer>
                         <CustomImage
                             src='/static/images/icons/information_icon.webp'
@@ -426,7 +426,7 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
                 </div>
 
                 <div className='flex w-[32%] items-center gap-x-1 justify-center'>
-                    <p className='mt-0.5 text-md font-medium'>Attestation Accuracy</p>
+                    <p className='mt-0.5 text-md font-semibold'>Attestation Accuracy</p>
                     <TooltipContainer>
                         <CustomImage
                             src='/static/images/icons/information_icon.webp'
@@ -452,7 +452,7 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
                 </div>
 
                 <div className='flex w-[32%] items-center gap-x-1 justify-center'>
-                    <p className='mt-0.5 text-md font-medium'>Voting Participation</p>
+                    <p className='mt-0.5 text-md font-semibold'>Voting Participation</p>
                     <TooltipContainer>
                         <CustomImage
                             src='/static/images/icons/information_icon.webp'
