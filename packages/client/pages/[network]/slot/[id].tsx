@@ -323,7 +323,7 @@ const Slot = () => {
                         />
                     )}
 
-                    <Card title='Date Time (Local)' text={getTimeBlock()} />
+                    <Card title='Datetime (Local)' text={getTimeBlock()} />
 
                     {existsBlock && (
                         <Card title='Proposer Index' content={<LinkValidator validator={block?.f_proposer_index} />} />

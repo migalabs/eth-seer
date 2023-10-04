@@ -138,7 +138,7 @@ const EntityComponent = () => {
                     <p className={`md:w-52 lg:w-80 text-${themeMode?.darkMode ? 'white' : 'black'}`}>
                         Sync committee participation:
                     </p>
-                    <p className={`font-semibold text-${themeMode?.darkMode ? 'white' : 'black'}`}>
+                    <p className={`font-semibold capitalize text-${themeMode?.darkMode ? 'white' : 'black'}`}>
                         {entity?.count_sync_committee} duties
                     </p>
                 </div>

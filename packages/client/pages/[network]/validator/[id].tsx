@@ -218,7 +218,7 @@ const ValidatorComponent = () => {
                             </div>
 
                             <div className='flex flex-row items-center gap-x-10'>
-                                <p className='w-20'>DateTime:</p>
+                                <p className='w-20'>Datetime:</p>
                                 <p className='uppercase'>
                                     {new Date(FIRST_BLOCK + Number(element.f_proposer_slot) * 12000).toLocaleString(
                                         'ja-JP'
@@ -332,7 +332,7 @@ const ValidatorComponent = () => {
                 onMouseMove={handleMouseMove}
             >
                 <div
-                    className='flex gap-x-4 justify-around px-4 xl:px-8 min-w-[700px] text-xs md:text-[16px] py-3 text-center'
+                    className='font-semibold flex gap-x-4 justify-around px-4 xl:px-8 min-w-[700px] text-xs md:text-[16px] py-3 text-center'
                     style={{
                         color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
                     }}
@@ -410,7 +410,7 @@ const ValidatorComponent = () => {
                             </div>
 
                             <div className='flex flex-row items-center gap-x-8'>
-                                <p className='w-20'>DateTime:</p>
+                                <p className='w-20'>Datetime:</p>
                                 <p className='uppercase'>
                                     {new Date(FIRST_BLOCK + Number(element.f_slot) * 12000).toLocaleString('ja-JP')}
                                 </p>
@@ -460,7 +460,7 @@ const ValidatorComponent = () => {
 
                 <div className='flex flex-col md:flex-row py-4 gap-y-2 md:gap-y-0 md:mb-0'>
                     <p className='md:w-52 lg:w-80'>Sync committee participation:</p>
-                    <p className='font-normal uppercase'>{validator?.count_missing_source} duties</p>
+                    <p className='font-normal capitalize'>{validator?.count_missing_source} duties</p>
                 </div>
 
                 {/* Attestation flags */}
@@ -562,7 +562,7 @@ const ValidatorComponent = () => {
                         }}
                     >
                         <div className='flex flex-row items-center gap-x-5'>
-                            <p className='w-32 sm:w-40 font-semibold'>Entity:</p>
+                            <p className='w-32 sm:w-40 font-medium'>Entity:</p>
                             <div
                                 className='uppercase font-medium md:hover:underline underline-offset-4 decoration-2'
                                 style={{ color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)' }}
@@ -572,16 +572,16 @@ const ValidatorComponent = () => {
                         </div>
 
                         <div className='flex flex-row items-center gap-x-5'>
-                            <p className='w-32 sm:w-40 font-semibold'>Current balance:</p>
+                            <p className='w-32 sm:w-40 font-medium'>Current balance:</p>
                             <p className='leading-3'>{validatorHour?.f_balance_eth} ETH</p>
                         </div>
 
                         <div className='flex md:flex-row gap-x-5'>
-                            <p className='w-32 sm:w-40 font-semibold'>Current status:</p>
+                            <p className='w-32 sm:w-40 font-medium'>Current status:</p>
                             {validatorHour?.f_status && <ValidatorStatus status={validatorHour?.f_status} />}
                         </div>
                         <div className='flex flex-col sm:flex-row gap-x-5'>
-                            <p className='w-32 sm:w-40 font-semibold'>Blocks:</p>
+                            <p className='w-32 sm:w-40 font-medium'>Blocks:</p>
                             <div className='flex justify-center gap-x-5 '>
                                 <CardContent
                                     content={`Proposed: ${getNumberProposedBlocks(proposedBlocks)}`}
@@ -598,7 +598,7 @@ const ValidatorComponent = () => {
                             </div>
                         </div>
                         <div className='flex flex-row items-center gap-x-5'>
-                            <p className='w-32 sm:w-40 font-semibold'>Withdrawals:</p>
+                            <p className='w-32 sm:w-40 font-medium'>Withdrawals:</p>
                             <p className='leading-3'>{getTotalWithdrawals(withdrawals).toLocaleString()} ETH</p>
                         </div>
                     </div>
