@@ -15,6 +15,7 @@ import CustomImage from '../ui/CustomImage';
 import TooltipResponsive from '../ui/TooltipResponsive';
 import ViewMoreButton from '../ui/ViewMoreButton';
 import LinkEpoch from '../ui/LinkEpoch';
+import LinkIcon from '../ui/LinkIcon';
 
 // Types
 import { Epoch, Block } from '../../types';
@@ -185,6 +186,7 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
                 <div className='flex gap-x-1 justify-center'>
                     <LinkEpoch epoch={f_epoch}>
                         <p className='font-semibold text-[16px] mt-0.5'>Epoch {f_epoch?.toLocaleString()}</p>
+                        <LinkIcon />
                     </LinkEpoch>
                 </div>
 
@@ -682,6 +684,7 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
                                 <p className='font-semibold text-[16px] mt-0.5'>
                                     Epoch {epoch.f_epoch?.toLocaleString()}
                                 </p>
+                                <LinkIcon />
                             </LinkEpoch>
                         </div>
                         <div className='flex flex-col gap-x-4 w-full'>
