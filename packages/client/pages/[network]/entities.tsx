@@ -28,7 +28,7 @@ const Entities = () => {
             </Head>
 
             <h1
-                className='text-black text-center font-semibold md:text-[40px] text-[30px] mt-14 xl:mt-0 capitalize'
+                className='text-center font-semibold text-[32px] md:text-[50px] mt-10 xl:mt-0 capitalize m-2 md:m-0'
                 style={{
                     color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                 }}
@@ -41,7 +41,7 @@ const Entities = () => {
                 style={{ background: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--bgMainLightMode)' }}
             >
                 <h2
-                    className='text-white text-xs 2xl:text-[18px] text-center leading-5'
+                    className='text-white text-[14px] 2xl:text-[18px] text-center leading-5'
                     style={{
                         color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                     }}

@@ -113,8 +113,8 @@ const EntityComponent = () => {
             <>
                 {/* Rewards */}
                 <div className='flex flex-col md:flex-row py-4 gap-y-2 md:gap-y-0 md:mb-0'>
-                    <p className={`md:w-52 lg:w-80 text-${themeMode?.darkMode ? 'white' : 'black'}`}>Rewards:</p>
-                    <div className='w-72 md:w-80 text-center font-normal'>
+                    <p className={`md:w-52 lg:w-50 text-${themeMode?.darkMode ? 'white' : 'black'}`}>Rewards:</p>
+                    <div className='w-[300px] text-center font-normal'>
                         {entity && (
                             <ProgressSmoothBar
                                 title=''
@@ -135,23 +135,23 @@ const EntityComponent = () => {
                 </div>
 
                 <div className='flex flex-col md:flex-row py-4 gap-y-2 md:gap-y-0 md:mb-0'>
-                    <p className={`md:w-52 lg:w-80 text-${themeMode?.darkMode ? 'white' : 'black'}`}>
+                    <p className={`md:w-52 lg:w-50 text-${themeMode?.darkMode ? 'white' : 'black'}`}>
                         Sync committee participation:
                     </p>
-                    <p className={`font-semibold capitalize text-${themeMode?.darkMode ? 'white' : 'black'}`}>
+                    <p className={`capitalize text-${themeMode?.darkMode ? 'white' : 'black'}`}>
                         {entity?.count_sync_committee} duties
                     </p>
                 </div>
 
                 {/* Attestation flags */}
                 <div className='flex flex-col lg:flex-row py-4 gap-y-2 md:gap-y-0 md:mb-0'>
-                    <p className={`md:w-52 lg:w-80 text-${themeMode?.darkMode ? 'white' : 'black'}`}>
+                    <p className={`md:w-52 lg:w-50 text-${themeMode?.darkMode ? 'white' : 'black'}`}>
                         Attestation flags:
                     </p>
 
                     {entity && (
                         <div
-                            className='flex flex-col xl:flex-row items-center gap-x-4 gap-y-2 font-normal text-[12px]'
+                            className='flex flex-col xl:flex-row items-center gap-x-4 gap-y-2 font-medium text-[12px] md:text-[14px]'
                             style={{
                                 color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                             }}
@@ -161,7 +161,7 @@ const EntityComponent = () => {
                                 color='var(--black)'
                                 backgroundColor='var(--white)'
                                 percent={1 - entity.count_missing_target / entity.count_expected_attestations}
-                                width={250}
+                                width={300}
                                 tooltipColor='orange'
                                 tooltipContent={
                                     <>
@@ -179,7 +179,7 @@ const EntityComponent = () => {
                                 color='var(--black)'
                                 backgroundColor='var(--white)'
                                 percent={1 - entity.count_missing_source / entity.count_expected_attestations}
-                                width={250}
+                                width={300}
                                 tooltipColor='blue'
                                 tooltipContent={
                                     <>
@@ -197,7 +197,7 @@ const EntityComponent = () => {
                                 color='var(--black)'
                                 backgroundColor='var(--white)'
                                 percent={1 - entity.count_missing_head / entity.count_expected_attestations}
-                                width={250}
+                                width={300}
                                 tooltipColor='purple'
                                 tooltipContent={
                                     <>
@@ -215,7 +215,7 @@ const EntityComponent = () => {
 
                 {/* Blocks Entity Performance */}
                 <div className='flex flex-col md:flex-row py-4 gap-y-2 md:gap-y-0 md:mb-0'>
-                    <p className={`md:w-52 lg:w-80 text-${themeMode?.darkMode ? 'white' : 'black'}`}>Blocks:</p>
+                    <p className={`md:w-52 lg:w-50 text-${themeMode?.darkMode ? 'white' : 'black'}`}>Blocks:</p>
 
                     <div className='flex justify-center'>
                         <div className='flex flex-col md:flex-row gap-x-4 gap-y-2'>
@@ -242,7 +242,14 @@ const EntityComponent = () => {
     return (
         <Layout>
             <div className='flex gap-x-3 justify-center items-center mt-14 xl:mt-0 mb-5'>
-                <h1 className='text-black uppercase text-center font-medium md:text-[40px] text-[30px]'>{name}</h1>
+                <h1
+                    className='uppercase text-center font-medium text-[32px] md:text-[50px]'
+                    style={{
+                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
+                    }}
+                >
+                    {name}
+                </h1>
             </div>
 
             {loading && (
@@ -254,7 +261,7 @@ const EntityComponent = () => {
             {entityDay && (
                 <div className='mx-auto w-11/12 md:w-10/12'>
                     <div
-                        className='flex p-8 rounded-md   gap-x-5 border-2 border-white'
+                        className='flex p-8 rounded-md gap-x-5  border-2 border-white'
                         style={{
                             backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
                             boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
@@ -262,33 +269,25 @@ const EntityComponent = () => {
                         }}
                     >
                         <div
-                            className='flex flex-col gap-y-8 text-xs md:text-[14px] mx-auto'
+                            className='flex flex-col gap-y-8 text-[14px] md:text-[16px] font-medium mx-auto md:mx-0 p-6 '
                             style={{
                                 color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
                             }}
                         >
-                            <div className='flex flex-row items-center gap-x-5'>
-                                <p
-                                    className={`w-60 font-semibold mb-2 text-${
-                                        themeMode?.darkMode ? 'white' : 'black'
-                                    }`}
-                                >
+                            <div className='flex flex-row flex-wrap items-center gap-x-5'>
+                                <p className={`w-60 mb-2 text-${themeMode?.darkMode ? 'white' : 'black'}`}>
                                     Aggregate Balance:
                                 </p>
-                                <p className={`font-semibold text-${themeMode?.darkMode ? 'white' : 'black'}`}>
+                                <p className={`text-${themeMode?.darkMode ? 'white' : 'black'}`}>
                                     {entityDay && entityDay.aggregate_balance?.toLocaleString()} ETH
                                 </p>
                             </div>
                             {/* Blocks */}
                             <div className='flex flex-col lg:flex-row gap-x-5 gap-y-1'>
-                                <p
-                                    className={`w-44 sm:w-60 font-semibold text-${
-                                        themeMode?.darkMode ? 'white' : 'black'
-                                    }`}
-                                >
+                                <p className={`w-44 sm:w-60 text-${themeMode?.darkMode ? 'white' : 'black'}`}>
                                     Blocks:
                                 </p>
-                                <div className='flex flex-col lg:flex-row items-end gap-x-4 gap-y-2'>
+                                <div className='flex flex-col lg:flex-row items-center gap-x-4 gap-y-2'>
                                     <CardContent
                                         content={`Proposed: ${
                                             entityDay && entityDay.proposed_blocks.f_proposed?.toLocaleString()
@@ -309,14 +308,10 @@ const EntityComponent = () => {
                             </div>
                             {/* Number of validators*/}
                             <div className='flex flex-col gap-y-1 xs:gap-y-5'>
-                                <p
-                                    className={`w-44 sm:w-60 font-semibold mb-2 text-${
-                                        themeMode?.darkMode ? 'white' : 'black'
-                                    }`}
-                                >
+                                <p className={`w-44 sm:w-60 mb-2 text-${themeMode?.darkMode ? 'white' : 'black'}`}>
                                     Number of Validators:
                                 </p>
-                                <div className='flex flex-col xl:flex-row items-end gap-x-4 gap-y-2'>
+                                <div className='flex flex-col xl:flex-row items-center gap-x-4 gap-y-2'>
                                     <CardContent
                                         content={`Deposited: ${entityDay && entityDay.deposited?.toLocaleString()}`}
                                         bg='var(--depositedBlue)'
@@ -376,7 +371,7 @@ const EntityComponent = () => {
                     </div>
 
                     <div
-                        className='flex mx-auto p-8 rounded-md  border-2 border-white'
+                        className='flex mx-auto p-4 rounded-md  border-2 border-white'
                         style={{
                             backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
                             boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
@@ -384,7 +379,7 @@ const EntityComponent = () => {
                         }}
                     >
                         <div
-                            className='items-start text-[12px] font-semibold md:text-[14px] mx-auto'
+                            className='items-start text-[14px] md:text-[16px] font-medium mx-auto'
                             style={{
                                 color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
                             }}
