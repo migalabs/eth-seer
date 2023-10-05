@@ -146,7 +146,7 @@ const EpochComponent = () => {
     const getContentEpochStats = () => {
         return (
             <div
-                className='flex flex-col gap-y-4 p-6 md:px-20 md:py-10 md:text-[16px] text-[12px] font-medium rounded-md border-2 border-white'
+                className='flex flex-col gap-y-4 p-6 md:px-20 md:py-10 text-[14px] md:text-[16px] font-medium rounded-md border-2 border-white'
                 style={{
                     backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
                     boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
@@ -154,7 +154,7 @@ const EpochComponent = () => {
                 }}
             >
                 <div className='flex flex-row items-center gap-x-5'>
-                    <p className={` w-40 sm:w-60 text-${themeMode?.darkMode ? 'white' : 'black'}`}>DateTime (Local):</p>
+                    <p className={` w-40 sm:w-60 text-${themeMode?.darkMode ? 'white' : 'black'}`}>Datetime (Local):</p>
                     <p className={`text-${themeMode?.darkMode ? 'white' : 'black'}`}>
                         {new Date(FIRST_BLOCK + Number(epoch?.f_slot) * 12000).toLocaleString('ja-JP')}
                     </p>
@@ -184,7 +184,7 @@ const EpochComponent = () => {
                     </p>
                     {epoch && (
                         <div
-                            className={`flex flex-col xl:flex-row items-center gap-2 md:gap-4 text-[12px] md:text-[14px] font-normal text-${
+                            className={`flex flex-col font-medium xl:flex-row items-center gap-2 md:gap-4 text-[12px] md:text-[14px] text-${
                                 themeMode?.darkMode ? 'white' : 'black'
                             }`}
                         >
@@ -283,7 +283,12 @@ const EpochComponent = () => {
                     <Arrow direction='left' />
                 </LinkEpoch>
 
-                <h1 className='text-black text-center font-semibold md:text-[40px] text-[30px]'>
+                <h1
+                    className='text-center font-semibold text-[32px] md:text-[50px]'
+                    style={{
+                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
+                    }}
+                >
                     Epoch {Number(id)?.toLocaleString()}
                 </h1>
 

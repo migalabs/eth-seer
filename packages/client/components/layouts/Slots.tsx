@@ -74,7 +74,7 @@ const Slots = ({ slots }: Props) => {
 
                     {slots.map(element => (
                         <div
-                            className='flex gap-4 py-3 uppercase text-center items-center flex-row justify-around text-[12px] md:text-[14px] rounded-md border-2 border-white my-2'
+                            className='flex gap-4 py-3 text-center font-medium items-center flex-row justify-around text-[12px] md:text-[14px] rounded-md border-2 border-white my-2'
                             style={{
                                 backgroundColor: themeMode?.darkMode
                                     ? 'var(--bgFairDarkMode)'
@@ -97,21 +97,21 @@ const Slots = ({ slots }: Props) => {
                             </div>
 
                             <div
-                                className='w-[20%] font-medium md:hover:underline underline-offset-4 decoration-2'
+                                className='w-[20%] uppercase md:hover:underline underline-offset-4 decoration-2'
                                 style={{ color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)' }}
                             >
                                 <LinkEntity entity={element.f_pool_name || 'others'} />
                             </div>
 
                             <div
-                                className='w-[20%] font-medium md:hover:underline underline-offset-4 decoration-2'
+                                className='w-[20%] md:hover:underline underline-offset-4 decoration-2'
                                 style={{ color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)' }}
                             >
                                 <LinkValidator validator={element.f_val_idx} mxAuto />
                             </div>
 
                             <div
-                                className='w-[20%] font-medium md:hover:underline underline-offset-4 decoration-2'
+                                className='w-[20%] md:hover:underline underline-offset-4 decoration-2'
                                 style={{ color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)' }}
                             >
                                 <LinkSlot slot={element.f_proposer_slot} mxAuto />
@@ -129,7 +129,7 @@ const Slots = ({ slots }: Props) => {
 
                     {slots.length === 0 && (
                         <div className='flex justify-center p-2'>
-                            <p className='uppercase text-xs md:text-[16px]'>No slots</p>
+                            <p className='uppercase text-[14px] md:text-[16px]'>No slots</p>
                         </div>
                     )}
                 </div>
@@ -147,7 +147,7 @@ const Slots = ({ slots }: Props) => {
             >
                 {slots.map(slot => (
                     <div
-                        className='flex flex-row gap-x-10 py-4 items-center justify-center px-2 border-2 border-white rounded-md'
+                        className='flex flex-row gap-x-10 text-[14px] md:text-[16px] py-4 items-center justify-center px-2 border-2 border-white rounded-md'
                         key={slot.f_proposer_slot}
                         style={{
                             backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
@@ -196,7 +196,7 @@ const Slots = ({ slots }: Props) => {
                                         color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
                                     }}
                                 >
-                                    DateTime:
+                                    Datetime:
                                 </p>
                                 <div className='flex flex-col gap-y-0.5'>
                                     <p>
@@ -237,7 +237,7 @@ const Slots = ({ slots }: Props) => {
 
                 {slots.length === 0 && (
                     <div className='flex justify-center p-2'>
-                        <p className='uppercase text-xs md:text-[16px]'>No slots</p>
+                        <p className='uppercase text-[14px] md:text-[16px]'>No slots</p>
                     </div>
                 )}
             </div>
