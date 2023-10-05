@@ -38,7 +38,7 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
     return (
         <div className='flex flex-col'>
             <span
-                className='capitalize text-center text-sm'
+                className='capitalize text-center text-[14px]'
                 style={{
                     color: themeMode?.darkMode ? 'var(--white)' : 'var(--newOrange)',
                 }}
@@ -52,7 +52,7 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
                 }}
             >
                 <div
-                    className='grid grid-cols-4 md:grid-cols-8 w-fit  md:max-h-full border-2 mx-auto gap-2 rounded-md p-4'
+                    className='grid grid-cols-4 md:grid-cols-8 w-fit md:max-h-full border-2 mx-auto gap-2 rounded-md p-6'
                     style={{
                         backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
                         borderColor: themeMode?.darkMode ? 'var(--white)' : 'var(--white)',
@@ -66,8 +66,8 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
                                     <BlockImage
                                         poolName={block.f_pool_name ?? 'others'}
                                         proposed={block.f_proposed}
-                                        height={50}
-                                        width={50}
+                                        height={55}
+                                        width={55}
                                     />
 
                                     <TooltipResponsive
@@ -95,8 +95,8 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
                             <CustomImage
                                 src='/static/gifs/block_mining5.gif'
                                 alt='Mining block'
-                                width={50}
-                                height={50}
+                                width={55}
+                                height={55}
                             />
 
                             {Array.from(Array(32 - blocks.length - 1)).map((_, idx) => (
@@ -104,8 +104,8 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
                                     key={idx}
                                     src='/static/gifs/block_awaiting.gif'
                                     alt='Awaiting block'
-                                    width={50}
-                                    height={50}
+                                    width={55}
+                                    height={55}
                                 />
                             ))}
                         </>

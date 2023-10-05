@@ -71,33 +71,33 @@ const SummaryOverview = () => {
     return (
         <>
             {summary && lastValidator !== 0 && (
-                <div className='px-4 mb-5'>
+                <div className='mb-5'>
                     <div
-                        className='grid grid-row-5 xl:flex xl:flex-wrap justify-between w-fit gap-2 xl:gap-10 text-[14px] text-center rounded-md py-4 px-8 xl:px-8 xl:py-3 mx-auto border'
+                        className='grid mx-auto grid-row-5 xl:flex xl:flex-wrap  gap-1 xl:gap-10 text-center text-[14px] rounded-md py-4 px-8 xl:px-8 xl:py-3 w-11/12 md:w-9/12 border'
                         style={{
                             color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                             background: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--bgMainLightMode)',
                             borderColor: themeMode?.darkMode ? 'var(--white)' : 'var(--lightGray)',
                         }}
                     >
-                        <p className='flex-shrink-0'>
-                            <b>Network:</b> {assetPrefix !== '/goerli' ? 'Mainnet' : 'Goerli'}
+                        <p>
+                            <b className='font-semibold'>Network:</b> {assetPrefix !== '/goerli' ? 'Mainnet' : 'Goerli'}
                         </p>
                         <span className='lg:w-[1px] lg:h-6 lg:bg-gray-400 '></span>
-                        <p className='flex-shrink-0'>
-                            <b>Epoch:</b> {summary.epoch}
+                        <p className=''>
+                            <b className='font-semibold'>Epoch:</b> {summary.epoch}
                         </p>
                         <span className='lg:w-[1px] lg:h-6 lg:bg-gray-400'></span>
-                        <p className='flex-shrink-0'>
-                            <b>Slot:</b> {summary.slot}
+                        <p className=''>
+                            <b className='font-semibold'>Slot:</b> {summary.slot}
                         </p>
                         <span className='lg:w-[1px] lg:h-6 lg:bg-gray-400'></span>
-                        <p className='flex-shrink-0'>
-                            <b>Block Height:</b> {summary.block_height}
+                        <p className=''>
+                            <b className='font-semibold'>Block Height:</b> {summary.block_height}
                         </p>
                         <span className='lg:w-[1px] lg:h-6 lg:bg-gray-400'></span>
-                        <p className='flex-shrink-0'>
-                            <b>Active Validators:</b> {lastValidator ?? 0}
+                        <p className=''>
+                            <b className='font-semibold'>Active Validators:</b> {lastValidator ?? 0}
                         </p>
                     </div>
                 </div>

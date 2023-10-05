@@ -37,15 +37,25 @@ const Card = ({ title, text, content }: CardProps) => {
     return (
         <>
             <div className='flex flex-row items-center justify-between gap-5 md:gap-20'>
-                <p className='text-xs md:text-[14px] font-semibold'
+                <p
+                    className='text-xs md:text-[14px] font-semibold'
                     style={{
                         color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                    }}>{title}:</p>
+                    }}
+                >
+                    {title}:
+                </p>
                 <div className='flex gap-2 items-center'>
-                    {text && <p className='uppercase text-xs md:text-[14px] font-semibold'
-                        style={{
-                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                        }}>{text}</p>}
+                    {text && (
+                        <p
+                            className='uppercase text-xs md:text-[14px] font-semibold'
+                            style={{
+                                color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
+                            }}
+                        >
+                            {text}
+                        </p>
+                    )}
 
                     {content && <>{content}</>}
                 </div>

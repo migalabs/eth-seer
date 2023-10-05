@@ -28,7 +28,7 @@ const Header = () => {
                             height={50}
                         />
                         <p
-                            className='uppercase text-[16px] md:text-[30px] mt-1 ml-2'
+                            className='uppercase text-[20px] md:text-[30px] mt-1 ml-2'
                             style={{
                                 color: themeMode?.darkMode ? 'var(--white)' : 'var(--newOrange)',
                             }}

@@ -113,6 +113,7 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
         return arrayBlocks;
     };
 
+    //Calculating epochs desktop
     const getCalculatingEpochDesktop = (f_epoch: number, blocks: Block[]) => {
         const arrayBlocks = createArrayBlocks(blocks);
 
@@ -122,9 +123,9 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
 
         return (
             <div
-                className='flex gap-x-1 justify-around items-center text-[14px] rounded-md border-2 border-[#c9b6f8] px-2 xl:px-8 py-3'
+                className='flex gap-x-1 font-medium justify-around items-center text-[14px] rounded-md border-2 border-[#c9b6f8] px-2 xl:px-8 py-3'
                 style={{
-                    backgroundColor: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--bgFairDarkMode)',
+                    backgroundColor: themeMode?.darkMode ? 'var(--bgDarkMode)' : '#5b5b5b50',
                     boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
                     color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                 }}
@@ -133,7 +134,7 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
                     <p>{new Date(FIRST_BLOCK + f_epoch * 32 * 12000).toLocaleDateString('ja-JP')}</p>
                     <p>{new Date(FIRST_BLOCK + f_epoch * 32 * 12000).toLocaleTimeString('ja-JP')}</p>
                 </div>
-                <div className='w-[11%] font-medium md:hover:underline underline-offset-4 decoration-2'>
+                <div className='w-[11%] md:hover:underline underline-offset-4 decoration-2'>
                     <LinkEpoch epoch={f_epoch} mxAuto />
                 </div>
                 <div className='w-[15%] pt-3.5 mb-5'>
@@ -164,7 +165,7 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
             </div>
         );
     };
-
+    // Calculating epochs mobile
     const getCalculatingEpochMobile = (f_epoch: number, blocks: Block[]) => {
         const arrayBlocks = createArrayBlocks(blocks);
 
@@ -174,9 +175,9 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
 
         return (
             <div
-                className='flex flex-col gap-y-4 justify-around items-center text-[12px] border-2 border-[#c9b6f8] rounded-md px-3 py-4'
+                className='flex flex-col  font-medium gap-y-4 justify-around items-center text-[14px] border-2 border-[#c9b6f8] rounded-md px-3 py-4'
                 style={{
-                    backgroundColor: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--bgFairDarkMode)',
+                    backgroundColor: themeMode?.darkMode ? 'var(--bgDarkMode)' : '#5b5b5b50',
                     boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
                     color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                 }}
@@ -189,7 +190,12 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
 
                 <div className='flex flex-col gap-x-4 w-full'>
                     <div className='flex gap-x-1 justify-center mb-1'>
-                        <p className='text-xs mt-1 font-semibold'>Time</p>
+                        <p
+                            className='mt-1 font-semibold'
+                            style={{ color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)' }}
+                        >
+                            Time
+                        </p>
                         <TooltipContainer>
                             <CustomImage
                                 src='/static/images/icons/information_icon.webp'
@@ -222,7 +228,12 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
 
                 <div className='flex flex-col w-full'>
                     <div className='flex gap-x-1 justify-center mb-1'>
-                        <p className='text-xs mt-1 font-semibold'>Blocks</p>
+                        <p
+                            className='mt-1 font-semibold'
+                            style={{ color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)' }}
+                        >
+                            Blocks
+                        </p>
                         <TooltipContainer>
                             <CustomImage
                                 src='/static/images/icons/information_icon.webp'
@@ -268,7 +279,12 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
 
                 <div className='flex flex-col w-full'>
                     <div className='flex gap-x-1 items-center justify-center mb-1'>
-                        <p className='text-xs mt-1 font-semibold'>Attestation Accuracy</p>
+                        <p
+                            className='mt-1 font-semibold'
+                            style={{ color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)' }}
+                        >
+                            Attestation Accuracy
+                        </p>
                         <TooltipContainer>
                             <CustomImage
                                 src='/static/images/icons/information_icon.webp'
@@ -301,7 +317,12 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
 
                 <div className='flex flex-col w-full'>
                     <div className='flex gap-x-1 items-center justify-center mb-1'>
-                        <p className='text-xs mt-1 font-semibold'>Voting Participation</p>
+                        <p
+                            className='mt-1 font-semibold'
+                            style={{ color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)' }}
+                        >
+                            Voting Participation
+                        </p>
 
                         <TooltipContainer>
                             <CustomImage
@@ -339,7 +360,7 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
     const getProposedBlocks = (totalBlock: Array<number>) => {
         return totalBlock?.filter(element => element === 1).length;
     };
-
+    // Containers desktop
     const getDesktopView = () => (
         <div
             ref={containerRef}
@@ -347,13 +368,13 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
             onMouseMove={handleMouseMove}
         >
             <div
-                className='font-semibold flex gap-x-1 justify-around px-2 xl:px-8 pb-3 capitalize text-sm min-w-[1150px] '
+                className='flex gap-x-1 justify-around px-2 xl:px-8 pb-3 capitalize text-[14px] md:text-[16px] min-w-[1150px] '
                 style={{
-                    color: themeMode?.darkMode ? 'var(--white)' : 'black',
+                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
                 }}
             >
                 <div className='flex w-[10%] items-center gap-x-1 justify-center'>
-                    <p className='mt-0.5 text-md font-semibold'>Time</p>
+                    <p className='mt-0.5 font-semibold'>Time</p>
                     <TooltipContainer>
                         <CustomImage
                             src='/static/images/icons/information_icon.webp'
@@ -380,7 +401,7 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
                 </div>
 
                 <div className='flex w-[11%] items-center gap-x-1 justify-center'>
-                    <p className='mt-0.5 text-md font-semibold'>Epoch</p>
+                    <p className='mt-0.5 font-semibold'>Epoch</p>
                     <TooltipContainer>
                         <CustomImage
                             src='/static/images/icons/information_icon.webp'
@@ -400,7 +421,7 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
                 </div>
 
                 <div className='flex w-[15%] items-center gap-x-1 justify-center'>
-                    <p className='mt-0.5 text-md font-semibold'>Blocks</p>
+                    <p className='mt-0.5 font-semibold'>Blocks</p>
                     <TooltipContainer>
                         <CustomImage
                             src='/static/images/icons/information_icon.webp'
@@ -426,7 +447,7 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
                 </div>
 
                 <div className='flex w-[32%] items-center gap-x-1 justify-center'>
-                    <p className='mt-0.5 text-md font-semibold'>Attestation Accuracy</p>
+                    <p className='mt-0.5 font-semibold'>Attestation Accuracy</p>
                     <TooltipContainer>
                         <CustomImage
                             src='/static/images/icons/information_icon.webp'
@@ -452,7 +473,7 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
                 </div>
 
                 <div className='flex w-[32%] items-center gap-x-1 justify-center'>
-                    <p className='mt-0.5 text-md font-semibold'>Voting Participation</p>
+                    <p className='mt-0.5 font-semibold'>Voting Participation</p>
                     <TooltipContainer>
                         <CustomImage
                             src='/static/images/icons/information_icon.webp'
@@ -479,7 +500,7 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
                 </div>
             </div>
 
-            <div className='flex flex-col justify-center gap-y-4 min-w-[1150px]'>
+            <div className='flex flex-col justify-center gap-y-4 min-w-[1150px] '>
                 {showCalculatingEpochs && epochs && epochs.epochs.length > 0 && blocks && blocks.epochs && (
                     <>
                         {getCalculatingEpochDesktop(
@@ -497,7 +518,7 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
                     epochs.epochs.map((epoch: Epoch) => (
                         <div
                             key={epoch.f_epoch}
-                            className='flex gap-x-1 justify-around items-center text-[14px] rounded-md border-2 border-[#c9b6f8] px-2 xl:px-8 py-3'
+                            className='flex gap-x-1 justify-around items-center text-[14px] rounded-md font-medium border-2 border-[#c9b6f8] px-2 xl:px-8 py-3'
                             style={{
                                 backgroundColor: themeMode?.darkMode
                                     ? 'var(--bgFairDarkMode)'
@@ -592,7 +613,7 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
 
                             <div className='mb-2 w-[32%]'>
                                 <ProgressSmoothBar
-                                    title='Attesting/total active'
+                                    title='Attesting/Total active'
                                     color='#343434'
                                     backgroundColor='#f5f5f5'
                                     percent={epoch.f_att_effective_balance_eth / epoch.f_total_effective_balance_eth}
@@ -629,8 +650,9 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
         </div>
     );
 
+    // Containers mobile
     const getPhoneView = () => (
-        <div className='flex flex-col gap-y-4 uppercase px-4 mt-3'>
+        <div className='flex flex-col gap-y-4 px-4 mt-3'>
             {showCalculatingEpochs && epochs && epochs.epochs.length > 0 && blocks && blocks.epochs && (
                 <>
                     {getCalculatingEpochMobile(
@@ -648,7 +670,7 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
                 epochs.epochs.map((epoch: Epoch) => (
                     <div
                         key={epoch.f_epoch}
-                        className='flex flex-col gap-y-4 justify-around items-center text-[12px] rounded-md border-2 border-[#c9b6f8] px-3 py-4'
+                        className='flex flex-col font-medium gap-y-4 justify-around items-center text-[14px] rounded-md border-2 border-[#c9b6f8] px-3 py-4'
                         style={{
                             backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgFairLightMode)',
                             boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardLDark)' : 'var(--boxShadowCardLight)',
@@ -664,7 +686,12 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
                         </div>
                         <div className='flex flex-col gap-x-4 w-full'>
                             <div className='flex gap-x-1 justify-center mb-1'>
-                                <p className='text-xs mt-1 font-medium'>Time</p>
+                                <p
+                                    className='mt-1 font-semibold'
+                                    style={{ color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)' }}
+                                >
+                                    Time
+                                </p>
                                 <TooltipContainer>
                                     <CustomImage
                                         src='/static/images/icons/information_icon.webp'
@@ -696,7 +723,12 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
 
                         <div className='flex flex-col w-full'>
                             <div className='flex gap-x-1 justify-center mb-1'>
-                                <p className='text-xs mt-1 font-medium'>Blocks</p>
+                                <p
+                                    className='mt-1 font-semibold'
+                                    style={{ color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)' }}
+                                >
+                                    Blocks
+                                </p>
                                 <TooltipContainer>
                                     <CustomImage
                                         src='/static/images/icons/information_icon.webp'
@@ -735,7 +767,12 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
 
                         <div className='flex flex-col w-full gap-y-2'>
                             <div className='flex gap-x-1 items-center justify-center mb-1'>
-                                <p className='text-xs mt-1 font-medium'>Attestation Accuracy</p>
+                                <p
+                                    className='mt-1 font-semibold'
+                                    style={{ color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)' }}
+                                >
+                                    Attestation Accuracy
+                                </p>
                                 <TooltipContainer>
                                     <CustomImage
                                         src='/static/images/icons/information_icon.webp'
@@ -808,7 +845,12 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
 
                         <div className='flex flex-col w-full gap-y-2'>
                             <div className='flex gap-x-1 items-center justify-center mb-1'>
-                                <p className='text-xs mt-1 font-medium'>Voting Participation</p>
+                                <p
+                                    className='mt-1 font-semibold'
+                                    style={{ color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)' }}
+                                >
+                                    Voting Participation
+                                </p>
                                 <TooltipContainer>
                                     <CustomImage
                                         src='/static/images/icons/information_icon.webp'
@@ -835,7 +877,7 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
                             </div>
 
                             <ProgressSmoothBar
-                                title='Attesting/total active'
+                                title='Attesting/Total active'
                                 color='#343434'
                                 backgroundColor='#f5f5f5'
                                 percent={epoch.f_num_att_vals / epoch.f_num_vals}

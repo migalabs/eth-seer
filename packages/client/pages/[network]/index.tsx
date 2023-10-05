@@ -75,7 +75,7 @@ export default function Home() {
                 <Layout>
                     <div className='text-center mb-5 mt-14 xl:mt-0'>
                         <h1
-                            className='text-[30px] md:text-[40px] capitalize font-semibold text-black'
+                            className='text-[32px] md:text-[50px] capitalize font-semibold text-black'
                             style={{
                                 color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                             }}
@@ -85,7 +85,7 @@ export default function Home() {
                     </div>
 
                     <div
-                        className='mx-auto py-4 px-6 text-[12px] 2xl:text-[18px] border rounded-md w-11/12 lg:w-10/12 mb-5'
+                        className='mx-auto py-4 px-6 text-[14px] 2xl:text-[18px] border rounded-md w-11/12 lg:w-10/12 mb-5'
                         style={{
                             background: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--bgMainLightMode)',
                             borderColor: themeMode?.darkMode ? 'var(--white)' : 'var(--lightGray)',
@@ -112,7 +112,7 @@ export default function Home() {
                     ></hr>
                     <div className='text-center mt-3'>
                         <h2
-                            className='text-[20px] md:text-[30px] font-semibold capitalize mb-3'
+                            className='text-[26px] md:text-[34px] font-semibold capitalize mb-3'
                             style={{
                                 color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                             }}

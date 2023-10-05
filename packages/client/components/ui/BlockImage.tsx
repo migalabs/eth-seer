@@ -46,7 +46,7 @@ const BlockImage = ({ poolName, proposed = true, width, height, showCheck }: Pro
             {!proposed && (
                 <CustomImage
                     className='absolute z-[var(--zIndexBlockImageMissed)] top-0'
-                    src={`/static/images/blocks/cubes/missed_block.webp`}
+                    src={`/static/images/blocks/cubes/missed_block_${themeMode?.darkMode ? 'dark' : 'light'}.webp`}
                     alt='Missed Logo'
                     width={width}
                     height={width}
