@@ -24,9 +24,9 @@ const Epochs = () => {
                 <link rel='canonical' href='https://ethseer.io/epochs' />
             </Head>
 
-            <div className='my-6 text-center text-white mt-14 xl:mt-0'>
+            <div className='my-6 text-center text-white mt-10 xl:mt-0'>
                 <h1
-                    className='text-[30px] md:text-[40px] capitalize font-semibold text-black'
+                    className='text-[32px] md:text-[50px] capitalize font-semibold text-black'
                     style={{
                         color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                     }}
@@ -35,11 +35,11 @@ const Epochs = () => {
                 </h1>
 
                 <div
-                    className='mx-auto py-4 px-6 border-2 border-[var(--purple)] rounded-md flex w-11/12 lg:w-10/12 mb-5'
+                    className='mx-auto py-4 px-6 border-2 border-[var(--purple)] rounded-md flex w-11/12 lg:w-10/12 mb-5 mt-3'
                     style={{ background: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--bgMainLightMode)' }}
                 >
                     <h2
-                        className='text-xs 2xl:text-[18px] mx-auto leading-5'
+                        className='text-[14px] 2xl:text-[18px] mx-auto leading-5'
                         style={{
                             color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                         }}
