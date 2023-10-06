@@ -261,7 +261,7 @@ const EntityComponent = () => {
             {entityDay && (
                 <div className='mx-auto w-11/12 md:w-10/12'>
                     <div
-                        className='flex p-8 rounded-md gap-x-5  border-2 border-white'
+                        className='flex p-6 md:px-20 md:py-10 rounded-md gap-x-5  border-2 border-white'
                         style={{
                             backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
                             boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
@@ -269,7 +269,7 @@ const EntityComponent = () => {
                         }}
                     >
                         <div
-                            className='flex flex-col gap-y-8 text-[14px] md:text-[16px] font-medium mx-auto md:mx-0 p-6 '
+                            className='flex flex-col gap-y-8 text-[14px] md:text-[16px] font-medium mx-auto md:mx-0'
                             style={{
                                 color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
                             }}
@@ -339,10 +339,6 @@ const EntityComponent = () => {
                                 </div>
                             </div>
                         </div>
-
-                        {/* <div className='hidden md:block'>
-                            <BlockGif poolName={name?.toString() ?? 'others'} width={150} height={150} />
-                        </div> */}
                     </div>
 
                     {/* Time tabs */}
@@ -371,7 +367,7 @@ const EntityComponent = () => {
                     </div>
 
                     <div
-                        className='flex mx-auto p-4 rounded-md  border-2 border-white'
+                        className='flex rounded-md  border-2 border-white '
                         style={{
                             backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
                             boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
@@ -379,7 +375,7 @@ const EntityComponent = () => {
                         }}
                     >
                         <div
-                            className='items-start text-[14px] md:text-[16px] font-medium mx-auto'
+                            className='text-[14px] md:text-[16px] font-medium mx-auto'
                             style={{
                                 color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
                             }}
