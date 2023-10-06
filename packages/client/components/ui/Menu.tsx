@@ -82,7 +82,7 @@ function Menu() {
                         color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                     }}
                 >
-                    <NetworkLink href='/' className='text-[14px] lg:text-[16px]'>
+                    <NetworkLink href='/' className='text-[16px]'>
                         Home
                     </NetworkLink>
                 </li>
