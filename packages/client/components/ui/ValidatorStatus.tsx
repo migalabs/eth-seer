@@ -40,7 +40,7 @@ const ValidatorStatus = ({ status }: Props) => {
 
     return (
         <span
-            className='block capitalize rounded-md font-medium pt-2 pb-1 md:pt-[7px] px-5 md:px-10'
+            className='block capitalize rounded-md w-40 text-center md:w-52 font-medium pt-2 pb-1 md:pt-[7px] px-5 md:px-10'
             style={{ backgroundColor, borderColor: color, color, boxShadow: boxShadow }}
         >
             {text}
