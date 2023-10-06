@@ -96,7 +96,7 @@ const Validators = () => {
             </Head>
 
             <h1
-                className='text-black text-center font-semibold md:text-[40px] text-[30px] mt-14 xl:mt-0 capitalize'
+                className='text-center font-semibold text-[32px] md:text-[50px] mt-10 xl:mt-0 capitalize'
                 style={{
                     color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                 }}
@@ -109,7 +109,7 @@ const Validators = () => {
                 style={{ background: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--bgMainLightMode)' }}
             >
                 <h2
-                    className='text-xs 2xl:text-[18px] mx-auto text-center leading-5'
+                    className='text-[14px] 2xl:text-[18px] mx-auto text-center leading-5'
                     style={{
                         color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                     }}
@@ -123,11 +123,11 @@ const Validators = () => {
 
             <div
                 ref={containerRef}
-                className='flex flex-col my-6 px-2 xl:px-20 overflow-x-scroll overflow-y-hidden scrollbar-thin text-center sm:items-center'
+                className='flex flex-col mb-4 px-6 md:px-0 overflow-x-scroll overflow-y-hidden scrollbar-thin text-center sm:items-center'
                 onMouseMove={handleMouseMove}
             >
                 <div
-                    className='font-semibold flex gap-x-1 justify-around px-2 xl:px-8 py-3 text-xs md:text-[16px] min-w-[700px] max-w-[1100px] w-full'
+                    className='font-semibold flex gap-x-1 justify-around px-2 xl:px-8 py-3 text-[14px] md:text-[16px] min-w-[700px] w-11/12 md:w-10/12'
                     style={{
                         color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
                     }}
@@ -139,7 +139,7 @@ const Validators = () => {
                 </div>
 
                 <div
-                    className='flex flex-col justify-center gap-y-4 rounded-md border-2 border-white py-5 px-2 xl:px-8 min-w-[700px] max-w-[1100px] w-full'
+                    className='flex flex-col justify-center gap-y-4 rounded-md border-2 border-white py-5 px-2 xl:px-8 min-w-[700px] w-11/12 md:w-10/12'
                     style={{
                         backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
                         boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
@@ -149,7 +149,7 @@ const Validators = () => {
                     {validators.map((validator: Validator) => (
                         <div
                             key={validator.f_val_idx}
-                            className='font-semibold flex gap-x-1 justify-around items-center text-xs md:text-[14px]'
+                            className='font-medium flex gap-x-1 justify-around items-center text-[14px] md:text-[16px]'
                             style={{
                                 color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                             }}

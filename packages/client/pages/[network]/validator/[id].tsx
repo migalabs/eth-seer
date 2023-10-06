@@ -188,7 +188,7 @@ const ValidatorComponent = () => {
     const getContentProposedBlocksMobile = () => {
         return (
             <div
-                className='mt-5 flex flex-col gap-y-2 mx-2 px-6 text-xs md:text-[16px] overflow-x-scroll overflow-y-hidden scrollbar-thin rounded-md border-2 py-3'
+                className='flex flex-col gap-y-2 mx-2 px-6 text-[14px] md:text-[16px] overflow-x-scroll overflow-y-hidden scrollbar-thin rounded-md border-2 py-3'
                 style={{
                     backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
                     boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
@@ -196,7 +196,10 @@ const ValidatorComponent = () => {
                 }}
             >
                 {proposedBlocks.map(element => (
-                    <div className='flex flex-row gap-x-6 py-1' key={element.f_proposer_slot}>
+                    <div
+                        className='flex flex-row gap-x-6 py-1 text-[14px] md:text-[16px]'
+                        key={element.f_proposer_slot}
+                    >
                         <div className='flex items-center'>
                             <BlockImage
                                 poolName={element.f_pool_name}
@@ -231,7 +234,7 @@ const ValidatorComponent = () => {
 
                 {proposedBlocks.length === 0 && (
                     <div className='flex justify-center p-2'>
-                        <p className='uppercase'>No proposed blocks</p>
+                        <p className='uppercase text-[14px] md:text-[16px]'>No proposed blocks</p>
                     </div>
                 )}
             </div>
@@ -254,11 +257,11 @@ const ValidatorComponent = () => {
         return (
             <div
                 ref={containerRef}
-                className='flex flex-col px-2 overflow-x-scroll overflow-y-hidden scrollbar-thin'
+                className='flex flex-col overflow-x-scroll overflow-y-hidden scrollbar-thin'
                 onMouseMove={handleMouseMove}
             >
                 <div
-                    className='flex gap-x-4 justify-around px-4 xl:px-8 min-w-[700px] py-3 text-xs md:text-[16px] text-center'
+                    className='flex gap-x-4 justify-around px-4 xl:px-8 min-w-[700px] py-3 text-[14px] font-semibold md:text-[16px] text-center'
                     style={{
                         color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
                     }}
@@ -270,18 +273,15 @@ const ValidatorComponent = () => {
                 </div>
 
                 <div
-                    className='flex flex-col gap-y-2 min-w-[700px] text-xs md:text-[14px] rounded-md border-2 border-white px-4 xl:px-8 py-3'
+                    className='flex flex-col gap-y-2 min-w-[700px] font-medium text-[14px] md:text-[16px] rounded-md border-2 border-white px-4 xl:px-8 py-3'
                     style={{
                         backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
                         boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
-                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
+                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                     }}
                 >
                     {proposedBlocks.map(element => (
-                        <div
-                            className='flex gap-x-4 py-1 uppercase text-center items-center'
-                            key={element.f_proposer_slot}
-                        >
+                        <div className='flex gap-x-4 py-1 text-center items-center' key={element.f_proposer_slot}>
                             <div className='flex items-center justify-center w-[25%]'>
                                 <BlockImage
                                     poolName={element.f_pool_name}
@@ -328,11 +328,11 @@ const ValidatorComponent = () => {
         return (
             <div
                 ref={containerRef}
-                className='flex flex-col px-2 overflow-x-scroll overflow-y-hidden scrollbar-thin'
+                className='flex flex-col overflow-x-scroll overflow-y-hidden scrollbar-thin'
                 onMouseMove={handleMouseMove}
             >
                 <div
-                    className='font-semibold flex gap-x-4 justify-around px-4 xl:px-8 min-w-[700px] text-xs md:text-[16px] py-3 text-center'
+                    className='font-semibold flex gap-x-4 justify-around px-4 xl:px-8 min-w-[700px] text-[14px] md:text-[16px] py-3 text-center'
                     style={{
                         color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
                     }}
@@ -344,7 +344,7 @@ const ValidatorComponent = () => {
                 </div>
 
                 <div
-                    className='flex flex-col gap-y-2 min-w-[700px] text-xs md:text-[14px] rounded-md border-2 border-white px-4 xl:px-8 py-3'
+                    className='flex flex-col gap-y-2 min-w-[700px] text-[14px] md:text-[14px] rounded-md border-2 border-white px-4 xl:px-8 py-3'
                     style={{
                         backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
                         boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
@@ -352,7 +352,13 @@ const ValidatorComponent = () => {
                     }}
                 >
                     {withdrawals.map((element, idx) => (
-                        <div className='flex gap-x-4 py-1 uppercase text-center items-center' key={idx}>
+                        <div
+                            className='flex gap-x-4 py-1 text-center font-medium text-[14px] md:text-[16px] items-center'
+                            key={idx}
+                            style={{
+                                color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
+                            }}
+                        >
                             <div
                                 className='w-[25%] font-medium md:hover:underline underline-offset-4 decoration-2'
                                 style={{ color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)' }}
@@ -377,7 +383,7 @@ const ValidatorComponent = () => {
 
                     {withdrawals.length === 0 && (
                         <div className='flex justify-center p-2'>
-                            <p className='uppercase'>No withdrawals</p>
+                            <p className='uppercase text-[14px] md:text-[16px]'>No withdrawals</p>
                         </div>
                     )}
                 </div>
@@ -390,7 +396,7 @@ const ValidatorComponent = () => {
             <div>
                 {withdrawals.map((element, idx) => (
                     <div
-                        className='flex flex-row justify-center items-center gap-x-6 py-2 mt-5 gap-y-1 mx-2 px-6 text-xs md:text-[16px] overflow-x-scroll overflow-y-hidden scrollbar-thin rounded-md border-2'
+                        className='flex flex-row font-medium justify-center items-center gap-x-6 py-2 mt-5 gap-y-1 mx-2 px-6 text-[14px] md:text-[16px] overflow-x-scroll overflow-y-hidden scrollbar-thin rounded-md border-2'
                         key={idx}
                         style={{
                             backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
@@ -398,7 +404,7 @@ const ValidatorComponent = () => {
                             color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
                         }}
                     >
-                        <div className='flex flex-col items-start gap-y-2'>
+                        <div className='flex flex-col items-start gap-y-1'>
                             <div className='flex flex-row items-center gap-x-8'>
                                 <p className='w-20'>Epoch:</p>
                                 <LinkEpoch epoch={Math.floor(element.f_epoch ?? 0)} />
@@ -425,8 +431,15 @@ const ValidatorComponent = () => {
                 ))}
 
                 {withdrawals.length === 0 && (
-                    <div className='flex justify-center p-2'>
-                        <p className='uppercase text-xs md:text-[16px]'>No withdrawals</p>
+                    <div
+                        className='flex justify-center py-5 px-6 border-white gap-y-2 mx-2 rounded-md border-2'
+                        style={{
+                            backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
+                            boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
+                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
+                        }}
+                    >
+                        <p className='uppercase text-[14px] md:text-[16px]'>No withdrawals</p>
                     </div>
                 )}
             </div>
@@ -437,8 +450,8 @@ const ValidatorComponent = () => {
         return (
             <>
                 <div className='flex flex-col md:flex-row py-4 gap-y-2 md:gap-y-0 md:mb-0'>
-                    <p className='md:w-52 lg:w-80'>Rewards:</p>
-                    <div className='w-72 md:w-80 text-center'>
+                    <p className='md:w-52 lg:w-50'>Rewards:</p>
+                    <div className='w-[300px] text-center'>
                         {validator && (
                             <ProgressSmoothBar
                                 title=''
@@ -459,13 +472,15 @@ const ValidatorComponent = () => {
                 </div>
 
                 <div className='flex flex-col md:flex-row py-4 gap-y-2 md:gap-y-0 md:mb-0'>
-                    <p className='md:w-52 lg:w-80'>Sync committee participation:</p>
-                    <p className='font-normal capitalize'>{validator?.count_missing_source} duties</p>
+                    <p className='md:w-52 lg:w-50'>Sync committee participation:</p>
+                    <p className='font-medium capitalize text-[14px] md:text-[16px]'>
+                        {validator?.count_missing_source} duties
+                    </p>
                 </div>
 
                 {/* Attestation flags */}
                 <div className='flex flex-col lg:flex-row py-4 gap-y-2 md:gap-y-0 md:mb-0'>
-                    <p className='md:w-52 lg:w-80'>Attestation flags:</p>
+                    <p className='md:w-52 lg:w-50'>Attestation flags:</p>
 
                     {validator && (
                         <div className='flex flex-col xl:flex-row items-center gap-x-4 gap-y-2 font-normal text-[12px]'>
@@ -474,7 +489,7 @@ const ValidatorComponent = () => {
                                 color='var(--black)'
                                 backgroundColor='var(--white)'
                                 percent={1 - validator.count_missing_target / validator.count_attestations}
-                                width={250}
+                                width={300}
                                 tooltipColor='orange'
                                 tooltipContent={
                                     <>
@@ -490,7 +505,7 @@ const ValidatorComponent = () => {
                                 color='var(--black)'
                                 backgroundColor='var(--white)'
                                 percent={1 - validator.count_missing_source / validator.count_attestations}
-                                width={250}
+                                width={300}
                                 tooltipColor='blue'
                                 tooltipContent={
                                     <>
@@ -506,7 +521,7 @@ const ValidatorComponent = () => {
                                 color='var(--black)'
                                 backgroundColor='var(--white)'
                                 percent={1 - validator.count_missing_head / validator.count_attestations}
-                                width={250}
+                                width={300}
                                 tooltipColor='purple'
                                 tooltipContent={
                                     <>
@@ -520,7 +535,7 @@ const ValidatorComponent = () => {
                     )}
                 </div>
                 <div className='flex flex-col md:flex-row py-4 gap-y-2 md:gap-y-0 md:mb-0'>
-                    <p className='md:w-52 lg:w-80'>Blocks:</p>
+                    <p className='md:w-52 lg:w-50'>Blocks:</p>
 
                     <div className='flex justify-center'>
                         <div className='flex flex-col md:flex-row gap-x-4 gap-y-2'>
@@ -548,7 +563,7 @@ const ValidatorComponent = () => {
         return (
             <>
                 <div
-                    className='p-8 rounded-md gap-x-5 border-2 border-white mx-auto'
+                    className='rounded-md p-6 md:px-20 md:py-10 gap-x-5 border-2 border-white'
                     style={{
                         backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
                         boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
@@ -556,32 +571,32 @@ const ValidatorComponent = () => {
                     }}
                 >
                     <div
-                        className='flex flex-col gap-y-8 text-xs md:text-[14px] mx-auto'
+                        className='flex flex-col gap-y-8 font-medium text-[14px] md:text-[16px]'
                         style={{
                             color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
                         }}
                     >
-                        <div className='flex flex-row items-center gap-x-5'>
-                            <p className='w-32 sm:w-40 font-medium'>Entity:</p>
+                        <div className='flex flex-row items-center justify-between md:justify-start  gap-x-5'>
+                            <p className='md:w-52 lg:w-50 font-medium'>Entity:</p>
                             <div
-                                className='uppercase font-medium md:hover:underline underline-offset-4 decoration-2'
+                                className='uppercase md:hover:underline underline-offset-4 decoration-2'
                                 style={{ color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)' }}
                             >
                                 <LinkEntity entity={validatorHour?.f_pool_name ?? 'others'} />
                             </div>
                         </div>
 
-                        <div className='flex flex-row items-center gap-x-5'>
-                            <p className='w-32 sm:w-40 font-medium'>Current balance:</p>
+                        <div className='flex flex-row items-center justify-between md:justify-start gap-x-5'>
+                            <p className='md:w-52 lg:w-50 '>Current balance:</p>
                             <p className='leading-3'>{validatorHour?.f_balance_eth} ETH</p>
                         </div>
 
-                        <div className='flex md:flex-row gap-x-5'>
-                            <p className='w-32 sm:w-40 font-medium'>Current status:</p>
+                        <div className='flex md:flex-row gap-x-5 justify-between md:justify-start '>
+                            <p className='md:w-52 lg:w-50 '>Current status:</p>
                             {validatorHour?.f_status && <ValidatorStatus status={validatorHour?.f_status} />}
                         </div>
                         <div className='flex flex-col sm:flex-row gap-x-5'>
-                            <p className='w-32 sm:w-40 font-medium'>Blocks:</p>
+                            <p className='md:w-52 lg:w-50 md:md-0 mb-2'>Blocks:</p>
                             <div className='flex justify-center gap-x-5 '>
                                 <CardContent
                                     content={`Proposed: ${getNumberProposedBlocks(proposedBlocks)}`}
@@ -597,17 +612,14 @@ const ValidatorComponent = () => {
                                 />
                             </div>
                         </div>
-                        <div className='flex flex-row items-center gap-x-5'>
-                            <p className='w-32 sm:w-40 font-medium'>Withdrawals:</p>
+                        <div className='flex flex-row items-center gap-x-5 justify-between md:justify-start '>
+                            <p className='md:w-52 lg:w-50'>Withdrawals:</p>
                             <p className='leading-3'>{getTotalWithdrawals(withdrawals).toLocaleString()} ETH</p>
                         </div>
                     </div>
-                    {/* <div className='hidden md:block'>
-                        <BlockGif poolName={validatorHour?.f_pool_name ?? 'others'} width={125} height={125} />
-                    </div> */}
                 </div>
 
-                <div className='flex flex-col md:flex-row gap-4 mb-5 mt-5'>
+                <div className='flex flex-col md:flex-row gap-4 my-5 '>
                     <TabHeader
                         header='1 Hour'
                         isSelected={tabPageIndexValidatorPerformance === 0}
@@ -632,7 +644,7 @@ const ValidatorComponent = () => {
                 </div>
 
                 <div
-                    className='flex items-center justify-center mx-auto p-8 rounded-md border-2 border-white'
+                    className='flex items-center p-8 justify-center mx-auto rounded-md border-2 border-white'
                     style={{
                         backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
                         boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
@@ -640,13 +652,13 @@ const ValidatorComponent = () => {
                     }}
                 >
                     <div
-                        className='flex flex-col gap-y-2 text-[12px] font-semibold md:text-[14px]'
+                        className='flex flex-col gap-y-2 text-[14px] font-medium md:text-[16px]'
                         style={{
                             color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
                         }}
                     >
                         <div>
-                            <div className=''>
+                            <div>
                                 <p className='text-[18px] uppercase font-medium py-4 text-center'>
                                     Validator performance:
                                 </p>
@@ -702,7 +714,7 @@ const ValidatorComponent = () => {
                 </LinkValidator>
 
                 <h1
-                    className='text-black text-center font-medium md:text-[40px] text-[30px]'
+                    className='text-center font-medium text-[32px] md:text-[50px]'
                     style={{
                         color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                     }}
@@ -725,7 +737,7 @@ const ValidatorComponent = () => {
                 <div className='flex flex-col gap-4 mx-auto w-11/12 md:w-10/12'>
                     <div>{getContentValidator()}</div>
 
-                    <div className='flex flex-col md:flex-row gap-4 mx-2'>
+                    <div className='flex flex-col md:flex-row gap-4'>
                         <TabHeader header='Blocks' isSelected={tabPageIndex === 0} onClick={() => setTabPageIndex(0)} />
                         <TabHeader
                             header='Withdrawals'
