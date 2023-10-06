@@ -79,7 +79,7 @@ const Slots = () => {
             </Head>
 
             <h1
-                className='text-black text-center mt-14 xl:mt-0 font-semibold md:text-[40px] text-[30px] capitalize'
+                className='text-center mt-10 xl:mt-0 font-semibold text-[32px] md:text-[50px] capitalize'
                 style={{
                     color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                 }}
@@ -92,7 +92,7 @@ const Slots = () => {
                 style={{ background: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--bgMainLightMode)' }}
             >
                 <h2
-                    className='text-white text-xs 2xl:text-[18px] text-center leading-5'
+                    className='text-white text-[14px] 2xl:text-[18px] text-center leading-5'
                     style={{
                         color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                     }}

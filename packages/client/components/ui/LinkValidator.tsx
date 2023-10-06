@@ -25,7 +25,7 @@ const LinkValidator = ({ validator, children, mxAuto }: Props) => {
         <NetworkLink
             href={`/validator/${validator}`}
             passHref
-            className={`flex gap-x-1 items-center font-medium md:hover:underline underline-offset-4 decoration-2 w-fit ${
+            className={`flex gap-x-1 items-center font-medium md:hover:underline text-[14px] md:text-[16px] underline-offset-4 decoration-2 w-fit ${
                 mxAuto ? 'mx-auto' : ''
             }`}
             style={baseStyle}
