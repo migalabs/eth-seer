@@ -1,9 +1,9 @@
-import React, { useState, useContext, useEffect } from 'react';
+import { useState, useContext } from 'react';
 
 // Contexts
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
-// Components
+//Components
 import Dropdown from './Dropdown';
 import ThemeModeSwitch from './ThemeModeSwitch';
 import NetworkLink from './NetworkLink';
@@ -47,28 +47,8 @@ function Menu() {
         setIsOpen(!isOpen);
     };
 
-    useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            const menu = document.getElementById('menu');
-            if (menu && !menu.contains(event.target as Node)) {
-                setIsOpen(false);
-            }
-        };
-
-        if (isOpen) {
-            document.addEventListener('click', handleClickOutside);
-        }
-
-        return () => {
-            document.removeEventListener('click', handleClickOutside);
-        };
-    }, [isOpen]);
-
     return (
-        <div
-            id='menu'
-            className='flex flex-col md:flex-row md:justify-between md:items-center items-end py-2 px-4 md:p-0 z-50'
-        >
+        <div className='flex flex-col md:flex-row md:justify-between md:items-center items-end py-2 px-4 md:p-0 z-50'>
             <div className='md:flex lg:items-center'>
                 <button type='button' className='md:hidden absolute top-2 right-2 m-2' onClick={handleMenuToggle}>
                     <svg
@@ -89,9 +69,8 @@ function Menu() {
                 </button>
             </div>
             <ul
-                className={`flex items-end absolute md:relative ${
-                    isOpen ? 'flex-col opacity-100' : 'invisible opacity-0'
-                } md:visible transition-opacity duration-300 md:flex-row md:gap-10 p-6 mt-10 md:mt-0 rounded-md border md:border-none`}
+                className={`flex items-end absolute md:relative ${isOpen ? 'flex-col' : 'invisible'} md:visible
+                }] md:bg-transparent md:flex-row md:gap-10 p-6 mt-10 md:mt-0 rounded-md border md:border-none`}
                 style={{
                     background: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--white)',
                     borderColor: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
@@ -103,7 +82,7 @@ function Menu() {
                         color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                     }}
                 >
-                    <NetworkLink href='/' className='text-[16px]'>
+                    <NetworkLink href='/' className='text-[14px] lg:text-[16px]'>
                         Home
                     </NetworkLink>
                 </li>
