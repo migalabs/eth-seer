@@ -41,6 +41,12 @@ const Dropdown = ({ name, items, useNetworkLink }: Props) => {
         }
     };
 
+    const dropdownStyle = {
+        opacity: isOpen ? 1 : 0,
+        height: isOpen ? 'auto' : 0,
+        transition: 'opacity 0.3s ease, height 0.3s ease',
+    };
+
     return (
         <div
             className='relative py-2 md:p-0'
@@ -52,7 +58,7 @@ const Dropdown = ({ name, items, useNetworkLink }: Props) => {
         >
             <button
                 type='button'
-                className='w-full text-[14px] lg:text-[16px] flex items-center justify-end relative'
+                className='w-full text-[16px] flex items-center justify-end relative'
                 onClick={handleButtonClick}
             >
                 <span>{name}</span>
@@ -74,24 +80,27 @@ const Dropdown = ({ name, items, useNetworkLink }: Props) => {
             </button>
 
             <div
-                className={`relative md:absolute transition-opacity duration-300 ${
-                    isOpen ? 'opacity-100 h-auto' : 'opacity-0 h-0'
-                } absolute right-0`}
+                className={`relative md:absolute`}
+                style={{
+                    ...dropdownStyle,
+                    right: 0,
+                    top: '100%',
+                }}
             >
                 {isOpen && (
                     <div
                         className='p-1 md:p-3 rounded-md md:border'
                         style={{
                             background: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--white)',
-                            borderColor: themeMode?.darkMode ? 'var(--white)' : 'var(----darkGray)',
+                            borderColor: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
                         }}
                     >
                         {items.map(item => (
                             <NetworkLink
                                 key={item.name}
                                 href={item.route}
-                                className={`block px-4 py-2 my-1 text-[16px] rounded-md bg-[#a19f9f] md:bg-transparent md:hover:bg-[#c9b6f8] transition md:font-semibold md:hover:text-${
-                                    themeMode?.darkMode ? 'black' : 'white'
+                                className={`block px-4 py-2 my-1 text-[16px] rounded-md bg-[#a19f9f50] md:bg-transparent md:font-semibold  hover:text-black transition-colors duration-300 md:hover:bg-[#c9b6f8] ${
+                                    themeMode?.darkMode ? 'md:hover:text-black' : 'md:hover:text-white'
                                 }`}
                             >
                                 {item.name}
