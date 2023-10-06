@@ -23,6 +23,13 @@ const NotFoundPage = () => {
             </Head>
             <div className='flex flex-col h-screen justify-between'>
                 <Header></Header>
+                <CustomImage
+                    src={`/static/images/error/error_${themeMode?.darkMode ? 'dark' : 'light'}.webp`}
+                    alt='404 illustration for error page'
+                    width={300}
+                    height={300}
+                    className='sm:block 2xl:w-1/4 -bottom-24 hidden fixed -z-10'
+                />
                 <div
                     className='flex flex-col items-center w-9/12 mx-auto rounded-md py-5'
                     style={{
@@ -47,7 +54,7 @@ const NotFoundPage = () => {
                         className='p-4 my-4 rounded-md bg-[#c9b6f8] md:hover:bg-white transition'
                     >
                         <span
-                            className='md:text-2xl text-lg'
+                            className='md:text-2xl text-lg font-medium'
                             style={{
                                 color: themeMode?.darkMode ? 'var(--black)' : 'var(--darkGray)',
                             }}
