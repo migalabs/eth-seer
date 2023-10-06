@@ -73,7 +73,7 @@ const SummaryOverview = () => {
             {summary && lastValidator !== 0 && (
                 <div className='mb-5'>
                     <div
-                        className='grid mx-auto grid-row-5 xl:flex xl:flex-wrap  gap-1 xl:gap-10 text-center text-[14px] rounded-md py-4 px-8 xl:px-8 xl:py-3 w-11/12 md:w-9/12 border'
+                        className='grid mx-auto grid-row-5 xl:flex xl:flex-wrap justify-around items-center gap-1 xl:gap-10 text-center text-[14px] rounded-md py-4 px-8 xl:px-8 xl:py-3 w-11/12 md:w-9/12 border'
                         style={{
                             color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                             background: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--bgMainLightMode)',
