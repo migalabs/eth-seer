@@ -52,7 +52,7 @@ const Dropdown = ({ name, items, useNetworkLink }: Props) => {
         >
             <button
                 type='button'
-                className='w-full text-[14px] lg:text-[16px] flex items-center justify-end relative'
+                className='w-full text-[16px] flex items-center justify-end relative'
                 onClick={handleButtonClick}
             >
                 <span>{name}</span>
@@ -90,7 +90,7 @@ const Dropdown = ({ name, items, useNetworkLink }: Props) => {
                             <NetworkLink
                                 key={item.name}
                                 href={item.route}
-                                className={`block px-4 py-2 my-1 text-[16px] rounded-md bg-[#a19f9f] md:bg-transparent md:hover:bg-[#c9b6f8] transition md:font-semibold md:hover:text-${
+                                className={`block px-4 py-2 my-1 text-[16px] rounded-md bg-[#a19f9f50] md:bg-transparent md:hover:bg-[#c9b6f8] transition md:font-semibold md:hover:text-${
                                     themeMode?.darkMode ? 'black' : 'white'
                                 }`}
                             >
