@@ -504,7 +504,7 @@ const Slot = () => {
                 </LinkSlot>
 
                 <h1
-                    className='text-center font-medium text-[32px] md:text-[50px]'
+                    className='text-center font-semibold text-[32px] md:text-[50px]'
                     style={{
                         color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                     }}

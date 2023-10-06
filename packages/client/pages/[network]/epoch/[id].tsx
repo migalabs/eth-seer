@@ -278,7 +278,7 @@ const EpochComponent = () => {
                 <meta name='robots' property='noindex' />
             </Head>
 
-            <div className='flex gap-x-5 md:gap-x-10 justify-center items-center mb-5 mt-14 xl:mt-0'>
+            <div className='flex gap-x-3 justify-center items-center mb-5 mt-14 xl:mt-0'>
                 <LinkEpoch epoch={Number(id) - 1}>
                     <Arrow direction='left' />
                 </LinkEpoch>
