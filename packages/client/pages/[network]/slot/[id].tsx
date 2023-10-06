@@ -10,7 +10,6 @@ import ThemeModeContext from '../../../contexts/theme-mode/ThemeModeContext';
 
 // Components
 import Layout from '../../../components/layouts/Layout';
-import BlockGif from '../../../components/ui/BlockGif';
 import TabHeader from '../../../components/ui/TabHeader';
 import Loader from '../../../components/ui/Loader';
 import LinkValidator from '../../../components/ui/LinkValidator';
@@ -38,7 +37,7 @@ const Card = ({ title, text, content }: CardProps) => {
         <>
             <div className='flex flex-row items-center justify-between gap-5 md:gap-20'>
                 <p
-                    className='text-xs md:text-[14px] font-semibold'
+                    className='text-[14px] md:text-[16px] font-medium'
                     style={{
                         color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                     }}
@@ -48,7 +47,7 @@ const Card = ({ title, text, content }: CardProps) => {
                 <div className='flex gap-2 items-center'>
                     {text && (
                         <p
-                            className='uppercase text-xs md:text-[14px] font-semibold'
+                            className='uppercase text-[14px] md:text-[16px] font-medium'
                             style={{
                                 color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                             }}
@@ -305,7 +304,7 @@ const Slot = () => {
                     color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                 }}
             >
-                <div className='flex flex-col mx-auto gap-y-4 md:gap-y-8'>
+                <div className='flex flex-col mx-auto gap-y-5 md:gap-y-8 '>
                     <Card title='Epoch' content={<LinkEpoch epoch={block?.f_epoch} />} />
                     <Card title='Slot' text={block?.f_slot?.toLocaleString()} />
 
@@ -321,11 +320,17 @@ const Slot = () => {
                             title='Status'
                             content={
                                 block?.f_proposed ? (
-                                    <span className='bg-[#53945a] text-white px-6 py-2 rounded-md capitalize font-semibold'>
+                                    <span
+                                        className='bg-[#53945a] text-white md:w-52 w-40 px-6 text-center py-2 text-[14px] md:text-[16px] rounded-md capitalize font-medium'
+                                        style={{ boxShadow: 'var(--boxShadowGreen)' }}
+                                    >
                                         Proposed
                                     </span>
                                 ) : (
-                                    <span className='bg-[#e86666] text-white px-6 py-2 rounded-md capitalize font-semibold'>
+                                    <span
+                                        className='bg-[#e86666] text-white md:w-52 w-40 px-6 py-2 text-center text-[14px] md:text-[16px] rounded-md capitalize font-medium'
+                                        style={{ boxShadow: 'var(--boxShadowRed)' }}
+                                    >
                                         Missed
                                     </span>
                                 )
@@ -436,7 +441,7 @@ const Slot = () => {
                 onMouseMove={handleMouseMove}
             >
                 <div
-                    className='flex gap-x-4 justify-around px-4 xl:px-8 min-w-[470px] font-medium py-3 text-sm text-[12px] md:text-[14px] text-center'
+                    className='flex gap-x-4 justify-around px-4 xl:px-8 min-w-[470px] font-semibold py-3 text-[14px] md:text-[16px] text-center'
                     style={{
                         color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
                     }}
@@ -452,7 +457,7 @@ const Slot = () => {
                     </div>
                 ) : (
                     <div
-                        className='font-semibold flex flex-col gap-y-2 min-w-[470px] text-[12px] sm:text-[14px] rounded-md border-2 border-white px-4 xl:px-8 py-3'
+                        className='font-medium flex flex-col gap-y-2 min-w-[470px] text-[14px] md:text-[16px] rounded-md border-2 border-white px-4 xl:px-8 py-3'
                         style={{
                             backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
                             boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
@@ -478,7 +483,7 @@ const Slot = () => {
 
                         {withdrawals.length == 0 && (
                             <div className='flex justify-center p-2'>
-                                <p className='uppercase'>No withdrawals</p>
+                                <p className='uppercase text-[14px] md:text-[16px]'>No withdrawals</p>
                             </div>
                         )}
                     </div>
@@ -499,7 +504,7 @@ const Slot = () => {
                 </LinkSlot>
 
                 <h1
-                    className='text-black text-center font-medium md:text-[40px] text-[30px]'
+                    className='text-center font-medium text-[32px] md:text-[50px]'
                     style={{
                         color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                     }}
