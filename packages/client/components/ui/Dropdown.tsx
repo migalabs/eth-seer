@@ -1,8 +1,10 @@
-import React, { useState, useContext } from 'react';
-import Link from 'next/link';
+import React, { useState, useContext, Fragment } from 'react';
 
 // Contexts
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
+
+//Components
+import NetworkLink from './NetworkLink';
 
 // Types
 type Item = {
@@ -13,9 +15,10 @@ type Item = {
 type Props = {
     name: string;
     items: Item[];
+    useNetworkLink?: boolean;
 };
 
-const Dropdown = ({ name, items }: Props) => {
+const Dropdown = ({ name, items, useNetworkLink }: Props) => {
     const [isOpen, setIsOpen] = useState(false);
 
     const { themeMode } = useContext(ThemeModeContext) ?? {};
@@ -49,7 +52,7 @@ const Dropdown = ({ name, items }: Props) => {
         >
             <button
                 type='button'
-                className='w-full text-[14px] lg:text-[16px] flex items-center justify-end relative'
+                className='w-full text-[16px] flex items-center justify-end relative'
                 onClick={handleButtonClick}
             >
                 <span>{name}</span>
@@ -84,15 +87,15 @@ const Dropdown = ({ name, items }: Props) => {
                         }}
                     >
                         {items.map(item => (
-                            <Link
+                            <NetworkLink
                                 key={item.name}
                                 href={item.route}
-                                className={`block px-4 py-2 my-1 text-[16px] rounded-md bg-[#a19f9f] md:bg-transparent md:hover:bg-[#c9b6f8] transition md:font-semibold md:hover:text-${
+                                className={`block px-4 py-2 my-1 text-[16px] rounded-md bg-[#a19f9f50] md:bg-transparent md:hover:bg-[#c9b6f8] transition md:font-semibold md:hover:text-${
                                     themeMode?.darkMode ? 'black' : 'white'
                                 }`}
                             >
                                 {item.name}
-                            </Link>
+                            </NetworkLink>
                         ))}
                     </div>
                 )}

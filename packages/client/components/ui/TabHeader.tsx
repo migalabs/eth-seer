@@ -50,7 +50,7 @@ const TabHeader = ({ header, isSelected, onClick }: Props) => {
             onMouseEnter={handleMouseEnter}
             onMouseLeave={() => setIsHovered(false)}
         >
-            <p className='text-center text-xs font-medium text-[16px]'>{header}</p>
+            <p className='text-center text-[14px] font-medium md:text-[16px]'>{header}</p>
         </div>
     );
 };

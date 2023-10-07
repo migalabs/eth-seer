@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
-import Link from 'next/link';
 
 // Contexts
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
 // Components
 import LinkIcon from './LinkIcon';
+import NetworkLink from './NetworkLink';
 
 // Types
 type Props = {
@@ -23,15 +23,9 @@ const LinkSlot = ({ slot, children, mxAuto }: Props) => {
     };
 
     return (
-        <Link
-            href={{
-                pathname: '/slots/[id]',
-                query: {
-                    id: slot,
-                },
-            }}
+        <NetworkLink
+            href={`/slot/${slot}`}
             passHref
-            as={`/slots/${slot}`}
             className={`flex gap-x-1 items-center font-medium md:hover:underline underline-offset-4 decoration-2 w-fit ${
                 mxAuto ? 'mx-auto' : ''
             }`}
@@ -43,7 +37,7 @@ const LinkSlot = ({ slot, children, mxAuto }: Props) => {
                     <LinkIcon />
                 </>
             )}
-        </Link>
+        </NetworkLink>
     );
 };
 

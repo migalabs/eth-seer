@@ -15,29 +15,36 @@ type Props = {
 
 const Screen = styled.div<Props>`
     display: ${props => (props.consent ? 'none' : 'block')};
-    position: absolute;
-    top: 70%;
-    right: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 40;
+    z-index: 90;
 `;
 
 const Container = styled.div<Props>`
     display: ${props => (props.consent ? 'none' : 'block')};
-    position: absolute;
-    text-align: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     background-color: white;
     border-radius: 0.5rem;
     border: 2px #c9b6f8 solid;
-    z-index: var(--zIndexConsent);
+    width: 700px;
+    padding: 20px;
 
     .buttons-container {
         display: flex;
-        flex-direction: column;
+        flex-direction: row nowrap;
         justify-content: center;
         align-items: center;
         row-gap: 5px;
         margin: 5px 0;
+        column-gap: 20px;
+    }
+
+    @media (max-width: 768px) {
+        width: 400px;
+        .buttons-container {
+            flex-direction: column;
+        }
     }
 
     button {
@@ -46,32 +53,34 @@ const Container = styled.div<Props>`
         background-color: var(--purple);
         color: black;
         border-radius: 0.25rem;
+        font-size: 16px;
 
         &:hover {
             background-color: var(--lightGray);
             color: white;
             transition: all 0.2s ease-in-out;
         }
-    }
 
-    @media (min-width: 768px) {
-        width: 700px;
-        padding: 10px 20px;
-
-        .text {
-            font-size: 16px;
-        }
-
-        .buttons-container {
-            flex-direction: row;
-            justify-content: center;
-            column-gap: 20px;
-        }
-
-        button {
-            font-size: 14px;
+        @media (max-width: 768px) {
+            &:hover {
+                background-color: var(--purple);
+                color: black;
+                transition: none;
+            }
+            width: 200px;
         }
     }
+`;
+
+const Overlay = styled.div<Props>`
+    display: ${props => (props.consent ? 'none' : 'block')};
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.5);
+    z-index: 80;
 `;
 
 const Consent = () => {
@@ -101,36 +110,39 @@ const Consent = () => {
     }
 
     return (
-        <Screen consent={consent}>
-            <Container consent={consent}>
-                <div>
-                    <div className='flex flex-col items-start'>
-                        <div className='flex flex-row justify-start items-center mb-2 gap-2'>
-                            <CustomImage
-                                src='/static/images/cookies/cookie.webp'
-                                alt='Cookie'
-                                width={40}
-                                height={40}
-                                className='mx-auto'
-                            />
-                            <p className='capitalize font-medium text-[14px] md:text-[20px]'>cookies</p>
+        <>
+            <Overlay consent={consent} />
+            <Screen consent={consent}>
+                <Container consent={consent}>
+                    <div className=''>
+                        <div className='flex flex-col items-center md:items-start'>
+                            <div className='flex flex-row justify-start items-center mb-2 gap-2'>
+                                <CustomImage
+                                    src='/static/images/cookies/cookie.webp'
+                                    alt='Cookie'
+                                    width={40}
+                                    height={40}
+                                    className='mx-auto'
+                                />
+                                <p className='capitalize font-medium text-[18px] md:text-[20px]'>cookies</p>
+                            </div>
+                            <p
+                                className={`md:text-left text-[14px] md:text-[16px] text-center text ${
+                                    generalVisisble ? 'flex' : 'hidden'
+                                }`}
+                            >
+                                We use cookies to know how users interact with our website to deliver a better user
+                                experience.
+                            </p>
                         </div>
-                        <p
-                            className={`text-left text-[12px] md:text-[16px] text ${
-                                generalVisisble ? 'flex' : 'hidden'
-                            }`}
-                        >
-                            We use cookies to know how users interact with our website to deliver a better user
-                            experience.
-                        </p>
+                        <div className='buttons-container'>
+                            <button onClick={acceptCookie}>Only necessary</button>
+                            <button onClick={acceptCookie}>Accept all cookies</button>
+                        </div>
                     </div>
-                    <div className='buttons-container'>
-                        <button onClick={acceptCookie}>Only necessary</button>
-                        <button onClick={acceptCookie}>Accept all cookies</button>
-                    </div>
-                </div>
-            </Container>
-        </Screen>
+                </Container>
+            </Screen>
+        </>
     );
 };
 

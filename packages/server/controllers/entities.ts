@@ -1,12 +1,14 @@
 import { Request, Response } from 'express';
-import { pgPool } from '../config/db';
+import { pgPools } from '../config/db';
 
 export const getEntity = async (req: Request, res: Response) => {
 
     try {
 
         const { name } = req.params;
-        const { numberEpochs = 225 } = req.query;
+        const { network, numberEpochs = 225 } = req.query;
+
+        const pgPool = pgPools[network as string];
 
         const [ entityStats, blocksProposed, entityPerformance  ] = 
             await Promise.all([
@@ -51,7 +53,7 @@ export const getEntity = async (req: Request, res: Response) => {
                         FROM t_pool_summary
                         WHERE LOWER(f_pool_name) = '${name.toLowerCase()}'
                         ORDER BY f_epoch DESC
-                        LIMIT ${numberEpochs}
+                        LIMIT ${Number(numberEpochs)}
                     ) AS subquery;
                 `),
             ]);

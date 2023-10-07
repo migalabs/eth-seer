@@ -9,7 +9,7 @@ export interface IBlocks {
 
 export interface BlocksContextType {
     blocks: IBlocks;
-    startEventSource: () => boolean;
+    startEventSource: (network: string) => boolean;
     closeEventSource: () => void;
-    getBlocks: (page: number, limit?: number, onlyLastEpoch?: boolean) => void;
+    getBlocks: (network: string, page: number, limit?: number, onlyLastEpoch?: boolean) => void;
 }
