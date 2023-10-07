@@ -16,6 +16,7 @@ import TooltipResponsive from '../ui/TooltipResponsive';
 import ViewMoreButton from '../ui/ViewMoreButton';
 import LinkValidator from '../ui/LinkValidator';
 import LinkSlot from '../ui/LinkSlot';
+import LinkIcon from '../ui/LinkIcon';
 
 // Types
 import { Block } from '../../types';
@@ -26,7 +27,7 @@ import { FIRST_BLOCK } from '../../constants';
 const Graffitis = () => {
     // Router
     const router = useRouter();
-    const { graffiti } = router.query;
+    const { network, graffiti } = router.query;
 
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
@@ -45,12 +46,12 @@ const Graffitis = () => {
     useEffect(() => {
         setDesktopView(window !== undefined && window.innerWidth > 768);
 
-        if (graffiti && blocks.length === 0) {
+        if (network && graffiti && blocks.length === 0) {
             getGraffities(0);
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [graffiti]);
+    }, [network, graffiti]);
 
     const getGraffities = async (page: number, limit: number = 10) => {
         try {
@@ -58,6 +59,7 @@ const Graffitis = () => {
 
             const response = await axiosClient.get(`/api/slots/graffiti/${graffiti}`, {
                 params: {
+                    network,
                     limit,
                     page,
                 },
@@ -103,7 +105,7 @@ const Graffitis = () => {
             onMouseMove={handleMouseMove}
         >
             <div
-                className='flex gap-x-1 justify-around xl:px-8 py-3 font-medium md:text-[16px] text-[12px]'
+                className='flex gap-x-1 justify-around xl:px-8 py-3 font-medium md:text-[16px] text-[14px]'
                 style={{
                     color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
                 }}
@@ -200,7 +202,7 @@ const Graffitis = () => {
                     blocks.map((block: Block, idx: number) => (
                         <div
                             key={block.f_slot}
-                            className='flex gap-x-1 justify-around items-center text-xs md:text-[14px] border-2 border-white rounded-md px-2 xl:px-8 py-9'
+                            className='flex gap-x-1 justify-around items-center text-[14px] md:text-[16px] border-2 border-white rounded-md px-2 xl:px-8 py-9'
                             style={{
                                 backgroundColor: themeMode?.darkMode
                                     ? 'var(--bgFairDarkMode)'
@@ -248,28 +250,31 @@ const Graffitis = () => {
     );
 
     const getPhoneView = () => (
-        <div className='flex flex-col gap-y-4 uppercase px-4 mt-3'>
+        <div className='flex flex-col gap-y-4 px-4 mt-3'>
             {blocks &&
                 blocks.map((block: Block) => (
                     <div
                         key={block.f_slot}
-                        className='flex flex-col gap-y-4 justify-around items-center md:text-[16px] text-[12px] rounded-md px-3 py-7'
+                        className='flex flex-col gap-y-4 justify-around items-center md:text-[16px] font-medium text-[14px] rounded-md px-3 py-7'
                         style={{
                             backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgFairLightMode)',
                             boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
                             color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                         }}
                     >
-                        <div className='flex gap-x-1 justify-center'>
+                        <div className='flex gap-x-1 justify-center cursor-pointer'>
                             <LinkSlot slot={block.f_slot}>
-                                <p className='font-semibold text-sm mt-0.5'>Slot {block.f_slot?.toLocaleString()}</p>
+                                <p className='font-semibold text-[16px] mt-0.5'>
+                                    Slot {block.f_slot?.toLocaleString()}
+                                </p>
+                                <LinkIcon />
                             </LinkSlot>
                         </div>
 
                         <div className='flex flex-col gap-x-4 w-full '>
                             <div className='flex gap-x-1 justify-center mb-1'>
                                 <p
-                                    className='text-xs mt-1 font-semibold'
+                                    className='text-[14px] mt-1 font-semibold'
                                     style={{
                                         color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
                                     }}
@@ -309,7 +314,7 @@ const Graffitis = () => {
                         <div className='flex flex-col gap-x-4 w-full'>
                             <div className='flex gap-x-1 justify-center mb-1'>
                                 <p
-                                    className='text-xs mt-1 font-semibold'
+                                    className='text-[14px] mt-1 font-semibold'
                                     style={{
                                         color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
                                     }}
@@ -341,7 +346,7 @@ const Graffitis = () => {
                         <div className='flex flex-col gap-x-4 w-full'>
                             <div className='flex gap-x-1 justify-center mb-1'>
                                 <p
-                                    className='text-xs mt-1 font-semibold'
+                                    className='text-[14px] mt-1 font-semibold'
                                     style={{
                                         color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
                                     }}
@@ -378,19 +383,19 @@ const Graffitis = () => {
                 </div>
             )}
 
-            {animation && <Animation text={`Graffiti "${graffiti}" is not found`} />}
+            {animation && <Animation text={`"${graffiti}" not found`} />}
         </div>
     );
 
     return (
         <div className='text-center text-white'>
             <h1
-                className='text-black text-center mt-14 xl:mt-0 font-semibold md:text-[40px] text-[30px] capitalize'
+                className='text-center mt-14 xl:mt-0 font-semibold text-[32px] md:text-[50px] capitalize'
                 style={{
                     color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                 }}
             >
-                Graffiti &quot;{graffiti}&quot; Search Result
+                Graffiti Search Result
             </h1>
 
             <div className='mt-6'>
@@ -398,7 +403,7 @@ const Graffitis = () => {
 
                 {blocks.length !== 0 && (desktopView ? getDesktopView() : getPhoneView())}
 
-                {animation && <Animation text={`Graffiti "${graffiti}" is not found`} />}
+                {animation && <Animation text={`"${graffiti}" not found`} />}
             </div>
         </div>
     );

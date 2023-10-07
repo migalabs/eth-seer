@@ -5,7 +5,7 @@ import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
 // Components
 import BlockImage from './BlockImage';
-import Link from 'next/link';
+import NetworkLink from './NetworkLink';
 
 type Props = {
     index: number;
@@ -16,24 +16,11 @@ const EntityCard = ({ index, pool }: Props) => {
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
 
-    const spanRef = useRef<HTMLSpanElement>(null);
-
-    // useEffect(() => {
-    //     if (spanRef.current) {
-    //         const spanElement = spanRef.current;
-    //         //   const parentElement = spanElement.parentElement as HTMLElement;
-    //         const computedFontSize = parseFloat(getComputedStyle(spanElement).width) / pool.length;
-    //         const fontSize = Math.min(12, computedFontSize);
-    //         spanElement.style.fontSize = `${fontSize}px`;
-    //     }
-    // }, [pool]);
-
     return (
-        <Link href={`/entities/${pool.toLocaleLowerCase()}`}>
+        <NetworkLink href={`/entities/${pool.toLocaleLowerCase()}`}>
             <div
-                className='flex md:flex-row flex-col bg-[var(--bgFairLightMode)] md:hover:bg-[var(--white)] transition md:justify-start items-center py-4 px-2 border-2 gap-2 rounded-md'
+                className='flex md:flex-row flex-col h-[150px] md:h-[100px] bg-[var(--bgFairLightMode)] md:hover:bg-[var(--white)] transition md:justify-start items-center justify-center py-4 px-2 border-2 gap-2 rounded-md'
                 style={{
-                    // backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
                     boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
                     color: themeMode?.darkMode ? 'var(--black)' : 'var(--black)',
                     borderColor: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--white)',
@@ -44,13 +31,19 @@ const EntityCard = ({ index, pool }: Props) => {
                 </div>
 
                 <div className='flex flex-col items-center md:items-start'>
-                    <span ref={spanRef} className='text-[14px] md:text-[16px] font-semibold'>
+                    <span
+                        className='text-[14px] md:text-[16px] font-semibold text-center md:text-start'
+                        style={{
+                            wordWrap: 'break-word',
+                            maxWidth: '150px',
+                        }}
+                    >
                         {pool}
                     </span>
-                    <span className='font-light text-[18px] md:text-[20px]'>{String(index).padStart(3, '0')}</span>
+                    <span className='font-light text-[14px] md:text-[16px]'>{String(index).padStart(3, '0')}</span>
                 </div>
             </div>
-        </Link>
+        </NetworkLink>
     );
 };
 
