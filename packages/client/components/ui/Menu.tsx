@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 
 // Contexts
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
@@ -9,42 +9,63 @@ import ThemeModeSwitch from './ThemeModeSwitch';
 import NetworkLink from './NetworkLink';
 
 // Constants
-import { NETWORKS } from '../../constants';
+import axiosClient from '../../config/axios';
 
-const dropDownLists = {
-    Explore: [
-        {
-            name: 'Epochs',
-            route: '/epochs',
-        },
-        {
-            name: 'Slots',
-            route: '/slots',
-        },
-        {
-            name: 'Entities',
-            route: '/entities',
-        },
-        {
-            name: 'Validators',
-            route: '/validators',
-        },
-    ],
-    Networks: NETWORKS.map(network => ({
-        name: network.charAt(0).toUpperCase() + network.slice(1),
-        route: `/${network}`,
-    })),
-};
-
-function Menu() {
+const Menu = () => {
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
-
-    // States
     const [isOpen, setIsOpen] = useState(false);
+    const [networks, setNetworks] = useState([]);
+
+    useEffect(() => {
+        if (!networks || networks.length === 0) {
+            getNetworks();
+        }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const handleMenuToggle = () => {
         setIsOpen(!isOpen);
+    };
+
+    const getNetworks = async () => {
+        try {
+            const response = await axiosClient.get('/api/networks');
+            setNetworks(response.data.networks);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const dropDownLists = {
+        Explore: [
+            {
+                name: 'Epochs',
+                route: '/epochs',
+            },
+            {
+                name: 'Slots',
+                route: '/slots',
+            },
+            {
+                name: 'Entities',
+                route: '/entities',
+            },
+            {
+                name: 'Validators',
+                route: '/validators',
+            },
+        ],
+        Networks:
+            networks.length > 0
+                ? networks.map((network: string) => {
+                      return {
+                          name: network.charAt(0).toUpperCase() + network.slice(1),
+                          route: `/${network}`,
+                      };
+                  })
+                : [],
     };
 
     return (
@@ -98,6 +119,6 @@ function Menu() {
             </div>
         </div>
     );
-}
+};
 
 export default Menu;

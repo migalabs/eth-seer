@@ -79,3 +79,31 @@ export const getEntity = async (req: Request, res: Response) => {
         });
     }
 };
+
+
+export const getEntities = async (req: Request, res: Response) => {
+
+    try {
+
+        const { network } = req.query;
+
+        const pgPool = pgPools[network as string];
+
+        const entities  = 
+            await pgPool.query(`
+                    SELECT DISTINCT f_pool_name
+                    FROM t_eth2_pubkeys;
+                `)
+        
+        res.json({
+            entities
+        });
+        
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            msg: 'An error occurred on the server'
+        });
+    }
+};

@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { query } from 'express-validator';
 
 import {
+    getEntities,
     getEntity,
 } from '../controllers/entities';
 
@@ -15,5 +16,11 @@ router.get('/:name', [
     query('network').custom(existsNetwork),
     checkFields,
 ], getEntity);
+
+router.get('/', [
+    query('network').not().isEmpty(),
+    query('network').custom(existsNetwork),
+    checkFields,
+], getEntities);
 
 export default router;
