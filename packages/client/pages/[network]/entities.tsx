@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Head from 'next/head';
 
 // Contexts
@@ -10,10 +10,46 @@ import EntityCard from '../../components/ui/EntitiyCard';
 
 // Constants
 import { POOLS_EXTENDED } from '../../constants';
+import { useRouter } from 'next/router';
+import axiosClient from '../../config/axios';
+import Loader from '../../components/ui/Loader';
 
 const Entities = () => {
+    // Router
+    const router = useRouter();
+    const { network } = router.query;
+
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
+
+    // States
+    const [entities, setEntities] = useState<string[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        if (network && entities.length === 0) {
+            getEntities();
+        }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [network]);
+
+    const getEntities = async () => {
+        try {
+            setLoading(true);
+            const response = await axiosClient.get(`/api/entities`, {
+                params: {
+                    network,
+                },
+            });
+            const poolNames = response.data.entities.rows.map((pool: any) => pool.f_pool_name);
+            setEntities(poolNames);
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <Layout hideMetaDescription>
@@ -52,11 +88,14 @@ const Entities = () => {
                     deposit address analysis, among others. EthSeer also monitors their performance.
                 </h2>
             </div>
-
+            {loading && (
+                <div className='my-6 justify-center'>
+                    <Loader />
+                </div>
+            )}
             <div className='grid grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 w-11/12 md:w-10/12 gap-3 mx-auto mt-4'>
-                {POOLS_EXTENDED.map((pool, index) => (
-                    <EntityCard key={pool} index={index + 1} pool={pool} />
-                ))}
+                {entities.length > 0 &&
+                    entities.map((pool, index) => <EntityCard key={pool} index={index + 1} pool={pool} />)}
             </div>
         </Layout>
     );

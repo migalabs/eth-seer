@@ -15,6 +15,8 @@ import NetworkLink from './NetworkLink';
 
 // Constants
 import { POOLS_EXTENDED } from '../../constants';
+import { useRouter } from 'next/router';
+import axiosClient from '../../config/axios';
 
 // Styled
 type PropsInput = {
@@ -48,6 +50,9 @@ type SearchEngineItem = {
 };
 
 const SearchEngine = () => {
+    const router = useRouter();
+    const { network } = router.query;
+
     const assetPrefix = process.env.NEXT_PUBLIC_ASSET_PREFIX ?? '';
 
     // Theme Mode Context
@@ -69,6 +74,21 @@ const SearchEngine = () => {
     const [search, setSearch] = useState('');
     const [searchResults, setSearchResults] = useState<SearchEngineItem[]>([]);
     const [showResults, setShowResults] = useState(true);
+    const [entities, setEntities] = useState<string[]>([]);
+
+    const getEntities = async () => {
+        try {
+            const response = await axiosClient.get(`/api/entities`, {
+                params: {
+                    network,
+                },
+            });
+            const poolNames = response.data.entities.rows.map((pool: any) => pool.f_pool_name);
+            setEntities(poolNames);
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     const loadResults = (searchContent: string) => {
         if (searchContent.length === 0) {
@@ -121,25 +141,17 @@ const SearchEngine = () => {
         // It can be an entity
         const expression = new RegExp(searchContent, 'i');
 
-        if (assetPrefix === '/goerli') {
-            items.push(
-                ...['OTHERS']
-                    .filter(pool => pool.search(expression) !== -1)
-                    .map(pool => ({
-                        label: `Entity: ${pool}`,
-                        link: `/entity/${pool.toLowerCase()}`,
-                    }))
-            );
-        } else {
-            items.push(
-                ...POOLS_EXTENDED.sort((a, b) => (a > b ? 1 : -1))
-                    .filter(pool => pool.search(expression) !== -1)
-                    .map(pool => ({
-                        label: `Entity: ${pool}`,
-                        link: `/entity/${pool.toLowerCase()}`,
-                    }))
-            );
-        }
+        getEntities();
+
+        items.push(
+            ...entities
+                .sort((a, b) => (a > b ? 1 : -1))
+                .filter(pool => pool.search(expression) !== -1)
+                .map(pool => ({
+                    label: `Entity: ${pool}`,
+                    link: `/entity/${pool.toLowerCase()}`,
+                }))
+        );
 
         setSearchResults(items);
     };

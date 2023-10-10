@@ -81,7 +81,8 @@ const SummaryOverview = () => {
                         }}
                     >
                         <p>
-                            <b className='font-semibold'>Network:</b> {assetPrefix !== '/goerli' ? 'Mainnet' : 'Goerli'}
+                            <b className='font-semibold'>Network:</b>{' '}
+                            {(network as string).charAt(0).toUpperCase() + (network as string).slice(1)}
                         </p>
                         <span className='lg:w-[1px] lg:h-6 lg:bg-gray-400 '></span>
                         <p className=''>
