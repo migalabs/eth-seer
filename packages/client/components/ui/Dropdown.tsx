@@ -5,6 +5,7 @@ import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
 //Components
 import NetworkLink from './NetworkLink';
+import Link from 'next/link';
 
 // Types
 type Item = {
@@ -86,17 +87,30 @@ const Dropdown = ({ name, items, useNetworkLink }: Props) => {
                             borderColor: themeMode?.darkMode ? 'var(--white)' : 'var(----darkGray)',
                         }}
                     >
-                        {items.map(item => (
-                            <NetworkLink
-                                key={item.name}
-                                href={item.route}
-                                className={`block px-4 py-2 my-1 text-[16px] rounded-md bg-[#a19f9f50] md:bg-transparent md:hover:bg-[#c9b6f8] transition md:font-semibold md:hover:text-${
-                                    themeMode?.darkMode ? 'black' : 'white'
-                                }`}
-                            >
-                                {item.name}
-                            </NetworkLink>
-                        ))}
+                        {items.map(item => {
+                            return useNetworkLink ? (
+                                <NetworkLink
+                                    key={item.name}
+                                    href={item.route}
+                                    className={`block px-4 py-2 my-1 text-[16px] rounded-md bg-[#a19f9f50] md:bg-transparent md:hover:bg-[#c9b6f8] transition md:font-semibold md:hover:text-${
+                                        themeMode?.darkMode ? 'black' : 'white'
+                                    }`}
+                                >
+                                    {item.name}
+                                </NetworkLink>
+                            ) : (
+                                <Link
+                                    key={item.name}
+                                    href={item.route}
+                                    className={`block px-4 py-2 my-1 text-[16px] rounded-md bg-[#a19f9f50] md:bg-transparent md:hover:bg-[#c9b6f8] transition md:font-semibold md:hover:text-${
+                                        themeMode?.darkMode ? 'black' : 'white'
+                                    }`}
+                                >
+                                    {item.name}
+                                </Link>
+                                
+                            );
+                        })}
                     </div>
                 )}
             </div>
