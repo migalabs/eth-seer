@@ -150,7 +150,7 @@ const Validators = () => {
         return (
             <div
                 ref={containerRef}
-                className='my-6 flex flex-col gap-2 font-medium text-[12px] w-11/12 mx-auto'
+                className='my-6 flex flex-col gap-2 font-medium text-[14px] w-11/12 mx-auto'
                 onMouseMove={handleMouseMove}
                 style={{
                     color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
@@ -159,7 +159,7 @@ const Validators = () => {
                 {validators.map((validator: Validator) => (
                     <div
                         key={validator.f_val_idx}
-                        className='flex flex-col gap-y-2 text-[14px] md:text-[16px] py-4 px-14 border-2 border-white rounded-md'
+                        className='flex flex-col gap-y-2 py-4 px-14 border-2 border-white rounded-md'
                         style={{
                             backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
                             boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
