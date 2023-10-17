@@ -6,21 +6,20 @@ import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
 // Components
 import Layout from '../../components/layouts/Layout';
-import EntityCard from '../../components/ui/EntitiyCard';
+import EntityCard from '../../components/ui/EntityCard';
 
 // Constants
-import { POOLS_EXTENDED } from '../../constants';
 import { useRouter } from 'next/router';
 import axiosClient from '../../config/axios';
 import Loader from '../../components/ui/Loader';
 
 const Entities = () => {
+    // Theme Mode Context
+    const { themeMode } = useContext(ThemeModeContext) ?? {};
+
     // Router
     const router = useRouter();
     const { network } = router.query;
-
-    // Theme Mode Context
-    const { themeMode } = useContext(ThemeModeContext) ?? {};
 
     // States
     const [entities, setEntities] = useState<string[]>([]);
@@ -34,6 +33,7 @@ const Entities = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [network]);
 
+    //Entities
     const getEntities = async () => {
         try {
             setLoading(true);
@@ -51,6 +51,7 @@ const Entities = () => {
         }
     };
 
+    //OVERVIEW PAGE
     return (
         <Layout hideMetaDescription>
             <Head>
@@ -63,6 +64,7 @@ const Entities = () => {
                 <link rel='canonical' href='https://ethseer.io/entities' />
             </Head>
 
+            {/* Header */}
             <h1
                 className='text-center font-semibold text-[32px] md:text-[50px] mt-10 xl:mt-0 capitalize m-2 md:m-0'
                 style={{

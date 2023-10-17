@@ -29,12 +29,12 @@ type Props = {
 };
 
 const Statitstics = ({ showCalculatingEpochs }: Props) => {
+    // Theme Mode Context
+    const { themeMode } = useContext(ThemeModeContext) ?? {};
+
     // Router
     const router = useRouter();
     const { network } = router.query;
-
-    // Theme Mode Context
-    const { themeMode } = useContext(ThemeModeContext) ?? {};
 
     // Blocks Context
     const { blocks, getBlocks } = useContext(BlocksContext) ?? {};
@@ -52,6 +52,7 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
     const [loadingEpochs, setLoadingEpochs] = useState(false);
     const [calculatingText, setCalculatingText] = useState('');
 
+    //UseEffect
     useEffect(() => {
         // Fetching blocks
         if (network && blocks && !blocks.epochs && !loadingBlocks) {
@@ -114,6 +115,7 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
         return arrayBlocks;
     };
 
+    //CALCULATING EPOCHS TABLE
     //Calculating epochs desktop
     const getCalculatingEpochDesktop = (f_epoch: number, blocks: Block[]) => {
         const arrayBlocks = createArrayBlocks(blocks);
@@ -359,6 +361,7 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
         );
     };
 
+    //PROPOSED BLOCKS TABLE
     const getProposedBlocks = (totalBlock: Array<number>) => {
         return totalBlock?.filter(element => element === 1).length;
     };
@@ -651,7 +654,6 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
             </div>
         </div>
     );
-
     // Containers mobile
     const getPhoneView = () => (
         <div className='flex flex-col gap-y-4 px-4 mt-3'>

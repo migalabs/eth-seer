@@ -25,7 +25,7 @@ const LinkIcon = ({ forceOrange, forceBlue }: Props) => {
         }
     };
 
-    return <CustomImage src={getUrl()} alt='Link icon' width={20} height={20} className='mb-1' />;
+    return <CustomImage src={getUrl()} alt='Link icon' width={20} height={20} />;
 };
 
 export default LinkIcon;

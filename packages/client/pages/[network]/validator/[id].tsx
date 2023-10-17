@@ -11,7 +11,6 @@ import ThemeModeContext from '../../../contexts/theme-mode/ThemeModeContext';
 // Components
 import Layout from '../../../components/layouts/Layout';
 import BlockImage from '../../../components/ui/BlockImage';
-import BlockGif from '../../../components/ui/BlockGif';
 import TabHeader from '../../../components/ui/TabHeader';
 import Animation from '../../../components/layouts/Animation';
 import ProgressSmoothBar from '../../../components/ui/ProgressSmoothBar';
@@ -36,6 +35,7 @@ type Props = {
     boxShadow: string;
 };
 
+//Style card
 const CardContent = ({ content, bg, color, boxShadow }: Props) => {
     return (
         <span
@@ -48,12 +48,12 @@ const CardContent = ({ content, bg, color, boxShadow }: Props) => {
 };
 
 const ValidatorComponent = () => {
+    // Theme Mode Context
+    const { themeMode } = useContext(ThemeModeContext) ?? {};
+
     // Next router
     const router = useRouter();
     const { network, id } = router.query;
-
-    // Theme Mode Context
-    const { themeMode } = useContext(ThemeModeContext) ?? {};
 
     // Refs
     const validatorRef = useRef(0);
@@ -90,6 +90,21 @@ const ValidatorComponent = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [network, id]);
 
+    const handleMouseMove = (e: any) => {
+        if (containerRef.current) {
+            const x = e.pageX;
+            const limit = 0.15;
+
+            if (x < containerRef.current.clientWidth * limit) {
+                containerRef.current.scrollLeft -= 10;
+            } else if (x > containerRef.current.clientWidth * (1 - limit)) {
+                containerRef.current.scrollLeft += 10;
+            }
+        }
+    };
+
+    //TOP TABLE
+    //View top table validator
     const getValidator = async () => {
         try {
             setLoadingValidator(true);
@@ -135,430 +150,6 @@ const ValidatorComponent = () => {
             setLoadingValidator(false);
         }
     };
-
-    const getProposedBlocks = async () => {
-        try {
-            setLoadingProposedBlocks(true);
-
-            const response = await axiosClient.get(`/api/validators/${id}/proposed-blocks`, {
-                params: {
-                    network,
-                },
-            });
-
-            setProposedBlocks(response.data.proposedBlocks);
-        } catch (error) {
-            console.log(error);
-        } finally {
-            setLoadingProposedBlocks(false);
-        }
-    };
-
-    const getWithdrawals = async () => {
-        try {
-            setLoadingWithdrawals(true);
-
-            const response = await axiosClient.get(`/api/validators/${id}/withdrawals`, {
-                params: {
-                    network,
-                },
-            });
-
-            setWithdrawals(response.data.withdrawals);
-        } catch (error) {
-            console.log(error);
-        } finally {
-            setLoadingWithdrawals(false);
-        }
-    };
-
-    const handleMouseMove = (e: any) => {
-        if (containerRef.current) {
-            const x = e.pageX;
-            const limit = 0.15;
-
-            if (x < containerRef.current.clientWidth * limit) {
-                containerRef.current.scrollLeft -= 10;
-            } else if (x > containerRef.current.clientWidth * (1 - limit)) {
-                containerRef.current.scrollLeft += 10;
-            }
-        }
-    };
-
-    const getContentProposedBlocksMobile = () => {
-        return (
-            <div
-                className='flex flex-col gap-y-2 mx-2 px-6 text-[14px] md:text-[16px] overflow-x-scroll overflow-y-hidden scrollbar-thin rounded-md border-2 py-3'
-                style={{
-                    backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
-                    boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
-                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                }}
-            >
-                {proposedBlocks.map(element => (
-                    <div
-                        className='flex flex-row gap-x-6 py-1 text-[14px] md:text-[16px]'
-                        key={element.f_proposer_slot}
-                    >
-                        <div className='flex items-center'>
-                            <BlockImage
-                                poolName={element.f_pool_name}
-                                proposed={element.f_proposed}
-                                width={60}
-                                height={60}
-                                showCheck
-                            />
-                        </div>
-                        <div className='flex flex-col items-start'>
-                            <div className='flex flex-row items-center gap-x-8'>
-                                <p className='w-20 '>Epoch:</p>
-                                <LinkEpoch epoch={Math.floor(element.f_proposer_slot / 32)} />
-                            </div>
-
-                            <div className='flex flex-row items-center gap-x-8'>
-                                <p className='w-20'>Slot:</p>
-                                <LinkSlot slot={element.f_proposer_slot} />
-                            </div>
-
-                            <div className='flex flex-row items-center gap-x-10'>
-                                <p className='w-20'>Datetime:</p>
-                                <p className='uppercase'>
-                                    {new Date(FIRST_BLOCK + Number(element.f_proposer_slot) * 12000).toLocaleString(
-                                        'ja-JP'
-                                    )}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                ))}
-
-                {proposedBlocks.length === 0 && (
-                    <div className='flex justify-center p-2'>
-                        <p className='uppercase text-[14px] md:text-[16px]'>No proposed blocks</p>
-                    </div>
-                )}
-            </div>
-        );
-    };
-
-    const getNumberProposedBlocks = (proposed_blocks: Slot[]) => {
-        return proposed_blocks.filter(item => item.f_proposed).length;
-    };
-
-    const getNumberMissedBlocks = (proposed_blocks: Slot[]) => {
-        return proposed_blocks.filter(item => !item.f_proposed).length;
-    };
-
-    const getTotalWithdrawals = (withdrawals: Withdrawal[]) => {
-        return withdrawals.reduce((total, item) => total + item.f_amount / 10 ** 9, 0);
-    };
-
-    const getContentProposedBlocks = () => {
-        return (
-            <div
-                ref={containerRef}
-                className='flex flex-col overflow-x-scroll overflow-y-hidden scrollbar-thin'
-                onMouseMove={handleMouseMove}
-            >
-                <div
-                    className='flex gap-x-4 justify-around px-4 xl:px-8 min-w-[700px] py-3 text-[14px] font-semibold md:text-[16px] text-center'
-                    style={{
-                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                    }}
-                >
-                    <p className='mt-0.5 w-[25%]'>Block</p>
-                    <p className='mt-0.5 w-[25%]'>Epoch</p>
-                    <p className='mt-0.5 w-[25%]'>Slot</p>
-                    <p className='mt-0.5 w-[25%]'>Datetime</p>
-                </div>
-
-                <div
-                    className='flex flex-col gap-y-2 min-w-[700px] font-medium text-[14px] md:text-[16px] rounded-md border-2 border-white px-4 xl:px-8 py-3'
-                    style={{
-                        backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
-                        boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
-                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                    }}
-                >
-                    {proposedBlocks.map(element => (
-                        <div className='flex gap-x-4 py-1 text-center items-center' key={element.f_proposer_slot}>
-                            <div className='flex items-center justify-center w-[25%]'>
-                                <BlockImage
-                                    poolName={element.f_pool_name}
-                                    proposed={element.f_proposed}
-                                    width={60}
-                                    height={60}
-                                    showCheck
-                                />
-                            </div>
-
-                            <div
-                                className='w-[25%] font-medium md:hover:underline underline-offset-4 decoration-2'
-                                style={{ color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)' }}
-                            >
-                                <LinkEpoch epoch={Math.floor(element.f_proposer_slot / 32)} mxAuto />
-                            </div>
-
-                            <div
-                                className='w-[25%] font-medium md:hover:underline underline-offset-4 decoration-2'
-                                style={{ color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)' }}
-                            >
-                                <LinkSlot slot={element.f_proposer_slot} mxAuto />
-                            </div>
-
-                            <p className='w-[25%]'>
-                                {new Date(FIRST_BLOCK + Number(element.f_proposer_slot) * 12000).toLocaleString(
-                                    'ja-JP'
-                                )}
-                            </p>
-                        </div>
-                    ))}
-
-                    {proposedBlocks.length === 0 && (
-                        <div className='flex justify-center p-2'>
-                            <p className='uppercase'>No proposed blocks</p>
-                        </div>
-                    )}
-                </div>
-            </div>
-        );
-    };
-
-    const getContentWithdrawals = () => {
-        return (
-            <div
-                ref={containerRef}
-                className='flex flex-col overflow-x-scroll overflow-y-hidden scrollbar-thin'
-                onMouseMove={handleMouseMove}
-            >
-                <div
-                    className='font-semibold flex gap-x-4 justify-around px-4 xl:px-8 min-w-[700px] text-[14px] md:text-[16px] py-3 text-center'
-                    style={{
-                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                    }}
-                >
-                    <p className='mt-0.5 w-[25%]'>Epoch</p>
-                    <p className='mt-0.5 w-[25%]'>Slot</p>
-                    <p className='mt-0.5 w-[25%]'>Datetime</p>
-                    <p className='mt-0.5 w-[25%]'>Amount</p>
-                </div>
-
-                <div
-                    className='flex flex-col gap-y-2 min-w-[700px] text-[14px] md:text-[14px] rounded-md border-2 border-white px-4 xl:px-8 py-3'
-                    style={{
-                        backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
-                        boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
-                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                    }}
-                >
-                    {withdrawals.map((element, idx) => (
-                        <div
-                            className='flex gap-x-4 py-1 text-center font-medium text-[14px] md:text-[16px] items-center'
-                            key={idx}
-                            style={{
-                                color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                            }}
-                        >
-                            <div
-                                className='w-[25%] font-medium md:hover:underline underline-offset-4 decoration-2'
-                                style={{ color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)' }}
-                            >
-                                <LinkEpoch epoch={Math.floor(element.f_epoch ?? 0)} mxAuto />
-                            </div>
-
-                            <div
-                                className='w-[25%] font-medium md:hover:underline underline-offset-4 decoration-2'
-                                style={{ color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)' }}
-                            >
-                                <LinkSlot slot={element.f_slot} mxAuto />
-                            </div>
-
-                            <p className='w-[25%]'>
-                                {new Date(FIRST_BLOCK + Number(element.f_slot) * 12000).toLocaleString('ja-JP')}
-                            </p>
-
-                            <p className='w-[25%]'>{(element.f_amount / 10 ** 9).toLocaleString()} ETH</p>
-                        </div>
-                    ))}
-
-                    {withdrawals.length === 0 && (
-                        <div className='flex justify-center p-2'>
-                            <p className='uppercase text-[14px] md:text-[16px]'>No withdrawals</p>
-                        </div>
-                    )}
-                </div>
-            </div>
-        );
-    };
-
-    const getContentWithdrawalsMobile = () => {
-        return (
-            <div>
-                {withdrawals.map((element, idx) => (
-                    <div
-                        className='flex flex-row font-medium justify-center items-center gap-x-6 py-2 mt-5 gap-y-1 mx-2 px-6 text-[14px] md:text-[16px] overflow-x-scroll overflow-y-hidden scrollbar-thin rounded-md border-2'
-                        key={idx}
-                        style={{
-                            backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
-                            boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
-                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                        }}
-                    >
-                        <div className='flex flex-col items-start gap-y-1'>
-                            <div className='flex flex-row items-center gap-x-8'>
-                                <p className='w-20'>Epoch:</p>
-                                <LinkEpoch epoch={Math.floor(element.f_epoch ?? 0)} />
-                            </div>
-
-                            <div className='flex flex-row items-center gap-x-8'>
-                                <p className='w-20'>Slot:</p>
-                                <LinkSlot slot={element.f_slot} />
-                            </div>
-
-                            <div className='flex flex-row items-center gap-x-8'>
-                                <p className='w-20'>Datetime:</p>
-                                <p className='uppercase'>
-                                    {new Date(FIRST_BLOCK + Number(element.f_slot) * 12000).toLocaleString('ja-JP')}
-                                </p>
-                            </div>
-
-                            <div className='flex flex-row items-center gap-x-8'>
-                                <p className='w-20'>Amount:</p>
-                                <p>{(element.f_amount / 10 ** 9).toLocaleString()} ETH</p>
-                            </div>
-                        </div>
-                    </div>
-                ))}
-
-                {withdrawals.length === 0 && (
-                    <div
-                        className='flex justify-center py-5 px-6 border-white gap-y-2 mx-2 rounded-md border-2'
-                        style={{
-                            backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
-                            boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
-                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                        }}
-                    >
-                        <p className='uppercase text-[14px] md:text-[16px]'>No withdrawals</p>
-                    </div>
-                )}
-            </div>
-        );
-    };
-
-    const getValidatorPerformance = (validator: Validator) => {
-        return (
-            <>
-                <div className='flex flex-col md:flex-row py-4 gap-y-2 md:gap-y-0 md:mb-0'>
-                    <p className='md:w-52 lg:w-50'>Rewards:</p>
-                    <div className='w-[300px] text-center'>
-                        {validator && (
-                            <ProgressSmoothBar
-                                title=''
-                                color='var(--black)'
-                                backgroundColor='var(--white)'
-                                percent={validator.aggregated_rewards / validator.aggregated_max_rewards || 0}
-                                tooltipColor='blue'
-                                tooltipContent={
-                                    <>
-                                        <span>Agg. Rewards: {validator?.aggregated_rewards}</span>
-                                        <span>Max. Rewards: {validator?.aggregated_max_rewards}</span>
-                                    </>
-                                }
-                                widthTooltip={220}
-                            />
-                        )}
-                    </div>
-                </div>
-
-                <div className='flex flex-col md:flex-row py-4 gap-y-2 md:gap-y-0 md:mb-0'>
-                    <p className='md:w-52 lg:w-50'>Sync committee participation:</p>
-                    <p className='font-medium capitalize text-[14px] md:text-[16px]'>
-                        {validator?.count_missing_source} duties
-                    </p>
-                </div>
-
-                {/* Attestation flags */}
-                <div className='flex flex-col lg:flex-row py-4 gap-y-2 md:gap-y-0 md:mb-0'>
-                    <p className='md:w-52 lg:w-50'>Attestation flags:</p>
-
-                    {validator && (
-                        <div className='flex flex-col xl:flex-row items-center gap-x-4 gap-y-2 font-medium text-[14px]'>
-                            <ProgressSmoothBar
-                                title='Target'
-                                color='var(--black)'
-                                backgroundColor='var(--white)'
-                                percent={1 - validator.count_missing_target / validator.count_attestations}
-                                width={300}
-                                tooltipColor='orange'
-                                tooltipContent={
-                                    <>
-                                        <span>Missing Target: {validator.count_missing_target?.toLocaleString()}</span>
-                                        <span>Attestations: {validator.count_attestations?.toLocaleString()}</span>
-                                    </>
-                                }
-                                widthTooltip={220}
-                            />
-
-                            <ProgressSmoothBar
-                                title='Source'
-                                color='var(--black)'
-                                backgroundColor='var(--white)'
-                                percent={1 - validator.count_missing_source / validator.count_attestations}
-                                width={300}
-                                tooltipColor='blue'
-                                tooltipContent={
-                                    <>
-                                        <span>Missing Source: {validator.count_missing_source?.toLocaleString()}</span>
-                                        <span>Attestations: {validator.count_attestations?.toLocaleString()}</span>
-                                    </>
-                                }
-                                widthTooltip={220}
-                            />
-
-                            <ProgressSmoothBar
-                                title='Head'
-                                color='var(--black)'
-                                backgroundColor='var(--white)'
-                                percent={1 - validator.count_missing_head / validator.count_attestations}
-                                width={300}
-                                tooltipColor='purple'
-                                tooltipContent={
-                                    <>
-                                        <span>Missing Head: {validator.count_missing_head?.toLocaleString()}</span>
-                                        <span>Attestations: {validator.count_attestations?.toLocaleString()}</span>
-                                    </>
-                                }
-                                widthTooltip={220}
-                            />
-                        </div>
-                    )}
-                </div>
-                <div className='flex flex-col md:flex-row py-4 gap-y-2 md:gap-y-0 md:mb-0'>
-                    <p className='md:w-52 lg:w-50'>Blocks:</p>
-
-                    <div className='flex justify-center'>
-                        <div className='flex flex-col md:flex-row gap-x-4 gap-y-2'>
-                            <CardContent
-                                content={`Proposed: ${validator.proposed_blocks_performance}`}
-                                bg='var(--white)'
-                                color='var(--proposedGreen)'
-                                boxShadow='var(--boxShadowGreen)'
-                            />
-
-                            <CardContent
-                                content={`Missed: ${validator.missed_blocks_performance}`}
-                                bg='var(--white)'
-                                color='var(--missedRed)'
-                                boxShadow='var(--boxShadowRed)'
-                            />
-                        </div>
-                    </div>
-                </div>
-            </>
-        );
-    };
-
     const getContentValidator = () => {
         return (
             <>
@@ -676,6 +267,35 @@ const ValidatorComponent = () => {
         );
     };
 
+    //View proposed blocks
+    const getProposedBlocks = async () => {
+        try {
+            setLoadingProposedBlocks(true);
+
+            const response = await axiosClient.get(`/api/validators/${id}/proposed-blocks`, {
+                params: {
+                    network,
+                },
+            });
+
+            setProposedBlocks(response.data.proposedBlocks);
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setLoadingProposedBlocks(false);
+        }
+    };
+    const getNumberProposedBlocks = (proposed_blocks: Slot[]) => {
+        return proposed_blocks.filter(item => item.f_proposed).length;
+    };
+
+    //View missed blocks
+    const getNumberMissedBlocks = (proposed_blocks: Slot[]) => {
+        return proposed_blocks.filter(item => !item.f_proposed).length;
+    };
+
+    //TABS
+    //View tabs
     const getSelectedTab = () => {
         switch (tabPageIndex) {
             case 0:
@@ -702,12 +322,466 @@ const ValidatorComponent = () => {
         }
     };
 
+    //VALIDATOR PERFORMANCE TABLE
+    //View validator performance table
+    const getValidatorPerformance = (validator: Validator) => {
+        return (
+            <>
+                <div className='flex flex-col md:flex-row py-4 gap-y-2 md:gap-y-0 md:mb-0'>
+                    <p className='md:w-52 lg:w-50'>Rewards:</p>
+                    <div className='w-[300px] text-center'>
+                        {validator && (
+                            <ProgressSmoothBar
+                                title=''
+                                color='var(--black)'
+                                backgroundColor='var(--white)'
+                                percent={validator.aggregated_rewards / validator.aggregated_max_rewards || 0}
+                                tooltipColor='blue'
+                                tooltipContent={
+                                    <>
+                                        <span>Agg. Rewards: {validator?.aggregated_rewards}</span>
+                                        <span>Max. Rewards: {validator?.aggregated_max_rewards}</span>
+                                    </>
+                                }
+                                widthTooltip={220}
+                            />
+                        )}
+                    </div>
+                </div>
+
+                <div className='flex flex-col md:flex-row py-4 gap-y-2 md:gap-y-0 md:mb-0'>
+                    <p className='md:w-52 lg:w-50'>Sync committee participation:</p>
+                    <p className='font-medium capitalize text-[14px] md:text-[16px]'>
+                        {validator?.count_missing_source} duties
+                    </p>
+                </div>
+
+                {/* Attestation flags */}
+                <div className='flex flex-col lg:flex-row py-4 gap-y-2 md:gap-y-0 md:mb-0'>
+                    <p className='md:w-52 lg:w-50'>Attestation flags:</p>
+
+                    {validator && (
+                        <div className='flex flex-col xl:flex-row items-center gap-x-4 gap-y-2 font-medium text-[14px]'>
+                            <ProgressSmoothBar
+                                title='Target'
+                                color='var(--black)'
+                                backgroundColor='var(--white)'
+                                percent={1 - validator.count_missing_target / validator.count_attestations}
+                                width={300}
+                                tooltipColor='orange'
+                                tooltipContent={
+                                    <>
+                                        <span>Missing Target: {validator.count_missing_target?.toLocaleString()}</span>
+                                        <span>Attestations: {validator.count_attestations?.toLocaleString()}</span>
+                                    </>
+                                }
+                                widthTooltip={220}
+                            />
+
+                            <ProgressSmoothBar
+                                title='Source'
+                                color='var(--black)'
+                                backgroundColor='var(--white)'
+                                percent={1 - validator.count_missing_source / validator.count_attestations}
+                                width={300}
+                                tooltipColor='blue'
+                                tooltipContent={
+                                    <>
+                                        <span>Missing Source: {validator.count_missing_source?.toLocaleString()}</span>
+                                        <span>Attestations: {validator.count_attestations?.toLocaleString()}</span>
+                                    </>
+                                }
+                                widthTooltip={220}
+                            />
+
+                            <ProgressSmoothBar
+                                title='Head'
+                                color='var(--black)'
+                                backgroundColor='var(--white)'
+                                percent={1 - validator.count_missing_head / validator.count_attestations}
+                                width={300}
+                                tooltipColor='purple'
+                                tooltipContent={
+                                    <>
+                                        <span>Missing Head: {validator.count_missing_head?.toLocaleString()}</span>
+                                        <span>Attestations: {validator.count_attestations?.toLocaleString()}</span>
+                                    </>
+                                }
+                                widthTooltip={220}
+                            />
+                        </div>
+                    )}
+                </div>
+                <div className='flex flex-col md:flex-row py-4 gap-y-2 md:gap-y-0 md:mb-0'>
+                    <p className='md:w-52 lg:w-50'>Blocks:</p>
+
+                    <div className='flex justify-center'>
+                        <div className='flex flex-col md:flex-row gap-x-4 gap-y-2'>
+                            <CardContent
+                                content={`Proposed: ${validator.proposed_blocks_performance}`}
+                                bg='var(--white)'
+                                color='var(--proposedGreen)'
+                                boxShadow='var(--boxShadowGreen)'
+                            />
+
+                            <CardContent
+                                content={`Missed: ${validator.missed_blocks_performance}`}
+                                bg='var(--white)'
+                                color='var(--missedRed)'
+                                boxShadow='var(--boxShadowRed)'
+                            />
+                        </div>
+                    </div>
+                </div>
+            </>
+        );
+    };
+
+    //BLOCKS TAB CONTENT
+    //View proposed blocks
+    const getContentProposedBlocks = () => {
+        return (
+            <div
+                ref={containerRef}
+                className='flex flex-col overflow-x-scroll overflow-y-hidden scrollbar-thin'
+                onMouseMove={handleMouseMove}
+            >
+                <div
+                    className='flex gap-x-4 justify-around px-4 xl:px-8 min-w-[700px] py-3 text-[14px] font-semibold md:text-[16px] text-center'
+                    style={{
+                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
+                    }}
+                >
+                    <p className='mt-0.5 w-[25%]'>Block</p>
+                    <p className='mt-0.5 w-[25%]'>Epoch</p>
+                    <p className='mt-0.5 w-[25%]'>Slot</p>
+                    <p className='mt-0.5 w-[25%]'>Datetime</p>
+                </div>
+
+                <div
+                    className='flex flex-col gap-y-2 min-w-[700px] font-medium text-[14px] md:text-[16px] rounded-md border-2 border-white px-4 xl:px-8 py-3'
+                    style={{
+                        backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
+                        boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
+                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
+                    }}
+                >
+                    {proposedBlocks.map(element => (
+                        <div className='flex gap-x-4 py-1 text-center items-center' key={element.f_proposer_slot}>
+                            <div className='flex items-center justify-center w-[25%]'>
+                                <BlockImage
+                                    poolName={element.f_pool_name}
+                                    proposed={element.f_proposed}
+                                    width={60}
+                                    height={60}
+                                    showCheck
+                                />
+                            </div>
+
+                            <div
+                                className='w-[25%] font-medium md:hover:underline underline-offset-4 decoration-2'
+                                style={{ color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)' }}
+                            >
+                                <LinkEpoch epoch={Math.floor(element.f_proposer_slot / 32)} mxAuto />
+                            </div>
+
+                            <div
+                                className='w-[25%] font-medium md:hover:underline underline-offset-4 decoration-2'
+                                style={{ color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)' }}
+                            >
+                                <LinkSlot slot={element.f_proposer_slot} mxAuto />
+                            </div>
+
+                            <p className='w-[25%]'>
+                                {new Date(FIRST_BLOCK + Number(element.f_proposer_slot) * 12000).toLocaleString(
+                                    'ja-JP'
+                                )}
+                            </p>
+                        </div>
+                    ))}
+
+                    {proposedBlocks.length === 0 && (
+                        <div className='flex justify-center py-5 px-6'>
+                            <p className='uppercase text-[16px]'>No proposed blocks</p>
+                        </div>
+                    )}
+                </div>
+            </div>
+        );
+    };
+
+    //View missed blocks
+    const getContentProposedBlocksMobile = () => {
+        return (
+            <div
+                className='flex flex-col gap-2 font-medium text-[14px] my-2'
+                style={{
+                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
+                }}
+            >
+                {proposedBlocks.map(element => (
+                    <div
+                        className='flex flex-row items-center justify-around py-4 px-2 border-2 border-white rounded-md'
+                        style={{
+                            backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
+                            boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
+                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
+                        }}
+                        key={element.f_proposer_slot}
+                    >
+                        <BlockImage
+                            poolName={element.f_pool_name}
+                            proposed={element.f_proposed}
+                            width={80}
+                            height={80}
+                            showCheck
+                        />
+                        <div className='flex flex-col'>
+                            <div className='flex flex-row items-center justify-between gap-x-14 py-1'>
+                                <p
+                                    className='font-semibold'
+                                    style={{
+                                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
+                                    }}
+                                >
+                                    Epoch:
+                                </p>
+                                <LinkEpoch epoch={Math.floor(element.f_proposer_slot / 32)} />
+                            </div>
+
+                            <div className='flex flex-row items-center justify-between py-1'>
+                                <p
+                                    className='font-semibold'
+                                    style={{
+                                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
+                                    }}
+                                >
+                                    Slot:
+                                </p>
+                                <LinkSlot slot={element.f_proposer_slot} />
+                            </div>
+
+                            <div className='flex flex-row items-center justify-between py-1'>
+                                <p
+                                    className='font-semibold'
+                                    style={{
+                                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
+                                    }}
+                                >
+                                    Datetime:
+                                </p>
+                                <p className='uppercase'>
+                                    {new Date(FIRST_BLOCK + Number(element.f_proposer_slot) * 12000).toLocaleString(
+                                        'ja-JP'
+                                    )}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+
+                {proposedBlocks.length === 0 && (
+                    <div
+                        className='flex justify-center py-5 px-6 border-white gap-y-2 mx-2 rounded-md border-2'
+                        style={{
+                            backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
+                            boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
+                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
+                        }}
+                    >
+                        <p className='uppercase text-[14px]'>No proposed blocks</p>
+                    </div>
+                )}
+            </div>
+        );
+    };
+
+    //WITHDRAWALS TAB CONTENT
+    const getWithdrawals = async () => {
+        try {
+            setLoadingWithdrawals(true);
+
+            const response = await axiosClient.get(`/api/validators/${id}/withdrawals`, {
+                params: {
+                    network,
+                },
+            });
+
+            setWithdrawals(response.data.withdrawals);
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setLoadingWithdrawals(false);
+        }
+    };
+    //Withdrawals
+    const getTotalWithdrawals = (withdrawals: Withdrawal[]) => {
+        return withdrawals.reduce((total, item) => total + item.f_amount / 10 ** 9, 0);
+    };
+
+    //View withdrawals table desktop
+    const getContentWithdrawals = () => {
+        return (
+            <div
+                ref={containerRef}
+                className='flex flex-col overflow-x-scroll overflow-y-hidden scrollbar-thin'
+                onMouseMove={handleMouseMove}
+            >
+                <div
+                    className='font-semibold flex gap-x-4 justify-around px-4 xl:px-8 min-w-[700px] text-[16px] py-3 text-center'
+                    style={{
+                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
+                    }}
+                >
+                    <p className='mt-0.5 w-[25%]'>Epoch</p>
+                    <p className='mt-0.5 w-[25%]'>Slot</p>
+                    <p className='mt-0.5 w-[25%]'>Datetime</p>
+                    <p className='mt-0.5 w-[25%]'>Amount</p>
+                </div>
+
+                <div
+                    className='flex flex-col gap-y-2 min-w-[700px] text-[16px] rounded-md border-2 border-white px-4 xl:px-8 py-3'
+                    style={{
+                        backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
+                        boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
+                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
+                    }}
+                >
+                    {withdrawals.map((element, idx) => (
+                        <div
+                            className='flex gap-x-4 py-1 text-center font-medium text-[16px] items-center'
+                            key={idx}
+                            style={{
+                                color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
+                            }}
+                        >
+                            <div
+                                className='w-[25%] font-medium md:hover:underline underline-offset-4 decoration-2'
+                                style={{ color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)' }}
+                            >
+                                <LinkEpoch epoch={Math.floor(element.f_epoch ?? 0)} mxAuto />
+                            </div>
+
+                            <div
+                                className='w-[25%] font-medium md:hover:underline underline-offset-4 decoration-2'
+                                style={{ color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)' }}
+                            >
+                                <LinkSlot slot={element.f_slot} mxAuto />
+                            </div>
+
+                            <p className='w-[25%]'>
+                                {new Date(FIRST_BLOCK + Number(element.f_slot) * 12000).toLocaleString('ja-JP')}
+                            </p>
+
+                            <p className='w-[25%]'>{(element.f_amount / 10 ** 9).toLocaleString()} ETH</p>
+                        </div>
+                    ))}
+
+                    {withdrawals.length === 0 && (
+                        <div className='flex justify-center py-5 px-6'>
+                            <p className='uppercase text-[16px]'>No withdrawals</p>
+                        </div>
+                    )}
+                </div>
+            </div>
+        );
+    };
+
+    //View withdrawals table mobile
+    const getContentWithdrawalsMobile = () => {
+        return (
+            <div
+                className='my-2 flex flex-col gap-2 font-medium text-[14px]'
+                style={{
+                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
+                }}
+            >
+                {withdrawals.map((element, idx) => (
+                    <div
+                        key={idx}
+                        className='flex flex-col gap-y-2 py-4 px-14 border-2 border-white rounded-md'
+                        style={{
+                            backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
+                            boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
+                        }}
+                    >
+                        <div className='flex flex-row items-center justify-between'>
+                            <p
+                                className='font-semibold'
+                                style={{
+                                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
+                                }}
+                            >
+                                Epoch:
+                            </p>
+                            <LinkEpoch epoch={Math.floor(element.f_epoch ?? 0)} />
+                        </div>
+
+                        <div className='flex flex-row items-center justify-between'>
+                            <p
+                                className='font-semibold'
+                                style={{
+                                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
+                                }}
+                            >
+                                Slot:
+                            </p>
+                            <LinkSlot slot={element.f_slot} />
+                        </div>
+
+                        <div className='flex flex-row items-center justify-between'>
+                            <p
+                                className='font-semibold'
+                                style={{
+                                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
+                                }}
+                            >
+                                Datetime:
+                            </p>
+                            <p className='uppercase'>
+                                {new Date(FIRST_BLOCK + Number(element.f_slot) * 12000).toLocaleString('ja-JP')}
+                            </p>
+                        </div>
+
+                        <div className='flex flex-row items-center justify-between'>
+                            <p
+                                className='font-semibold'
+                                style={{
+                                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
+                                }}
+                            >
+                                Amount:
+                            </p>
+                            <p>{(element.f_amount / 10 ** 9).toLocaleString()} ETH</p>
+                        </div>
+                    </div>
+                ))}
+
+                {withdrawals.length === 0 && (
+                    <div
+                        className='flex justify-center py-5 px-6 border-white gap-y-2 mx-2 rounded-md border-2'
+                        style={{
+                            backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
+                            boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
+                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
+                        }}
+                    >
+                        <p className='uppercase text-[14px]'>No withdrawals</p>
+                    </div>
+                )}
+            </div>
+        );
+    };
+
+    //OVERVIEW PAGE
+    //Overview validator page
     return (
         <Layout>
             <Head>
                 <meta name='robots' property='noindex' />
             </Head>
 
+            {/* Header */}
             <div className='flex gap-x-3 justify-center items-center mt-14 xl:mt-0 mb-5'>
                 <LinkValidator validator={Number(id) - 1}>
                     <Arrow direction='left' />
@@ -728,7 +802,7 @@ const ValidatorComponent = () => {
             </div>
 
             {loadingValidator && (
-                <div className='mt-6'>
+                <div className='mb-4'>
                     <Loader />
                 </div>
             )}

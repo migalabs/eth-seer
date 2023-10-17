@@ -108,7 +108,6 @@ const Dropdown = ({ name, items, useNetworkLink }: Props) => {
                                 >
                                     {item.name}
                                 </a>
-                                
                             );
                         })}
                     </div>

@@ -4,18 +4,17 @@ import { NextRequest, NextResponse } from 'next/server';
 import { DEFAULT_NETWORK, NETWORKS } from './constants';
 
 export async function middleware(req: NextRequest) {
-
-    let networks
-    let default_network
+    let networks;
+    let default_network;
     try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_URL_API}/api/networks`);
         const networksData = await response.json();
         networks = networksData.networks;
-        if (networks.length > 0){
-            default_network = networks[0]
+        if (networks.length > 0) {
+            default_network = networks[0];
         }
     } catch (err) {
-        console.error("Error fetching networks:", err);
+        console.error('Error fetching networks:', err);
     }
 
     const pathsWithoutNetwork = [
