@@ -24,7 +24,7 @@ const LinkEntity = ({ entity, children }: Props) => {
         <NetworkLink
             href={`/entity/${entity}`}
             passHref
-            className='flex text-[14px] md:text-[16px] uppercase font-medium md:hover:underline underline-offset-4 decoration-2 gap-x-1 items-center w-fit mx-auto'
+            className='flex text-[14px] md:text-[16px] uppercase font-medium md:hover:underline underline-offset-4 decoration-2 gap-x-1 items-center w-fit md:mx-auto'
             style={baseStyle}
         >
             {children ?? (

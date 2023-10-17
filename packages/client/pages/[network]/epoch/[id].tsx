@@ -30,6 +30,7 @@ type Props = {
     boxShadow: string;
 };
 
+//Card style
 const CardContent = ({ content, bg, color, boxShadow }: Props) => {
     return (
         <span
@@ -42,12 +43,12 @@ const CardContent = ({ content, bg, color, boxShadow }: Props) => {
 };
 
 const EpochComponent = () => {
+    // Theme Mode Context
+    const { themeMode } = useContext(ThemeModeContext) ?? {};
+
     // Next router
     const router = useRouter();
     const { network, id } = router.query;
-
-    // Theme Mode Context
-    const { themeMode } = useContext(ThemeModeContext) ?? {};
 
     // Refs
     const epochRef = useRef(0);
@@ -75,6 +76,7 @@ const EpochComponent = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [network, id]);
 
+    //Epoch
     const getEpoch = async () => {
         try {
             setLoadingEpoch(true);
@@ -125,6 +127,7 @@ const EpochComponent = () => {
         }
     };
 
+    //Slots
     const getSlots = async () => {
         try {
             setLoadingSlots(true);
@@ -143,6 +146,7 @@ const EpochComponent = () => {
         }
     };
 
+    //Epoch stats card
     const getContentEpochStats = () => {
         return (
             <div
@@ -272,12 +276,14 @@ const EpochComponent = () => {
         );
     };
 
+    //OVERVIEW PAGE
     return (
         <Layout>
             <Head>
                 <meta name='robots' property='noindex' />
             </Head>
 
+            {/* Header */}
             <div className='flex gap-x-3 justify-center items-center mb-5 mt-14 xl:mt-0'>
                 <LinkEpoch epoch={Number(id) - 1}>
                     <Arrow direction='left' />

@@ -12,6 +12,7 @@ const Epochs = () => {
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
 
+    //OVERVIEW PAGE
     return (
         <Layout hideMetaDescription>
             <Head>
@@ -24,7 +25,8 @@ const Epochs = () => {
                 <link rel='canonical' href='https://ethseer.io/epochs' />
             </Head>
 
-            <div className='my-6 text-center text-white mt-10 xl:mt-0'>
+            {/* Header */}
+            <div className='text-center text-white mt-10 xl:mt-0'>
                 <h1
                     className='text-[32px] md:text-[50px] capitalize font-semibold'
                     style={{
