@@ -1,21 +1,27 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-// Constants
-import { DEFAULT_NETWORK, NETWORKS } from './constants';
+// Cache for the networks
+let networksCache: string[] | null = null;
+let defaultNetworkCache: string | null = null;
+
+export async function fetchNetworks() {
+    if (!networksCache) {
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_URL_API}/api/networks`);
+            const networksData = await response.json();
+            networksCache = networksData.networks;
+            if ((networksCache as string[]).length > 0) {
+                defaultNetworkCache = (networksCache as string[])[0];
+            }
+        } catch (err) {
+            console.error('Error fetching networks:', err);
+        }
+    }
+    return { networks: networksCache, default_network: defaultNetworkCache };
+}
 
 export async function middleware(req: NextRequest) {
-    let networks;
-    let default_network;
-    try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_URL_API}/api/networks`);
-        const networksData = await response.json();
-        networks = networksData.networks;
-        if (networks.length > 0) {
-            default_network = networks[0];
-        }
-    } catch (err) {
-        console.error('Error fetching networks:', err);
-    }
+    const { networks, default_network } = await fetchNetworks();
 
     const pathsWithoutNetwork = [
         '/entity',
@@ -86,7 +92,7 @@ export async function middleware(req: NextRequest) {
     } else if (!req.nextUrl.pathname.includes('_next') && !req.nextUrl.pathname.includes('static')) {
         const network = req.nextUrl.pathname.split('/')[1];
 
-        if (!networks.includes(network)) {
+        if (!networks?.includes(network)) {
             return NextResponse.redirect(`${req.nextUrl.origin}/${default_network}`);
         }
     }

@@ -20,9 +20,6 @@ import Arrow from '../../../components/ui/Arrow';
 // Types
 import { Epoch, Slot } from '../../../types';
 
-// Constants
-import { FIRST_BLOCK } from '../../../constants';
-
 type Props = {
     content: string;
     bg: string;
@@ -61,6 +58,7 @@ const EpochComponent = () => {
     const [notEpoch, setNotEpoch] = useState<boolean>(false);
     const [loadingEpoch, setLoadingEpoch] = useState(true);
     const [loadingSlots, setLoadingSlots] = useState(true);
+    const [blockGenesis, setBlockGenesis] = useState(0);
 
     // UseEffect
     useEffect(() => {
@@ -81,20 +79,29 @@ const EpochComponent = () => {
         try {
             setLoadingEpoch(true);
 
-            const response = await axiosClient.get(`/api/epochs/${id}`, {
-                params: {
-                    network,
-                },
-            });
+            const [response, genesisBlock] = await Promise.all([
+                axiosClient.get(`/api/epochs/${id}`, {
+                    params: {
+                        network,
+                    },
+                }),
+                axiosClient.get(`/api/networks/block/genesis`, {
+                    params: {
+                        network,
+                    },
+                }),
+            ]);
 
             setEpoch({
                 ...response.data.epoch,
             });
+            setBlockGenesis(genesisBlock.data.block_genesis);
 
             if (Number(response.data.epoch.proposed_blocks) === 0) {
                 setAnimation(true);
 
-                const expectedTimestamp = (FIRST_BLOCK + Number(id) * 12000 * 32 + 12000 * 64) / 1000;
+                const expectedTimestamp =
+                    (genesisBlock.data.block_genesis + Number(id) * 12000 * 32 + 12000 * 64) / 1000;
 
                 existsEpochRef.current = false;
 
@@ -160,7 +167,7 @@ const EpochComponent = () => {
                 <div className='flex flex-row items-center gap-x-5'>
                     <p className={` w-40 sm:w-60 text-${themeMode?.darkMode ? 'white' : 'black'}`}>Datetime (Local):</p>
                     <p className={`text-${themeMode?.darkMode ? 'white' : 'black'}`}>
-                        {new Date(FIRST_BLOCK + Number(epoch?.f_slot) * 12000).toLocaleString('ja-JP')}
+                        {new Date(blockGenesis + Number(epoch?.f_slot) * 12000).toLocaleString('ja-JP')}
                     </p>
                 </div>
                 <div className='flex flex-col sm:flex-row gap-x-5'>

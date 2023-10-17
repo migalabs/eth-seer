@@ -21,9 +21,6 @@ import LinkIcon from '../ui/LinkIcon';
 // Types
 import { Block } from '../../types';
 
-// Constants
-import { FIRST_BLOCK } from '../../constants';
-
 const Graffitis = () => {
     // Router
     const router = useRouter();
@@ -42,6 +39,7 @@ const Graffitis = () => {
     const [animation, setAnimation] = useState(false);
     const [loading, setLoading] = useState(true);
     const [blocks, setBlocks] = useState<Block[]>([]);
+    const [blockGenesis, setBlockGenesis] = useState(0);
 
     useEffect(() => {
         setDesktopView(window !== undefined && window.innerWidth > 768);
@@ -57,14 +55,23 @@ const Graffitis = () => {
         try {
             setLoading(true);
 
-            const response = await axiosClient.get(`/api/slots/graffiti/${graffiti}`, {
-                params: {
-                    network,
-                    limit,
-                    page,
-                },
-            });
+            const [response, genesisBlock] = await Promise.all([
+                axiosClient.get(`/api/slots/graffiti/${graffiti}`, {
+                    params: {
+                        network,
+                        limit,
+                        page,
+                    },
+                }),
+                axiosClient.get(`/api/networks/block/genesis`, {
+                    params: {
+                        network,
+                    },
+                }),
+            ]);
+
             setBlocks([...blocks, ...response.data.blocks]);
+            setBlockGenesis(genesisBlock.data.block_genesis);
             if (response.data.blocks.length == 0) {
                 setAnimation(true);
             }
@@ -214,8 +221,8 @@ const Graffitis = () => {
                             }}
                         >
                             <div className='flex flex-col w-[20%] font-medium'>
-                                <p>{new Date(FIRST_BLOCK + block.f_slot * 12000).toLocaleDateString('ja-JP')}</p>
-                                <p>{new Date(FIRST_BLOCK + block.f_slot * 12000).toLocaleTimeString('ja-JP')}</p>
+                                <p>{new Date(blockGenesis + block.f_slot * 12000).toLocaleDateString('ja-JP')}</p>
+                                <p>{new Date(blockGenesis + block.f_slot * 12000).toLocaleTimeString('ja-JP')}</p>
                             </div>
 
                             <div
@@ -306,8 +313,8 @@ const Graffitis = () => {
                             </div>
 
                             <div>
-                                <p>{new Date(FIRST_BLOCK + block.f_slot * 12000).toLocaleDateString('ja-JP')}</p>
-                                <p>{new Date(FIRST_BLOCK + block.f_slot * 12000).toLocaleTimeString('ja-JP')}</p>
+                                <p>{new Date(blockGenesis + block.f_slot * 12000).toLocaleDateString('ja-JP')}</p>
+                                <p>{new Date(blockGenesis + block.f_slot * 12000).toLocaleTimeString('ja-JP')}</p>
                             </div>
                         </div>
 

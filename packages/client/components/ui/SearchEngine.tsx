@@ -13,8 +13,6 @@ import useOutsideClick from '../../hooks/useOutsideClick';
 import CustomImage from './CustomImage';
 import NetworkLink from './NetworkLink';
 
-// Constants
-import { POOLS_EXTENDED } from '../../constants';
 import { useRouter } from 'next/router';
 import axiosClient from '../../config/axios';
 
