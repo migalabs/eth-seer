@@ -13,7 +13,7 @@ const NetworksState = (props: any) => {
     // Status Context
     const { setNotWorking } = useContext(StatusContext) ?? {};
 
-    const getNetworks = async (network: string) => {
+    const getNetworks = async () => {
         try {
             const response = await axiosClient.get('/api/networks');
             dispatch({ type: 'SET_NETWORKS', payload: response.data });
