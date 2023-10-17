@@ -12,8 +12,8 @@ import BlockState from '../ui/BlockState';
 // Types
 import { Slot } from '../../types';
 
-// Constants
-import { FIRST_BLOCK } from '../../constants';
+import axiosClient from '../../config/axios';
+import { useRouter } from 'next/router';
 
 // Props
 type Props = {
@@ -24,14 +24,23 @@ const Slots = ({ slots }: Props) => {
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
 
+    // Router
+    const router = useRouter();
+    const { network } = router.query;
+
     // Refs
     const containerRef = useRef<HTMLInputElement>(null);
 
     // States
     const [desktopView, setDesktopView] = useState(true);
+    const [blockGenesis, setBlockGenesis] = useState(0);
 
     useEffect(() => {
         setDesktopView(window !== undefined && window.innerWidth > 768);
+
+        if (blockGenesis == 0) {
+            getBlockGenesis(network as string);
+        }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -49,8 +58,22 @@ const Slots = ({ slots }: Props) => {
         }
     };
 
+    const getBlockGenesis = async (network: string) => {
+        try {
+            const genesisBlock = await axiosClient.get(`/api/networks/block/genesis`, {
+                params: {
+                    network,
+                },
+            });
+
+            setBlockGenesis(genesisBlock.data.block_genesis);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     //View slots table desktop
-    const getContentSlotsDesktop = () => {
+    const getContentSlotsDesktop= () => {
         const titles = ['Block', 'Entity', 'Proposer', 'Slot', 'Datetime', 'Withdrawals'];
         return (
             <div
@@ -118,7 +141,7 @@ const Slots = ({ slots }: Props) => {
                             </div>
 
                             <p className='w-[20%]'>
-                                {new Date(FIRST_BLOCK + Number(element.f_proposer_slot) * 12000).toLocaleString(
+                                {new Date(blockGenesis + Number(element.f_proposer_slot) * 12000).toLocaleString(
                                     'ja-JP'
                                 )}
                             </p>
@@ -199,7 +222,7 @@ const Slots = ({ slots }: Props) => {
                                 <div className='flex flex-col justify-between py-1'>
                                     <p>
                                         {new Date(
-                                            FIRST_BLOCK + Number(slot.f_proposer_slot) * 12000
+                                            blockGenesis + Number(slot.f_proposer_slot) * 12000
                                         ).toLocaleDateString('ja-JP', {
                                             year: 'numeric',
                                             month: 'numeric',
@@ -208,7 +231,7 @@ const Slots = ({ slots }: Props) => {
                                     </p>
                                     <p>
                                         {new Date(
-                                            FIRST_BLOCK + Number(slot.f_proposer_slot) * 12000
+                                            blockGenesis + Number(slot.f_proposer_slot) * 12000
                                         ).toLocaleTimeString('ja-JP', {
                                             hour: 'numeric',
                                             minute: 'numeric',

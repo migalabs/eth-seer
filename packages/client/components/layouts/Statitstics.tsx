@@ -20,8 +20,7 @@ import LinkIcon from '../ui/LinkIcon';
 // Types
 import { Epoch, Block } from '../../types';
 
-// Constants
-import { FIRST_BLOCK } from '../../constants';
+import axiosClient from '../../config/axios';
 
 // Props
 type Props = {
@@ -51,6 +50,7 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
     const [loadingBlocks, setLoadingBlocks] = useState(false);
     const [loadingEpochs, setLoadingEpochs] = useState(false);
     const [calculatingText, setCalculatingText] = useState('');
+    const [blockGenesis, setBlockGenesis] = useState(0);
 
     //UseEffect
     useEffect(() => {
@@ -68,6 +68,10 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
 
         if (epochs && epochs.epochs.length > 0 && loadingEpochs) {
             setLoadingEpochs(false);
+        }
+
+        if (blockGenesis == 0) {
+            getBlockGenesis(network as string);
         }
 
         setDesktopView(window !== undefined && window.innerWidth > 768);
@@ -89,6 +93,20 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
         const intervalID = setInterval(shuffle, 1000);
         return () => clearInterval(intervalID);
     }, [shuffle]);
+
+    const getBlockGenesis = async (network: string) => {
+        try {
+            const genesisBlock = await axiosClient.get(`/api/networks/block/genesis`, {
+                params: {
+                    network,
+                },
+            });
+
+            setBlockGenesis(genesisBlock.data.block_genesis);
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     const handleMouseMove = (e: any) => {
         if (containerRef.current) {
@@ -134,8 +152,8 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
                 }}
             >
                 <div className='flex flex-col w-[10%] pt-2.5 pb-2.5'>
-                    <p>{new Date(FIRST_BLOCK + f_epoch * 32 * 12000).toLocaleDateString('ja-JP')}</p>
-                    <p>{new Date(FIRST_BLOCK + f_epoch * 32 * 12000).toLocaleTimeString('ja-JP')}</p>
+                    <p>{new Date(blockGenesis + f_epoch * 32 * 12000).toLocaleDateString('ja-JP')}</p>
+                    <p>{new Date(blockGenesis + f_epoch * 32 * 12000).toLocaleTimeString('ja-JP')}</p>
                 </div>
                 <div className='w-[11%] md:hover:underline underline-offset-4 decoration-2'>
                     <LinkEpoch epoch={f_epoch} mxAuto />
@@ -225,8 +243,8 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
                     </div>
 
                     <div>
-                        <p>{new Date(FIRST_BLOCK + f_epoch * 32 * 12000).toLocaleDateString('ja-JP')}</p>
-                        <p>{new Date(FIRST_BLOCK + f_epoch * 32 * 12000).toLocaleTimeString('ja-JP')}</p>
+                        <p>{new Date(blockGenesis + f_epoch * 32 * 12000).toLocaleDateString('ja-JP')}</p>
+                        <p>{new Date(blockGenesis + f_epoch * 32 * 12000).toLocaleTimeString('ja-JP')}</p>
                     </div>
                 </div>
 
@@ -535,8 +553,8 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
                             }}
                         >
                             <div className='flex flex-col w-[10%]'>
-                                <p>{new Date(FIRST_BLOCK + epoch.f_epoch * 32 * 12000).toLocaleDateString('ja-JP')}</p>
-                                <p>{new Date(FIRST_BLOCK + epoch.f_epoch * 32 * 12000).toLocaleTimeString('ja-JP')}</p>
+                                <p>{new Date(blockGenesis + epoch.f_epoch * 32 * 12000).toLocaleDateString('ja-JP')}</p>
+                                <p>{new Date(blockGenesis + epoch.f_epoch * 32 * 12000).toLocaleTimeString('ja-JP')}</p>
                             </div>
                             <div
                                 className='w-[11%] font-medium md:hover:underline underline-offset-4 decoration-2'
@@ -721,8 +739,8 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
                                 </TooltipContainer>
                             </div>
                             <div>
-                                <p>{new Date(FIRST_BLOCK + epoch.f_epoch * 32 * 12000).toLocaleDateString('ja-JP')}</p>
-                                <p>{new Date(FIRST_BLOCK + epoch.f_epoch * 32 * 12000).toLocaleTimeString('ja-JP')}</p>
+                                <p>{new Date(blockGenesis + epoch.f_epoch * 32 * 12000).toLocaleDateString('ja-JP')}</p>
+                                <p>{new Date(blockGenesis + epoch.f_epoch * 32 * 12000).toLocaleTimeString('ja-JP')}</p>
                             </div>
                         </div>
 

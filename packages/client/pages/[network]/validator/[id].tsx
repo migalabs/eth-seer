@@ -25,9 +25,6 @@ import Arrow from '../../../components/ui/Arrow';
 // Types
 import { Validator, Slot, Withdrawal } from '../../../types';
 
-// Constants
-import { FIRST_BLOCK } from '../../../constants';
-
 type Props = {
     content: string;
     bg: string;
@@ -72,6 +69,7 @@ const ValidatorComponent = () => {
     const [loadingValidator, setLoadingValidator] = useState(true);
     const [loadingProposedBlocks, setLoadingProposedBlocks] = useState(true);
     const [loadingWithdrawals, setLoadingWithdrawals] = useState(true);
+    const [blockGenesis, setBlockGenesis] = useState(0);
 
     // UseEffect
     useEffect(() => {
@@ -90,6 +88,8 @@ const ValidatorComponent = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [network, id]);
 
+
+
     const handleMouseMove = (e: any) => {
         if (containerRef.current) {
             const x = e.pageX;
@@ -103,8 +103,7 @@ const ValidatorComponent = () => {
         }
     };
 
-    //TOP TABLE
-    //View top table validator
+    
     const getValidator = async () => {
         try {
             setLoadingValidator(true);
@@ -113,7 +112,7 @@ const ValidatorComponent = () => {
             const day = 225;
             const week = 1575;
 
-            const [responseHour, responseDay, responseWeek] = await Promise.all([
+            const [responseHour, responseDay, responseWeek, genesisBlock] = await Promise.all([
                 axiosClient.get(`/api/validators/${id}`, {
                     params: {
                         network,
@@ -132,8 +131,14 @@ const ValidatorComponent = () => {
                         numberEpochs: week,
                     },
                 }),
+                axiosClient.get(`/api/networks/block/genesis`, {
+                    params: {
+                        network,
+                    },
+                }),
             ]);
 
+            setBlockGenesis(genesisBlock.data.block_genesis);
             setValidatorHour(responseHour.data.validator);
             setValidatorDay(responseDay.data.validator);
             setValidatorWeek(responseWeek.data.validator);
@@ -493,7 +498,7 @@ const ValidatorComponent = () => {
                             </div>
 
                             <p className='w-[25%]'>
-                                {new Date(FIRST_BLOCK + Number(element.f_proposer_slot) * 12000).toLocaleString(
+                                {new Date(blockGenesis + Number(element.f_proposer_slot) * 12000).toLocaleString(
                                     'ja-JP'
                                 )}
                             </p>
@@ -571,7 +576,7 @@ const ValidatorComponent = () => {
                                     Datetime:
                                 </p>
                                 <p className='uppercase'>
-                                    {new Date(FIRST_BLOCK + Number(element.f_proposer_slot) * 12000).toLocaleString(
+                                    {new Date(blockGenesis + Number(element.f_proposer_slot) * 12000).toLocaleString(
                                         'ja-JP'
                                     )}
                                 </p>
@@ -670,7 +675,7 @@ const ValidatorComponent = () => {
                             </div>
 
                             <p className='w-[25%]'>
-                                {new Date(FIRST_BLOCK + Number(element.f_slot) * 12000).toLocaleString('ja-JP')}
+                                {new Date(blockGenesis + Number(element.f_slot) * 12000).toLocaleString('ja-JP')}
                             </p>
 
                             <p className='w-[25%]'>{(element.f_amount / 10 ** 9).toLocaleString()} ETH</p>
@@ -739,7 +744,7 @@ const ValidatorComponent = () => {
                                 Datetime:
                             </p>
                             <p className='uppercase'>
-                                {new Date(FIRST_BLOCK + Number(element.f_slot) * 12000).toLocaleString('ja-JP')}
+                                {new Date(blockGenesis + Number(element.f_slot) * 12000).toLocaleString('ja-JP')}
                             </p>
                         </div>
 

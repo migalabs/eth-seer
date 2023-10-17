@@ -22,7 +22,7 @@ import LinkEntity from '../../../components/ui/LinkEntity';
 import { Block, Withdrawal } from '../../../types';
 
 // Constants
-import { FIRST_BLOCK, ADDRESS_ZERO, ADDRESS_ZERO_SHORT } from '../../../constants';
+import { ADDRESS_ZERO, ADDRESS_ZERO_SHORT } from '../../../constants';
 
 type CardProps = {
     title: string;
@@ -85,6 +85,7 @@ const Slot = () => {
     const [loadingBlock, setLoadingBlock] = useState<boolean>(true);
     const [loadingWithdrawals, setLoadingWithdrawals] = useState<boolean>(true);
     const [desktopView, setDesktopView] = useState(true);
+    const [blockGenesis, setBlockGenesis] = useState(0);
 
     // UseEffect
     useEffect(() => {
@@ -108,6 +109,8 @@ const Slot = () => {
     const shuffle = useCallback(() => {
         const text: string = getCountdownText();
         setCountdownText(text);
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -122,17 +125,25 @@ const Slot = () => {
         try {
             setLoadingBlock(true);
 
-            const response = await axiosClient.get(`/api/slots/${id}`, {
-                params: {
-                    network,
-                },
-            });
+            const [response, genesisBlock] = await Promise.all([
+                axiosClient.get(`/api/slots/${id}`, {
+                    params: {
+                        network,
+                    },
+                }),
+                axiosClient.get(`/api/networks/block/genesis`, {
+                    params: {
+                        network,
+                    },
+                }),
+            ]);
 
             const blockResponse: Block = response.data.block;
             setBlock(blockResponse);
+            setBlockGenesis(genesisBlock.data.block_genesis);
 
             if (!blockResponse) {
-                const expectedTimestamp = (FIRST_BLOCK + Number(id) * 12000) / 1000;
+                const expectedTimestamp = (genesisBlock.data.block_genesis + Number(id) * 12000) / 1000;
 
                 setBlock({
                     f_epoch: Math.floor(Number(id) / 32),
@@ -200,7 +211,7 @@ const Slot = () => {
             if (block.f_timestamp) {
                 text = new Date(block.f_timestamp * 1000).toLocaleString('ja-JP');
             } else {
-                text = new Date(FIRST_BLOCK + Number(id) * 12000).toLocaleString('ja-JP');
+                text = new Date(blockGenesis + Number(id) * 12000).toLocaleString('ja-JP');
             }
         }
 
@@ -211,7 +222,7 @@ const Slot = () => {
         let text = '';
 
         if (!existsBlockRef.current) {
-            const expectedTimestamp = (FIRST_BLOCK + slotRef.current * 12000) / 1000;
+            const expectedTimestamp = (blockGenesis + slotRef.current * 12000) / 1000;
             const timeDifference = new Date(expectedTimestamp * 1000).getTime() - new Date().getTime();
 
             const minutesMiliseconds = 1000 * 60;
