@@ -18,12 +18,12 @@ import ViewMoreButton from '../../components/ui/ViewMoreButton';
 import { Slot } from '../../types';
 
 const Slots = () => {
+    // Theme Mode Context
+    const { themeMode } = useContext(ThemeModeContext) ?? {};
+
     // Router
     const router = useRouter();
     const { network } = router.query;
-
-    // Theme Mode Context
-    const { themeMode } = useContext(ThemeModeContext) ?? {};
 
     // States
     const [slots, setSlots] = useState<Slot[]>([]);
@@ -103,7 +103,7 @@ const Slots = () => {
                 </h2>
             </div>
 
-            <div className='mx-auto w-11/12 md:w-10/12 my-6'>{slots.length > 0 && <SlotsList slots={slots} />}</div>
+            <div className='mx-auto w-11/12 md:w-10/12 my-4'>{slots.length > 0 && <SlotsList slots={slots} />}</div>
 
             {loading && (
                 <div className='my-6'>

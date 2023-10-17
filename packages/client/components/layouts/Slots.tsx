@@ -4,7 +4,6 @@ import React, { useState, useRef, useContext, useEffect } from 'react';
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
 // Components
-import BlockImage from '../../components/ui/BlockImage';
 import LinkValidator from '../../components/ui/LinkValidator';
 import LinkSlot from '../../components/ui/LinkSlot';
 import LinkEntity from '../../components/ui/LinkEntity';
@@ -50,7 +49,8 @@ const Slots = ({ slots }: Props) => {
         }
     };
 
-    const getContentSlots = () => {
+    //View slots table desktop
+    const getContentSlotsDesktop = () => {
         const titles = ['Block', 'Entity', 'Proposer', 'Slot', 'Datetime', 'Withdrawals'];
         return (
             <div
@@ -60,7 +60,7 @@ const Slots = ({ slots }: Props) => {
             >
                 <div>
                     <div
-                        className='font-semibold flex gap-4 py-3 text-center items-center flex-row justify-around md:text-[16px] text-[12px]'
+                        className='font-semibold flex gap-4 py-3 text-center items-center flex-row justify-around text-[16px]'
                         style={{
                             color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
                         }}
@@ -74,7 +74,7 @@ const Slots = ({ slots }: Props) => {
 
                     {slots.map(element => (
                         <div
-                            className='flex gap-4 py-3 text-center font-medium items-center flex-row justify-around text-[12px] md:text-[14px] rounded-md border-2 border-white my-2'
+                            className='flex gap-4 py-3 text-center font-medium items-center flex-row justify-around text-[16px] rounded-md border-2 border-white my-2'
                             style={{
                                 backgroundColor: themeMode?.darkMode
                                     ? 'var(--bgFairDarkMode)'
@@ -129,25 +129,25 @@ const Slots = ({ slots }: Props) => {
 
                     {slots.length === 0 && (
                         <div className='flex justify-center p-2'>
-                            <p className='uppercase text-[14px] md:text-[16px]'>No slots</p>
+                            <p className='uppercase text-[16px]'>No slots</p>
                         </div>
                     )}
                 </div>
             </div>
         );
     };
-
+    //View slots table mobile
     const getContentSlotsMobile = () => {
         return (
             <div
-                className='my-6 flex flex-col gap-2 overflow-x-scroll overflow-y-hidden font-medium scrollbar-thin text-[12px]'
+                className='flex flex-col gap-2 font-medium text-[14px]'
                 style={{
                     color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                 }}
             >
                 {slots.map(slot => (
                     <div
-                        className='flex flex-row gap-x-10 text-[14px] md:text-[16px] py-4 items-center justify-center px-2 border-2 border-white rounded-md'
+                        className='flex flex-row items-center justify-around py-4 px-2 border-2 border-white rounded-md'
                         key={slot.f_proposer_slot}
                         style={{
                             backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
@@ -155,19 +155,17 @@ const Slots = ({ slots }: Props) => {
                             color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                         }}
                     >
-                        <div className='flex items-center '>
-                            <BlockState
-                                poolName={slot.f_pool_name}
-                                proposed={slot.f_proposed}
-                                width={80}
-                                height={80}
-                                showCheck
-                            />
-                        </div>
-                        <div className='flex flex-col items-start'>
-                            <div className='flex flex-row items-center gap-x-4'>
+                        <BlockState
+                            poolName={slot.f_pool_name}
+                            proposed={slot.f_proposed}
+                            width={80}
+                            height={80}
+                            showCheck
+                        />
+                        <div className='flex flex-col'>
+                            <div className='flex flex-row items-center justify-between gap-x-14 py-1'>
                                 <p
-                                    className='w-24 font-semibold'
+                                    className='font-semibold'
                                     style={{
                                         color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
                                     }}
@@ -177,9 +175,9 @@ const Slots = ({ slots }: Props) => {
                                 <LinkValidator validator={slot.f_val_idx} />
                             </div>
 
-                            <div className='flex flex-row items-center gap-x-4'>
+                            <div className='flex flex-row items-center justify-between py-1'>
                                 <p
-                                    className='w-24 font-semibold'
+                                    className='font-semibold'
                                     style={{
                                         color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
                                     }}
@@ -189,16 +187,16 @@ const Slots = ({ slots }: Props) => {
                                 <LinkSlot slot={slot.f_proposer_slot} />
                             </div>
 
-                            <div className='flex flex-row items-center gap-x-4'>
+                            <div className='flex flex-row items-center justify-between py-1'>
                                 <p
-                                    className='w-24 font-semibold'
+                                    className='font-semibold'
                                     style={{
                                         color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
                                     }}
                                 >
                                     Datetime:
                                 </p>
-                                <div className='flex flex-col gap-y-0.5'>
+                                <div className='flex flex-col justify-between py-1'>
                                     <p>
                                         {new Date(
                                             FIRST_BLOCK + Number(slot.f_proposer_slot) * 12000
@@ -220,9 +218,9 @@ const Slots = ({ slots }: Props) => {
                                 </div>
                             </div>
 
-                            <div className='flex flex-row items-center gap-x-4'>
+                            <div className='flex flex-row items-center justify-between'>
                                 <p
-                                    className='w-24 font-semibold'
+                                    className='font-semibold'
                                     style={{
                                         color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
                                     }}
@@ -237,14 +235,14 @@ const Slots = ({ slots }: Props) => {
 
                 {slots.length === 0 && (
                     <div className='flex justify-center p-2'>
-                        <p className='uppercase text-[14px] md:text-[16px]'>No slots</p>
+                        <p className='uppercase text-[14px]'>No slots</p>
                     </div>
                 )}
             </div>
         );
     };
 
-    return <div>{desktopView ? getContentSlots() : getContentSlotsMobile()}</div>;
+    return <div>{desktopView ? getContentSlotsDesktop() : getContentSlotsMobile()}</div>;
 };
 
 export default Slots;
