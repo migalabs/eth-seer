@@ -36,6 +36,7 @@ const Validators = () => {
     const [loading, setLoading] = useState(false);
     const [desktopView, setDesktopView] = useState(true);
 
+    // UseEffect
     useEffect(() => {
         if (network && validators.length === 0) {
             getValidators(0);
@@ -43,13 +44,26 @@ const Validators = () => {
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [network]);
-
     useEffect(() => {
         setDesktopView(window !== undefined && window.innerWidth > 768);
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    const handleMouseMove = (e: any) => {
+        if (containerRef.current) {
+            const x = e.pageX;
+            const limit = 0.15;
+
+            if (x < containerRef.current.clientWidth * limit) {
+                containerRef.current.scrollLeft -= 10;
+            } else if (x > containerRef.current.clientWidth * (1 - limit)) {
+                containerRef.current.scrollLeft += 10;
+            }
+        }
+    };
+
+    //VALIDATORS TABLE
     const getValidators = async (page: number) => {
         try {
             setLoading(true);
@@ -76,20 +90,6 @@ const Validators = () => {
             setLoading(false);
         }
     };
-
-    const handleMouseMove = (e: any) => {
-        if (containerRef.current) {
-            const x = e.pageX;
-            const limit = 0.15;
-
-            if (x < containerRef.current.clientWidth * limit) {
-                containerRef.current.scrollLeft -= 10;
-            } else if (x > containerRef.current.clientWidth * (1 - limit)) {
-                containerRef.current.scrollLeft += 10;
-            }
-        }
-    };
-
     //View table desktop
     const getValidatorsDesktop = () => {
         return (
@@ -150,7 +150,7 @@ const Validators = () => {
         return (
             <div
                 ref={containerRef}
-                className='my-6 flex flex-col gap-2 font-medium text-[14px] w-11/12 mx-auto'
+                className='mt-4 flex flex-col gap-2 font-medium text-[14px] w-11/12 mx-auto'
                 onMouseMove={handleMouseMove}
                 style={{
                     color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
@@ -218,6 +218,8 @@ const Validators = () => {
             </div>
         );
     };
+
+    //OVERVIEW PAGE
     //Overview validators page
     return (
         <Layout hideMetaDescription>
@@ -240,7 +242,7 @@ const Validators = () => {
                 Ethereum Validators
             </h1>
             <div
-                className='mx-auto py-4 px-6 border-2 border-[var(--purple)] rounded-md flex w-11/12 lg:w-10/12'
+                className='mx-auto md:my-0 my-2 py-4 px-6 border-2 border-[var(--purple)] rounded-md flex w-11/12 lg:w-10/12'
                 style={{ background: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--bgMainLightMode)' }}
             >
                 <h2
@@ -257,7 +259,7 @@ const Validators = () => {
             </div>
             <div>{desktopView ? getValidatorsDesktop() : getValidatorsMobile()}</div>;
             {loading && (
-                <div className='my-6'>
+                <div className='mb-4'>
                     <Loader />
                 </div>
             )}

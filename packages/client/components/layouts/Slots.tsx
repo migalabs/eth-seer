@@ -148,12 +148,12 @@ const Slots = ({ slots }: Props) => {
                 {slots.map(slot => (
                     <div
                         className='flex flex-row items-center justify-around py-4 px-2 border-2 border-white rounded-md'
-                        key={slot.f_proposer_slot}
                         style={{
                             backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
                             boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
                             color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                         }}
+                        key={slot.f_proposer_slot}
                     >
                         <BlockState
                             poolName={slot.f_pool_name}
