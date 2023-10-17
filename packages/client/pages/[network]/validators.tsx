@@ -20,12 +20,12 @@ import LinkEntity from '../../components/ui/LinkEntity';
 import { Validator } from '../../types';
 
 const Validators = () => {
+    // Theme Mode Context
+    const { themeMode } = useContext(ThemeModeContext) ?? {};
+
     // Router
     const router = useRouter();
     const { network } = router.query;
-
-    // Theme Mode Context
-    const { themeMode } = useContext(ThemeModeContext) ?? {};
 
     // Refs
     const containerRef = useRef<HTMLInputElement>(null);
@@ -34,6 +34,7 @@ const Validators = () => {
     const [validators, setValidators] = useState<Validator[]>([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [loading, setLoading] = useState(false);
+    const [desktopView, setDesktopView] = useState(true);
 
     useEffect(() => {
         if (network && validators.length === 0) {
@@ -42,6 +43,12 @@ const Validators = () => {
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [network]);
+
+    useEffect(() => {
+        setDesktopView(window !== undefined && window.innerWidth > 768);
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const getValidators = async (page: number) => {
         try {
@@ -83,44 +90,9 @@ const Validators = () => {
         }
     };
 
-    return (
-        <Layout hideMetaDescription>
-            <Head>
-                <title>Validators of the Ethereum Beacon Chain - EthSeer.io</title>
-                <meta
-                    name='description'
-                    content='Explore Ethereum validators, the entity they belong to, the blocks they have proposed, and their performance over the last week.'
-                />
-                <meta name='keywords' content='Ethereum, Staking, Validators, PoS, Rewards, Performance, Slashing' />
-                <link rel='canonical' href='https://ethseer.io/validators' />
-            </Head>
-
-            <h1
-                className='text-center font-semibold text-[32px] md:text-[50px] mt-10 xl:mt-0 capitalize'
-                style={{
-                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                }}
-            >
-                Ethereum Validators
-            </h1>
-
-            <div
-                className='mx-auto py-4 px-6 border-2 border-[var(--purple)] rounded-md flex w-11/12 lg:w-10/12'
-                style={{ background: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--bgMainLightMode)' }}
-            >
-                <h2
-                    className='text-[14px] 2xl:text-[18px] mx-auto text-center leading-5'
-                    style={{
-                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                    }}
-                >
-                    Validators participate in the consensus protocol by proposing and validating blocks. They are
-                    subject to rewards and penalties based on their behavior. Ethseer displays information about the
-                    current validators in the Beacon Chain, including detailed information about each validator and its
-                    performance.
-                </h2>
-            </div>
-
+    //View table desktop
+    const getValidatorsDesktop = () => {
+        return (
             <div
                 ref={containerRef}
                 className='flex flex-col mb-4 px-6 md:px-0 overflow-x-scroll overflow-y-hidden scrollbar-thin text-center sm:items-center'
@@ -171,13 +143,124 @@ const Validators = () => {
                     ))}
                 </div>
             </div>
+        );
+    };
+    //View table mobile
+    const getValidatorsMobile = () => {
+        return (
+            <div
+                ref={containerRef}
+                className='my-6 flex flex-col gap-2 font-medium text-[12px] w-11/12 mx-auto'
+                onMouseMove={handleMouseMove}
+                style={{
+                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
+                }}
+            >
+                {validators.map((validator: Validator) => (
+                    <div
+                        key={validator.f_val_idx}
+                        className='flex flex-col gap-y-2 text-[14px] md:text-[16px] py-4 px-14 border-2 border-white rounded-md'
+                        style={{
+                            backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
+                            boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
+                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
+                        }}
+                    >
+                        <div className='flex flex-row items-center justify-between'>
+                            <p
+                                className='font-semibold'
+                                style={{
+                                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
+                                }}
+                            >
+                                Validator ID
+                            </p>
+                            <LinkValidator validator={validator.f_val_idx} mxAuto />
+                        </div>
 
+                        <div className='flex flex-row items-center justify-between'>
+                            <p
+                                className='font-semibold'
+                                style={{
+                                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
+                                }}
+                            >
+                                Balance
+                            </p>
+                            <p>{validator.f_balance_eth} ETH</p>
+                        </div>
+
+                        <div className='flex flex-row items-center justify-between uppercase'>
+                            <p
+                                className='capitalize font-semibold'
+                                style={{
+                                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
+                                }}
+                            >
+                                Entity
+                            </p>
+                            <LinkEntity entity={validator.f_pool_name || 'others'} />
+                        </div>
+
+                        <div className='flex flex-row items-center justify-between'>
+                            <p
+                                className='font-semibold'
+                                style={{
+                                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
+                                }}
+                            >
+                                Status
+                            </p>
+                            <ValidatorStatus status={validator.f_status} />
+                        </div>
+                    </div>
+                ))}
+            </div>
+        );
+    };
+    //Overview validators page
+    return (
+        <Layout hideMetaDescription>
+            <Head>
+                <title>Validators of the Ethereum Beacon Chain - EthSeer.io</title>
+                <meta
+                    name='description'
+                    content='Explore Ethereum validators, the entity they belong to, the blocks they have proposed, and their performance over the last week.'
+                />
+                <meta name='keywords' content='Ethereum, Staking, Validators, PoS, Rewards, Performance, Slashing' />
+                <link rel='canonical' href='https://ethseer.io/validators' />
+            </Head>
+            {/* Header */}
+            <h1
+                className='text-center font-semibold text-[32px] md:text-[50px] mt-10 xl:mt-0 capitalize'
+                style={{
+                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
+                }}
+            >
+                Ethereum Validators
+            </h1>
+            <div
+                className='mx-auto py-4 px-6 border-2 border-[var(--purple)] rounded-md flex w-11/12 lg:w-10/12'
+                style={{ background: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--bgMainLightMode)' }}
+            >
+                <h2
+                    className='text-[14px] 2xl:text-[18px] mx-auto text-center leading-5'
+                    style={{
+                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
+                    }}
+                >
+                    Validators participate in the consensus protocol by proposing and validating blocks. They are
+                    subject to rewards and penalties based on their behavior. Ethseer displays information about the
+                    current validators in the Beacon Chain, including detailed information about each validator and its
+                    performance.
+                </h2>
+            </div>
+            <div>{desktopView ? getValidatorsDesktop() : getValidatorsMobile()}</div>;
             {loading && (
                 <div className='my-6'>
                     <Loader />
                 </div>
             )}
-
             <ViewMoreButton onClick={() => getValidators(currentPage + 1)} />
         </Layout>
     );
