@@ -140,7 +140,7 @@ const Slots = ({ slots }: Props) => {
     const getContentSlotsMobile = () => {
         return (
             <div
-                className='flex flex-col gap-2 font-medium text-[14px]'
+                className='flex flex-col gap-2 font-medium text-[14px] my-4'
                 style={{
                     color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                 }}
