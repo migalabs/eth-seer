@@ -25,6 +25,7 @@ type Props = {
     boxShadow: string;
 };
 
+//Card style
 const CardContent = ({ content, bg, color, boxShadow }: Props) => {
     return (
         <span
@@ -37,12 +38,12 @@ const CardContent = ({ content, bg, color, boxShadow }: Props) => {
 };
 
 const EntityComponent = () => {
+    // Theme Mode Context
+    const { themeMode } = useContext(ThemeModeContext) ?? {};
+
     // Next router
     const router = useRouter();
     const { network, name } = router.query;
-
-    // Theme Mode Context
-    const { themeMode } = useContext(ThemeModeContext) ?? {};
 
     // States
     const [entityHour, setEntityHour] = useState<Entity | null>(null);
@@ -61,6 +62,7 @@ const EntityComponent = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [name]);
 
+    //Entity
     const getEntity = async () => {
         try {
             setLoading(true);
@@ -239,6 +241,7 @@ const EntityComponent = () => {
         );
     };
 
+    //OVERVIEW PAGE
     return (
         <Layout>
             <div className='flex gap-x-3 justify-center items-center mt-14 xl:mt-0 mb-5'>

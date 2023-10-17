@@ -32,7 +32,7 @@ const EntityCard = ({ index, pool }: Props) => {
 
                 <div className='flex flex-col items-center md:items-start'>
                     <span
-                        className='text-[14px] md:text-[16px] font-semibold text-center md:text-start'
+                        className='text-[14px] md:text-[16px] font-semibold uppercase text-center md:text-start'
                         style={{
                             wordWrap: 'break-word',
                             maxWidth: '150px',
