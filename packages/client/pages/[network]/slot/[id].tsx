@@ -64,12 +64,12 @@ const Card = ({ title, text, content }: CardProps) => {
 };
 
 const Slot = () => {
+    // Theme Mode Context
+    const { themeMode } = useContext(ThemeModeContext) ?? {};
+
     // Next router
     const router = useRouter();
     const { network, id } = router.query;
-
-    // Theme Mode Context
-    const { themeMode } = useContext(ThemeModeContext) ?? {};
 
     // Refs
     const slotRef = useRef(0);
@@ -84,6 +84,7 @@ const Slot = () => {
     const [tabPageIndex, setTabPageIndex] = useState<number>(0);
     const [loadingBlock, setLoadingBlock] = useState<boolean>(true);
     const [loadingWithdrawals, setLoadingWithdrawals] = useState<boolean>(true);
+    const [desktopView, setDesktopView] = useState(true);
 
     // UseEffect
     useEffect(() => {
@@ -98,6 +99,11 @@ const Slot = () => {
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [network, id]);
+    useEffect(() => {
+        setDesktopView(window !== undefined && window.innerWidth > 768);
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const shuffle = useCallback(() => {
         const text: string = getCountdownText();
@@ -251,6 +257,7 @@ const Slot = () => {
         }
     };
 
+    //Tabs
     const getSelectedTab = () => {
         switch (tabPageIndex) {
             case 0:
@@ -260,10 +267,11 @@ const Slot = () => {
                 return getExecutionLayerView();
 
             case 2:
-                return getWithdrawlsView();
+                return desktopView ? getWithdrawlsViewDesktop() : getWithdrawlsViewMobile();
         }
     };
 
+    //Tab sections information
     const getInformationView = () => {
         return (
             <div className='flex flex-col w-11/12 md:w-1/2 mx-auto'>
@@ -294,6 +302,7 @@ const Slot = () => {
         );
     };
 
+    //Overview tab view
     const getConsensusLayerView = () => {
         return (
             <div
@@ -385,10 +394,6 @@ const Slot = () => {
                         <Card title='Deposits' text={block?.f_proposed ? block?.f_deposits?.toLocaleString() : '---'} />
                     )}
                 </div>
-
-                {/* <div className='hidden md:block flex-shrink'>
-                    <BlockGif poolName={block?.f_pool_name ?? 'others'} width={150} height={150} />
-                </div> */}
             </div>
         );
     };
@@ -433,7 +438,8 @@ const Slot = () => {
         );
     };
 
-    const getWithdrawlsView = () => {
+    //View withdrawals table desktop
+    const getWithdrawlsViewDesktop = () => {
         return (
             <div
                 ref={containerRef}
@@ -492,12 +498,94 @@ const Slot = () => {
         );
     };
 
+    //View withdrawals table mobile
+    const getWithdrawlsViewMobile = () => {
+        return (
+            <div
+                ref={containerRef}
+                className='my-6 flex flex-col gap-2 font-medium text-[12px]'
+                style={{
+                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
+                }}
+                onMouseMove={handleMouseMove}
+            >
+                {loadingWithdrawals ? (
+                    <div className='mt-6'>
+                        <Loader />
+                    </div>
+                ) : (
+                    <div>
+                        {withdrawals.map(element => (
+                            <div
+                                className='flex my-2 flex-col gap-y-2 text-[14px] md:text-[16px] py-4 px-14 border-2 border-white rounded-md'
+                                style={{
+                                    backgroundColor: themeMode?.darkMode
+                                        ? 'var(--bgFairDarkMode)'
+                                        : 'var(--bgMainLightMode)',
+                                    boxShadow: themeMode?.darkMode
+                                        ? 'var(--boxShadowCardDark)'
+                                        : 'var(--boxShadowCardLight)',
+                                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
+                                }}
+                                key={element.f_val_idx}
+                            >
+                                <div className='flex flex-row items-center justify-between'>
+                                    <p
+                                        className='font-semibold'
+                                        style={{
+                                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
+                                        }}
+                                    >
+                                        Validator
+                                    </p>
+                                    <LinkValidator validator={element.f_val_idx} mxAuto />
+                                </div>
+
+                                <div className='flex flex-row items-center justify-between'>
+                                    <p
+                                        className='font-semibold'
+                                        style={{
+                                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
+                                        }}
+                                    >
+                                        Address
+                                    </p>
+                                    <p>{getShortAddress(element?.f_address)}</p>
+                                </div>
+
+                                <div className='flex flex-row items-center justify-between'>
+                                    <p
+                                        className='font-semibold'
+                                        style={{
+                                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
+                                        }}
+                                    >
+                                        Amount
+                                    </p>
+                                    <p>{(element.f_amount / 10 ** 9).toLocaleString()} ETH</p>
+                                </div>
+                            </div>
+                        ))}
+
+                        {withdrawals.length == 0 && (
+                            <div className='flex justify-center p-2'>
+                                <p className='uppercase text-[14px] md:text-[16px]'>No withdrawals</p>
+                            </div>
+                        )}
+                    </div>
+                )}
+            </div>
+        );
+    };
+
+    //Overview slot page
     return (
         <Layout>
             <Head>
                 <meta name='robots' property='noindex' />
             </Head>
 
+            {/* Header */}
             <div className='flex gap-x-3 justify-center items-center mt-14 xl:mt-0 mb-5'>
                 <LinkSlot slot={Number(id) - 1}>
                     <Arrow direction='left' />
