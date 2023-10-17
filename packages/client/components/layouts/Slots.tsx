@@ -38,7 +38,7 @@ const Slots = ({ slots }: Props) => {
     useEffect(() => {
         setDesktopView(window !== undefined && window.innerWidth > 768);
 
-        if (blockGenesis == 0) {
+        if (network && blockGenesis == 0) {
             getBlockGenesis(network as string);
         }
 

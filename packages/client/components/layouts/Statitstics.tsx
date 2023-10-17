@@ -70,7 +70,7 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
             setLoadingEpochs(false);
         }
 
-        if (blockGenesis == 0) {
+        if (network && blockGenesis == 0) {
             getBlockGenesis(network as string);
         }
 
@@ -101,7 +101,6 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
                     network,
                 },
             });
-
             setBlockGenesis(genesisBlock.data.block_genesis);
         } catch (error) {
             console.log(error);
