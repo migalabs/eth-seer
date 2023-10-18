@@ -23,6 +23,7 @@ import { Block, Withdrawal } from '../../../types';
 
 // Constants
 import { ADDRESS_ZERO, ADDRESS_ZERO_SHORT } from '../../../constants';
+import EpochAnimation from '../../../components/layouts/EpochAnimation';
 
 type CardProps = {
     title: string;
@@ -597,25 +598,26 @@ const Slot = () => {
             </Head>
 
             {/* Header */}
-            <div className='flex gap-x-3 justify-center items-center mt-14 xl:mt-0 mb-5'>
-                <LinkSlot slot={Number(id) - 1}>
-                    <Arrow direction='left' />
-                </LinkSlot>
+            {id && (
+                <div className='flex gap-x-3 justify-center items-center mt-14 xl:mt-0 mb-5'>
+                    <LinkSlot slot={Number(id) - 1}>
+                        <Arrow direction='left' />
+                    </LinkSlot>
 
-                <h1
-                    className='text-center font-semibold text-[32px] md:text-[50px]'
-                    style={{
-                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                    }}
-                >
-                    Slot {Number(id)?.toLocaleString()}
-                </h1>
+                    <h1
+                        className='text-center font-semibold text-[32px] md:text-[50px]'
+                        style={{
+                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
+                        }}
+                    >
+                        Slot {Number(id)?.toLocaleString()}
+                    </h1>
 
-                <LinkSlot slot={Number(id) + 1}>
-                    <Arrow direction='right' />
-                </LinkSlot>
-            </div>
-
+                    <LinkSlot slot={Number(id) + 1}>
+                        <Arrow direction='right' />
+                    </LinkSlot>
+                </div>
+            )}
             {loadingBlock && (
                 <div className='mt-6'>
                     <Loader />
@@ -623,6 +625,7 @@ const Slot = () => {
             )}
 
             {block && !loadingBlock && getInformationView()}
+            {!block && !loadingBlock && <EpochAnimation notSlot />}
         </Layout>
     );
 };

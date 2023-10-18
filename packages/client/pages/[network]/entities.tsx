@@ -12,6 +12,7 @@ import EntityCard from '../../components/ui/EntityCard';
 import { useRouter } from 'next/router';
 import axiosClient from '../../config/axios';
 import Loader from '../../components/ui/Loader';
+import Animation from '../../components/layouts/Animation';
 
 const Entities = () => {
     // Theme Mode Context
@@ -24,6 +25,7 @@ const Entities = () => {
     // States
     const [entities, setEntities] = useState<string[]>([]);
     const [loading, setLoading] = useState(true);
+    const [animation, setAnimation] = useState(false);
 
     useEffect(() => {
         if (network && entities.length === 0) {
@@ -43,6 +45,9 @@ const Entities = () => {
                 },
             });
             const poolNames = response.data.entities.rows.map((pool: any) => pool.f_pool_name);
+            if (poolNames.length == 0) {
+                setAnimation(true);
+            }
             setEntities(poolNames);
         } catch (error) {
             console.log(error);
@@ -99,6 +104,7 @@ const Entities = () => {
                 {entities.length > 0 &&
                     entities.map((pool, index) => <EntityCard key={pool} index={index + 1} pool={pool} />)}
             </div>
+            {animation && <Animation text={`There are no entities`} />}
         </Layout>
     );
 };

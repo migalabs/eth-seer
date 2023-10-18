@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 
@@ -59,6 +59,7 @@ const EpochComponent = () => {
     const [loadingEpoch, setLoadingEpoch] = useState(true);
     const [loadingSlots, setLoadingSlots] = useState(true);
     const [blockGenesis, setBlockGenesis] = useState(0);
+    const [calculatingText, setCalculatingText] = useState('');
 
     // UseEffect
     useEffect(() => {
@@ -73,6 +74,21 @@ const EpochComponent = () => {
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [network, id]);
+
+    const shuffle = useCallback(() => {
+        setCalculatingText(prevState => {
+            if (!prevState || prevState === 'Calculating...') {
+                return 'Calculating';
+            } else {
+                return prevState + '.';
+            }
+        });
+    }, []);
+
+    useEffect(() => {
+        const intervalID = setInterval(shuffle, 1000);
+        return () => clearInterval(intervalID);
+    }, [shuffle]);
 
     //Epoch
     const getEpoch = async () => {
@@ -167,7 +183,7 @@ const EpochComponent = () => {
                 <div className='flex flex-row items-center gap-x-5'>
                     <p className={` w-40 sm:w-60 text-${themeMode?.darkMode ? 'white' : 'black'}`}>Datetime (Local):</p>
                     <p className={`text-${themeMode?.darkMode ? 'white' : 'black'}`}>
-                        {new Date(blockGenesis + Number(epoch?.f_slot) * 12000).toLocaleString('ja-JP')}
+                        {new Date(blockGenesis + Number(id) * 32 * 12000).toLocaleString('ja-JP')}
                     </p>
                 </div>
                 <div className='flex flex-col sm:flex-row gap-x-5'>
@@ -193,7 +209,10 @@ const EpochComponent = () => {
                     <p className={` w-40 sm:w-60 text-${themeMode?.darkMode ? 'white' : 'black'}`}>
                         Attestation Accuracy:
                     </p>
-                    {epoch && (
+                    {epoch && epoch.f_epoch === undefined && (
+                        <p className='w-32 uppercase  ml-10 mt-2 text-start'>{calculatingText}</p>
+                    )}
+                    {epoch && epoch.f_epoch !== undefined && (
                         <div
                             className={`flex flex-col font-medium xl:flex-row items-center gap-2 md:gap-4 text-[12px] md:text-[14px] text-${
                                 themeMode?.darkMode ? 'white' : 'black'
@@ -253,8 +272,11 @@ const EpochComponent = () => {
                     <p className={` w-40 sm:w-60 text-${themeMode?.darkMode ? 'white' : 'black'}`}>
                         Voting Participation:
                     </p>
+                    {epoch && epoch.f_epoch === undefined && (
+                        <p className='w-32 uppercase ml-10 mt-2 text-start'>{calculatingText}</p>
+                    )}
                     <div className='pt-3 py-1 mx-auto md:mx-0'>
-                        {epoch && (
+                        {epoch && epoch.f_epoch !== undefined && (
                             <ProgressSmoothBar
                                 title=''
                                 color='#343434'
@@ -291,25 +313,26 @@ const EpochComponent = () => {
             </Head>
 
             {/* Header */}
-            <div className='flex gap-x-3 justify-center items-center mb-5 mt-14 xl:mt-0'>
-                <LinkEpoch epoch={Number(id) - 1}>
-                    <Arrow direction='left' />
-                </LinkEpoch>
+            {id && (
+                <div className='flex gap-x-3 justify-center items-center mb-5 mt-14 xl:mt-0'>
+                    <LinkEpoch epoch={Number(id) - 1}>
+                        <Arrow direction='left' />
+                    </LinkEpoch>
 
-                <h1
-                    className='text-center font-semibold text-[32px] md:text-[50px]'
-                    style={{
-                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                    }}
-                >
-                    Epoch {Number(id)?.toLocaleString()}
-                </h1>
+                    <h1
+                        className='text-center font-semibold text-[32px] md:text-[50px]'
+                        style={{
+                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
+                        }}
+                    >
+                        Epoch {Number(id)?.toLocaleString()}
+                    </h1>
 
-                <LinkEpoch epoch={Number(id) + 1}>
-                    <Arrow direction='right' />
-                </LinkEpoch>
-            </div>
-
+                    <LinkEpoch epoch={Number(id) + 1}>
+                        <Arrow direction='right' />
+                    </LinkEpoch>
+                </div>
+            )}
             {loadingEpoch && (
                 <div className='mt-6'>
                     <Loader />
