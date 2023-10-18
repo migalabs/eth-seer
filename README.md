@@ -63,6 +63,17 @@ $ npm run start
 ```
 
 - Connect to database
+An example database connection is:
+```
+NETWORKS='[
+        { "network": "mainnet", "user": "ethseer-reader", "host": <ip>, "name": "ethseer-mainnet", "port": 5432, "password": "pass" },
+        { "network": "goerli", "user": "ethseer-reader", "host": <ip>, "name": "ethseer-goerli", "port": 5432, "password": "pass" },
+        ]'
+```
+
+
+### :package: Bundle Setup
+Ethseer's data is powered by [GotEth](https://github.com/migalabs/goteth). Thus, please refer [to this repository](https://github.com/migalabs/eth-coffee), which contains all the needed configurations to easily run GotEth with Ethseer.
 
 ## :cherry_blossom: Community
 
