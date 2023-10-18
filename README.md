@@ -169,6 +169,6 @@ If you have any questions related to our platform, projects or services, please 
    - <a href="https://discord.com/invite/DzVUQAgmcw">Discord</a>
 
 ## :lock: License
-Ethseer is licensed under the [MIT](https://github.com/all-contributors/all-contributors/blob/master/LICENSE) License.
+Ethseer is licensed under the [BSD-3-Clause](https://opensource.org/license/bsd-3-clause/) License.
 
 **[⬆ back to top](#ledger-table-of-contents)**
