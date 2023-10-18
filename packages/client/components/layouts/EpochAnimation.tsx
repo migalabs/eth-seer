@@ -4,16 +4,19 @@ import React, { useContext } from 'react';
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
 type Props = {
-    notEpoch: boolean;
+    notEpoch?: boolean;
+    notSlot?: boolean;
 };
 
-const EpochAnimation = ({ notEpoch }: Props) => {
+const EpochAnimation = ({ notEpoch, notSlot }: Props) => {
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
 
     const getText = () => {
         if (notEpoch) {
             return 'Epoch not saved yet';
+        } else if (notSlot) {
+            return 'Slot not saved yet';
         } else {
             return "We're not there yet";
         }

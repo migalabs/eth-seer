@@ -88,8 +88,6 @@ const ValidatorComponent = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [network, id]);
 
-
-
     const handleMouseMove = (e: any) => {
         if (containerRef.current) {
             const x = e.pageX;
@@ -103,7 +101,6 @@ const ValidatorComponent = () => {
         }
     };
 
-    
     const getValidator = async () => {
         try {
             setLoadingValidator(true);
@@ -224,14 +221,14 @@ const ValidatorComponent = () => {
                         }}
                     />
                     <TabHeader
-                        header='24 Hours'
+                        header='1 Day'
                         isSelected={tabPageIndexValidatorPerformance === 1}
                         onClick={() => {
                             setTabPageIndexValidatorPerformance(1);
                         }}
                     />
                     <TabHeader
-                        header='1 week'
+                        header='1 Week'
                         isSelected={tabPageIndexValidatorPerformance === 2}
                         onClick={() => {
                             setTabPageIndexValidatorPerformance(2);
@@ -787,25 +784,26 @@ const ValidatorComponent = () => {
             </Head>
 
             {/* Header */}
-            <div className='flex gap-x-3 justify-center items-center mt-14 xl:mt-0 mb-5'>
-                <LinkValidator validator={Number(id) - 1}>
-                    <Arrow direction='left' />
-                </LinkValidator>
+            {id && (
+                <div className='flex gap-x-3 justify-center items-center mt-14 xl:mt-0 mb-5'>
+                    <LinkValidator validator={Number(id) - 1}>
+                        <Arrow direction='left' />
+                    </LinkValidator>
 
-                <h1
-                    className='text-center font-semibold text-[32px] md:text-[50px]'
-                    style={{
-                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                    }}
-                >
-                    Validator {Number(id)?.toLocaleString()}
-                </h1>
+                    <h1
+                        className='text-center font-semibold text-[32px] md:text-[50px]'
+                        style={{
+                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
+                        }}
+                    >
+                        Validator {Number(id)?.toLocaleString()}
+                    </h1>
 
-                <LinkValidator validator={Number(id) + 1}>
-                    <Arrow direction='right' />
-                </LinkValidator>
-            </div>
-
+                    <LinkValidator validator={Number(id) + 1}>
+                        <Arrow direction='right' />
+                    </LinkValidator>
+                </div>
+            )}
             {loadingValidator && (
                 <div className='mb-4'>
                     <Loader />
