@@ -21,13 +21,15 @@ import LinkEntity from '../../../components/ui/LinkEntity';
 // Types
 import { Block, Withdrawal } from '../../../types';
 
+// Constants
+import { ADDRESS_ZERO, ADDRESS_ZERO_SHORT } from '../../../constants';
+
 type CardProps = {
     title: string;
     text?: string;
     content?: React.ReactNode;
 };
 
-//Card style
 const Card = ({ title, text, content }: CardProps) => {
     // Theme Mode Context
     const { themeMode } = React.useContext(ThemeModeContext) ?? {};
@@ -202,7 +204,6 @@ const Slot = () => {
         return address && `${address.slice(0, 6)}...${address.slice(address.length - 6, address.length)}`;
     };
 
-    // Get Time Block
     const getTimeBlock = () => {
         let text;
 
@@ -217,7 +218,6 @@ const Slot = () => {
         return text + countdownText;
     };
 
-    // Get Countdown Text
     const getCountdownText = () => {
         let text = '';
 
@@ -255,7 +255,6 @@ const Slot = () => {
         return text;
     };
 
-    // Get Handle Mouse
     const handleMouseMove = (e: any) => {
         if (containerRef.current) {
             const x = e.pageX;
@@ -269,42 +268,53 @@ const Slot = () => {
         }
     };
 
-    //TABLE
-
-    //TABS
+    //Tabs
     const getSelectedTab = () => {
         switch (tabPageIndex) {
             case 0:
-                return getOverview();
+                return getConsensusLayerView();
 
             case 1:
-                return desktopView ? getWithdrawlsDesktop() : getWithdrawlsMobile();
+                return getExecutionLayerView();
+
+            case 2:
+                return desktopView ? getWithdrawlsViewDesktop() : getWithdrawlsViewMobile();
         }
     };
 
-    //TABS - Overview & withdrawals
+    //Tab sections information
     const getInformationView = () => {
         return (
             <div className='flex flex-col w-11/12 md:w-1/2 mx-auto'>
                 <div className='flex flex-col sm:flex-row gap-4'>
-                    <TabHeader header='Overview' isSelected={tabPageIndex === 0} onClick={() => setTabPageIndex(0)} />
+                    <TabHeader
+                        header='Consensus Layer'
+                        isSelected={tabPageIndex === 0}
+                        onClick={() => setTabPageIndex(0)}
+                    />
                     {existsBlock && (
                         <>
                             <TabHeader
-                                header='Withdrawls'
+                                header='Execution Layer'
                                 isSelected={tabPageIndex === 1}
                                 onClick={() => setTabPageIndex(1)}
+                            />
+                            <TabHeader
+                                header='Withdrawls'
+                                isSelected={tabPageIndex === 2}
+                                onClick={() => setTabPageIndex(2)}
                             />
                         </>
                     )}
                 </div>
+
                 {getSelectedTab()}
             </div>
         );
     };
 
-    //Overview tab - table
-    const getOverview = () => {
+    //Overview tab view
+    const getConsensusLayerView = () => {
         return (
             <div
                 className='rounded-md mt-4 p-8 border-2 border-white'
@@ -314,18 +324,11 @@ const Slot = () => {
                     color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                 }}
             >
-                {/* Table */}
                 <div className='flex flex-col mx-auto gap-y-5 md:gap-y-8 '>
                     <Card title='Epoch' content={<LinkEpoch epoch={block?.f_epoch} />} />
-                    <Card title='Block Number' content={<LinkEpoch epoch={block?.f_epoch} />} />
                     <Card title='Slot' text={block?.f_slot?.toLocaleString()} />
 
-                    {existsBlock && (
-                        <Card
-                            title='Entity'
-                            content={<LinkEntity entity={block?.f_pool_name?.toLocaleString() ?? 'others'} />}
-                        />
-                    )}
+                    {existsBlock && <Card title='Entity' content={<LinkEntity entity={'binance'} />} />}
 
                     {existsBlock && (
                         <Card
@@ -401,8 +404,48 @@ const Slot = () => {
         );
     };
 
-    //Withdrawals tab - table desktop
-    const getWithdrawlsDesktop = () => {
+    const getExecutionLayerView = () => {
+        return (
+            <div
+                className='flex flex-col mt-4 p-8 mb-10 gap-y-4 md:gap-y-8 rounded-md border-2 border-white'
+                style={{
+                    backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
+                    boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
+                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
+                }}
+            >
+                <Card
+                    title='Block hash'
+                    text={
+                        block?.f_proposed && block?.f_el_block_hash !== ADDRESS_ZERO
+                            ? getShortAddress(block?.f_el_block_hash)
+                            : '---'
+                    }
+                />
+
+                <Card
+                    title='Fee Recipient'
+                    text={
+                        block?.f_proposed && block?.f_el_fee_recp !== ADDRESS_ZERO_SHORT
+                            ? getShortAddress(block?.f_el_fee_recp)
+                            : '---'
+                    }
+                />
+
+                <Card title='Gas used' text={block?.f_proposed ? block?.f_el_gas_used?.toLocaleString() : '---'} />
+
+                <Card title='Gas limit' text={block?.f_proposed ? block?.f_el_gas_limit?.toLocaleString() : '---'} />
+
+                <Card
+                    title='Transactions'
+                    text={block?.f_proposed ? block?.f_el_transactions?.toLocaleString() : '---'}
+                />
+            </div>
+        );
+    };
+
+    //View withdrawals table desktop
+    const getWithdrawlsViewDesktop = () => {
         return (
             <div
                 ref={containerRef}
@@ -461,12 +504,12 @@ const Slot = () => {
         );
     };
 
-    //Withdrawals tab - table mobile
-    const getWithdrawlsMobile = () => {
+    //View withdrawals table mobile
+    const getWithdrawlsViewMobile = () => {
         return (
             <div
                 ref={containerRef}
-                className='my-2 flex flex-col gap-2 font-medium text-[12px]'
+                className='my-6 flex flex-col gap-2 font-medium text-[12px]'
                 style={{
                     color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                 }}
@@ -480,7 +523,7 @@ const Slot = () => {
                     <div>
                         {withdrawals.map(element => (
                             <div
-                                className='flex my-2 flex-col gap-y-2 text-[14px] py-4 px-14 border-2 border-white rounded-md'
+                                className='flex my-2 flex-col gap-y-2 text-[14px] md:text-[16px] py-4 px-14 border-2 border-white rounded-md'
                                 style={{
                                     backgroundColor: themeMode?.darkMode
                                         ? 'var(--bgFairDarkMode)'
@@ -529,20 +572,10 @@ const Slot = () => {
                                 </div>
                             </div>
                         ))}
+
                         {withdrawals.length == 0 && (
-                            <div
-                                className='flex mt-2 justify-center rounded-md border-2 border-white px-4 py-4'
-                                style={{
-                                    backgroundColor: themeMode?.darkMode
-                                        ? 'var(--bgFairDarkMode)'
-                                        : 'var(--bgMainLightMode)',
-                                    boxShadow: themeMode?.darkMode
-                                        ? 'var(--boxShadowCardDark)'
-                                        : 'var(--boxShadowCardLight)',
-                                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                                }}
-                            >
-                                <p className='uppercase text-[14px]'>No withdrawals</p>
+                            <div className='flex justify-center p-2'>
+                                <p className='uppercase text-[14px] md:text-[16px]'>No withdrawals</p>
                             </div>
                         )}
                     </div>
@@ -551,7 +584,7 @@ const Slot = () => {
         );
     };
 
-    //OVERVIEW SLOT PAGE
+    //Overview slot page
     return (
         <Layout>
             <Head>
@@ -559,26 +592,25 @@ const Slot = () => {
             </Head>
 
             {/* Header */}
-            {id && (
-                <div className='flex gap-x-3 justify-center items-center mt-14 xl:mt-0 mb-5'>
-                    <LinkSlot slot={Number(id) - 1}>
-                        <Arrow direction='left' />
-                    </LinkSlot>
+            <div className='flex gap-x-3 justify-center items-center mt-14 xl:mt-0 mb-5'>
+                <LinkSlot slot={Number(id) - 1}>
+                    <Arrow direction='left' />
+                </LinkSlot>
 
-                    <h1
-                        className='text-center font-semibold text-[32px] md:text-[50px]'
-                        style={{
-                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                        }}
-                    >
-                        Slot {Number(id)?.toLocaleString()}
-                    </h1>
+                <h1
+                    className='text-center font-semibold text-[32px] md:text-[50px]'
+                    style={{
+                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
+                    }}
+                >
+                    Slot {Number(id)?.toLocaleString()}
+                </h1>
 
-                    <LinkSlot slot={Number(id) + 1}>
-                        <Arrow direction='right' />
-                    </LinkSlot>
-                </div>
-            )}
+                <LinkSlot slot={Number(id) + 1}>
+                    <Arrow direction='right' />
+                </LinkSlot>
+            </div>
+
             {loadingBlock && (
                 <div className='mt-6'>
                     <Loader />
@@ -586,7 +618,6 @@ const Slot = () => {
             )}
 
             {block && !loadingBlock && getInformationView()}
-            {!block && !loadingBlock && <EpochAnimation notSlot />}
         </Layout>
     );
 };
