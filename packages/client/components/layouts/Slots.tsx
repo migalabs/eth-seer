@@ -73,7 +73,7 @@ const Slots = ({ slots }: Props) => {
     };
 
     //View slots table desktop
-    const getContentSlotsDesktop= () => {
+    const getContentSlotsDesktop = () => {
         const titles = ['Block', 'Entity', 'Proposer', 'Slot', 'Datetime', 'Withdrawals'];
         return (
             <div
