@@ -25,7 +25,41 @@ const ProgressSmoothBar = ({
     width,
     widthTooltip,
 }: Props) => {
-    const widthInnerDiv = percent > 0 ? Math.min(Number(percent * 100), 100).toFixed(0) : 100;
+   
+const isValidPercent = typeof percent === 'number' && !isNaN(percent);
+
+if (!isValidPercent) {
+    return (
+        <div className='text-center'>
+            {title && <p className='py-1'>{title}</p>}
+
+            <div className='rounded-md p-1 text-[12px]' style={{ backgroundColor: color, width: width ?? 'auto' }}>
+                <div className='rounded-sm' style={{ backgroundColor, width: `Calculating...` }}>
+                    {tooltipColor && tooltipContent ? (
+                        <TooltipContainer>
+                            <p className='font-medium' style={{ color, cursor: 'default' }}>
+                                Calculating...
+                            </p>
+
+                            <TooltipResponsive
+                                width={widthTooltip ?? 100}
+                                backgroundColor={backgroundColor}
+                                colorLetter={color}
+                                content={tooltipContent}
+                            />
+                        </TooltipContainer>
+                    ) : (
+                        <p className='font-medium' style={{ color, cursor: 'default' }}>
+                            Calculating...
+                        </p>
+                    )}
+                </div>
+            </div>
+        </div>
+    );
+}
+
+const widthInnerDiv = Math.min(Number(percent * 100), 100).toFixed(0);
 
     return (
         <div className='text-center'>
