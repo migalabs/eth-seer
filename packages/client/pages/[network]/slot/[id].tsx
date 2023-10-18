@@ -278,7 +278,7 @@ const Slot = () => {
                 return getOverview();
 
             case 1:
-                return desktopView ? getWithdrawlsDesktop() : getWithdrawlsMobile();
+                return desktopView ? getWithdrawalsDesktop() : getWithdrawalsMobile();
         }
     };
 
@@ -291,7 +291,7 @@ const Slot = () => {
                     {existsBlock && (
                         <>
                             <TabHeader
-                                header='Withdrawls'
+                                header='Withdrawals'
                                 isSelected={tabPageIndex === 1}
                                 onClick={() => setTabPageIndex(1)}
                             />
@@ -317,7 +317,7 @@ const Slot = () => {
                 {/* Table */}
                 <div className='flex flex-col mx-auto gap-y-5 md:gap-y-8 '>
                     <Card title='Epoch' content={<LinkEpoch epoch={block?.f_epoch} />} />
-                    <Card title='Block Number' content={<LinkEpoch epoch={block?.f_epoch} />} />
+                    <Card title='Block number' content={<LinkEpoch epoch={block?.f_epoch} />} />
                     <Card title='Slot' text={block?.f_slot?.toLocaleString()} />
 
                     {existsBlock && (
@@ -353,7 +353,7 @@ const Slot = () => {
                     <Card title='Datetime (Local)' text={getTimeBlock()} />
 
                     {existsBlock && (
-                        <Card title='Proposer Index' content={<LinkValidator validator={block?.f_proposer_index} />} />
+                        <Card title='Proposer index' content={<LinkValidator validator={block?.f_proposer_index} />} />
                     )}
 
                     {existsBlock && <Card title='Graffiti' text={block?.f_proposed ? block?.f_graffiti : '---'} />}
@@ -402,7 +402,7 @@ const Slot = () => {
     };
 
     //Withdrawals tab - table desktop
-    const getWithdrawlsDesktop = () => {
+    const getWithdrawalsDesktop = () => {
         return (
             <div
                 ref={containerRef}
@@ -462,7 +462,7 @@ const Slot = () => {
     };
 
     //Withdrawals tab - table mobile
-    const getWithdrawlsMobile = () => {
+    const getWithdrawalsMobile = () => {
         return (
             <div
                 ref={containerRef}
