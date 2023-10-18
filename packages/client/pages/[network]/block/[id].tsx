@@ -17,12 +17,13 @@ import LinkSlot from '../../../components/ui/LinkSlot';
 import Arrow from '../../../components/ui/Arrow';
 import LinkEpoch from '../../../components/ui/LinkEpoch';
 import LinkEntity from '../../../components/ui/LinkEntity';
+import CustomImage from '../../../components/ui/CustomImage';
+import TooltipContainer from '../../../components/ui/TooltipContainer';
+import TooltipResponsive from '../../../components/ui/TooltipResponsive';
+import ValidatorStatus from '../../../components/ui/ValidatorStatus';
 
 // Types
 import { Block, Withdrawal } from '../../../types';
-
-// Constants
-import { ADDRESS_ZERO, ADDRESS_ZERO_SHORT } from '../../../constants';
 
 type CardProps = {
     title: string;
@@ -30,6 +31,7 @@ type CardProps = {
     content?: React.ReactNode;
 };
 
+//Card style
 const Card = ({ title, text, content }: CardProps) => {
     // Theme Mode Context
     const { themeMode } = React.useContext(ThemeModeContext) ?? {};
@@ -63,7 +65,7 @@ const Card = ({ title, text, content }: CardProps) => {
     );
 };
 
-const Slot = () => {
+const BlockPage = () => {
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
 
@@ -204,6 +206,7 @@ const Slot = () => {
         return address && `${address.slice(0, 6)}...${address.slice(address.length - 6, address.length)}`;
     };
 
+    // Get Time Block
     const getTimeBlock = () => {
         let text;
 
@@ -218,6 +221,7 @@ const Slot = () => {
         return text + countdownText;
     };
 
+    // Get Countdown Text
     const getCountdownText = () => {
         let text = '';
 
@@ -255,6 +259,7 @@ const Slot = () => {
         return text;
     };
 
+    // Get Handle Mouse
     const handleMouseMove = (e: any) => {
         if (containerRef.current) {
             const x = e.pageX;
@@ -268,53 +273,42 @@ const Slot = () => {
         }
     };
 
-    //Tabs
+    //TABLE
+
+    //TABS
     const getSelectedTab = () => {
         switch (tabPageIndex) {
             case 0:
-                return getConsensusLayerView();
+                return getOverview();
 
             case 1:
-                return getExecutionLayerView();
-
-            case 2:
-                return desktopView ? getWithdrawlsViewDesktop() : getWithdrawlsViewMobile();
+                return desktopView ? getTransactionsDesktop() : getTransactionsMobile();
         }
     };
 
-    //Tab sections information
+    //TABS - Overview & withdrawals
     const getInformationView = () => {
         return (
-            <div className='flex flex-col w-11/12 md:w-1/2 mx-auto'>
+            <div className='flex flex-col w-11/12 md:w-10/12 mx-auto'>
                 <div className='flex flex-col sm:flex-row gap-4'>
-                    <TabHeader
-                        header='Consensus Layer'
-                        isSelected={tabPageIndex === 0}
-                        onClick={() => setTabPageIndex(0)}
-                    />
+                    <TabHeader header='Overview' isSelected={tabPageIndex === 0} onClick={() => setTabPageIndex(0)} />
                     {existsBlock && (
                         <>
                             <TabHeader
-                                header='Execution Layer'
+                                header='Withdrawals'
                                 isSelected={tabPageIndex === 1}
                                 onClick={() => setTabPageIndex(1)}
-                            />
-                            <TabHeader
-                                header='Withdrawls'
-                                isSelected={tabPageIndex === 2}
-                                onClick={() => setTabPageIndex(2)}
                             />
                         </>
                     )}
                 </div>
-
                 {getSelectedTab()}
             </div>
         );
     };
 
-    //Overview tab view
-    const getConsensusLayerView = () => {
+    //Overview tab - table
+    const getOverview = () => {
         return (
             <div
                 className='rounded-md mt-4 p-8 border-2 border-white'
@@ -324,143 +318,169 @@ const Slot = () => {
                     color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                 }}
             >
+                {/* Table */}
                 <div className='flex flex-col mx-auto gap-y-5 md:gap-y-8 '>
-                    <Card title='Epoch' content={<LinkEpoch epoch={block?.f_epoch} />} />
+                    <Card title='Black hash' text={'0X7881...B1FCD8'} />
                     <Card title='Slot' text={block?.f_slot?.toLocaleString()} />
-
-                    {existsBlock && <Card title='Entity' content={<LinkEntity entity={'binance'} />} />}
-
-                    {existsBlock && (
-                        <Card
-                            title='Status'
-                            content={
-                                block?.f_proposed ? (
-                                    <span
-                                        className='bg-[#53945a] text-white md:w-52 w-40 px-6 text-center py-2 text-[14px] md:text-[16px] rounded-md capitalize font-medium'
-                                        style={{ boxShadow: 'var(--boxShadowGreen)' }}
-                                    >
-                                        Proposed
-                                    </span>
-                                ) : (
-                                    <span
-                                        className='bg-[#e86666] text-white md:w-52 w-40 px-6 py-2 text-center text-[14px] md:text-[16px] rounded-md capitalize font-medium'
-                                        style={{ boxShadow: 'var(--boxShadowRed)' }}
-                                    >
-                                        Missed
-                                    </span>
-                                )
-                            }
-                        />
-                    )}
-
                     <Card title='Datetime (Local)' text={getTimeBlock()} />
-
-                    {existsBlock && (
-                        <Card title='Proposer Index' content={<LinkValidator validator={block?.f_proposer_index} />} />
-                    )}
-
-                    {existsBlock && <Card title='Graffiti' text={block?.f_proposed ? block?.f_graffiti : '---'} />}
-
-                    {existsBlock && (
-                        <Card
-                            title='Sync bits'
-                            text={block?.f_proposed ? block?.f_sync_bits?.toLocaleString() : '---'}
-                        />
-                    )}
-
-                    {existsBlock && (
-                        <Card
-                            title='Attestations'
-                            text={block?.f_proposed ? block?.f_attestations?.toLocaleString() : '---'}
-                        />
-                    )}
-
-                    {existsBlock && (
-                        <Card
-                            title='Voluntary exits'
-                            text={block?.f_proposed ? block?.f_voluntary_exits?.toLocaleString() : '---'}
-                        />
-                    )}
-
-                    {existsBlock && (
-                        <Card
-                            title='Proposer slashings'
-                            text={block?.f_proposed ? block?.f_proposer_slashings?.toLocaleString() : '---'}
-                        />
-                    )}
-
-                    {existsBlock && (
-                        <Card
-                            title='Attestation Slashing'
-                            text={block?.f_proposed ? block?.f_att_slashings?.toLocaleString() : '---'}
-                        />
-                    )}
-
-                    {existsBlock && (
-                        <Card title='Deposits' text={block?.f_proposed ? block?.f_deposits?.toLocaleString() : '---'} />
-                    )}
+                    <Card title='Transactions' text={'60'} />
+                    <Card title='Fee recipient' text={'0X7881...B1FCD8'} />
+                    <Card title='Block reward' text={'0.00438142074284268 ETH'} />
+                    <Card title='Total difficulty' text={'58,750,003,716,598,352,816,469'} />
+                    <Card title='Size' text={'69,726 bytes'} />
+                    <Card title='Gas used' text={'13.312.490'} />
+                    <Card title='Gas limit' text={'30.000.000'} />
                 </div>
             </div>
         );
     };
 
-    const getExecutionLayerView = () => {
-        return (
-            <div
-                className='flex flex-col mt-4 p-8 mb-10 gap-y-4 md:gap-y-8 rounded-md border-2 border-white'
-                style={{
-                    backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
-                    boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
-                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                }}
-            >
-                <Card
-                    title='Block hash'
-                    text={
-                        block?.f_proposed && block?.f_el_block_hash !== ADDRESS_ZERO
-                            ? getShortAddress(block?.f_el_block_hash)
-                            : '---'
-                    }
-                />
-
-                <Card
-                    title='Fee Recipient'
-                    text={
-                        block?.f_proposed && block?.f_el_fee_recp !== ADDRESS_ZERO_SHORT
-                            ? getShortAddress(block?.f_el_fee_recp)
-                            : '---'
-                    }
-                />
-
-                <Card title='Gas used' text={block?.f_proposed ? block?.f_el_gas_used?.toLocaleString() : '---'} />
-
-                <Card title='Gas limit' text={block?.f_proposed ? block?.f_el_gas_limit?.toLocaleString() : '---'} />
-
-                <Card
-                    title='Transactions'
-                    text={block?.f_proposed ? block?.f_el_transactions?.toLocaleString() : '---'}
-                />
-            </div>
-        );
-    };
-
-    //View withdrawals table desktop
-    const getWithdrawlsViewDesktop = () => {
+    //Withdrawals tab - table desktop
+    const getTransactionsDesktop = () => {
         return (
             <div
                 ref={containerRef}
-                className='flex flex-col mt-2.5 overflow-x-scroll overflow-y-hidden scrollbar-thin'
+                className='flex flex-col overflow-x-scroll overflow-y-hidden scrollbar-thin'
                 onMouseMove={handleMouseMove}
             >
                 <div
-                    className='flex gap-x-4 justify-around px-4 xl:px-8 min-w-[470px] font-semibold py-3 text-[14px] md:text-[16px] text-center'
+                    className='flex gap-x-4 justify-around px-4 xl:px-8 font-semibold py-3 text-[16px] text-center'
                     style={{
                         color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
                     }}
                 >
-                    <p className='mt-0.5 w-1/3'>Validator</p>
-                    <p className='mt-0.5 w-1/3'>Address</p>
-                    <p className='mt-0.5 w-1/3'>Amount</p>
+                    <div className='flex items-center gap-x-1 justify-center w-1/3'>
+                        <p className='mt-0.5 font-semibold'>Txn Hash</p>
+                        <TooltipContainer>
+                            <CustomImage
+                                src='/static/images/icons/information_icon.webp'
+                                alt='Time information'
+                                width={24}
+                                height={24}
+                            />
+
+                            <TooltipResponsive
+                                width={220}
+                                backgroundColor='white'
+                                colorLetter='black'
+                                content={
+                                    <>
+                                        <span>Time at which the slot</span>
+                                        <span>should have passed</span>
+                                        <span>(calculated since genesis)</span>
+                                    </>
+                                }
+                                top='34px'
+                                polygonLeft
+                            />
+                        </TooltipContainer>
+                    </div>
+                    <div className='flex items-center gap-x-1 justify-center w-1/3'>
+                        <p className='mt-0.5 font-semibold'>Method</p>
+                        <TooltipContainer>
+                            <CustomImage
+                                src='/static/images/icons/information_icon.webp'
+                                alt='Time information'
+                                width={24}
+                                height={24}
+                            />
+
+                            <TooltipResponsive
+                                width={220}
+                                backgroundColor='white'
+                                colorLetter='black'
+                                content={
+                                    <>
+                                        <span>Time at which the slot</span>
+                                        <span>should have passed</span>
+                                        <span>(calculated since genesis)</span>
+                                    </>
+                                }
+                                top='34px'
+                                polygonLeft
+                            />
+                        </TooltipContainer>
+                    </div>
+                    <div className='flex items-center gap-x-1 justify-center w-1/3'>
+                        <p className='mt-0.5 font-semibold'>Age</p>
+                        <TooltipContainer>
+                            <CustomImage
+                                src='/static/images/icons/information_icon.webp'
+                                alt='Time information'
+                                width={24}
+                                height={24}
+                            />
+
+                            <TooltipResponsive
+                                width={220}
+                                backgroundColor='white'
+                                colorLetter='black'
+                                content={
+                                    <>
+                                        <span>Time at which the slot</span>
+                                        <span>should have passed</span>
+                                        <span>(calculated since genesis)</span>
+                                    </>
+                                }
+                                top='34px'
+                                polygonLeft
+                            />
+                        </TooltipContainer>
+                    </div>
+                    <p className='mt-0.5 w-1/3'>From</p>
+                    <p className='mt-0.5 w-1/3'>To</p>
+                    <div className='flex items-center gap-x-1 justify-center w-1/3'>
+                        <p className='mt-0.5 font-semibold'>Value</p>
+                        <TooltipContainer>
+                            <CustomImage
+                                src='/static/images/icons/information_icon.webp'
+                                alt='Time information'
+                                width={24}
+                                height={24}
+                            />
+
+                            <TooltipResponsive
+                                width={220}
+                                backgroundColor='white'
+                                colorLetter='black'
+                                content={
+                                    <>
+                                        <span>Time at which the slot</span>
+                                        <span>should have passed</span>
+                                        <span>(calculated since genesis)</span>
+                                    </>
+                                }
+                                top='34px'
+                                polygonLeft
+                            />
+                        </TooltipContainer>
+                    </div>
+                    <div className='flex items-center gap-x-1 justify-center w-1/3'>
+                        <p className='mt-0.5 font-semibold'>Txn Fee</p>
+                        <TooltipContainer>
+                            <CustomImage
+                                src='/static/images/icons/information_icon.webp'
+                                alt='Time information'
+                                width={24}
+                                height={24}
+                            />
+
+                            <TooltipResponsive
+                                width={220}
+                                backgroundColor='white'
+                                colorLetter='black'
+                                content={
+                                    <>
+                                        <span>Time at which the slot</span>
+                                        <span>should have passed</span>
+                                        <span>(calculated since genesis)</span>
+                                    </>
+                                }
+                                top='34px'
+                                polygonLeft
+                            />
+                        </TooltipContainer>
+                    </div>
                 </div>
 
                 {loadingWithdrawals ? (
@@ -469,7 +489,7 @@ const Slot = () => {
                     </div>
                 ) : (
                     <div
-                        className='font-medium flex flex-col gap-y-2 min-w-[470px] text-[14px] md:text-[16px] rounded-md border-2 border-white px-4 xl:px-8 py-3'
+                        className='font-medium flex flex-col gap-y-2 text-[16px] rounded-md border-2 border-white px-4 xl:px-8 py-3'
                         style={{
                             backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
                             boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
@@ -482,14 +502,26 @@ const Slot = () => {
                                 key={element.f_val_idx}
                             >
                                 <div className='w-1/3'>
-                                    <LinkValidator validator={element.f_val_idx} mxAuto />
-                                </div>
-
-                                <div className='w-1/3'>
                                     <p>{getShortAddress(element?.f_address)}</p>
                                 </div>
 
+                                <div className='w-1/3'>
+                                    <LinkValidator validator={element.f_val_idx} mxAuto />
+                                </div>
+
+                                <p className='w-1/3 lowercase'>{'9hrs 51mins ago'}</p>
+
+                                <p className='w-1/3'>{getShortAddress(element?.f_address)}</p>
+                                <CustomImage
+                                    src={`/static/images/icons/send_${themeMode?.darkMode ? 'dark' : 'light'}.webp`}
+                                    alt='Send icon'
+                                    width={20}
+                                    height={20}
+                                />
+                                <p className='w-1/3'>{getShortAddress(element?.f_address)}</p>
+
                                 <p className='w-1/3'>{(element.f_amount / 10 ** 9).toLocaleString()} ETH</p>
+                                <p className='w-1/3'>{(element.f_amount / 10 ** 9).toLocaleString()}</p>
                             </div>
                         ))}
 
@@ -504,12 +536,12 @@ const Slot = () => {
         );
     };
 
-    //View withdrawals table mobile
-    const getWithdrawlsViewMobile = () => {
+    //Withdrawals tab - table mobile
+    const getTransactionsMobile = () => {
         return (
             <div
                 ref={containerRef}
-                className='my-6 flex flex-col gap-2 font-medium text-[12px]'
+                className='my-2 flex flex-col gap-2 font-medium text-[12px]'
                 style={{
                     color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                 }}
@@ -523,7 +555,7 @@ const Slot = () => {
                     <div>
                         {withdrawals.map(element => (
                             <div
-                                className='flex my-2 flex-col gap-y-2 text-[14px] md:text-[16px] py-4 px-14 border-2 border-white rounded-md'
+                                className='flex my-2 flex-col gap-y-2 text-[14px] py-4 px-14 border-2 border-white rounded-md'
                                 style={{
                                     backgroundColor: themeMode?.darkMode
                                         ? 'var(--bgFairDarkMode)'
@@ -542,23 +574,10 @@ const Slot = () => {
                                             color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
                                         }}
                                     >
-                                        Validator
-                                    </p>
-                                    <LinkValidator validator={element.f_val_idx} mxAuto />
-                                </div>
-
-                                <div className='flex flex-row items-center justify-between'>
-                                    <p
-                                        className='font-semibold'
-                                        style={{
-                                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                                        }}
-                                    >
-                                        Address
+                                        Txn Hash
                                     </p>
                                     <p>{getShortAddress(element?.f_address)}</p>
                                 </div>
-
                                 <div className='flex flex-row items-center justify-between'>
                                     <p
                                         className='font-semibold'
@@ -566,16 +585,91 @@ const Slot = () => {
                                             color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
                                         }}
                                     >
-                                        Amount
+                                        Method
+                                    </p>
+                                    <LinkValidator validator={element.f_val_idx} mxAuto />
+                                </div>
+                                <div className='flex flex-row items-center justify-between'>
+                                    <p
+                                        className='font-semibold'
+                                        style={{
+                                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
+                                        }}
+                                    >
+                                        Age
+                                    </p>
+                                    <p className='w-1/3 lowercase text-right'>{'9hrs 51mins ago'}</p>
+                                </div>
+                                <div className='flex flex-row justify-between items-center'>
+                                    <p
+                                        className='font-semibold'
+                                        style={{
+                                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
+                                        }}
+                                    >
+                                        From
+                                    </p>
+                                    <p
+                                        className='font-semibold'
+                                        style={{
+                                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
+                                        }}
+                                    >
+                                        To
+                                    </p>
+                                </div>
+                                <div className='flex flex-row justify-between items-center'>
+                                    <div className='flex flex-row items-center justify-between'>
+                                        <p>{getShortAddress(element?.f_address)}</p>
+                                    </div>
+                                    <CustomImage
+                                        src={`/static/images/icons/send_${themeMode?.darkMode ? 'dark' : 'light'}.webp`}
+                                        alt='Send icon'
+                                        width={20}
+                                        height={20}
+                                    />
+                                    <div className='flex flex-row items-center justify-between'>
+                                        <p>{getShortAddress(element?.f_address)}</p>
+                                    </div>
+                                </div>
+                                <div className='flex flex-row items-center justify-between'>
+                                    <p
+                                        className='font-semibold'
+                                        style={{
+                                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
+                                        }}
+                                    >
+                                        Value
                                     </p>
                                     <p>{(element.f_amount / 10 ** 9).toLocaleString()} ETH</p>
                                 </div>
+                                <div className='flex flex-row items-center justify-between'>
+                                    <p
+                                        className='font-semibold'
+                                        style={{
+                                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
+                                        }}
+                                    >
+                                        Txn Fee
+                                    </p>
+                                    <p>{(element.f_amount / 10 ** 9).toLocaleString()}</p>
+                                </div>
                             </div>
                         ))}
-
                         {withdrawals.length == 0 && (
-                            <div className='flex justify-center p-2'>
-                                <p className='uppercase text-[14px] md:text-[16px]'>No withdrawals</p>
+                            <div
+                                className='flex mt-2 justify-center rounded-md border-2 border-white px-4 py-4'
+                                style={{
+                                    backgroundColor: themeMode?.darkMode
+                                        ? 'var(--bgFairDarkMode)'
+                                        : 'var(--bgMainLightMode)',
+                                    boxShadow: themeMode?.darkMode
+                                        ? 'var(--boxShadowCardDark)'
+                                        : 'var(--boxShadowCardLight)',
+                                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
+                                }}
+                            >
+                                <p className='uppercase text-[14px]'>No withdrawals</p>
                             </div>
                         )}
                     </div>
@@ -584,7 +678,7 @@ const Slot = () => {
         );
     };
 
-    //Overview slot page
+    //OVERVIEW SLOT PAGE
     return (
         <Layout>
             <Head>
@@ -603,7 +697,7 @@ const Slot = () => {
                         color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                     }}
                 >
-                    Slot {Number(id)?.toLocaleString()}
+                    Block {Number(id)?.toLocaleString()}
                 </h1>
 
                 <LinkSlot slot={Number(id) + 1}>
@@ -622,4 +716,4 @@ const Slot = () => {
     );
 };
 
-export default Slot;
+export default BlockPage;
