@@ -291,25 +291,26 @@ const EpochComponent = () => {
             </Head>
 
             {/* Header */}
-            <div className='flex gap-x-3 justify-center items-center mb-5 mt-14 xl:mt-0'>
-                <LinkEpoch epoch={Number(id) - 1}>
-                    <Arrow direction='left' />
-                </LinkEpoch>
+            {id && (
+                <div className='flex gap-x-3 justify-center items-center mb-5 mt-14 xl:mt-0'>
+                    <LinkEpoch epoch={Number(id) - 1}>
+                        <Arrow direction='left' />
+                    </LinkEpoch>
 
-                <h1
-                    className='text-center font-semibold text-[32px] md:text-[50px]'
-                    style={{
-                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                    }}
-                >
-                    Epoch {Number(id)?.toLocaleString()}
-                </h1>
+                    <h1
+                        className='text-center font-semibold text-[32px] md:text-[50px]'
+                        style={{
+                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
+                        }}
+                    >
+                        Epoch {Number(id)?.toLocaleString()}
+                    </h1>
 
-                <LinkEpoch epoch={Number(id) + 1}>
-                    <Arrow direction='right' />
-                </LinkEpoch>
-            </div>
-
+                    <LinkEpoch epoch={Number(id) + 1}>
+                        <Arrow direction='right' />
+                    </LinkEpoch>
+                </div>
+            )}
             {loadingEpoch && (
                 <div className='mt-6'>
                     <Loader />

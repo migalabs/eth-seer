@@ -98,7 +98,7 @@ const EntityComponent = () => {
 
             // const response = await axiosClient.get(`/api/entities/${(name as string).toLowerCase()}`);
 
-            if (responseHour.data.entity) {
+            if (responseHour.data.entity.aggregate_balance !== null) {
                 setShowAnimation(false);
             } else {
                 setShowAnimation(true);
@@ -261,7 +261,7 @@ const EntityComponent = () => {
                 </div>
             )}
 
-            {entityDay && (
+            {entityDay && !showAnimation && (
                 <div className='mx-auto w-11/12 md:w-10/12'>
                     <div
                         className='flex p-6 md:px-20 md:py-10 rounded-md gap-x-5  border-2 border-white'
@@ -354,14 +354,14 @@ const EntityComponent = () => {
                             }}
                         />
                         <TabHeader
-                            header='24 Hours'
+                            header='1 Day'
                             isSelected={tabPageIndexEntityPerformance === 1}
                             onClick={() => {
                                 setTabPageIndexEntityPerformance(1);
                             }}
                         />
                         <TabHeader
-                            header='1 week'
+                            header='1 Week'
                             isSelected={tabPageIndexEntityPerformance === 2}
                             onClick={() => {
                                 setTabPageIndexEntityPerformance(2);
