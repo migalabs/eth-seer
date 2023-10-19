@@ -50,7 +50,6 @@ $ npm ci
 - To run the client:
 
 ```jsx
-$ cd packages/client
 $ npm run app
 ```
 
