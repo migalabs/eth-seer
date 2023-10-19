@@ -44,7 +44,7 @@ $ git clone git@github.com:migalabs/eth-seer.git
 - To install dependencies:
 
 ```jsx
-$ npm ci
+$ npm run ci
 ```
 
 - To run the client:
