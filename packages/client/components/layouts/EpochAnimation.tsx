@@ -1,43 +1,44 @@
 import React, { useContext } from 'react';
-import Image from 'next/image';
 
 // Contexts
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
-// Images
-import Image1 from '../../public/static/images/epoch_animation/1.png';
-import Image2 from '../../public/static/images/epoch_animation/2.png';
-import Image3 from '../../public/static/images/epoch_animation/3.png';
-import Image4 from '../../public/static/images/epoch_animation/4.png';
-
 type Props = {
-    notEpoch: boolean;
+    notEpoch?: boolean;
+    notSlot?: boolean;
 };
 
-const EpochAnimation = ({ notEpoch }: Props) => {
+const EpochAnimation = ({ notEpoch, notSlot }: Props) => {
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
 
     const getText = () => {
         if (notEpoch) {
             return 'Epoch not saved yet';
+        } else if (notSlot) {
+            return 'Slot not saved yet';
         } else {
             return "We're not there yet";
         }
     };
 
     return (
-        <div className='animation-container'>
-            <div className='panda-container'>
-                <Image src={Image1} alt='Image 1' className='panda-image' priority />
-                <Image src={Image2} alt='Image 2' className='cloud one' priority />
-                <Image src={Image2} alt='Image 3' className='cloud two' priority />
-                <Image src={Image2} alt='Image 4' className='cloud three' priority />
-                <Image src={Image4} alt='Image 5' className='panda-sleep-one' priority />
-                <Image src={Image4} alt='Image 6' className='panda-sleep-two' priority />
-                <Image src={Image3} alt='Image 7' className='panda-tumbleweed' priority />
-                <p className={`panda-text ${themeMode?.darkMode ? 'text-white' : 'text-black'}`}>{getText()}</p>
-            </div>
+        <div
+            className='flex items-center justify-center flex-col h-screen gap-y-5 rounded-md mx-auto w-11/12 md:w-10/12'
+            style={{
+                color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
+                backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
+                boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
+            }}
+        >
+            <p
+                className={`md:text-[80px] text-[50px] uppercase font-medium text-center  ${
+                    themeMode?.darkMode ? 'text-white' : 'text-[var(--darkGray)]'
+                }`}
+            >
+                {getText()}
+            </p>
+            <span className='border-gray-300 h-20 w-20 animate-spin rounded-full border-8 border-t-[var(--darkGray)]'></span>
         </div>
     );
 };

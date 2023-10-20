@@ -1,22 +1,25 @@
 import React from 'react';
-import Link from 'next/link';
+
+// Contexts
+import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
 // Components
 import CustomImage from '../ui/CustomImage';
 import Menu from '../ui/Menu';
 import SearchEngine from '../ui/SearchEngine';
-
-// Contexts
-import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
+import NetworkLink from '../ui/NetworkLink';
 
 const Header = () => {
     // Theme Mode Context
     const { themeMode } = React.useContext(ThemeModeContext) ?? {};
 
     return (
-        <div className='flex justify-between'>
+        <div
+            className='flex justify-between items-center'
+            style={{ background: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--white)' }}
+        >
             <div className='w-fit'>
-                <Link href='/' passHref>
+                <NetworkLink href='/' passHref>
                     <div className='flex flex-row justify-start items-center p-2'>
                         <CustomImage
                             src={`/static/images/icons/ethseer_logo_${themeMode?.darkMode ? 'dark' : 'light'}.webp`}
@@ -24,22 +27,19 @@ const Header = () => {
                             width={50}
                             height={50}
                         />
-
                         <p
-                            className='uppercase text-2xs md:text-xs mt-1 ml-2'
+                            className='uppercase text-[20px] md:text-[30px] mt-1 ml-2'
                             style={{
                                 color: themeMode?.darkMode ? 'var(--white)' : 'var(--newOrange)',
                             }}
                         >
-                            Ethseer.io
+                            <b>Ethseer</b>.io
                         </p>
                     </div>
-                </Link>
+                </NetworkLink>
             </div>
-            <div className='flex flex-row gap-x-5 items-start mt-2.5'>
-                <SearchEngine />
-                <Menu />
-            </div>
+            <SearchEngine />
+            <Menu />
         </div>
     );
 };

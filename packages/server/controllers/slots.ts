@@ -1,11 +1,13 @@
 import { Request, Response } from 'express';
-import { pgPool, pgListener } from '../config/db';
+import { pgPools, pgListeners } from '../config/db';
 
 export const getSlots = async (req: Request, res: Response) => {
 
     try {
 
-        const { page = 0, limit = 128 } = req.query;
+        const { network, page = 0, limit = 128 } = req.query;
+
+        const pgPool = pgPools[network as string];
 
         const skip = Number(page) * Number(limit);
 
@@ -51,7 +53,9 @@ export const getBlocks = async (req: Request, res: Response) => {
 
     try {
 
-        const { page = 0, limit = 128 } = req.query;
+        const { network, page = 0, limit = 128 } = req.query;
+
+        const pgPool = pgPools[network as string];
 
         const skip = Number(page) * Number(limit);
 
@@ -119,6 +123,9 @@ export const getSlotById = async (req: Request, res: Response) => {
     try {
 
         const { id } = req.params;
+        const { network } = req.query;
+
+        const pgPool = pgPools[network as string];
 
         const [ block, proposerDuties ] = 
             await Promise.all([
@@ -165,6 +172,10 @@ export const getSlotById = async (req: Request, res: Response) => {
 export const getSlotsStats = async (req: Request, res: Response) => {
 
     try {
+
+        const { network } = req.query;
+
+        const pgPool = pgPools[network as string];
         
         const stats = 
             await pgPool.query(`
@@ -187,7 +198,10 @@ export const getSlotsStats = async (req: Request, res: Response) => {
 export const getSlotsByGraffiti = async (req: Request, res: Response) => {
 
     try {
-        const { page = 0, limit = 10 } = req.query;
+
+        const { network, page = 0, limit = 10 } = req.query;
+
+        const pgPool = pgPools[network as string];
 
         const skip = Number(page) * Number(limit);
         
@@ -221,6 +235,9 @@ export const getWithdrawalsBySlot = async (req: Request, res: Response) => {
     try {
 
         const { id } = req.params;
+        const { network } = req.query;
+
+        const pgPool = pgPools[network as string];
 
         const withdrawals = 
             await pgPool.query(`
@@ -245,13 +262,17 @@ export const listenSlotNotification = async (req: Request, res: Response) => {
 
     try {
 
+        const { network } = req.query;
+
+        const pgListener = pgListeners[network as string];
+
         res.writeHead(200, {
             'Content-Type': 'text/event-stream',
             'Cache-Control': 'no-cache',
             'Connection': 'keep-alive'
         });
 
-        pgListener.once('new_head', msg => {
+        pgListener?.once('new_head', msg => {
             res.write('event: new_slot\n');
             res.write(`data: ${msg.payload}`);
             res.write('\n\n');

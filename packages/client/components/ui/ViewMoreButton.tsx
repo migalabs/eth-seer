@@ -14,14 +14,10 @@ const ViewMoreButton = ({ onClick }: Props) => {
 
     return (
         <button
-            className='flex cursor-pointer mx-auto w-fit text-[10px] text-black rounded-[22px] px-6 py-4'
+            className='md:hover:bg-white transition text-black flex cursor-pointer mx-auto w-fit text-[14px] bg-[#c9b6f8] font-medium rounded-md px-6 py-4'
             onClick={onClick}
-            style={{
-                backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
-                boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue1)',
-            }}
         >
-            VIEW MORE
+            View more
         </button>
     );
 };

@@ -1,5 +1,4 @@
 import React, { useState, Fragment, useContext, useRef } from 'react';
-import Link from 'next/link';
 import styled from '@emotion/styled';
 
 // Context
@@ -12,9 +11,10 @@ import useOutsideClick from '../../hooks/useOutsideClick';
 
 // Components
 import CustomImage from './CustomImage';
+import NetworkLink from './NetworkLink';
 
-// Constants
-import { POOLS_EXTENDED } from '../../constants';
+import { useRouter } from 'next/router';
+import axiosClient from '../../config/axios';
 
 // Styled
 type PropsInput = {
@@ -22,22 +22,22 @@ type PropsInput = {
 };
 
 const SearchEngineInput = styled.input<PropsInput>`
-    color: ${props => (props.darkMode ? 'var(--yellow4)' : '#d5872f')};
+    color: ${props => (props.darkMode ? 'var(--white)' : 'var(--bgDarkMode)')};
 
     ::placeholder {
         /* Chrome, Firefox, Opera, Safari 10.1+ */
-        color: ${props => (props.darkMode ? 'var(--yellow4)' : '#d5872f')};
+        color: ${props => (props.darkMode ? 'var(--white)' : 'var(--bgDarkMode)')};
         opacity: 1; /* Firefox */
     }
 
     :-ms-input-placeholder {
         /* Internet Explorer 10-11 */
-        color: ${props => (props.darkMode ? 'var(--yellow4)' : '#d5872f')};
+        color: ${props => (props.darkMode ? 'var(--white)' : 'var(--bgDarkMode)')};
     }
 
     ::-ms-input-placeholder {
         /* Microsoft Edge */
-        color: ${props => (props.darkMode ? 'var(--yellow4)' : '#d5872f')};
+        color: ${props => (props.darkMode ? 'var(--white)' : 'var(--bgDarkMode)')};
     }
 `;
 
@@ -48,6 +48,9 @@ type SearchEngineItem = {
 };
 
 const SearchEngine = () => {
+    const router = useRouter();
+    const { network } = router.query;
+
     const assetPrefix = process.env.NEXT_PUBLIC_ASSET_PREFIX ?? '';
 
     // Theme Mode Context
@@ -69,6 +72,21 @@ const SearchEngine = () => {
     const [search, setSearch] = useState('');
     const [searchResults, setSearchResults] = useState<SearchEngineItem[]>([]);
     const [showResults, setShowResults] = useState(true);
+    const [entities, setEntities] = useState<string[]>([]);
+
+    const getEntities = async () => {
+        try {
+            const response = await axiosClient.get(`/api/entities`, {
+                params: {
+                    network,
+                },
+            });
+            const poolNames = response.data.entities.rows.map((pool: any) => pool.f_pool_name);
+            setEntities(poolNames);
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     const loadResults = (searchContent: string) => {
         if (searchContent.length === 0) {
@@ -87,7 +105,7 @@ const SearchEngine = () => {
                 // It can be an epoch
                 items.push({
                     label: `Epoch: ${searchContent}`,
-                    link: `/epochs/${searchContent}`,
+                    link: `/epoch/${searchContent}`,
                 });
             }
 
@@ -97,7 +115,7 @@ const SearchEngine = () => {
                 // It can be a slot
                 items.push({
                     label: `Slot: ${searchContent}`,
-                    link: `/slots/${searchContent}`,
+                    link: `/slot/${searchContent}`,
                 });
             }
 
@@ -105,7 +123,7 @@ const SearchEngine = () => {
                 // It can be a validator
                 items.push({
                     label: `Validator: ${searchContent}`,
-                    link: `/validators/${searchContent}`,
+                    link: `/validator/${searchContent}`,
                 });
             }
         }
@@ -114,32 +132,24 @@ const SearchEngine = () => {
             // It can be a graffiti
             items.push({
                 label: `Graffiti: ${searchContent}`,
-                link: `/slots/graffitis/${searchContent}`,
+                link: `/slot/graffiti/${searchContent}`,
             });
         }
 
         // It can be an entity
         const expression = new RegExp(searchContent, 'i');
 
-        if (assetPrefix === '/goerli') {
-            items.push(
-                ...['OTHERS']
-                    .filter(pool => pool.search(expression) !== -1)
-                    .map(pool => ({
-                        label: `Entity: ${pool}`,
-                        link: `/entities/${pool.toLowerCase()}`,
-                    }))
-            );
-        } else {
-            items.push(
-                ...POOLS_EXTENDED.sort((a, b) => (a > b ? 1 : -1))
-                    .filter(pool => pool.search(expression) !== -1)
-                    .map(pool => ({
-                        label: `Entity: ${pool}`,
-                        link: `/entities/${pool.toLowerCase()}`,
-                    }))
-            );
-        }
+        getEntities();
+
+        items.push(
+            ...entities
+                .sort((a, b) => (a > b ? 1 : -1))
+                .filter(pool => pool.search(expression) !== -1)
+                .map(pool => ({
+                    label: `Entity: ${pool}`,
+                    link: `/entity/${pool.toLowerCase()}`,
+                }))
+        );
 
         setSearchResults(items);
     };
@@ -179,15 +189,14 @@ const SearchEngine = () => {
 
     return (
         <div
-            className='absolute z-40 flex top-20 xl:top-4 left-4 xl:left-[calc(50%-200px)] items-center w-[calc(100%-2rem)] xl:w-[400px] h-10 border-2 rounded-3xl py-1 bg-white/30'
+            className='absolute z-40 flex top-20 xl:top-4 left-4 xl:left-[calc(50%-200px)] items-center w-[calc(100%-2rem)] xl:w-[400px] h-10 border-2 rounded-md py-1'
             style={{
-                borderColor: themeMode?.darkMode ? 'var(--yellow4)' : '#d5872f',
-                color: themeMode?.darkMode ? 'var(--yellow4)' : '#d5872f',
+                borderColor: themeMode?.darkMode ? 'var(--white)' : 'var(--bgDarkMode)',
             }}
             ref={popUpRef}
         >
             <CustomImage
-                src={'/static/images/icons/magnifying_glass_icon.webp'}
+                src={`/static/images/icons/magnifying_glass_icon_${themeMode?.darkMode ? 'dark' : 'light'}.webp`}
                 alt='Magnifying Glass Pixel'
                 width={25}
                 height={25}
@@ -196,7 +205,7 @@ const SearchEngine = () => {
 
             <SearchEngineInput
                 type='text'
-                className='w-full h-full bg-transparent text-sm m-2 outline-none'
+                className='w-full h-full bg-transparent text-[16px] m-2 outline-none'
                 placeholder='Search'
                 value={search}
                 onChange={handleSearch}
@@ -206,31 +215,30 @@ const SearchEngine = () => {
 
             {searchResults.length > 0 && showResults && (
                 <div
-                    className='absolute top-full left-0 border-2 rounded-xl p-1 bg-[#9c909c] z-[var(--zIndexSearchEngine)] w-full'
+                    className='absolute top-full left-0 border-2 rounded-md p-1 z-[var(--zIndexSearchEngine)] w-full border-[var(--purple)]'
                     style={{
-                        borderColor: themeMode?.darkMode ? 'var(--yellow4)' : '#d5872f',
-                        color: themeMode?.darkMode ? 'var(--yellow4)' : '#d5872f',
-                        background: themeMode?.darkMode ? '#9c909c' : '#fff0dd',
+                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
+                        background: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--white)',
                     }}
                 >
                     <div
-                        className={`flex flex-col gap-y-3 w-full px-4 py-4 text-xs max-h-[400px] overflow-y-scroll scrollbar-thin ${
-                            themeMode?.darkMode ? 'scrollbar-thumb-[#f0c83a]' : 'scrollbar-thumb-[#d5872f]'
-                        } scrollbar-track-[#736a73] scrollbar-thumb-rounded`}
+                        className={`flex flex-col gap-y-2 w-full px-4 py-4 text-xs md:text-[14px] max-h-[400px] overflow-y-scroll scrollbar-thin
+                        } scrollbar-thumb-rounded`}
                     >
                         {searchResults.map((item, index) => (
                             <Fragment key={index}>
-                                <Link href={item.link} passHref>
+                                <NetworkLink
+                                    className={`transition-all pl-1 md:hover:bg-[var(--purple)] py-2 rounded-md md:hover:text-${
+                                        themeMode?.darkMode ? 'black' : 'white'
+                                    }`}
+                                    href={item.link}
+                                    passHref
+                                >
                                     <span>{item.label}</span>
-                                </Link>
+                                </NetworkLink>
 
                                 {index !== searchResults.length - 1 && (
-                                    <div
-                                        className='border-b'
-                                        style={{
-                                            borderColor: themeMode?.darkMode ? 'var(--yellow4)' : '#d5872f',
-                                        }}
-                                    ></div>
+                                    <div className='border-b border-[var(--purple)] '></div>
                                 )}
                             </Fragment>
                         ))}

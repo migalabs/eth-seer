@@ -38,7 +38,7 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
     return (
         <div className='flex flex-col'>
             <span
-                className='uppercase text-center text-xs'
+                className='capitalize text-center text-[14px]'
                 style={{
                     color: themeMode?.darkMode ? 'var(--white)' : 'var(--newOrange)',
                 }}
@@ -46,18 +46,17 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
                 Epoch {epoch?.toLocaleString()}
             </span>
             <div
-                className={`flex items-center my-2 p-2 h-full border-[4px] ${lastEpoch && 'rounded-3xl'}`}
+                className={`flex items-center my-2 p-2 h-full border-2 ${lastEpoch && 'rounded-md'}`}
                 style={{
-                    borderColor: lastEpoch
-                        ? `${themeMode?.darkMode ? 'var(--yellow4)' : 'var(--blue1)'}`
-                        : 'transparent',
+                    borderColor: lastEpoch ? `${themeMode?.darkMode ? 'var(--white)' : 'var(--white)'}` : 'transparent',
                 }}
             >
                 <div
-                    className='grid grid-cols-4 md:grid-cols-8 w-fit  md:max-h-full  mx-auto gap-2 rounded-2xl bg-[var(--yellow2)] p-4'
+                    className='grid grid-cols-4 md:grid-cols-8 w-fit md:max-h-full border-2 mx-auto gap-2 rounded-md p-6'
                     style={{
-                        backgroundColor: themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)',
-                        boxShadow: themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue5)',
+                        backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
+                        borderColor: themeMode?.darkMode ? 'var(--white)' : 'var(--white)',
+                        boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
                     }}
                 >
                     {blocks.map(block => (
@@ -67,8 +66,8 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
                                     <BlockImage
                                         poolName={block.f_pool_name ?? 'others'}
                                         proposed={block.f_proposed}
-                                        height={50}
-                                        width={50}
+                                        height={55}
+                                        width={55}
                                     />
 
                                     <TooltipResponsive
@@ -96,8 +95,8 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
                             <CustomImage
                                 src='/static/gifs/block_mining5.gif'
                                 alt='Mining block'
-                                width={50}
-                                height={50}
+                                width={55}
+                                height={55}
                             />
 
                             {Array.from(Array(32 - blocks.length - 1)).map((_, idx) => (
@@ -105,8 +104,8 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
                                     key={idx}
                                     src='/static/gifs/block_awaiting.gif'
                                     alt='Awaiting block'
-                                    width={50}
-                                    height={50}
+                                    width={55}
+                                    height={55}
                                 />
                             ))}
                         </>

@@ -1,39 +1,51 @@
 import React, { useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 // Axios
 import axiosClient from '../../config/axios';
 
 // Contexts
 import StatusContext from '../../contexts/status/StatusContext';
+import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
 // Components
 import CustomImage from '../ui/CustomImage';
 
 const Problems = () => {
+    // Router
+    const router = useRouter();
+    const { network } = router.query;
+
     // Contexts
     const { setWorking } = React.useContext(StatusContext) ?? {};
+    // Theme Mode Context
+    const { themeMode } = React.useContext(ThemeModeContext) ?? {};
 
     useEffect(() => {
-        const interval = setInterval(() => {
-            checkQueries();
-        }, 10000);
+        if (network) {
+            const interval = setInterval(() => {
+                checkQueries();
+            }, 10000);
 
-        return () => clearInterval(interval);
+            return () => clearInterval(interval);
+        }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [network]);
 
     const checkQueries = async () => {
         try {
             await Promise.all([
                 axiosClient.get(`/api/slots/blocks`, {
                     params: {
+                        network,
                         limit: 1,
                         page: 0,
                     },
                 }),
                 axiosClient.get('/api/epochs', {
                     params: {
+                        network,
                         limit: 1,
                         page: 0,
                     },
@@ -47,19 +59,31 @@ const Problems = () => {
     };
 
     return (
-        <div className='flex flex-col gap-y-6 px-4 sm:px-14 max-w-[1200px] mx-auto h-screen justify-center'>
-            <CustomImage
-                src='/static/images/icons/ethseer_logo_problems.webp'
-                alt='Big logo of Ethseer with floating cubes for technical problems page'
-                width={500}
-                height={500}
-                className='mx-auto'
-            />
+        <div className='flex flex-col h-screen justify-center items-center mx-auto w-9/12'>
+            <div
+                className='my-4 p-5 rounded-md'
+                style={{
+                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
+                    backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
+                    boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
+                }}
+            >
+                <CustomImage
+                    src='/static/images/icons/ethseer_logo_problems.webp'
+                    alt='Big logo of Ethseer with floating cubes for technical problems page'
+                    width={500}
+                    height={500}
+                    className='mx-auto'
+                />
 
-            <p className='uppercase text-white text-center text-lg md:text-2xl'>
-                Sorry, we&apos;re experiencing some problems with the server connection. Please try again in 5 minutes.
-                Thank you.
-            </p>
+                <p
+                    className='md:text-[30px] text-[20px] uppercase text-center'
+                    style={{ color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)' }}
+                >
+                    Sorry, we&apos;re experiencing some problems with the server connection. Please try again in 5
+                    minutes. Thank you.
+                </p>
+            </div>
         </div>
     );
 };

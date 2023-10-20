@@ -1,8 +1,11 @@
-import React from 'react';
-import Link from 'next/link';
+import React, { useContext } from 'react';
+
+// Contexts
+import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
 // Components
 import LinkIcon from './LinkIcon';
+import NetworkLink from './NetworkLink';
 
 // Types
 type Props = {
@@ -11,17 +14,18 @@ type Props = {
 };
 
 const LinkEntity = ({ entity, children }: Props) => {
+    // Theme Mode Context
+    const { themeMode } = useContext(ThemeModeContext) ?? {};
+
+    const baseStyle = {
+        color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)',
+    };
     return (
-        <Link
-            href={{
-                pathname: '/entities/[name]',
-                query: {
-                    name: entity,
-                },
-            }}
+        <NetworkLink
+            href={`/entity/${entity}`}
             passHref
-            as={`/entities/${entity}`}
-            className='flex gap-x-1 items-center w-fit mx-auto'
+            className='flex text-[14px] md:text-[16px] uppercase font-medium md:hover:underline underline-offset-4 decoration-2 gap-x-1 items-center w-fit md:mx-auto'
+            style={baseStyle}
         >
             {children ?? (
                 <>
@@ -29,7 +33,7 @@ const LinkEntity = ({ entity, children }: Props) => {
                     <LinkIcon />
                 </>
             )}
-        </Link>
+        </NetworkLink>
     );
 };
 

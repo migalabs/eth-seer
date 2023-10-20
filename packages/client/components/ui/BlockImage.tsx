@@ -3,6 +3,9 @@ import React from 'react';
 // Components
 import CustomImage from './CustomImage';
 
+// Contexts
+import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
+
 // Constants
 import { POOLS } from '../../constants';
 
@@ -15,6 +18,9 @@ type Props = {
 };
 
 const BlockImage = ({ poolName, proposed = true, width, height, showCheck }: Props) => {
+    // Theme Mode Context
+    const { themeMode } = React.useContext(ThemeModeContext) ?? {};
+
     const getUrl = () => {
         if (poolName && POOLS.includes(poolName.toUpperCase())) {
             return `/static/images/blocks/cubes/${poolName.toLowerCase()}.webp`;
@@ -40,7 +46,7 @@ const BlockImage = ({ poolName, proposed = true, width, height, showCheck }: Pro
             {!proposed && (
                 <CustomImage
                     className='absolute z-[var(--zIndexBlockImageMissed)] top-0'
-                    src={`/static/images/blocks/cubes/missed_block.webp`}
+                    src={`/static/images/blocks/cubes/missed_block_${themeMode?.darkMode ? 'dark' : 'light'}.webp`}
                     alt='Missed Logo'
                     width={width}
                     height={width}
@@ -50,10 +56,10 @@ const BlockImage = ({ poolName, proposed = true, width, height, showCheck }: Pro
             {proposed && showCheck && (
                 <CustomImage
                     src='/static/images/icons/proposed_block.webp'
-                    alt='Proposed block check illustration'
-                    width={40}
-                    height={40}
-                    className='absolute -bottom-2 -right-2'
+                    alt='Proposed block check'
+                    width={35}
+                    height={35}
+                    className='absolute -bottom-0 -right-5'
                 />
             )}
         </div>
