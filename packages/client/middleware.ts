@@ -7,7 +7,7 @@ let defaultNetworkCache: string | null = null;
 export async function fetchNetworks() {
     if (!networksCache) {
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_URL_API}/api/networks`);
+            const response = await fetch(`${process.env.API_URL}/api/networks`);
             const networksData = await response.json();
             networksCache = networksData.networks;
             if ((networksCache as string[]).length > 0) {
