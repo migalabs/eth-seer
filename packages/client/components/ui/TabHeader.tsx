@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 
 // Contexts
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
@@ -13,32 +13,44 @@ const TabHeader = ({ header, isSelected, onClick }: Props) => {
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
 
+    const [isHovered, setIsHovered] = useState(false);
+
     const getBackgroundColor = () => {
         if (isSelected) {
-            return themeMode?.darkMode ? 'var(--yellow2)' : 'var(--blue1)';
+            return themeMode?.darkMode ? 'var(--white)' : 'var(--white)';
         } else {
-            return themeMode?.darkMode ? 'var(--yellow6)' : 'var(--blue2)';
+            return themeMode?.darkMode ? 'var(--bgFairLightMode)' : 'var(--bgFairLightMode)';
         }
     };
 
-    const getBoxShadow = () => {
+    const getColor = () => {
         if (isSelected) {
-            return themeMode?.darkMode ? 'var(--boxShadowYellow1)' : 'var(--boxShadowBlue4)';
+            return themeMode?.darkMode ? 'var(--black)' : 'var(--black)';
         } else {
-            return 'none';
+            return themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)';
+        }
+    };
+
+    const hoverStyles = {
+        backgroundColor: isHovered && !isSelected ? 'var(--bgMainLightMode)' : getBackgroundColor(),
+        color: isHovered && !isSelected ? '' : getColor(),
+    };
+
+    const handleMouseEnter = () => {
+        if (window.innerWidth >= 768) {
+            setIsHovered(true);
         }
     };
 
     return (
         <div
-            className='flex items-center justify-center py-3 px-7 rounded-3xl cursor-pointer'
-            style={{
-                backgroundColor: getBackgroundColor(),
-                boxShadow: getBoxShadow(),
-            }}
+            className='flex items-center justify-center border border-white py-4 px-8 rounded-md cursor-pointer shadow-md transition-all'
+            style={hoverStyles}
             onClick={onClick}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={() => setIsHovered(false)}
         >
-            <p className='text-black text-center uppercase text-xs text-[10px] sm:text-[12px]'>{header}</p>
+            <p className='text-center text-[14px] font-medium md:text-[16px]'>{header}</p>
         </div>
     );
 };

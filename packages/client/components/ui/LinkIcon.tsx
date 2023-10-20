@@ -17,17 +17,15 @@ const LinkIcon = ({ forceOrange, forceBlue }: Props) => {
 
     const getUrl = () => {
         if (forceOrange) {
-            return '/static/images/icons/link_orange.webp';
+            return '/static/images/icons/link_light.webp';
         } else if (forceBlue) {
-            return '/static/images/icons/link_blue.webp';
+            return '/static/images/icons/link_dark.webp';
         } else {
-            return themeMode?.darkMode
-                ? '/static/images/icons/link_blue.webp'
-                : '/static/images/icons/link_orange.webp';
+            return themeMode?.darkMode ? '/static/images/icons/link_dark.webp' : '/static/images/icons/link_light.webp';
         }
     };
 
-    return <CustomImage src={getUrl()} alt='Link icon' width={20} height={20} className='mb-1' />;
+    return <CustomImage src={getUrl()} alt='Link icon' width={20} height={20} />;
 };
 
 export default LinkIcon;

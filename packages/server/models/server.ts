@@ -6,6 +6,7 @@ import entitiesRoutes from '../routes/entities';
 import epochsRoutes from '../routes/epochs';
 import slotsRoutes from '../routes/slots';
 import validatorsRoutes from '../routes/validators';
+import networksRoutes from '../routes/networks';
 
 class Server {
 
@@ -17,6 +18,7 @@ class Server {
         epochs: '/api/epochs',
         slots: '/api/slots',
         validators: '/api/validators',
+        networks: '/api/networks'
     };
     private callsVerbose: boolean;
 
@@ -62,6 +64,7 @@ class Server {
         this.app.use(this.paths.epochs, epochsRoutes);
         this.app.use(this.paths.slots, slotsRoutes);
         this.app.use(this.paths.validators, validatorsRoutes);
+        this.app.use(this.paths.networks, networksRoutes);
     }
 
     listen() {

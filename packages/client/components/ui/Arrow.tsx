@@ -30,11 +30,7 @@ const Arrow = ({ direction, height = 30, width = 30, className, onClick }: Props
             width={width}
             height={height}
             viewBox='0 0 16 16'
-            className={`stroke-1 dark-mode-class cursor-pointer ${className ?? ''}`}
-            style={{
-                stroke: themeMode?.darkMode ? 'var(--yellow1)' : 'var(--white)',
-                fill: themeMode?.darkMode ? 'var(--yellow1)' : 'var(--white)',
-            }}
+            className={`cursor-pointer ${themeMode?.darkMode ? 'stroke-white' : 'stroke-black'} ${className}`}
             onClick={onClick}
         >
             <path fillRule='evenodd' d={getPath()} />

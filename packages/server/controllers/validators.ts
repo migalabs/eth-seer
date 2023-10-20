@@ -1,11 +1,13 @@
 import { Request, Response } from 'express';
-import { pgPool } from '../config/db';
+import { pgPools } from '../config/db';
 
 export const getValidators = async (req: Request, res: Response) => {
 
     try {
         
-        const { page = 0, limit = 10 } = req.query;
+        const { network, page = 0, limit = 10 } = req.query;
+
+        const pgPool = pgPools[network as string];
 
         const skip = Number(page) * Number(limit);
 
@@ -39,7 +41,9 @@ export const getValidatorById = async (req: Request, res: Response) => {
 
         const { id } = req.params;
 
-        const { numberEpochs = 225 } = req.query;
+        const { network, numberEpochs = 225 } = req.query;
+
+        const pgPool = pgPools[network as string];
 
         const [ validatorStats, validatorPerformance ] = 
             await Promise.all([
@@ -59,7 +63,7 @@ export const getValidatorById = async (req: Request, res: Response) => {
                         FROM t_validator_rewards_summary 
                         WHERE f_val_idx = '${id}'
                         ORDER BY f_epoch DESC
-                        LIMIT ${numberEpochs}
+                        LIMIT ${Number(numberEpochs)}
                     ) AS sub
                 )
                 
@@ -117,6 +121,10 @@ export const getValidatorById = async (req: Request, res: Response) => {
 export const getValidatorStats = async (req: Request, res: Response) => {
 
     try {
+
+        const { network } = req.query;
+
+        const pgPool = pgPools[network as string];
         
         const stats = 
             await pgPool.query(`
@@ -137,7 +145,12 @@ export const getValidatorStats = async (req: Request, res: Response) => {
 };
 
 export const getLastValidator = async (req: Request, res: Response) => {
+    
     try {
+
+        const { network } = req.query;
+
+        const pgPool = pgPools[network as string];
     
         const validator_idx = 
             await pgPool.query(`
@@ -164,6 +177,9 @@ export const getProposedBlocksByValidator = async (req: Request, res: Response) 
     try {
 
         const { id } = req.params;
+        const { network } = req.query;
+
+        const pgPool = pgPools[network as string];
 
         const proposedBlocks = 
             await pgPool.query(`
@@ -192,6 +208,9 @@ export const getWithdrawalsByValidator = async (req: Request, res: Response) => 
     try {
 
         const { id } = req.params;
+        const { network } = req.query;
+
+        const pgPool = pgPools[network as string];
 
         const withdrawals =
             await pgPool.query(`

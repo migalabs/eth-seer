@@ -1,8 +1,11 @@
-import React, { useState, useContext } from 'react';
-import Link from 'next/link';
+import React, { useState, useContext, Fragment } from 'react';
 
 // Contexts
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
+
+//Components
+import NetworkLink from './NetworkLink';
+import Link from 'next/link';
 
 // Types
 type Item = {
@@ -13,9 +16,10 @@ type Item = {
 type Props = {
     name: string;
     items: Item[];
+    useNetworkLink?: boolean;
 };
 
-const Dropdown = ({ name, items }: Props) => {
+const Dropdown = ({ name, items, useNetworkLink }: Props) => {
     const [isOpen, setIsOpen] = useState(false);
 
     const { themeMode } = useContext(ThemeModeContext) ?? {};
@@ -42,14 +46,14 @@ const Dropdown = ({ name, items }: Props) => {
         <div
             className='relative py-2 md:p-0'
             style={{
-                color: themeMode?.darkMode ? 'var(--white)' : '#000000',
+                color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
             }}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
         >
             <button
                 type='button'
-                className='w-full text-xs uppercase flex items-center justify-end relative'
+                className='w-full text-[16px] flex items-center justify-end relative'
                 onClick={handleButtonClick}
             >
                 <span>{name}</span>
@@ -73,28 +77,39 @@ const Dropdown = ({ name, items }: Props) => {
             <div
                 className={`relative md:absolute transition-opacity duration-300 ${
                     isOpen ? 'opacity-100 h-auto' : 'opacity-0 h-0'
-                } absolute right-0 mt-1 md:mt-0.5`}
+                } absolute right-0`}
             >
                 {isOpen && (
                     <div
-                        className='p-1 md:p-2 rounded-lg'
+                        className='p-1 md:p-3 rounded-md md:border'
                         style={{
-                            background: themeMode?.darkMode ? '#f2dc8e' : '#ecb77b',
+                            background: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--white)',
+                            borderColor: themeMode?.darkMode ? 'var(--white)' : 'var(----darkGray)',
                         }}
                     >
-                        {items.map(item => (
-                            <Link
-                                key={item.name}
-                                href={item.route}
-                                className='block px-4 py-2 my-1 text-sm rounded-lg transition'
-                                style={{
-                                    background: themeMode?.darkMode ? '#c57f1860' : 'var(--blue2)',
-                                    color: themeMode?.darkMode ? 'var(--white)' : '#000000',
-                                }}
-                            >
-                                {item.name}
-                            </Link>
-                        ))}
+                        {items.map(item => {
+                            return useNetworkLink ? (
+                                <NetworkLink
+                                    key={item.name}
+                                    href={item.route}
+                                    className={`block px-4 py-2 my-1 text-[16px] rounded-md bg-[#a19f9f50] md:bg-transparent md:hover:bg-[#c9b6f8] transition md:font-semibold md:hover:text-${
+                                        themeMode?.darkMode ? 'black' : 'white'
+                                    }`}
+                                >
+                                    {item.name}
+                                </NetworkLink>
+                            ) : (
+                                <a
+                                    key={item.name}
+                                    href={item.route}
+                                    className={`block px-4 py-2 my-1 text-[16px] rounded-md bg-[#a19f9f50] md:bg-transparent md:hover:bg-[#c9b6f8] transition md:font-semibold md:hover:text-${
+                                        themeMode?.darkMode ? 'black' : 'white'
+                                    }`}
+                                >
+                                    {item.name}
+                                </a>
+                            );
+                        })}
                     </div>
                 )}
             </div>

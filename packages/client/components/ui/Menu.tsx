@@ -1,51 +1,71 @@
-import { useState, useContext } from 'react';
-import Link from 'next/link';
-
-//Components
-import Dropdown from './Dropdown';
-import ThemeModeSwitch from './ThemeModeSwitch';
+import { useState, useContext, useEffect } from 'react';
 
 // Contexts
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
-const dropDownLists = {
-    Explore: [
-        {
-            name: 'Epochs',
-            route: '/epochs',
-        },
-        {
-            name: 'Slots',
-            route: '/slots',
-        },
-        {
-            name: 'Entities',
-            route: '/entities',
-        },
-        {
-            name: 'Validators',
-            route: '/validators',
-        },
-    ],
-    Networks: [
-        {
-            name: 'Mainnet',
-            route: 'https://ethseer.io',
-        },
-        {
-            name: 'Goerli',
-            route: 'https://ethseer.io/goerli',
-        },
-    ],
-};
+//Components
+import Dropdown from './Dropdown';
+import ThemeModeSwitch from './ThemeModeSwitch';
+import NetworkLink from './NetworkLink';
 
-function Menu() {
-    const [isOpen, setIsOpen] = useState(false);
+// Constants
+import axiosClient from '../../config/axios';
 
+const Menu = () => {
+    // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
+    const [isOpen, setIsOpen] = useState(false);
+    const [networks, setNetworks] = useState([]);
+
+    useEffect(() => {
+        if (!networks || networks.length === 0) {
+            getNetworks();
+        }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const handleMenuToggle = () => {
         setIsOpen(!isOpen);
+    };
+
+    const getNetworks = async () => {
+        try {
+            const response = await axiosClient.get('/api/networks');
+            setNetworks(response.data.networks);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const dropDownLists = {
+        Explore: [
+            {
+                name: 'Epochs',
+                route: '/epochs',
+            },
+            {
+                name: 'Slots',
+                route: '/slots',
+            },
+            {
+                name: 'Entities',
+                route: '/entities',
+            },
+            {
+                name: 'Validators',
+                route: '/validators',
+            },
+        ],
+        Networks:
+            networks.length > 0
+                ? networks.map((network: string) => {
+                      return {
+                          name: network.charAt(0).toUpperCase() + network.slice(1),
+                          route: `/${network}`,
+                      };
+                  })
+                : [],
     };
 
     return (
@@ -53,7 +73,8 @@ function Menu() {
             <div className='md:flex lg:items-center'>
                 <button type='button' className='md:hidden absolute top-2 right-2 m-2' onClick={handleMenuToggle}>
                     <svg
-                        className='w-8 h-8 text-white'
+                        className='w-8 h-8'
+                        style={{ color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)' }}
                         fill='none'
                         stroke='currentColor'
                         viewBox='0 0 24 24'
@@ -69,32 +90,35 @@ function Menu() {
                 </button>
             </div>
             <ul
-                className={`flex items-end absolute md:relative ${isOpen ? 'flex-col' : 'invisible'} md:visible bg-[${
-                    themeMode?.darkMode ? '#f2dc8e' : 'var(--white)'
-                }] md:bg-transparent md:flex-row md:gap-10 p-6 mt-10 md:mt-0 rounded-lg md:border-none`}
+                className={`flex items-end absolute md:relative ${isOpen ? 'flex-col' : 'invisible'} md:visible
+                }] md:bg-transparent md:flex-row md:gap-10 p-6 mt-10 md:mt-0 rounded-md border md:border-none`}
+                style={{
+                    background: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--white)',
+                    borderColor: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
+                }}
             >
                 <li
-                    className='flex py-2 md:py-0 text-white'
+                    className='flex py-2 md:py-0'
                     style={{
-                        color: themeMode?.darkMode ? 'var(--white)' : '#000000',
+                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                     }}
                 >
-                    <Link href='/' className='text-xs uppercase'>
+                    <NetworkLink href='/' className='text-[16px]'>
                         Home
-                    </Link>
+                    </NetworkLink>
                 </li>
                 <li>
-                    <Dropdown name='Explore' items={dropDownLists.Explore} />
+                    <Dropdown name='Explore' items={dropDownLists.Explore} useNetworkLink />
                 </li>
                 <li>
                     <Dropdown name='Networks' items={dropDownLists.Networks} />
                 </li>
             </ul>
-            <div className='absolute right-14 md:right-0 md:relative md:pr-2'>
+            <div className='relative right-8 md:right-0'>
                 <ThemeModeSwitch />
             </div>
         </div>
     );
-}
+};
 
 export default Menu;

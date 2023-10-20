@@ -1,8 +1,11 @@
-import React from 'react';
-import Link from 'next/link';
+import React, { useContext } from 'react';
+
+// Contexts
+import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
 // Components
 import LinkIcon from './LinkIcon';
+import NetworkLink from './NetworkLink';
 
 // Types
 type Props = {
@@ -12,17 +15,20 @@ type Props = {
 };
 
 const LinkEpoch = ({ epoch, children, mxAuto }: Props) => {
+    // Theme Mode Context
+    const { themeMode } = useContext(ThemeModeContext) ?? {};
+
+    const baseStyle = {
+        color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)',
+    };
     return (
-        <Link
-            href={{
-                pathname: '/epochs/[id]',
-                query: {
-                    id: epoch,
-                },
-            }}
+        <NetworkLink
+            href={`/epoch/${epoch}`}
             passHref
-            as={`/epochs/${epoch}`}
-            className={`flex gap-x-1 items-center w-fit ${mxAuto ? 'mx-auto' : ''}`}
+            className={`flex gap-x-1 items-center text-[14px] md:text-[16px] font-medium md:hover:underline underline-offset-4 decoration-2 w-fit ${
+                mxAuto ? 'mx-auto' : ''
+            }`}
+            style={baseStyle}
         >
             {children ?? (
                 <>
@@ -30,7 +36,7 @@ const LinkEpoch = ({ epoch, children, mxAuto }: Props) => {
                     <LinkIcon />
                 </>
             )}
-        </Link>
+        </NetworkLink>
     );
 };
 
