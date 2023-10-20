@@ -77,7 +77,7 @@ NETWORKS='[
 
 ### :pencil: Execution
 
-`docker-compose up -d``
+`docker-compose up -d`
 
 All systems should boot and start working as normal.
 
@@ -157,12 +157,12 @@ Thanks go to these wonderful people:
 Ethseer is compatible with the following Blockchain networks:
 
 - **Mainnet:** The primary Ethereum network used for transactions and contracts in the production environment.
-- **Goerli:** A test network for Ethereum, used for development and testing without using real ETH.
+- **Goerli:** A test network for Ethereum, used for development and testing. Goerli will be deprecated soon.
 - **Sepolia:** A test network for Ethereum designed specifically for developers to test and experiment with their smart contracts and DApps before deploying them on the mainnet.
-- **Holesky:** A test network for Ethereum that will utilize the Proof of Stake consensus protocol. The purpose is to closely replicate real conditions on the Ethereum network, enabling developers to create almost realistic testing environments for their applications.
-- **Devnet9:** A test network for Ethereum Dencun upgrade.
+- **Holesky:** A test network for Ethereum, the purpose is to closely replicate real conditions on the Ethereum network.
+- **Devnet9:** A devnet network for Ethereum Devnet-cancun ([EIP4844](https://www.eip4844.com/)) upgrade.
 
-When using Ethseer, make sure to configure the appropriate network based on your needs, whether it's for operations on the main network (Mainnet) or for testing in a development environment (Goerli).
+When using Ethseer, make sure to configure the appropriate network based on your needs, whether it's for operations on the main network (Mainnet) or for testing in a development environment.
 
 ## :camera: Gallery
 Enjoy the experience here:
