@@ -23,7 +23,12 @@
 ## :zap: Usage
 
 ### :abc: Pre-requisites
-- Before you continue, ensure you have met the following requirements: check you have Node.js installed on your machine. You can download it and install it from [here](https://nodejs.org/).
+Before you continue, ensure you have met the following requirements: 
+- [Node.js](https://nodejs.org/): Make sure you have Node.js installed on your machine. You can download and install it from [here](https://nodejs.org/).
+- [Docker Engine](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/): Ensure Docker Engine and Docker Compose are installed on your machine. You can download and install them from the provided links.
+
+These prerequisites are necessary for running and building the project. Make sure to have them installed before proceeding.
+
 
 ###  :electric_plug: Installation
 1. Clone the repository: 
@@ -69,6 +74,13 @@ NETWORKS='[
         { "network": "goerli", "user": "ethseer-reader", "host": <ip>, "name": "ethseer-goerli", "port": 5432, "password": "pass" },
         ]'
 ```
+
+### :pencil: Execution
+
+`docker-compose up -d`
+
+All systems should boot and start working as normal.
+
 
 
 ### :package: Bundle Setup
@@ -145,9 +157,12 @@ Thanks go to these wonderful people:
 Ethseer is compatible with the following Blockchain networks:
 
 - **Mainnet:** The primary Ethereum network used for transactions and contracts in the production environment.
-- **Goerli:** A test network for Ethereum, used for development and testing without using real ETH.
+- **Goerli:** A test network for Ethereum, used for development and testing. Goerli will be deprecated soon.
+- **Sepolia:** A test network for Ethereum designed specifically for developers to test and experiment with their smart contracts and DApps before deploying them on the mainnet.
+- **Holesky:** A test network for Ethereum, the purpose is to closely replicate real conditions on the Ethereum network.
+- **Devnet9:** A devnet network for Ethereum Devnet-cancun ([EIP4844](https://www.eip4844.com/)) upgrade.
 
-When using Ethseer, make sure to configure the appropriate network based on your needs, whether it's for operations on the main network (Mainnet) or for testing in a development environment (Goerli).
+When using Ethseer, make sure to configure the appropriate network based on your needs, whether it's for operations on the main network (Mainnet) or for testing in a development environment.
 
 ## :camera: Gallery
 Enjoy the experience here:
