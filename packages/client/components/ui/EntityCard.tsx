@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useRef } from 'react';
+import React, { useEffect, useContext, useRef, useState } from 'react';
 
 // Contexts
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
@@ -15,6 +15,13 @@ type Props = {
 const EntityCard = ({ index, pool }: Props) => {
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
+    const [desktopView, setDesktopView] = useState(window.innerWidth > 768);
+
+    useEffect(() => {
+        setDesktopView(window !== undefined && window.innerWidth > 768);
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <NetworkLink href={`/entities/${pool.toLocaleLowerCase()}`}>
@@ -35,12 +42,12 @@ const EntityCard = ({ index, pool }: Props) => {
                         className='text-[14px] md:text-[16px] font-semibold uppercase text-center md:text-start'
                         style={{
                             wordWrap: 'break-word',
-                            maxWidth: '150px',
+                            maxWidth: desktopView ? 'none' : '150px',
                         }}
                     >
                         {pool}
                     </span>
-                    <span className='font-light text-[14px] md:text-[16px]'>{String(index).padStart(3, '0')}</span>
+                    <span className='font-light text-[14px] md:text-[16px]'>{String(index)} Act. validators</span>
                 </div>
             </div>
         </NetworkLink>
