@@ -20,6 +20,7 @@ import LinkEntity from '../../../components/ui/LinkEntity';
 
 // Types
 import { Block, Withdrawal } from '../../../types';
+import LinkBlock from '../../../components/ui/LinkBlock';
 
 type CardProps = {
     title: string;
@@ -317,7 +318,7 @@ const Slot = () => {
                 {/* Table */}
                 <div className='flex flex-col mx-auto gap-y-5 md:gap-y-8 '>
                     <Card title='Epoch' content={<LinkEpoch epoch={block?.f_epoch} />} />
-                    <Card title='Block number' content={<LinkEpoch epoch={block?.f_epoch} />} />
+                    <Card title='Block number' content={<LinkBlock block={block?.f_el_block_number} />} />
                     <Card title='Slot' text={block?.f_slot?.toLocaleString()} />
 
                     {existsBlock && (

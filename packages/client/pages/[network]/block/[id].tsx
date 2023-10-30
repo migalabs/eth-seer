@@ -23,7 +23,7 @@ import TooltipResponsive from '../../../components/ui/TooltipResponsive';
 import ValidatorStatus from '../../../components/ui/ValidatorStatus';
 
 // Types
-import { Block, Withdrawal } from '../../../types';
+import { BlockEL, Withdrawal } from '../../../types';
 
 type CardProps = {
     title: string;
@@ -79,7 +79,7 @@ const BlockPage = () => {
     const containerRef = useRef<HTMLInputElement>(null);
 
     // States
-    const [block, setBlock] = useState<Block | null>(null);
+    const [block, setBlock] = useState<BlockEL | null>(null);
     const [withdrawals, setWithdrawals] = useState<Array<Withdrawal>>([]);
     const [existsBlock, setExistsBlock] = useState<boolean>(true);
     const [countdownText, setCountdownText] = useState<string>('');
@@ -128,7 +128,7 @@ const BlockPage = () => {
             setLoadingBlock(true);
 
             const [response, genesisBlock] = await Promise.all([
-                axiosClient.get(`/api/slots/${id}`, {
+                axiosClient.get(`/api/blocks/${id}`, {
                     params: {
                         network,
                     },
@@ -140,7 +140,7 @@ const BlockPage = () => {
                 }),
             ]);
 
-            const blockResponse: Block = response.data.block;
+            const blockResponse: BlockEL = response.data.block;
             setBlock(blockResponse);
             setBlockGenesis(genesisBlock.data.block_genesis);
 
@@ -295,7 +295,7 @@ const BlockPage = () => {
                     {existsBlock && (
                         <>
                             <TabHeader
-                                header='Withdrawals'
+                                header='Transactions'
                                 isSelected={tabPageIndex === 1}
                                 onClick={() => setTabPageIndex(1)}
                             />
@@ -320,16 +320,16 @@ const BlockPage = () => {
             >
                 {/* Table */}
                 <div className='flex flex-col mx-auto gap-y-5 md:gap-y-8 '>
-                    <Card title='Black hash' text={'0X7881...B1FCD8'} />
-                    <Card title='Slot' text={block?.f_slot?.toLocaleString()} />
+                    <Card title='Black hash' text={getShortAddress(block?.f_el_block_hash)} />
+                    <Card title='Slot' content={<LinkSlot slot={block?.f_slot} />} />
                     <Card title='Datetime (Local)' text={getTimeBlock()} />
-                    <Card title='Transactions' text={'60'} />
-                    <Card title='Fee recipient' text={'0X7881...B1FCD8'} />
-                    <Card title='Block reward' text={'0.00438142074284268 ETH'} />
+                    <Card title='Transactions' text={String(block?.f_el_transactions)} />
+                    <Card title='Fee recipient' text={getShortAddress(block?.f_el_fee_recp)} />
+                    <Card title='Block reward' text={'0.0043 ETH'} />
                     <Card title='Total difficulty' text={'58,750,003,716,598,352,816,469'} />
-                    <Card title='Size' text={'69,726 bytes'} />
-                    <Card title='Gas used' text={'13.312.490'} />
-                    <Card title='Gas limit' text={'30.000.000'} />
+                    <Card title='Size' text={String(block?.f_payload_size_bytes) + ' bytes'} />
+                    <Card title='Gas used' text={String(block?.f_el_gas_used)} />
+                    <Card title='Gas limit' text={String(block?.f_el_gas_limit)} />
                 </div>
             </div>
         );
@@ -527,7 +527,7 @@ const BlockPage = () => {
 
                         {withdrawals.length == 0 && (
                             <div className='flex justify-center p-2'>
-                                <p className='uppercase text-[14px] md:text-[16px]'>No withdrawals</p>
+                                <p className='uppercase text-[14px] md:text-[16px]'>No transactions</p>
                             </div>
                         )}
                     </div>
@@ -669,7 +669,7 @@ const BlockPage = () => {
                                     color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                                 }}
                             >
-                                <p className='uppercase text-[14px]'>No withdrawals</p>
+                                <p className='uppercase text-[14px]'>No transactions</p>
                             </div>
                         )}
                     </div>
