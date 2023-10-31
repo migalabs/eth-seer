@@ -279,7 +279,6 @@ const BlockPage = () => {
     };
 
     //TABLE
-
     //TABS
     const getSelectedTab = () => {
         switch (tabPageIndex) {
@@ -290,7 +289,6 @@ const BlockPage = () => {
                 return desktopView ? getTransactionsDesktop() : getTransactionsMobile();
         }
     };
-
     //TABS - Overview & withdrawals
     const getInformationView = () => {
         return (
@@ -683,7 +681,7 @@ const BlockPage = () => {
         );
     };
 
-    //OVERVIEW SLOT PAGE
+    //OVERVIEW BLOCK PAGE
     return (
         <Layout>
             <Head>
