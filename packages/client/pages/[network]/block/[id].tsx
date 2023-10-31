@@ -21,6 +21,7 @@ import CustomImage from '../../../components/ui/CustomImage';
 import TooltipContainer from '../../../components/ui/TooltipContainer';
 import TooltipResponsive from '../../../components/ui/TooltipResponsive';
 import ValidatorStatus from '../../../components/ui/ValidatorStatus';
+import LinkBlock from '../../../components/ui/LinkBlock';
 
 // Types
 import { BlockEL, Withdrawal } from '../../../types';
@@ -203,7 +204,11 @@ const BlockPage = () => {
 
     // Get Short Address
     const getShortAddress = (address: string | undefined) => {
-        return address && `${address.slice(0, 6)}...${address.slice(address.length - 6, address.length)}`;
+        if (typeof address === 'string') {
+            return `${address.slice(0, 6)}...${address.slice(address.length - 6, address.length)}`;
+        } else {
+            return 'Invalid Address';
+        }
     };
 
     // Get Time Block
@@ -289,8 +294,8 @@ const BlockPage = () => {
     //TABS - Overview & withdrawals
     const getInformationView = () => {
         return (
-            <div className='flex flex-col w-11/12 md:w-10/12 mx-auto'>
-                <div className='flex flex-col sm:flex-row gap-4'>
+            <div className='flex flex-col mx-auto'>
+                <div className='flex flex-col sm:flex-row gap-4 w-1/2 mx-auto'>
                     <TabHeader header='Overview' isSelected={tabPageIndex === 0} onClick={() => setTabPageIndex(0)} />
                     {existsBlock && (
                         <>
@@ -311,7 +316,7 @@ const BlockPage = () => {
     const getOverview = () => {
         return (
             <div
-                className='rounded-md mt-4 p-8 border-2 border-white'
+                className='rounded-md mt-4 p-8 w-11/12 md:w-1/2 mx-auto border-2 border-white'
                 style={{
                     backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
                     boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
@@ -320,13 +325,13 @@ const BlockPage = () => {
             >
                 {/* Table */}
                 <div className='flex flex-col mx-auto gap-y-5 md:gap-y-8 '>
-                    <Card title='Black hash' text={getShortAddress(block?.f_el_block_hash)} />
+                    <Card title='Block hash' text={getShortAddress(block?.f_el_block_hash)} />
                     <Card title='Slot' content={<LinkSlot slot={block?.f_slot} />} />
                     <Card title='Datetime (Local)' text={getTimeBlock()} />
                     <Card title='Transactions' text={String(block?.f_el_transactions)} />
                     <Card title='Fee recipient' text={getShortAddress(block?.f_el_fee_recp)} />
-                    <Card title='Block reward' text={'0.0043 ETH'} />
-                    <Card title='Total difficulty' text={'58,750,003,716,598,352,816,469'} />
+                    <Card title='Block reward' text={'No data'} />
+                    <Card title='Total difficulty' text={'No data'} />
                     <Card title='Size' text={String(block?.f_payload_size_bytes) + ' bytes'} />
                     <Card title='Gas used' text={String(block?.f_el_gas_used)} />
                     <Card title='Gas limit' text={String(block?.f_el_gas_limit)} />
@@ -335,12 +340,12 @@ const BlockPage = () => {
         );
     };
 
-    //Withdrawals tab - table desktop
+    //Transactions tab - table desktop
     const getTransactionsDesktop = () => {
         return (
             <div
                 ref={containerRef}
-                className='flex flex-col overflow-x-scroll overflow-y-hidden scrollbar-thin'
+                className='flex flex-col overflow-x-scroll overflow-y-hidden scrollbar-thin w-11/12 mx-auto mt-4'
                 onMouseMove={handleMouseMove}
             >
                 <div
@@ -536,12 +541,12 @@ const BlockPage = () => {
         );
     };
 
-    //Withdrawals tab - table mobile
+    //Transactions tab - table mobile
     const getTransactionsMobile = () => {
         return (
             <div
                 ref={containerRef}
-                className='my-2 flex flex-col gap-2 font-medium text-[12px]'
+                className='my-2 flex flex-col gap-2 font-medium text-[12px] w-11/12 mx-auto'
                 style={{
                     color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                 }}
@@ -687,9 +692,9 @@ const BlockPage = () => {
 
             {/* Header */}
             <div className='flex gap-x-3 justify-center items-center mt-14 xl:mt-0 mb-5'>
-                <LinkSlot slot={Number(id) - 1}>
+                <LinkBlock block={Number(id) - 1}>
                     <Arrow direction='left' />
-                </LinkSlot>
+                </LinkBlock>
 
                 <h1
                     className='text-center font-semibold text-[32px] md:text-[50px]'
@@ -700,9 +705,9 @@ const BlockPage = () => {
                     Block {Number(id)?.toLocaleString()}
                 </h1>
 
-                <LinkSlot slot={Number(id) + 1}>
+                <LinkBlock block={Number(id) + 1}>
                     <Arrow direction='right' />
-                </LinkSlot>
+                </LinkBlock>
             </div>
 
             {loadingBlock && (
