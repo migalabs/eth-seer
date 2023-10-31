@@ -63,7 +63,6 @@ export type BlockEL = {
     f_payload_size_bytes?: number;
 };
 
-
 export type Slot = {
     f_proposer_slot: number;
     f_pool_name: string;
