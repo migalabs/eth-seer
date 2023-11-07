@@ -1,26 +1,33 @@
 version: '3.7'
 
-services:
-          ethseer-client:
-                image: ethseer-client-image:1.0.0
-                build:
-                        context: ./
-                        dockerfile: Dockerfile-client
-                container_name: ethseer-client-container
-                init: true
-                network_mode: 'host'
-                restart: unless-stopped
-                volumes:
-                        - ${MYFOLDER}/packages/client/.env:/app/.env
+networks:
+  cluster:
 
-          ethseer-server:
-                image: ethseer-server-image:1.0.0
-                build:
-                        context: ./
-                        dockerfile: Dockerfile-server
-                container_name: ethseer-server-container
-                init: true
-                network_mode: 'host'
-                restart: unless-stopped
-                volumes:
-                        - ${MYFOLDER}/packages/server/.env:/app/.env
+services:
+  
+  ethseer-client:
+    image: ethseer-client-image:local
+    build:
+      context: ./packages/client/
+    init: true
+    ports:
+      - 127.0.0.1:3000:3000
+    networks:
+      - cluster
+    restart: unless-stopped
+    volumes:
+      - ./packages/client/.env:/app/.env
+
+  ethseer-server:
+    image: ethseer-server-image:local
+    build:
+      context: ./packages/server/
+    container_name: ethseer-server-container
+    init: true
+    ports:
+      - 127.0.0.1:3020:3020
+    networks:
+      - cluster
+    restart: unless-stopped
+    volumes:
+      - ./packages/server/.env:/app/.env
