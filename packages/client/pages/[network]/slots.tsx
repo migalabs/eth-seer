@@ -92,7 +92,7 @@ const Slots = () => {
                 style={{ background: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--bgMainLightMode)' }}
             >
                 <h2
-                    className='text-white text-[14px] 2xl:text-[18px] text-center leading-5'
+                    className='text-white text-[14px] 2xl:text-[18px] text-center leading-6'
                     style={{
                         color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                     }}
