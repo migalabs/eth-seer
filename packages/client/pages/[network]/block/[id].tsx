@@ -24,7 +24,7 @@ import ValidatorStatus from '../../../components/ui/ValidatorStatus';
 import LinkBlock from '../../../components/ui/LinkBlock';
 
 // Types
-import { BlockEL, Withdrawal } from '../../../types';
+import { BlockEL, Transaction, Withdrawal } from '../../../types';
 
 type CardProps = {
     title: string;
@@ -82,11 +82,13 @@ const BlockPage = () => {
     // States
     const [block, setBlock] = useState<BlockEL | null>(null);
     const [withdrawals, setWithdrawals] = useState<Array<Withdrawal>>([]);
+    const [transactions, setTransactions] = useState<Array<Transaction>>([]);
     const [existsBlock, setExistsBlock] = useState<boolean>(true);
     const [countdownText, setCountdownText] = useState<string>('');
     const [tabPageIndex, setTabPageIndex] = useState<number>(0);
     const [loadingBlock, setLoadingBlock] = useState<boolean>(true);
     const [loadingWithdrawals, setLoadingWithdrawals] = useState<boolean>(true);
+    const [loadingTransactions, setLoadingTransactions] = useState<boolean>(true);
     const [desktopView, setDesktopView] = useState(true);
     const [blockGenesis, setBlockGenesis] = useState(0);
 
@@ -98,7 +100,7 @@ const BlockPage = () => {
 
         if (network && ((id && !block) || (block && block.f_slot !== Number(id)))) {
             getBlock();
-            getWithdrawals();
+            getTransactions();
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -183,22 +185,22 @@ const BlockPage = () => {
         }
     };
 
-    // Get withdrawals
-    const getWithdrawals = async () => {
+    // Get transactions
+    const getTransactions = async () => {
         try {
-            setLoadingWithdrawals(true);
+            setLoadingTransactions(true);
 
-            const response = await axiosClient.get(`/api/slots/${id}/withdrawals`, {
+            const response = await axiosClient.get(`/api/blocks/${id}/transactions`, {
                 params: {
                     network,
                 },
             });
 
-            setWithdrawals(response.data.withdrawals);
+            setTransactions(response.data.transactions);
         } catch (error) {
             console.log(error);
         } finally {
-            setLoadingWithdrawals(false);
+            setLoadingTransactions(false);
         }
     };
 
@@ -337,6 +339,23 @@ const BlockPage = () => {
             </div>
         );
     };
+
+    const timeSince = (timestamp: number) => {
+        const now = new Date();
+        const then = new Date(timestamp);
+        const diff = now.getTime() - then.getTime();
+      
+        const minutes = Math.floor(diff / 60000);
+        const hours = Math.floor(minutes / 60);
+        const remainingMinutes = minutes % 60;
+      
+        if (hours === 0) {
+            return `${remainingMinutes} mins ago`;
+        } else {
+            return `${hours} hrs ${remainingMinutes} mins ago`;
+        }
+
+    }
 
     //Transactions tab - table desktop
     const getTransactionsDesktop = () => {
@@ -486,7 +505,7 @@ const BlockPage = () => {
                     </div>
                 </div>
 
-                {loadingWithdrawals ? (
+                {loadingTransactions ? (
                     <div className='mt-6'>
                         <Loader />
                     </div>
@@ -499,36 +518,36 @@ const BlockPage = () => {
                             color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                         }}
                     >
-                        {withdrawals.map(element => (
+                        {transactions.map(element => (
                             <div
                                 className='flex gap-x-4 py-1 uppercase text-center items-center'
-                                key={element.f_val_idx}
+                                key={element.f_hash}
                             >
                                 <div className='w-1/3'>
-                                    <p>{getShortAddress(element?.f_address)}</p>
+                                    <p>{getShortAddress(element?.f_hash)}</p>
                                 </div>
 
                                 <div className='w-1/3'>
-                                    <LinkValidator validator={element.f_val_idx} mxAuto />
+                                <p className='lowercase'>{element.f_tx_type}</p>
                                 </div>
 
-                                <p className='w-1/3 lowercase'>{'9hrs 51mins ago'}</p>
+                                <p className='w-1/3 lowercase'>{timeSince(element.f_timestamp *1000)}</p>
 
-                                <p className='w-1/3'>{getShortAddress(element?.f_address)}</p>
+                                <p className='w-1/3'>{getShortAddress(element.f_from)}</p>
                                 <CustomImage
                                     src={`/static/images/icons/send_${themeMode?.darkMode ? 'dark' : 'light'}.webp`}
                                     alt='Send icon'
                                     width={20}
                                     height={20}
                                 />
-                                <p className='w-1/3'>{getShortAddress(element?.f_address)}</p>
+                                <p className='w-1/3'>{getShortAddress(element.f_to)}</p>
 
-                                <p className='w-1/3'>{(element.f_amount / 10 ** 9).toLocaleString()} ETH</p>
-                                <p className='w-1/3'>{(element.f_amount / 10 ** 9).toLocaleString()}</p>
+                                <p className='w-1/3'>{(element.f_value / 10 ** 18).toLocaleString()} ETH</p>
+                                <p className='w-1/3'>{(element.f_gas_fee_cap / 10 ** 18).toLocaleString()}</p>
                             </div>
                         ))}
 
-                        {withdrawals.length == 0 && (
+                        {transactions.length == 0 && (
                             <div className='flex justify-center p-2'>
                                 <p className='uppercase text-[14px] md:text-[16px]'>No transactions</p>
                             </div>
@@ -550,13 +569,13 @@ const BlockPage = () => {
                 }}
                 onMouseMove={handleMouseMove}
             >
-                {loadingWithdrawals ? (
+                {loadingTransactions ? (
                     <div className='mt-6'>
                         <Loader />
                     </div>
                 ) : (
                     <div>
-                        {withdrawals.map(element => (
+                        {transactions.map(element => (
                             <div
                                 className='flex my-2 flex-col gap-y-2 text-[14px] py-4 px-14 border-2 border-white rounded-md'
                                 style={{
@@ -568,7 +587,7 @@ const BlockPage = () => {
                                         : 'var(--boxShadowCardLight)',
                                     color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                                 }}
-                                key={element.f_val_idx}
+                                key={element.f_hash}
                             >
                                 <div className='flex flex-row items-center justify-between'>
                                     <p
@@ -579,7 +598,7 @@ const BlockPage = () => {
                                     >
                                         Txn Hash
                                     </p>
-                                    <p>{getShortAddress(element?.f_address)}</p>
+                                    <p>{getShortAddress(element?.f_hash)}</p>
                                 </div>
                                 <div className='flex flex-row items-center justify-between'>
                                     <p
@@ -590,7 +609,7 @@ const BlockPage = () => {
                                     >
                                         Method
                                     </p>
-                                    <LinkValidator validator={element.f_val_idx} mxAuto />
+                                    <p className='lowercase text-right'>{element.f_tx_type}</p>
                                 </div>
                                 <div className='flex flex-row items-center justify-between'>
                                     <p
@@ -601,7 +620,7 @@ const BlockPage = () => {
                                     >
                                         Age
                                     </p>
-                                    <p className='w-1/3 lowercase text-right'>{'9hrs 51mins ago'}</p>
+                                    <p className='w-1/3 lowercase text-right'>{timeSince(element.f_timestamp*1000)}</p>
                                 </div>
                                 <div className='flex flex-row justify-between items-center'>
                                     <p
@@ -623,7 +642,7 @@ const BlockPage = () => {
                                 </div>
                                 <div className='flex flex-row justify-between items-center'>
                                     <div className='flex flex-row items-center justify-between'>
-                                        <p>{getShortAddress(element?.f_address)}</p>
+                                        <p>{getShortAddress(element?.f_from)}</p>
                                     </div>
                                     <CustomImage
                                         src={`/static/images/icons/send_${themeMode?.darkMode ? 'dark' : 'light'}.webp`}
@@ -632,7 +651,7 @@ const BlockPage = () => {
                                         height={20}
                                     />
                                     <div className='flex flex-row items-center justify-between'>
-                                        <p>{getShortAddress(element?.f_address)}</p>
+                                        <p>{getShortAddress(element?.f_to)}</p>
                                     </div>
                                 </div>
                                 <div className='flex flex-row items-center justify-between'>
@@ -644,7 +663,7 @@ const BlockPage = () => {
                                     >
                                         Value
                                     </p>
-                                    <p>{(element.f_amount / 10 ** 9).toLocaleString()} ETH</p>
+                                    <p>{(element.f_value / 10 ** 18).toLocaleString()} ETH</p>
                                 </div>
                                 <div className='flex flex-row items-center justify-between'>
                                     <p
@@ -655,11 +674,11 @@ const BlockPage = () => {
                                     >
                                         Txn Fee
                                     </p>
-                                    <p>{(element.f_amount / 10 ** 9).toLocaleString()}</p>
+                                    <p>{(element.f_gas_fee_cap / 10 ** 18).toLocaleString()}</p>
                                 </div>
                             </div>
                         ))}
-                        {withdrawals.length == 0 && (
+                        {transactions.length == 0 && (
                             <div
                                 className='flex mt-2 justify-center rounded-md border-2 border-white px-4 py-4'
                                 style={{
