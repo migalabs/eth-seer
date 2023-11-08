@@ -19,11 +19,10 @@ const EntityCard = ({ index, pool }: Props) => {
     return (
         <NetworkLink href={`/entities/${pool.toLocaleLowerCase()}`}>
             <div
-                className='flex md:flex-row flex-col h-[150px] md:h-[100px] bg-[var(--bgFairLightMode)] md:hover:bg-[var(--white)] transition md:justify-start items-center justify-center py-4 px-2 border-2 gap-2 rounded-md'
+                className='flex md:flex-row flex-col h-[150px] md:h-[100px] bg-[var(--bgFairLightMode)] md:hover:bg-[var(--bgStrongLightMode)] transition md:justify-start items-center justify-center py-4 px-2 border-2 gap-2 rounded-md'
                 style={{
                     boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
-                    color: themeMode?.darkMode ? 'var(--black)' : 'var(--black)',
-                    borderColor: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--white)',
+                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                 }}
             >
                 <div style={{ minWidth: '60px', minHeight: '60px' }}>
