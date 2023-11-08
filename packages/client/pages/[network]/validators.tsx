@@ -15,6 +15,7 @@ import Loader from '../../components/ui/Loader';
 import ViewMoreButton from '../../components/ui/ViewMoreButton';
 import LinkValidator from '../../components/ui/LinkValidator';
 import LinkEntity from '../../components/ui/LinkEntity';
+// import Pagination from '../../components/ui/Pagination';
 
 // Types
 import { Validator } from '../../types';
@@ -110,19 +111,18 @@ const Validators = () => {
                     <p className='w-[25%]'>Status</p>
                 </div>
 
-                <div
-                    className='flex flex-col justify-center gap-y-4 rounded-md border-2 border-white py-5 px-2 xl:px-8 min-w-[700px] w-11/12 md:w-10/12'
-                    style={{
-                        backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
-                        boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
-                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                    }}
-                >
+                <div className='w-11/12 md:w-10/12'>
                     {validators.map((validator: Validator) => (
                         <div
                             key={validator.f_val_idx}
-                            className='font-medium flex gap-x-1 justify-around items-center text-[14px] md:text-[16px]'
+                            className='font-medium my-2 flex gap-x-1 justify-around items-center text-[14px] md:text-[16px] rounded-md border-2 border-white p-2 xl:px-8'
                             style={{
+                                backgroundColor: themeMode?.darkMode
+                                    ? 'var(--bgFairDarkMode)'
+                                    : 'var(--bgMainLightMode)',
+                                boxShadow: themeMode?.darkMode
+                                    ? 'var(--boxShadowCardDark)'
+                                    : 'var(--boxShadowCardLight)',
                                 color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                             }}
                         >
@@ -257,6 +257,7 @@ const Validators = () => {
                     performance.
                 </h2>
             </div>
+            {/* <Pagination/> */}
             <div>{desktopView ? getValidatorsDesktop() : getValidatorsMobile()}</div>;
             {loading && (
                 <div className='mb-4'>
