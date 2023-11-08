@@ -80,6 +80,16 @@ export type Withdrawal = {
     f_address?: string;
 };
 
+export type Transaction = {
+    f_value: number
+    f_gas_fee_cap: number
+    f_to: string
+    f_hash: string
+    f_timestamp: number
+    f_from: string
+    f_tx_type: number
+};
+
 export type Proposed = {
     f_proposed: number;
     f_missed: number;
