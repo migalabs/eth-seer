@@ -7,6 +7,7 @@ import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 // Components
 import Layout from '../../components/layouts/Layout';
 import EntityCard from '../../components/ui/EntityCard';
+import CustomImage from '../../components/ui/CustomImage';
 
 // Constants
 import { useRouter } from 'next/router';
@@ -84,7 +85,7 @@ const Entities = () => {
                 style={{ background: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--bgMainLightMode)' }}
             >
                 <h2
-                    className='text-white text-[14px] 2xl:text-[18px] text-center leading-5'
+                    className='text-white text-[14px] 2xl:text-[18px] text-center leading-6'
                     style={{
                         color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                     }}
@@ -95,6 +96,37 @@ const Entities = () => {
                     deposit address analysis, among others. EthSeer also monitors their performance.
                 </h2>
             </div>
+            <hr className='w-11/12 lg:w-10/12 mx-auto my-4 border-white'></hr>
+            <div className='w-11/12 lg:w-10/12 mx-auto mt-4'>
+                <p
+                    className='text-[14px] md:text-[16px] text-center'
+                    style={{
+                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
+                    }}
+                >
+                    This is a card example with the entity information you&apos;ll find:
+                </p>
+                <div
+                    className='flex flex-row w-[350px] justify-start mx-auto mt-4 items-center py-4 px-2 border-2 gap-2 rounded-md bg-[var(--bgFairLightMode)]'
+                    style={{
+                        boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
+                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
+                    }}
+                >
+                    <CustomImage
+                        src='/static/images/blocks/cubes/example.webp'
+                        alt='Block example'
+                        width={60}
+                        height={60}
+                    />
+                    <div className='flex flex-col text-left'>
+                        <span className='text-[14px] md:text-[16px] font-semibold uppercase'>Entity name</span>
+                        <span className='font-light text-[12px] md:text-[14px]'>ordered by</span>
+                        <span className='font-light text-[14px] md:text-[16px]'>Number of validators</span>
+                    </div>
+                </div>
+            </div>
+            <hr className='w-11/12 lg:w-10/12 mx-auto my-4 border-white'></hr>
             {loading && (
                 <div className='my-6 justify-center'>
                     <Loader />
