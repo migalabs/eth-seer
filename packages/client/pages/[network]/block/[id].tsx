@@ -344,27 +344,22 @@ const BlockPage = () => {
         const now = new Date();
         const then = new Date(timestamp);
         const diff = now.getTime() - then.getTime();
-      
+
         const minutes = Math.floor(diff / 60000);
         const hours = Math.floor(minutes / 60);
         const remainingMinutes = minutes % 60;
-      
+
         if (hours === 0) {
             return `${remainingMinutes} mins ago`;
         } else {
             return `${hours} hrs ${remainingMinutes} mins ago`;
         }
-
-    }
+    };
 
     //Transactions tab - table desktop
     const getTransactionsDesktop = () => {
         return (
-            <div
-                ref={containerRef}
-                className='flex flex-col overflow-x-scroll overflow-y-hidden scrollbar-thin w-11/12 mx-auto mt-4'
-                onMouseMove={handleMouseMove}
-            >
+            <div ref={containerRef} className='flex flex-col w-11/12 mx-auto mt-4' onMouseMove={handleMouseMove}>
                 <div
                     className='flex gap-x-4 justify-around px-4 xl:px-8 font-semibold py-3 text-[16px] text-center'
                     style={{
@@ -372,7 +367,7 @@ const BlockPage = () => {
                     }}
                 >
                     <div className='flex items-center gap-x-1 justify-center w-1/3'>
-                        <p className='mt-0.5 font-semibold'>Txn Hash</p>
+                        <p className='font-semibold'>Txn Hash</p>
                         <TooltipContainer>
                             <CustomImage
                                 src='/static/images/icons/information_icon.webp'
@@ -387,9 +382,10 @@ const BlockPage = () => {
                                 colorLetter='black'
                                 content={
                                     <>
-                                        <span>Time at which the slot</span>
-                                        <span>should have passed</span>
-                                        <span>(calculated since genesis)</span>
+                                        <span>
+                                            A transaction hash, often denoted as TXN Hash, serves as a distinctive
+                                            66-character identifier produced each time a transaction is executed.
+                                        </span>
                                     </>
                                 }
                                 top='34px'
@@ -413,9 +409,10 @@ const BlockPage = () => {
                                 colorLetter='black'
                                 content={
                                     <>
-                                        <span>Time at which the slot</span>
-                                        <span>should have passed</span>
-                                        <span>(calculated since genesis)</span>
+                                        <span>
+                                            A function is executed depending on the decoded input data. In cases where
+                                            the functions are not recognized, the method ID is presented instead.
+                                        </span>
                                     </>
                                 }
                                 top='34px'
@@ -439,9 +436,7 @@ const BlockPage = () => {
                                 colorLetter='black'
                                 content={
                                     <>
-                                        <span>Time at which the slot</span>
-                                        <span>should have passed</span>
-                                        <span>(calculated since genesis)</span>
+                                        <span>Time has passed since it was created.</span>
                                     </>
                                 }
                                 top='34px'
@@ -453,29 +448,6 @@ const BlockPage = () => {
                     <p className='mt-0.5 w-1/3'>To</p>
                     <div className='flex items-center gap-x-1 justify-center w-1/3'>
                         <p className='mt-0.5 font-semibold'>Value</p>
-                        <TooltipContainer>
-                            <CustomImage
-                                src='/static/images/icons/information_icon.webp'
-                                alt='Time information'
-                                width={24}
-                                height={24}
-                            />
-
-                            <TooltipResponsive
-                                width={220}
-                                backgroundColor='white'
-                                colorLetter='black'
-                                content={
-                                    <>
-                                        <span>Time at which the slot</span>
-                                        <span>should have passed</span>
-                                        <span>(calculated since genesis)</span>
-                                    </>
-                                }
-                                top='34px'
-                                polygonLeft
-                            />
-                        </TooltipContainer>
                     </div>
                     <div className='flex items-center gap-x-1 justify-center w-1/3'>
                         <p className='mt-0.5 font-semibold'>Txn Fee</p>
@@ -488,14 +460,12 @@ const BlockPage = () => {
                             />
 
                             <TooltipResponsive
-                                width={220}
+                                width={180}
                                 backgroundColor='white'
                                 colorLetter='black'
                                 content={
                                     <>
-                                        <span>Time at which the slot</span>
-                                        <span>should have passed</span>
-                                        <span>(calculated since genesis)</span>
+                                        <span>(Gas price*Gas used by Txns) in Ether</span>
                                     </>
                                 }
                                 top='34px'
@@ -519,19 +489,16 @@ const BlockPage = () => {
                         }}
                     >
                         {transactions.map(element => (
-                            <div
-                                className='flex gap-x-4 py-1 uppercase text-center items-center'
-                                key={element.f_hash}
-                            >
+                            <div className='flex gap-x-4 py-1 uppercase text-center items-center' key={element.f_hash}>
                                 <div className='w-1/3'>
                                     <p>{getShortAddress(element?.f_hash)}</p>
                                 </div>
 
                                 <div className='w-1/3'>
-                                <p className='lowercase'>{element.f_tx_type}</p>
+                                    <p className='lowercase'>{element.f_tx_type}</p>
                                 </div>
 
-                                <p className='w-1/3 lowercase'>{timeSince(element.f_timestamp *1000)}</p>
+                                <p className='w-1/3 lowercase'>{timeSince(element.f_timestamp * 1000)}</p>
 
                                 <p className='w-1/3'>{getShortAddress(element.f_from)}</p>
                                 <CustomImage
@@ -620,7 +587,9 @@ const BlockPage = () => {
                                     >
                                         Age
                                     </p>
-                                    <p className='w-1/3 lowercase text-right'>{timeSince(element.f_timestamp*1000)}</p>
+                                    <p className='w-1/3 lowercase text-right'>
+                                        {timeSince(element.f_timestamp * 1000)}
+                                    </p>
                                 </div>
                                 <div className='flex flex-row justify-between items-center'>
                                     <p
