@@ -504,8 +504,8 @@ const BlockPage = () => {
                                 <CustomImage
                                     src={`/static/images/icons/send_${themeMode?.darkMode ? 'dark' : 'light'}.webp`}
                                     alt='Send icon'
-                                    width={20}
-                                    height={20}
+                                    width={25}
+                                    height={25}
                                 />
                                 <p className='w-1/3'>{getShortAddress(element.f_to)}</p>
 
