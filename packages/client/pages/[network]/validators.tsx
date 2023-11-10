@@ -1,21 +1,18 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+// Contexts
+import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
 // Axios
 import axiosClient from '../../config/axios';
 
-// Contexts
-import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
-
 // Components
 import Layout from '../../components/layouts/Layout';
 import ValidatorStatus from '../../components/ui/ValidatorStatus';
-import Loader from '../../components/ui/Loader';
-import ViewMoreButton from '../../components/ui/ViewMoreButton';
 import LinkValidator from '../../components/ui/LinkValidator';
 import LinkEntity from '../../components/ui/LinkEntity';
-// import Pagination from '../../components/ui/Pagination';
+import Pagination from '../../components/ui/Pagination';
 
 // Types
 import { Validator } from '../../types';
@@ -33,9 +30,9 @@ const Validators = () => {
 
     // States
     const [validators, setValidators] = useState<Validator[]>([]);
-    const [currentPage, setCurrentPage] = useState(0);
     const [loading, setLoading] = useState(false);
     const [desktopView, setDesktopView] = useState(true);
+    const [currentPage, setCurrentPage] = useState(1);
 
     // UseEffect
     useEffect(() => {
@@ -64,17 +61,23 @@ const Validators = () => {
         }
     };
 
+    // Clear existing validators when the page changes
+    const handlePageChange = (newPage: number) => {
+        setValidators([]);
+        getValidators(newPage);
+        setCurrentPage(newPage);
+    };
+
     //VALIDATORS TABLE
     const getValidators = async (page: number) => {
         try {
             setLoading(true);
-            setCurrentPage(page);
 
             const response = await axiosClient.get('/api/validators', {
                 params: {
                     network,
-                    page,
-                    limit: 20,
+                    page: page,
+                    limit: 10,
                 },
             });
 
@@ -91,6 +94,7 @@ const Validators = () => {
             setLoading(false);
         }
     };
+
     //View table desktop
     const getValidatorsDesktop = () => {
         return (
@@ -257,14 +261,8 @@ const Validators = () => {
                     performance.
                 </h2>
             </div>
-            {/* <Pagination/> */}
+            <Pagination active={currentPage} onChangePage={handlePageChange} />
             <div>{desktopView ? getValidatorsDesktop() : getValidatorsMobile()}</div>;
-            {loading && (
-                <div className='mb-4'>
-                    <Loader />
-                </div>
-            )}
-            <ViewMoreButton onClick={() => getValidators(currentPage + 1)} />
         </Layout>
     );
 };
