@@ -3,27 +3,27 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 
 // Axios
-import axiosClient from '../../../config/axios';
+import axiosClient from '../../config/axios';
 
 // Contexts
-import ThemeModeContext from '../../../contexts/theme-mode/ThemeModeContext';
+import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
 // Components
-import Layout from '../../../components/layouts/Layout';
-import TabHeader from '../../../components/ui/TabHeader';
-import Loader from '../../../components/ui/Loader';
-import LinkValidator from '../../../components/ui/LinkValidator';
-import LinkSlot from '../../../components/ui/LinkSlot';
-import Arrow from '../../../components/ui/Arrow';
-import LinkEpoch from '../../../components/ui/LinkEpoch';
-import LinkEntity from '../../../components/ui/LinkEntity';
+import Layout from '../../components/layouts/Layout';
+import TabHeader from '../../components/ui/TabHeader';
+import Loader from '../../components/ui/Loader';
+import LinkValidator from '../../components/ui/LinkValidator';
+import LinkSlot from '../../components/ui/LinkSlot';
+import Arrow from '../../components/ui/Arrow';
+import LinkEpoch from '../../components/ui/LinkEpoch';
+import LinkEntity from '../../components/ui/LinkEntity';
 
 // Types
-import { Block, Withdrawal } from '../../../types';
+import { Block, Withdrawal } from '../../types';
 
 // Constants
-import { ADDRESS_ZERO, ADDRESS_ZERO_SHORT } from '../../../constants';
-import EpochAnimation from '../../../components/layouts/EpochAnimation';
+import { ADDRESS_ZERO, ADDRESS_ZERO_SHORT } from '../../constants';
+import EpochAnimation from '../../components/layouts/EpochAnimation';
 
 type CardProps = {
     title: string;

@@ -18,7 +18,7 @@ const Menu = () => {
     const [networks, setNetworks] = useState([]);
 
     useEffect(() => {
-        if (!networks || networks.length === 0) {
+        if (networks.length === 0) {
             getNetworks();
         }
 
@@ -62,7 +62,7 @@ const Menu = () => {
                 ? networks.map((network: string) => {
                       return {
                           name: network.charAt(0).toUpperCase() + network.slice(1),
-                          route: `/${network}`,
+                          route: `/?network=${network}`,
                       };
                   })
                 : [],

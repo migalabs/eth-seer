@@ -2,17 +2,17 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
 // Context
-import StatusContext from '../../contexts/status/StatusContext';
-import BlocksContext from '../../contexts/blocks/BlocksContext';
-import EpochsContext from '../../contexts/epochs/EpochsContext';
-import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
+import StatusContext from '../contexts/status/StatusContext';
+import BlocksContext from '../contexts/blocks/BlocksContext';
+import EpochsContext from '../contexts/epochs/EpochsContext';
+import ThemeModeContext from '../contexts/theme-mode/ThemeModeContext';
 
 // Components
-import Layout from '../../components/layouts/Layout';
-import ChainOverview from '../../components/layouts/ChainOverview';
-import Statitstics from '../../components/layouts/Statitstics';
-import Problems from '../../components/layouts/Problems';
-import SummaryOverview from '../../components/ui/SummaryOverview';
+import Layout from '../components/layouts/Layout';
+import ChainOverview from '../components/layouts/ChainOverview';
+import Statitstics from '../components/layouts/Statitstics';
+import Problems from '../components/layouts/Problems';
+import SummaryOverview from '../components/ui/SummaryOverview';
 
 export default function Home() {
     // Router
