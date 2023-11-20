@@ -355,6 +355,24 @@ const BlockPage = () => {
             return `${hours} hrs ${remainingMinutes} mins ago`;
         }
     };
+  
+    //CopyAddress
+    type ElementType = {
+        f_hash?: string;
+        f_from?: string;
+        f_to?: string;
+      };
+
+      const handleCopyClick = (element: ElementType, property: 'f_hash' | 'f_from' | 'f_to') => {
+        const copyText = element[property] || '';
+        navigator.clipboard.writeText(copyText)
+        .then(() => {
+            console.log('Copy');
+        })
+        .catch(err => {
+            console.error('Error', err);
+        });
+    };
 
     //Transactions tab - table desktop
     const getTransactionsDesktop = () => {
@@ -491,7 +509,15 @@ const BlockPage = () => {
                         {transactions.map(element => (
                             <div className='flex gap-x-4 py-1 uppercase text-center items-center' key={element.f_hash}>
                                 <div className='w-1/3'>
-                                    <p>{getShortAddress(element?.f_hash)}</p>
+                                    <p>{getShortAddress(element?.f_hash)}
+                                    <CustomImage
+                                    src={`/static/images/icons/copy_${themeMode?.darkMode ? 'dark' : 'light'}.webp`}
+                                    alt='Copy icon'
+                                    width={18}
+                                    height={18}
+                                    onClick={() => handleCopyClick(element, 'f_hash')}                    
+                                />
+                                </p>
                                 </div>
 
                                 <div className='w-1/3'>
@@ -500,14 +526,30 @@ const BlockPage = () => {
 
                                 <p className='w-1/3 lowercase'>{timeSince(element.f_timestamp * 1000)}</p>
 
-                                <p className='w-1/3'>{getShortAddress(element.f_from)}</p>
+                                <p className='w-1/3'>{getShortAddress(element.f_from)}
+                                <CustomImage
+                                    src={`/static/images/icons/copy_${themeMode?.darkMode ? 'dark' : 'light'}.webp`}
+                                    alt='Copy icon'
+                                    width={18}
+                                    height={18}
+                                    onClick={() => handleCopyClick(element, 'f_from')}                    
+                                />
+                                </p>
                                 <CustomImage
                                     src={`/static/images/icons/send_${themeMode?.darkMode ? 'dark' : 'light'}.webp`}
                                     alt='Send icon'
                                     width={25}
                                     height={25}
                                 />
-                                <p className='w-1/3'>{getShortAddress(element.f_to)}</p>
+                                <p className='w-1/3'>{getShortAddress(element.f_to)}
+                                <CustomImage
+                                    src={`/static/images/icons/copy_${themeMode?.darkMode ? 'dark' : 'light'}.webp`}
+                                    alt='Copy icon'
+                                    width={18}
+                                    height={18}
+                                    onClick={() => handleCopyClick(element, 'f_to')}                   
+                                />
+                                </p>
 
                                 <p className='w-1/3'>{(element.f_value / 10 ** 18).toLocaleString()} ETH</p>
                                 <p className='w-1/3'>{(element.f_gas_fee_cap / 10 ** 18).toLocaleString()}</p>
