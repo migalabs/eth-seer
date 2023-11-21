@@ -355,23 +355,34 @@ const BlockPage = () => {
             return `${hours} hrs ${remainingMinutes} mins ago`;
         }
     };
-  
+
     //CopyAddress
     type ElementType = {
         f_hash?: string;
         f_from?: string;
         f_to?: string;
-      };
+    };
 
-      const handleCopyClick = (element: ElementType, property: 'f_hash' | 'f_from' | 'f_to') => {
+    const [copied, setCopied] = useState<{ [key: string]: boolean | undefined }>({});
+
+    const handleCopyClick = (element: ElementType, property: 'f_hash' | 'f_from' | 'f_to') => {
         const copyText = element[property] || '';
-        navigator.clipboard.writeText(copyText)
-        .then(() => {
-            console.log('Copy');
-        })
-        .catch(err => {
-            console.error('Error', err);
-        });
+        navigator.clipboard
+            .writeText(copyText)
+            .then(() => {
+                console.log('Copied');
+                setCopied(prevState => {
+                    return { ...(prevState ?? {}), [element.f_hash || '']: true };
+                });
+                setTimeout(() => {
+                    setCopied(prevState => {
+                        return { ...(prevState ?? {}), [element.f_hash || '']: false };
+                    });
+                }, 2000);
+            })
+            .catch(err => {
+                console.error('Error', err);
+            });
     };
 
     //Transactions tab - table desktop
@@ -508,49 +519,53 @@ const BlockPage = () => {
                     >
                         {transactions.map(element => (
                             <div className='flex gap-x-4 py-1 uppercase text-center items-center' key={element.f_hash}>
-                                <div className='w-1/3'>
-                                    <p>{getShortAddress(element?.f_hash)}
+                                <div className='flex gap-1 justify-center items-center w-1/3'>
+                                    <p>{getShortAddress(element?.f_hash)}</p>
                                     <CustomImage
-                                    src={`/static/images/icons/copy_${themeMode?.darkMode ? 'dark' : 'light'}.webp`}
-                                    alt='Copy icon'
-                                    width={18}
-                                    height={18}
-                                    onClick={() => handleCopyClick(element, 'f_hash')}                    
-                                />
-                                </p>
+                                        className='cursor cursor-pointer'
+                                        src={`/static/images/icons/copy_${themeMode?.darkMode ? 'dark' : 'light'}.webp`}
+                                        alt='Copy icon'
+                                        width={18}
+                                        height={18}
+                                        title={copied[element.f_hash || ''] ? 'Copied!' : ''}
+                                        onClick={() => handleCopyClick(element, 'f_hash')}
+                                    />
                                 </div>
 
-                                <div className='w-1/3'>
-                                    <p className='lowercase'>{element.f_tx_type}</p>
+                                <p className='lowercase w-1/3'>{element.f_tx_type}</p>
+
+                                <p className='lowercase w-1/3'>{timeSince(element.f_timestamp * 1000)}</p>
+
+                                <div className='flex gap-1 justify-center items-center w-1/3'>
+                                    <p>{getShortAddress(element.f_from)}</p>
+                                    <CustomImage
+                                        className='cursor cursor-pointer'
+                                        src={`/static/images/icons/copy_${themeMode?.darkMode ? 'dark' : 'light'}.webp`}
+                                        alt='Copy icon'
+                                        width={18}
+                                        height={18}
+                                        title={copied[element.f_from || ''] ? 'Copied!' : ''}
+                                        onClick={() => handleCopyClick(element, 'f_from')}
+                                    />
                                 </div>
-
-                                <p className='w-1/3 lowercase'>{timeSince(element.f_timestamp * 1000)}</p>
-
-                                <p className='w-1/3'>{getShortAddress(element.f_from)}
-                                <CustomImage
-                                    src={`/static/images/icons/copy_${themeMode?.darkMode ? 'dark' : 'light'}.webp`}
-                                    alt='Copy icon'
-                                    width={18}
-                                    height={18}
-                                    onClick={() => handleCopyClick(element, 'f_from')}                    
-                                />
-                                </p>
                                 <CustomImage
                                     src={`/static/images/icons/send_${themeMode?.darkMode ? 'dark' : 'light'}.webp`}
                                     alt='Send icon'
                                     width={25}
                                     height={25}
                                 />
-                                <p className='w-1/3'>{getShortAddress(element.f_to)}
-                                <CustomImage
-                                    src={`/static/images/icons/copy_${themeMode?.darkMode ? 'dark' : 'light'}.webp`}
-                                    alt='Copy icon'
-                                    width={18}
-                                    height={18}
-                                    onClick={() => handleCopyClick(element, 'f_to')}                   
-                                />
-                                </p>
-
+                                <div className='flex gap-1 justify-center items-center w-1/3'>
+                                    <p>{getShortAddress(element.f_to)}</p>
+                                    <CustomImage
+                                        className='cursor cursor-pointer'
+                                        src={`/static/images/icons/copy_${themeMode?.darkMode ? 'dark' : 'light'}.webp`}
+                                        alt='Copy icon'
+                                        width={18}
+                                        height={18}
+                                        title={copied[element.f_to || ''] ? 'Copied!' : ''}
+                                        onClick={() => handleCopyClick(element, 'f_to')}
+                                    />
+                                </div>
                                 <p className='w-1/3'>{(element.f_value / 10 ** 18).toLocaleString()} ETH</p>
                                 <p className='w-1/3'>{(element.f_gas_fee_cap / 10 ** 18).toLocaleString()}</p>
                             </div>
@@ -586,7 +601,7 @@ const BlockPage = () => {
                     <div>
                         {transactions.map(element => (
                             <div
-                                className='flex my-2 flex-col gap-y-2 text-[14px] py-4 px-14 border-2 border-white rounded-md'
+                                className='flex my-2 flex-col gap-y-2 text-[14px] py-4 px-6 border-2 border-white rounded-md'
                                 style={{
                                     backgroundColor: themeMode?.darkMode
                                         ? 'var(--bgFairDarkMode)'
@@ -629,11 +644,9 @@ const BlockPage = () => {
                                     >
                                         Age
                                     </p>
-                                    <p className='w-1/3 lowercase text-right'>
-                                        {timeSince(element.f_timestamp * 1000)}
-                                    </p>
+                                    <p className='lowercase text-right'>{timeSince(element.f_timestamp * 1000)}</p>
                                 </div>
-                                <div className='flex flex-row justify-between items-center'>
+                                <div className='flex flex-row items-center justify-between'>
                                     <p
                                         className='font-semibold'
                                         style={{
@@ -642,6 +655,10 @@ const BlockPage = () => {
                                     >
                                         From
                                     </p>
+
+                                    <p>{getShortAddress(element?.f_from)}</p>
+                                </div>
+                                <div className='flex flex-row items-center justify-between'>
                                     <p
                                         className='font-semibold'
                                         style={{
@@ -650,20 +667,7 @@ const BlockPage = () => {
                                     >
                                         To
                                     </p>
-                                </div>
-                                <div className='flex flex-row justify-between items-center'>
-                                    <div className='flex flex-row items-center justify-between'>
-                                        <p>{getShortAddress(element?.f_from)}</p>
-                                    </div>
-                                    <CustomImage
-                                        src={`/static/images/icons/send_${themeMode?.darkMode ? 'dark' : 'light'}.webp`}
-                                        alt='Send icon'
-                                        width={20}
-                                        height={20}
-                                    />
-                                    <div className='flex flex-row items-center justify-between'>
-                                        <p>{getShortAddress(element?.f_to)}</p>
-                                    </div>
+                                    <p>{getShortAddress(element?.f_to)}</p>
                                 </div>
                                 <div className='flex flex-row items-center justify-between'>
                                     <p
