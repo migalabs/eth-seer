@@ -5,6 +5,7 @@ import { dbConnection } from '../config/db';
 import entitiesRoutes from '../routes/entities';
 import epochsRoutes from '../routes/epochs';
 import slotsRoutes from '../routes/slots';
+import blocksRoutes from '../routes/blocks';
 import validatorsRoutes from '../routes/validators';
 import networksRoutes from '../routes/networks';
 
@@ -17,6 +18,7 @@ class Server {
         entities: '/api/entities',
         epochs: '/api/epochs',
         slots: '/api/slots',
+        blocks: '/api/blocks',
         validators: '/api/validators',
         networks: '/api/networks'
     };
@@ -63,6 +65,7 @@ class Server {
         this.app.use(this.paths.entities, entitiesRoutes);
         this.app.use(this.paths.epochs, epochsRoutes);
         this.app.use(this.paths.slots, slotsRoutes);
+        this.app.use(this.paths.blocks, blocksRoutes);
         this.app.use(this.paths.validators, validatorsRoutes);
         this.app.use(this.paths.networks, networksRoutes);
     }

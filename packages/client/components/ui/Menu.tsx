@@ -56,6 +56,10 @@ const Menu = () => {
                 name: 'Validators',
                 route: '/validators',
             },
+            {
+                name: 'Blocks',
+                route: '/blocks',
+            },
         ],
         Networks:
             networks.length > 0

@@ -4,12 +4,11 @@ export async function fetchNetworks(): Promise<{ networks: string[]; defaultNetw
     try {
         const response = await fetch(`${process.env.URL_API}/api/networks`);
         const networksData = await response.json();
-        
+
         return {
             networks: networksData.networks,
             defaultNetwork: networksData.networks ? networksData.networks[0] : null,
         };
-
     } catch (err) {
         console.error('Error fetching networks:', err);
         throw new Error('Error fetching networks');
@@ -17,9 +16,7 @@ export async function fetchNetworks(): Promise<{ networks: string[]; defaultNetw
 }
 
 export async function middleware(req: NextRequest) {
-
-    if (req.nextUrl.pathname.includes('_next') || req.nextUrl.pathname.includes('static'))
-        return NextResponse.next();
+    if (req.nextUrl.pathname.includes('_next') || req.nextUrl.pathname.includes('static')) return NextResponse.next();
 
     const { networks, defaultNetwork } = await fetchNetworks();
 
@@ -72,7 +69,11 @@ export async function middleware(req: NextRequest) {
         oldPathsToReplace.forEach(item => {
             if (pathname.includes(`/${item.plural}/`)) {
                 pathname = pathname.replace(`/${item.plural}/`, `/${item.singular}/`);
-            } else if (pathname.endsWith(`/${item.singular}`) && !pathname.includes('graffiti') && !pathname.includes('graffitis')) {
+            } else if (
+                pathname.endsWith(`/${item.singular}`) &&
+                !pathname.includes('graffiti') &&
+                !pathname.includes('graffitis')
+            ) {
                 pathname = pathname.replace(`/${item.singular}`, `/${item.plural}`);
             }
         });
