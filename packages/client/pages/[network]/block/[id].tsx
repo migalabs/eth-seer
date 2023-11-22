@@ -387,35 +387,7 @@ const BlockPage = () => {
                                 colorLetter='black'
                                 content={
                                     <>
-                                        <span>Time at which the slot</span>
-                                        <span>should have passed</span>
-                                        <span>(calculated since genesis)</span>
-                                    </>
-                                }
-                                top='34px'
-                                polygonLeft
-                            />
-                        </TooltipContainer>
-                    </div>
-                    <div className='flex items-center gap-x-1 justify-center w-1/3'>
-                        <p className='mt-0.5 font-semibold'>Method</p>
-                        <TooltipContainer>
-                            <CustomImage
-                                src='/static/images/icons/information_icon.webp'
-                                alt='Time information'
-                                width={24}
-                                height={24}
-                            />
-
-                            <TooltipResponsive
-                                width={220}
-                                backgroundColor='white'
-                                colorLetter='black'
-                                content={
-                                    <>
-                                        <span>Time at which the slot</span>
-                                        <span>should have passed</span>
-                                        <span>(calculated since genesis)</span>
+                                        <span>The hash of the transaction</span>
                                     </>
                                 }
                                 top='34px'
@@ -439,13 +411,11 @@ const BlockPage = () => {
                                 colorLetter='black'
                                 content={
                                     <>
-                                        <span>Time at which the slot</span>
-                                        <span>should have passed</span>
-                                        <span>(calculated since genesis)</span>
+                                        <span>How long ago</span>
+                                        <span>the transaction passed</span>
                                     </>
                                 }
                                 top='34px'
-                                polygonLeft
                             />
                         </TooltipContainer>
                     </div>
@@ -467,13 +437,13 @@ const BlockPage = () => {
                                 colorLetter='black'
                                 content={
                                     <>
-                                        <span>Time at which the slot</span>
-                                        <span>should have passed</span>
-                                        <span>(calculated since genesis)</span>
+                                        <span>How much ETH</span>
+                                        <span>was sent</span>
+                                        <span>in the transaction</span>
                                     </>
                                 }
                                 top='34px'
-                                polygonLeft
+                                
                             />
                         </TooltipContainer>
                     </div>
@@ -493,13 +463,12 @@ const BlockPage = () => {
                                 colorLetter='black'
                                 content={
                                     <>
-                                        <span>Time at which the slot</span>
-                                        <span>should have passed</span>
-                                        <span>(calculated since genesis)</span>
+                                        <span>The fee </span>
+                                        <span>the transaction cost</span>
                                     </>
                                 }
                                 top='34px'
-                                polygonLeft
+                                polygonRight
                             />
                         </TooltipContainer>
                     </div>
@@ -527,10 +496,6 @@ const BlockPage = () => {
                                     <p>{getShortAddress(element?.f_hash)}</p>
                                 </div>
 
-                                <div className='w-1/3'>
-                                <p className='lowercase'>{element.f_tx_type}</p>
-                                </div>
-
                                 <p className='w-1/3 lowercase'>{timeSince(element.f_timestamp *1000)}</p>
 
                                 <p className='w-1/3'>{getShortAddress(element.f_from)}</p>
@@ -543,7 +508,7 @@ const BlockPage = () => {
                                 <p className='w-1/3'>{getShortAddress(element.f_to)}</p>
 
                                 <p className='w-1/3'>{(element.f_value / 10 ** 18).toLocaleString()} ETH</p>
-                                <p className='w-1/3'>{(element.f_gas_fee_cap / 10 ** 18).toLocaleString()}</p>
+                                <p className='w-1/3'>{(element.f_gas_fee_cap / 10 ** 12).toLocaleString()} GWEI</p>
                             </div>
                         ))}
 
@@ -674,7 +639,7 @@ const BlockPage = () => {
                                     >
                                         Txn Fee
                                     </p>
-                                    <p>{(element.f_gas_fee_cap / 10 ** 18).toLocaleString()}</p>
+                                    <p>{(element.f_gas_fee_cap / 10 ** 12).toLocaleString()} GWEI</p>
                                 </div>
                             </div>
                         ))}
@@ -733,7 +698,7 @@ const BlockPage = () => {
                 </div>
             )}
 
-            {block && !loadingBlock && getInformationView()}
+            {block?.f_slot && !loadingBlock && getInformationView()}
         </Layout>
     );
 };
