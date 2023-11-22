@@ -1,6 +1,42 @@
 import { Request, Response } from 'express';
 import { pgPools, pgListeners } from '../config/db';
 
+export const getBlocks = async (req: Request, res: Response) => {
+
+    try {
+
+        const { network, page = 0, limit = 32 } = req.query;
+
+        const pgPool = pgPools[network as string];
+
+        const skip = Number(page) * Number(limit);
+
+        const [ blocks ] = 
+            await Promise.all([
+                pgPool.query(`
+                    SELECT f_timestamp, f_slot, f_epoch
+                    f_el_fee_recp, f_el_gas_limit, f_el_gas_used,
+                    f_el_transactions, f_el_block_hash, f_payload_size_bytes,
+                    f_el_block_number
+                    FROM t_block_metrics
+                    ORDER BY f_el_block_number DESC
+                    OFFSET ${skip}
+                    LIMIT ${Number(limit)}
+                `)
+            ]);
+
+        res.json({
+            blocks: blocks.rows
+        }); 
+    
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            msg: 'An error occurred on the server'
+        });
+    }
+};
+
 export const getBlockById = async (req: Request, res: Response) => {
 
     try {

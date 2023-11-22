@@ -3,22 +3,21 @@ import React, { useState, useRef, useContext, useEffect } from 'react';
 // Contexts
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
-// Components
-import LinkValidator from '../ui/LinkValidator';
-import LinkSlot from '../ui/LinkSlot';
 
 // Types
-import { Slot } from '../../types';
+import { BlockEL } from '../../types';
 
 import axiosClient from '../../config/axios';
 import { useRouter } from 'next/router';
+import LinkBlock from '../ui/LinkBlock';
+import LinkSlot from '../ui/LinkSlot';
 
 // Props
 type Props = {
-    slots: Slot[];
+    blocks: BlockEL[];
 };
 
-const Blocks = ({ slots }: Props) => {
+const Blocks = ({ blocks }: Props) => {
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
 
@@ -93,7 +92,7 @@ const Blocks = ({ slots }: Props) => {
                         ))}
                     </div>
 
-                    {slots.map(element => (
+                    {blocks.map(element => (
                         <div
                             className='flex gap-4 py-3 text-center font-medium items-center flex-row justify-around text-[16px] rounded-md border-2 border-white my-2'
                             style={{
@@ -105,33 +104,33 @@ const Blocks = ({ slots }: Props) => {
                                     : 'var(--boxShadowCardLight)',
                                 color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                             }}
-                            key={element.f_proposer_slot}
+                            key={element.f_slot}
                         >
                             <div
                                 className='w-[20%] md:hover:underline underline-offset-4 decoration-2'
                                 style={{ color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)' }}
                             >
-                                <LinkSlot slot={element.f_proposer_slot} mxAuto />
+                                <LinkBlock block={element.f_el_block_number} mxAuto />
                             </div>
 
                             <div
                                 className='w-[20%] md:hover:underline underline-offset-4 decoration-2'
                                 style={{ color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)' }}
                             >
-                                <LinkSlot slot={element.f_proposer_slot} mxAuto />
+                                <LinkSlot slot={element.f_slot} mxAuto />
                             </div>
 
                             <p className='w-[20%]'>
-                                {new Date(blockGenesis + Number(element.f_proposer_slot) * 12000).toLocaleString(
+                                {new Date(blockGenesis + Number(element.f_slot) * 12000).toLocaleString(
                                     'ja-JP'
                                 )}
                             </p>
 
-                            <p className='w-[20%]'>{(element.withdrawals / 10 ** 9).toLocaleString()}</p>
+                            <p className='w-[20%]'>{(element.f_el_transactions ?? 0).toLocaleString()}</p>
                         </div>
                     ))}
 
-                    {slots.length === 0 && (
+                    {blocks.length === 0 && (
                         <div className='flex justify-center p-2'>
                             <p className='uppercase text-[16px]'>No blocks</p>
                         </div>
@@ -149,7 +148,7 @@ const Blocks = ({ slots }: Props) => {
                     color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                 }}
             >
-                {slots.map(slot => (
+                {blocks.map(block => (
                     <div
                         className='flex flex-row  py-2 px-2 border-2 border-white rounded-md'
                         style={{
@@ -157,7 +156,7 @@ const Blocks = ({ slots }: Props) => {
                             boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
                             color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                         }}
-                        key={slot.f_proposer_slot}
+                        key={block.f_slot}
                     >
                         <div className='flex flex-col mx-auto w-10/12'>
                             <div className='flex flex-row items-center justify-between py-1'>
@@ -169,7 +168,7 @@ const Blocks = ({ slots }: Props) => {
                                 >
                                     Block number:
                                 </p>
-                                <LinkValidator validator={slot.f_val_idx} />
+                                <LinkBlock block={block.f_el_block_number} />
                             </div>
 
                             <div className='flex flex-row items-center justify-between py-1'>
@@ -181,7 +180,7 @@ const Blocks = ({ slots }: Props) => {
                                 >
                                     Slot:
                                 </p>
-                                <LinkSlot slot={slot.f_proposer_slot} />
+                                <LinkSlot slot={block.f_slot} />
                             </div>
 
                             <div className='flex flex-row items-center justify-between py-1'>
@@ -196,7 +195,7 @@ const Blocks = ({ slots }: Props) => {
                                 <div className='flex flex-row gap-2 py-1'>
                                     <p>
                                         {new Date(
-                                            blockGenesis + Number(slot.f_proposer_slot) * 12000
+                                            blockGenesis + Number(block.f_slot) * 12000
                                         ).toLocaleDateString('ja-JP', {
                                             year: 'numeric',
                                             month: 'numeric',
@@ -205,7 +204,7 @@ const Blocks = ({ slots }: Props) => {
                                     </p>
                                     <p>
                                         {new Date(
-                                            blockGenesis + Number(slot.f_proposer_slot) * 12000
+                                            blockGenesis + Number(block.f_slot) * 12000
                                         ).toLocaleTimeString('ja-JP', {
                                             hour: 'numeric',
                                             minute: 'numeric',
@@ -224,15 +223,15 @@ const Blocks = ({ slots }: Props) => {
                                 >
                                     Transactions:
                                 </p>
-                                <p>{(slot.withdrawals / 10 ** 9).toLocaleString()}</p>
+                                <p>{(block.f_el_transactions ?? 0).toLocaleString()}</p>
                             </div>
                         </div>
                     </div>
                 ))}
 
-                {slots.length === 0 && (
+                {blocks.length === 0 && (
                     <div className='flex justify-center p-2'>
-                        <p className='uppercase text-[14px]'>No slots</p>
+                        <p className='uppercase text-[14px]'>No blocks</p>
                     </div>
                 )}
             </div>
