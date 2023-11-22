@@ -21,6 +21,7 @@ import LinkEntity from '../../../components/ui/LinkEntity';
 // Types
 import { Block, Withdrawal } from '../../../types';
 import LinkBlock from '../../../components/ui/LinkBlock';
+import EpochAnimation from '../../../components/layouts/EpochAnimation';
 
 type CardProps = {
     title: string;
