@@ -50,6 +50,19 @@ export type Block = {
     f_voluntary_exits?: number;
 };
 
+export type BlockEL = {
+    f_epoch: number;
+    f_slot: number;
+    f_timestamp: number;
+    f_el_block_number?: number;
+    f_el_block_hash?: string;
+    f_el_fee_recp?: string;
+    f_el_gas_limit?: number;
+    f_el_gas_used?: number;
+    f_el_transactions?: number;
+    f_payload_size_bytes?: number;
+};
+
 export type Slot = {
     f_proposer_slot: number;
     f_pool_name: string;
@@ -65,6 +78,16 @@ export type Withdrawal = {
     f_val_idx: number;
     f_amount: number;
     f_address?: string;
+};
+
+export type Transaction = {
+    f_value: number;
+    f_gas_fee_cap: number;
+    f_to: string;
+    f_hash: string;
+    f_timestamp: number;
+    f_from: string;
+    f_tx_type: number;
 };
 
 export type Proposed = {
