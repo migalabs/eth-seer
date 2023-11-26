@@ -3,21 +3,21 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 
 // Contexts
-import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
+import ThemeModeContext from '../contexts/theme-mode/ThemeModeContext';
 
 // Axios
-import axiosClient from '../../config/axios';
+import axiosClient from '../config/axios';
 
 // Components
-import Layout from '../../components/layouts/Layout';
-import SlotsList from '../../components/layouts/Slots';
-import Loader from '../../components/ui/Loader';
-import ViewMoreButton from '../../components/ui/ViewMoreButton';
+import Layout from '../components/layouts/Layout';
+import BlocksLayout from '../components/layouts/BlocksLayout';
+import Loader from '../components/ui/Loader';
+import ViewMoreButton from '../components/ui/ViewMoreButton';
 
 // Types
-import { Slot } from '../../types';
+import { BlockEL } from '../types';
 
-const Slots = () => {
+const Blocks = () => {
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
 
@@ -26,25 +26,25 @@ const Slots = () => {
     const { network } = router.query;
 
     // States
-    const [slots, setSlots] = useState<Slot[]>([]);
+    const [blocks, setBlocks] = useState<BlockEL[]>([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        if (network && slots.length === 0) {
-            getSlots(0);
+        if (network && blocks.length === 0) {
+            getBlocks(0);
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [network]);
 
-    const getSlots = async (page: number) => {
+    const getBlocks = async (page: number) => {
         try {
             setLoading(true);
 
             setCurrentPage(page);
 
-            const response = await axiosClient.get(`/api/slots`, {
+            const response = await axiosClient.get(`/api/blocks`, {
                 params: {
                     network,
                     page,
@@ -52,11 +52,12 @@ const Slots = () => {
                 },
             });
 
-            setSlots(prevState => [
+            console.log('res', response.data);
+
+            setBlocks(prevState => [
                 ...prevState,
-                ...response.data.slots.filter(
-                    (slot: Slot) =>
-                        !prevState.find((prevSlot: Slot) => prevSlot.f_proposer_slot === slot.f_proposer_slot)
+                ...response.data.blocks.filter(
+                    (block: BlockEL) => !prevState.find((prevBlock: BlockEL) => prevBlock.f_slot === block.f_slot)
                 ),
             ]);
         } catch (error) {
@@ -69,13 +70,13 @@ const Slots = () => {
     return (
         <Layout hideMetaDescription>
             <Head>
-                <title>Slots of the Ethereum Beacon Chain - EthSeer.io</title>
+                <title>Blocks of the Ethereum Chain - EthSeer.io</title>
                 <meta
                     name='description'
-                    content='Check the Ethereum chain slots, to find the block proposer, the number of attestations, the gas used, number of transactions and withdrawals.'
+                    content='Check the Ethereum chain blocks to find the gas used, gas price, number of transactions, transaction details and withdrawals of the block.'
                 />
-                <meta name='keywords' content='Ethereum, Slots, State, Block, Validator, Proposer, Attestations' />
-                <link rel='canonical' href='https://ethseer.io/slots' />
+                <meta name='keywords' content='Ethereum, Slot, State, Block, Validators, Slashing, Attestations' />
+                <link rel='canonical' href='https://ethseer.io/blocks' />
             </Head>
 
             <h1
@@ -84,7 +85,7 @@ const Slots = () => {
                     color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                 }}
             >
-                Ethereum Slots
+                Ethereum Blocks
             </h1>
 
             <div
@@ -97,13 +98,14 @@ const Slots = () => {
                         color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                     }}
                 >
-                    Every epoch is divided into regular interval called slots, which occur every 12 seconds. At every
-                    slot, one validator can propose a block, and the other validators need to attest on the canonical
-                    chain.
+                    Blocks are the fundamental unit of consensus for blockchains. In it you will find a number of
+                    transactions and interactions with smart contracts.
                 </h2>
             </div>
 
-            <div className='mx-auto w-11/12 md:w-10/12 my-4'>{slots.length > 0 && <SlotsList slots={slots} />}</div>
+            <div className='mx-auto w-11/12 md:w-10/12 my-4'>
+                {blocks.length > 0 && <BlocksLayout blocks={blocks} />}
+            </div>
 
             {loading && (
                 <div className='my-6'>
@@ -111,9 +113,9 @@ const Slots = () => {
                 </div>
             )}
 
-            {slots.length > 0 && <ViewMoreButton onClick={() => getSlots(currentPage + 1)} />}
+            {blocks.length > 0 && <ViewMoreButton onClick={() => getBlocks(currentPage + 1)} />}
         </Layout>
     );
 };
 
-export default Slots;
+export default Blocks;

@@ -3,7 +3,6 @@ import React, { useState, useRef, useContext, useEffect } from 'react';
 // Contexts
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
-
 // Types
 import { BlockEL } from '../../types';
 
@@ -121,9 +120,7 @@ const Blocks = ({ blocks }: Props) => {
                             </div>
 
                             <p className='w-[20%]'>
-                                {new Date(blockGenesis + Number(element.f_slot) * 12000).toLocaleString(
-                                    'ja-JP'
-                                )}
+                                {new Date(blockGenesis + Number(element.f_slot) * 12000).toLocaleString('ja-JP')}
                             </p>
 
                             <p className='w-[20%]'>{(element.f_el_transactions ?? 0).toLocaleString()}</p>
@@ -194,22 +191,24 @@ const Blocks = ({ blocks }: Props) => {
                                 </p>
                                 <div className='flex flex-row gap-2 py-1'>
                                     <p>
-                                        {new Date(
-                                            blockGenesis + Number(block.f_slot) * 12000
-                                        ).toLocaleDateString('ja-JP', {
-                                            year: 'numeric',
-                                            month: 'numeric',
-                                            day: 'numeric',
-                                        })}
+                                        {new Date(blockGenesis + Number(block.f_slot) * 12000).toLocaleDateString(
+                                            'ja-JP',
+                                            {
+                                                year: 'numeric',
+                                                month: 'numeric',
+                                                day: 'numeric',
+                                            }
+                                        )}
                                     </p>
                                     <p>
-                                        {new Date(
-                                            blockGenesis + Number(block.f_slot) * 12000
-                                        ).toLocaleTimeString('ja-JP', {
-                                            hour: 'numeric',
-                                            minute: 'numeric',
-                                            second: 'numeric',
-                                        })}
+                                        {new Date(blockGenesis + Number(block.f_slot) * 12000).toLocaleTimeString(
+                                            'ja-JP',
+                                            {
+                                                hour: 'numeric',
+                                                minute: 'numeric',
+                                                second: 'numeric',
+                                            }
+                                        )}
                                     </p>
                                 </div>
                             </div>
