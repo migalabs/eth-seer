@@ -357,32 +357,18 @@ const BlockPage = () => {
     };
 
     //CopyAddress
-    type ElementType = {
-        f_hash?: string;
-        f_from?: string;
-        f_to?: string;
-    };
+    const [copied, setCopied] = useState(null)
+    useEffect(() => {
+        if (copied) {
+            setTimeout(() => {setCopied(null)}, 250)
+        }
 
-    const [copied, setCopied] = useState<{ [key: string]: boolean | undefined }>({});
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [copied]);
 
-    const handleCopyClick = (element: ElementType, property: 'f_hash' | 'f_from' | 'f_to') => {
-        const copyText = element[property] || '';
-        navigator.clipboard
-            .writeText(copyText)
-            .then(() => {
-                console.log('Copied');
-                setCopied(prevState => {
-                    return { ...(prevState ?? {}), [element.f_hash || '']: true };
-                });
-                setTimeout(() => {
-                    setCopied(prevState => {
-                        return { ...(prevState ?? {}), [element.f_hash || '']: false };
-                    });
-                }, 2000);
-            })
-            .catch(err => {
-                console.error('Error', err);
-            });
+    const handleCopyClick = async (id : string, text : string) => {
+        await navigator.clipboard.writeText(text)
+        setCopied(id as any)
     };
 
     //Transactions tab - table desktop
@@ -521,14 +507,14 @@ const BlockPage = () => {
                             <div className='flex gap-x-4 py-1 uppercase text-center items-center' key={element.f_hash}>
                                 <div className='flex gap-1 justify-center items-center w-1/3'>
                                     <p>{getShortAddress(element?.f_hash)}</p>
+                                    
                                     <CustomImage
                                         className='cursor cursor-pointer'
-                                        src={`/static/images/icons/copy_${themeMode?.darkMode ? 'dark' : 'light'}.webp`}
+                                        src={`/static/images/icons/${copied == `${element.f_hash}#hash` ? 'copied' : 'copy'}_${themeMode?.darkMode ? 'dark' : 'light'}.webp`}
                                         alt='Copy icon'
                                         width={18}
                                         height={18}
-                                        title={copied[element.f_hash || ''] ? 'Copied!' : ''}
-                                        onClick={() => handleCopyClick(element, 'f_hash')}
+                                        onClick={() => handleCopyClick(`${element.f_hash}#hash`, element.f_hash)}
                                     />
                                 </div>
 
@@ -540,12 +526,11 @@ const BlockPage = () => {
                                     <p>{getShortAddress(element.f_from)}</p>
                                     <CustomImage
                                         className='cursor cursor-pointer'
-                                        src={`/static/images/icons/copy_${themeMode?.darkMode ? 'dark' : 'light'}.webp`}
+                                        src={`/static/images/icons/${copied == `${element.f_hash}#from`? 'copied' : 'copy'}_${themeMode?.darkMode ? 'dark' : 'light'}.webp`}
                                         alt='Copy icon'
                                         width={18}
                                         height={18}
-                                        title={copied[element.f_from || ''] ? 'Copied!' : ''}
-                                        onClick={() => handleCopyClick(element, 'f_from')}
+                                        onClick={() => handleCopyClick(`${element.f_hash}#from`, element.f_from)}
                                     />
                                 </div>
                                 <CustomImage
@@ -558,13 +543,12 @@ const BlockPage = () => {
                                     <p>{getShortAddress(element.f_to)}</p>
                                     <CustomImage
                                         className='cursor cursor-pointer'
-                                        src={`/static/images/icons/copy_${themeMode?.darkMode ? 'dark' : 'light'}.webp`}
+                                        src={`/static/images/icons/${copied == `${element.f_hash}#to`? 'copied' : 'copy'}_${themeMode?.darkMode ? 'dark' : 'light'}.webp`}
                                         alt='Copy icon'
                                         width={18}
                                         height={18}
-                                        title={copied[element.f_to || ''] ? 'Copied!' : ''}
-                                        onClick={() => handleCopyClick(element, 'f_to')}
-                                    />
+                                        onClick={() => handleCopyClick(`${element.f_hash}#to`,element.f_to)}                                    
+                                        />
                                 </div>
                                 <p className='w-1/3'>{(element.f_value / 10 ** 18).toLocaleString()} ETH</p>
                                 <p className='w-1/3'>{(element.f_gas_fee_cap / 10 ** 18).toLocaleString()}</p>
