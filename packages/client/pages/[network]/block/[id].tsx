@@ -496,25 +496,24 @@ const BlockPage = () => {
                     </div>
                 ) : (
                     <div
-                        className='font-medium flex flex-col gap-y-2 text-[16px] rounded-md border-2 border-white px-4 xl:px-8 py-3'
-                        style={{
-                            backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
-                            boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
-                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                        }}
+                        className='font-medium flex flex-col gap-y-2 text-[16px]  '
+                        
                     >
                         {transactions.map(element => (
-                            <div className='flex gap-x-4 py-1 uppercase text-center items-center' key={element.f_hash}>
-                                <div className='flex gap-1 justify-center items-center w-1/3'>
-                                    <p>{getShortAddress(element?.f_hash)}</p>
+                            <div className='flex gap-x-4 uppercase text-center items-center px-4 xl:px-8 py-3 rounded-md border-2 border-white' style={{
+                                backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
+                                boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
+                                color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
+                            }} key={element.f_hash}>
+                                <div className='flex gap-1 justify-start items-center w-1/3 cursor cursor-pointer' onClick={() => handleCopyClick(`${element.f_hash}#hash`, element.f_hash)}>
+                                    <p className="md:hover:underline underline-offset-4 decoration-2" style={{color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)'}}>{getShortAddress(element?.f_hash)}</p>
                                     
                                     <CustomImage
-                                        className='cursor cursor-pointer'
                                         src={`/static/images/icons/${copied == `${element.f_hash}#hash` ? 'copied' : 'copy'}_${themeMode?.darkMode ? 'dark' : 'light'}.webp`}
                                         alt='Copy icon'
-                                        width={18}
-                                        height={18}
-                                        onClick={() => handleCopyClick(`${element.f_hash}#hash`, element.f_hash)}
+                                        width={20}
+                                        height={20}
+                                        
                                     />
                                 </div>
 
@@ -522,15 +521,13 @@ const BlockPage = () => {
 
                                 <p className='lowercase w-1/3'>{timeSince(element.f_timestamp * 1000)}</p>
 
-                                <div className='flex gap-1 justify-center items-center w-1/3'>
-                                    <p>{getShortAddress(element.f_from)}</p>
+                                <div className='flex gap-1 justify-center items-center w-1/3 cursor cursor-pointer' onClick={() => handleCopyClick(`${element.f_hash}#from`, element.f_from)}>
+                                    <p className="md:hover:underline underline-offset-4 decoration-2" style={{color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)'}}>{getShortAddress(element.f_from)}</p>
                                     <CustomImage
-                                        className='cursor cursor-pointer'
                                         src={`/static/images/icons/${copied == `${element.f_hash}#from`? 'copied' : 'copy'}_${themeMode?.darkMode ? 'dark' : 'light'}.webp`}
                                         alt='Copy icon'
-                                        width={18}
-                                        height={18}
-                                        onClick={() => handleCopyClick(`${element.f_hash}#from`, element.f_from)}
+                                        width={20}
+                                        height={20}
                                     />
                                 </div>
                                 <CustomImage
@@ -539,15 +536,13 @@ const BlockPage = () => {
                                     width={25}
                                     height={25}
                                 />
-                                <div className='flex gap-1 justify-center items-center w-1/3'>
-                                    <p>{getShortAddress(element.f_to)}</p>
+                                <div className='flex gap-1 justify-center items-center w-1/3 cursor cursor-pointer' onClick={() => handleCopyClick(`${element.f_hash}#to`,element.f_to)}                                    >
+                                    <p className="md:hover:underline underline-offset-4 decoration-2" style={{color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)'}}>{getShortAddress(element.f_to)}</p>
                                     <CustomImage
-                                        className='cursor cursor-pointer'
                                         src={`/static/images/icons/${copied == `${element.f_hash}#to`? 'copied' : 'copy'}_${themeMode?.darkMode ? 'dark' : 'light'}.webp`}
                                         alt='Copy icon'
-                                        width={18}
-                                        height={18}
-                                        onClick={() => handleCopyClick(`${element.f_hash}#to`,element.f_to)}                                    
+                                        width={20}
+                                        height={20}
                                         />
                                 </div>
                                 <p className='w-1/3'>{(element.f_value / 10 ** 18).toLocaleString()} ETH</p>
