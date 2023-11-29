@@ -357,18 +357,20 @@ const BlockPage = () => {
     };
 
     //CopyAddress
-    const [copied, setCopied] = useState(null)
+    const [copied, setCopied] = useState(null);
     useEffect(() => {
         if (copied) {
-            setTimeout(() => {setCopied(null)}, 250)
+            setTimeout(() => {
+                setCopied(null);
+            }, 250);
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [copied]);
 
-    const handleCopyClick = async (id : string, text : string) => {
-        await navigator.clipboard.writeText(text)
-        setCopied(id as any)
+    const handleCopyClick = async (id: string, text: string) => {
+        await navigator.clipboard.writeText(text);
+        setCopied(id as any);
     };
 
     //Transactions tab - table desktop
@@ -495,25 +497,39 @@ const BlockPage = () => {
                         <Loader />
                     </div>
                 ) : (
-                    <div
-                        className='font-medium flex flex-col gap-y-2 text-[16px]  '
-                        
-                    >
+                    <div className='font-medium flex flex-col gap-y-2 text-[16px]  '>
                         {transactions.map(element => (
-                            <div className='flex gap-x-4 uppercase text-center items-center px-4 xl:px-8 py-3 rounded-md border-2 border-white' style={{
-                                backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
-                                boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
-                                color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                            }} key={element.f_hash}>
-                                <div className='flex gap-1 justify-start items-center w-1/3 cursor cursor-pointer' onClick={() => handleCopyClick(`${element.f_hash}#hash`, element.f_hash)}>
-                                    <p className="md:hover:underline underline-offset-4 decoration-2" style={{color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)'}}>{getShortAddress(element?.f_hash)}</p>
-                                    
+                            <div
+                                className='flex gap-x-4 uppercase text-center items-center px-4 xl:px-8 py-3 rounded-md border-2 border-white'
+                                style={{
+                                    backgroundColor: themeMode?.darkMode
+                                        ? 'var(--bgFairDarkMode)'
+                                        : 'var(--bgMainLightMode)',
+                                    boxShadow: themeMode?.darkMode
+                                        ? 'var(--boxShadowCardDark)'
+                                        : 'var(--boxShadowCardLight)',
+                                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
+                                }}
+                                key={element.f_hash}
+                            >
+                                <div
+                                    className='flex gap-1 justify-start items-center w-1/3 cursor cursor-pointer'
+                                    onClick={() => handleCopyClick(`${element.f_hash}#hash`, element.f_hash)}
+                                >
+                                    <p
+                                        className='md:hover:underline underline-offset-4 decoration-2'
+                                        style={{ color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)' }}
+                                    >
+                                        {getShortAddress(element?.f_hash)}
+                                    </p>
+
                                     <CustomImage
-                                        src={`/static/images/icons/${copied == `${element.f_hash}#hash` ? 'copied' : 'copy'}_${themeMode?.darkMode ? 'dark' : 'light'}.webp`}
+                                        src={`/static/images/icons/${
+                                            copied == `${element.f_hash}#hash` ? 'copied' : 'copy'
+                                        }_${themeMode?.darkMode ? 'dark' : 'light'}.webp`}
                                         alt='Copy icon'
                                         width={20}
                                         height={20}
-                                        
                                     />
                                 </div>
 
@@ -521,10 +537,20 @@ const BlockPage = () => {
 
                                 <p className='lowercase w-1/3'>{timeSince(element.f_timestamp * 1000)}</p>
 
-                                <div className='flex gap-1 justify-center items-center w-1/3 cursor cursor-pointer' onClick={() => handleCopyClick(`${element.f_hash}#from`, element.f_from)}>
-                                    <p className="md:hover:underline underline-offset-4 decoration-2" style={{color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)'}}>{getShortAddress(element.f_from)}</p>
+                                <div
+                                    className='flex gap-1 justify-center items-center w-1/3 cursor cursor-pointer'
+                                    onClick={() => handleCopyClick(`${element.f_hash}#from`, element.f_from)}
+                                >
+                                    <p
+                                        className='md:hover:underline underline-offset-4 decoration-2'
+                                        style={{ color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)' }}
+                                    >
+                                        {getShortAddress(element.f_from)}
+                                    </p>
                                     <CustomImage
-                                        src={`/static/images/icons/${copied == `${element.f_hash}#from`? 'copied' : 'copy'}_${themeMode?.darkMode ? 'dark' : 'light'}.webp`}
+                                        src={`/static/images/icons/${
+                                            copied == `${element.f_hash}#from` ? 'copied' : 'copy'
+                                        }_${themeMode?.darkMode ? 'dark' : 'light'}.webp`}
                                         alt='Copy icon'
                                         width={20}
                                         height={20}
@@ -536,14 +562,24 @@ const BlockPage = () => {
                                     width={25}
                                     height={25}
                                 />
-                                <div className='flex gap-1 justify-center items-center w-1/3 cursor cursor-pointer' onClick={() => handleCopyClick(`${element.f_hash}#to`,element.f_to)}                                    >
-                                    <p className="md:hover:underline underline-offset-4 decoration-2" style={{color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)'}}>{getShortAddress(element.f_to)}</p>
+                                <div
+                                    className='flex gap-1 justify-center items-center w-1/3 cursor cursor-pointer'
+                                    onClick={() => handleCopyClick(`${element.f_hash}#to`, element.f_to)}
+                                >
+                                    <p
+                                        className='md:hover:underline underline-offset-4 decoration-2'
+                                        style={{ color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)' }}
+                                    >
+                                        {getShortAddress(element.f_to)}
+                                    </p>
                                     <CustomImage
-                                        src={`/static/images/icons/${copied == `${element.f_hash}#to`? 'copied' : 'copy'}_${themeMode?.darkMode ? 'dark' : 'light'}.webp`}
+                                        src={`/static/images/icons/${
+                                            copied == `${element.f_hash}#to` ? 'copied' : 'copy'
+                                        }_${themeMode?.darkMode ? 'dark' : 'light'}.webp`}
                                         alt='Copy icon'
                                         width={20}
                                         height={20}
-                                        />
+                                    />
                                 </div>
                                 <p className='w-1/3'>{(element.f_value / 10 ** 18).toLocaleString()} ETH</p>
                                 <p className='w-1/3'>{(element.f_gas_fee_cap / 10 ** 18).toLocaleString()}</p>
