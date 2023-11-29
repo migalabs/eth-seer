@@ -52,8 +52,6 @@ const Blocks = () => {
                 },
             });
 
-            console.log('res', response.data);
-
             setBlocks(prevState => [
                 ...prevState,
                 ...response.data.blocks.filter(
