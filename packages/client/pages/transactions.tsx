@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
@@ -10,8 +10,8 @@ import ThemeModeContext from '../contexts/theme-mode/ThemeModeContext';
 
 // Components
 import Layout from '../components/layouts/Layout';
-import Loader from '../components/ui/Loader';
 import ViewMoreButton from '../components/ui/ViewMoreButton';
+import TransactionsComponent from '../components/layouts/Transactions';
 
 // Types
 import { Transaction } from '../types';
@@ -24,14 +24,10 @@ const Transactions = () => {
     const router = useRouter();
     const { network } = router.query;
 
-    // Refs
-    const containerRef = useRef<HTMLInputElement>(null);
-
     // States
     const [transactions, setTransactions] = useState<Transaction[]>([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [loading, setLoading] = useState(false);
-    const [desktopView, setDesktopView] = useState(true);
 
     // UseEffect
     useEffect(() => {
@@ -41,25 +37,6 @@ const Transactions = () => {
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [network]);
-
-    useEffect(() => {
-        setDesktopView(window !== undefined && window.innerWidth > 768);
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    const handleMouseMove = (e: any) => {
-        if (containerRef.current) {
-            const x = e.pageX;
-            const limit = 0.15;
-
-            if (x < containerRef.current.clientWidth * limit) {
-                containerRef.current.scrollLeft -= 10;
-            } else if (x > containerRef.current.clientWidth * (1 - limit)) {
-                containerRef.current.scrollLeft += 10;
-            }
-        }
-    };
 
     //TRANSACTIONS TABLE
     const getTransactions = async (page: number) => {
@@ -89,194 +66,6 @@ const Transactions = () => {
         }
     };
 
-    // Get Short Address
-    const getShortAddress = (address: string | undefined) => {
-        if (typeof address === 'string') {
-            return `${address.slice(0, 6)}...${address.slice(address.length - 6, address.length)}`;
-        } else {
-            return 'Invalid Address';
-        }
-    };
-
-    const getAge = (timestamp: number) => {
-        // Calculate the difference in milliseconds
-        const difference = Date.now() - new Date(timestamp * 1000).getTime();
-
-        // Convert to a readable timespan
-        const seconds = Math.floor((difference / 1000) % 60);
-        const minutes = Math.floor((difference / (1000 * 60)) % 60);
-        const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
-
-        const parts = [];
-
-        if (hours > 0) {
-            parts.push(`${hours}h`);
-        }
-
-        parts.push(`${minutes}m`);
-
-        if (hours == 0) {
-            parts.push(`${seconds}s`);
-        }
-
-        return parts.join(' ');
-    };
-
-    //View table desktop
-    const getTransactionsDesktop = () => {
-        return (
-            <div
-                ref={containerRef}
-                className='flex flex-col mb-4 overflow-x-scroll overflow-y-hidden scrollbar-thin text-center mx-auto w-11/12 lg:w-10/12'
-                onMouseMove={handleMouseMove}
-            >
-                <div
-                    className='font-semibold flex gap-x-1 justify-around px-2 xl:px-8 py-3 text-[14px] md:text-[16px] min-w-[800px] w-full'
-                    style={{
-                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                    }}
-                >
-                    <p className='w-1/6'>Txn Hash</p>
-                    <p className='w-1/6'>Age</p>
-                    <p className='w-1/6'>From</p>
-                    <p className='w-1/6'>To</p>
-                    <p className='w-1/6'>Value</p>
-                    <p className='w-1/6'>Txn Fee</p>
-                </div>
-
-                <div
-                    className='flex flex-col justify-center gap-y-4 rounded-md border-2 border-white py-5 px-2 xl:px-8 min-w-[800px] w-full'
-                    style={{
-                        backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
-                        boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
-                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                    }}
-                >
-                    {transactions.map((transaction: Transaction) => (
-                        <div
-                            key={transaction.f_hash}
-                            className='font-medium flex gap-x-1 justify-around items-center text-[14px] md:text-[16px]'
-                            style={{
-                                color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                            }}
-                        >
-                            <p className='w-1/6'>{getShortAddress(transaction.f_hash)}</p>
-
-                            <p className='w-1/6'>{getAge(transaction.f_timestamp)}</p>
-
-                            <p className='w-1/6'>{getShortAddress(transaction.f_from)}</p>
-
-                            <p className='w-1/6'>{getShortAddress(transaction.f_to)}</p>
-
-                            <p className='w-1/6'>{(transaction.f_value / 10 ** 18).toLocaleString()} ETH</p>
-
-                            <p className='w-1/6'>{(transaction.f_gas_fee_cap / 10 ** 12).toLocaleString()} GWEI</p>
-                        </div>
-                    ))}
-                </div>
-            </div>
-        );
-    };
-
-    //View table mobile
-    const getTransactionsMobile = () => {
-        return (
-            <div
-                ref={containerRef}
-                className='mt-4 flex flex-col gap-2 font-medium text-[14px] w-11/12 mx-auto'
-                onMouseMove={handleMouseMove}
-                style={{
-                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                }}
-            >
-                {transactions.map((transaction: Transaction) => (
-                    <div
-                        key={transaction.f_hash}
-                        className='flex flex-col gap-y-2 py-4 px-14 border-2 border-white rounded-md'
-                        style={{
-                            backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
-                            boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
-                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                        }}
-                    >
-                        <div className='flex flex-row items-center justify-between'>
-                            <p
-                                className='font-semibold'
-                                style={{
-                                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                                }}
-                            >
-                                Txn Hash
-                            </p>
-                            <p>{getShortAddress(transaction.f_hash)}</p>
-                        </div>
-
-                        <div className='flex flex-row items-center justify-between'>
-                            <p
-                                className='font-semibold'
-                                style={{
-                                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                                }}
-                            >
-                                Age
-                            </p>
-                            <p>{getAge(transaction.f_timestamp)}</p>
-                        </div>
-
-                        <div className='flex flex-row items-center justify-between uppercase'>
-                            <p
-                                className='capitalize font-semibold'
-                                style={{
-                                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                                }}
-                            >
-                                From
-                            </p>
-                            <p>{getShortAddress(transaction.f_from)}</p>
-                        </div>
-
-                        <div className='flex flex-row items-center justify-between'>
-                            <p
-                                className='font-semibold'
-                                style={{
-                                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                                }}
-                            >
-                                To
-                            </p>
-                            <p>{getShortAddress(transaction.f_to)}</p>
-                        </div>
-
-                        <div className='flex flex-row items-center justify-between'>
-                            <p
-                                className='font-semibold'
-                                style={{
-                                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                                }}
-                            >
-                                Value
-                            </p>
-                            <p>{(transaction.f_value / 10 ** 18).toLocaleString()} ETH</p>
-                        </div>
-
-                        <div className='flex flex-row items-center justify-between'>
-                            <p
-                                className='font-semibold'
-                                style={{
-                                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                                }}
-                            >
-                                Txn Fee
-                            </p>
-                            <p>{(transaction.f_gas_fee_cap / 10 ** 12).toLocaleString()} GWEI</p>
-                        </div>
-                    </div>
-                ))}
-            </div>
-        );
-    };
-
-    //OVERVIEW PAGE
     //Overview Transaction page
     return (
         <Layout hideMetaDescription>
@@ -313,13 +102,9 @@ const Transactions = () => {
                 </h2>
             </div>
 
-            <>{desktopView ? getTransactionsDesktop() : getTransactionsMobile()}</>
-
-            {loading && (
-                <div className='mb-4'>
-                    <Loader />
-                </div>
-            )}
+            <div className='mb-6'>
+                <TransactionsComponent loadingTransactions={loading} transactions={transactions} />
+            </div>
 
             <ViewMoreButton onClick={() => getTransactions(currentPage + 1)} />
         </Layout>

@@ -14,13 +14,11 @@ import TabHeader from '../../components/ui/TabHeader';
 import Loader from '../../components/ui/Loader';
 import LinkSlot from '../../components/ui/LinkSlot';
 import Arrow from '../../components/ui/Arrow';
-import CustomImage from '../../components/ui/CustomImage';
-import TooltipContainer from '../../components/ui/TooltipContainer';
-import TooltipResponsive from '../../components/ui/TooltipResponsive';
 import LinkBlock from '../../components/ui/LinkBlock';
+import Transactions from '../../components/layouts/Transactions';
 
 // Types
-import { BlockEL, Transaction, Withdrawal } from '../../types';
+import { BlockEL, Transaction } from '../../types';
 
 type CardProps = {
     title: string;
@@ -33,32 +31,30 @@ const Card = ({ title, text, content }: CardProps) => {
     // Theme Mode Context
     const { themeMode } = React.useContext(ThemeModeContext) ?? {};
     return (
-        <>
-            <div className='flex flex-row items-center justify-between gap-5 md:gap-20'>
-                <p
-                    className='text-[14px] md:text-[16px] font-medium'
-                    style={{
-                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                    }}
-                >
-                    {title}:
-                </p>
-                <div className='flex gap-2 items-center'>
-                    {text && (
-                        <p
-                            className='uppercase text-[14px] md:text-[16px] font-medium'
-                            style={{
-                                color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                            }}
-                        >
-                            {text}
-                        </p>
-                    )}
+        <div className='flex flex-row items-center justify-between gap-5 md:gap-20'>
+            <p
+                className='text-[14px] md:text-[16px] font-medium'
+                style={{
+                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
+                }}
+            >
+                {title}:
+            </p>
+            <div className='flex gap-2 items-center'>
+                {text && (
+                    <p
+                        className='uppercase text-[14px] md:text-[16px] font-medium'
+                        style={{
+                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
+                        }}
+                    >
+                        {text}
+                    </p>
+                )}
 
-                    {content && <>{content}</>}
-                </div>
+                {content && <>{content}</>}
             </div>
-        </>
+        </div>
     );
 };
 
@@ -73,19 +69,15 @@ const BlockPage = () => {
     // Refs
     const slotRef = useRef(0);
     const existsBlockRef = useRef(true);
-    const containerRef = useRef<HTMLInputElement>(null);
 
     // States
     const [block, setBlock] = useState<BlockEL | null>(null);
-    const [withdrawals, setWithdrawals] = useState<Array<Withdrawal>>([]);
     const [transactions, setTransactions] = useState<Array<Transaction>>([]);
     const [existsBlock, setExistsBlock] = useState<boolean>(true);
     const [countdownText, setCountdownText] = useState<string>('');
     const [tabPageIndex, setTabPageIndex] = useState<number>(0);
     const [loadingBlock, setLoadingBlock] = useState<boolean>(true);
-    const [loadingWithdrawals, setLoadingWithdrawals] = useState<boolean>(true);
     const [loadingTransactions, setLoadingTransactions] = useState<boolean>(true);
-    const [desktopView, setDesktopView] = useState(true);
     const [blockGenesis, setBlockGenesis] = useState(0);
 
     // UseEffect
@@ -101,11 +93,6 @@ const BlockPage = () => {
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [network, id]);
-    useEffect(() => {
-        setDesktopView(window !== undefined && window.innerWidth > 768);
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     const shuffle = useCallback(() => {
         const text: string = getCountdownText();
@@ -262,20 +249,6 @@ const BlockPage = () => {
         return text;
     };
 
-    // Get Handle Mouse
-    const handleMouseMove = (e: any) => {
-        if (containerRef.current) {
-            const x = e.pageX;
-            const limit = 0.15;
-
-            if (x < containerRef.current.clientWidth * limit) {
-                containerRef.current.scrollLeft -= 10;
-            } else if (x > containerRef.current.clientWidth * (1 - limit)) {
-                containerRef.current.scrollLeft += 10;
-            }
-        }
-    };
-
     //TABLE
     //TABS
     const getSelectedTab = () => {
@@ -284,7 +257,7 @@ const BlockPage = () => {
                 return getOverview();
 
             case 1:
-                return desktopView ? getTransactionsDesktop() : getTransactionsMobile();
+                return <Transactions transactions={transactions} loadingTransactions={loadingTransactions} />;
         }
     };
     //TABS - Overview & withdrawals
@@ -294,13 +267,11 @@ const BlockPage = () => {
                 <div className='flex flex-col sm:flex-row gap-4 w-1/2 mx-auto'>
                     <TabHeader header='Overview' isSelected={tabPageIndex === 0} onClick={() => setTabPageIndex(0)} />
                     {existsBlock && (
-                        <>
-                            <TabHeader
-                                header='Transactions'
-                                isSelected={tabPageIndex === 1}
-                                onClick={() => setTabPageIndex(1)}
-                            />
-                        </>
+                        <TabHeader
+                            header='Transactions'
+                            isSelected={tabPageIndex === 1}
+                            onClick={() => setTabPageIndex(1)}
+                        />
                     )}
                 </div>
                 {getSelectedTab()}
@@ -332,328 +303,6 @@ const BlockPage = () => {
                     <Card title='Gas used' text={String(block?.f_el_gas_used)} />
                     <Card title='Gas limit' text={String(block?.f_el_gas_limit)} />
                 </div>
-            </div>
-        );
-    };
-
-    const timeSince = (timestamp: number) => {
-        const now = new Date();
-        const then = new Date(timestamp);
-        const diff = now.getTime() - then.getTime();
-
-        const minutes = Math.floor(diff / 60000);
-        const hours = Math.floor(minutes / 60);
-        const remainingMinutes = minutes % 60;
-
-        if (hours === 0) {
-            return `${remainingMinutes} mins ago`;
-        } else {
-            return `${hours} hrs ${remainingMinutes} mins ago`;
-        }
-    };
-
-    //Transactions tab - table desktop
-    const getTransactionsDesktop = () => {
-        return (
-            <div
-                ref={containerRef}
-                className='flex flex-col overflow-x-scroll overflow-y-hidden scrollbar-thin w-11/12 mx-auto mt-4'
-                onMouseMove={handleMouseMove}
-            >
-                <div
-                    className='flex gap-x-4 justify-around px-4 xl:px-8 font-semibold py-3 text-[16px] text-center'
-                    style={{
-                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                    }}
-                >
-                    <div className='flex items-center gap-x-1 justify-center w-1/3'>
-                        <p className='mt-0.5 font-semibold'>Txn Hash</p>
-                        <TooltipContainer>
-                            <CustomImage
-                                src='/static/images/icons/information_icon.webp'
-                                alt='Time information'
-                                width={24}
-                                height={24}
-                            />
-
-                            <TooltipResponsive
-                                width={220}
-                                backgroundColor='white'
-                                colorLetter='black'
-                                content={
-                                    <>
-                                        <span>The hash of the transaction</span>
-                                    </>
-                                }
-                                top='34px'
-                                polygonLeft
-                            />
-                        </TooltipContainer>
-                    </div>
-                    <div className='flex items-center gap-x-1 justify-center w-1/3'>
-                        <p className='mt-0.5 font-semibold'>Age</p>
-                        <TooltipContainer>
-                            <CustomImage
-                                src='/static/images/icons/information_icon.webp'
-                                alt='Time information'
-                                width={24}
-                                height={24}
-                            />
-
-                            <TooltipResponsive
-                                width={220}
-                                backgroundColor='white'
-                                colorLetter='black'
-                                content={
-                                    <>
-                                        <span>How long ago</span>
-                                        <span>the transaction passed</span>
-                                    </>
-                                }
-                                top='34px'
-                            />
-                        </TooltipContainer>
-                    </div>
-                    <p className='mt-0.5 w-1/3'>From</p>
-                    <p className='mt-0.5 w-1/3'>To</p>
-                    <div className='flex items-center gap-x-1 justify-center w-1/3'>
-                        <p className='mt-0.5 font-semibold'>Value</p>
-                        <TooltipContainer>
-                            <CustomImage
-                                src='/static/images/icons/information_icon.webp'
-                                alt='Time information'
-                                width={24}
-                                height={24}
-                            />
-
-                            <TooltipResponsive
-                                width={220}
-                                backgroundColor='white'
-                                colorLetter='black'
-                                content={
-                                    <>
-                                        <span>How much ETH</span>
-                                        <span>was sent</span>
-                                        <span>in the transaction</span>
-                                    </>
-                                }
-                                top='34px'
-                            />
-                        </TooltipContainer>
-                    </div>
-                    <div className='flex items-center gap-x-1 justify-center w-1/3'>
-                        <p className='mt-0.5 font-semibold'>Txn Fee</p>
-                        <TooltipContainer>
-                            <CustomImage
-                                src='/static/images/icons/information_icon.webp'
-                                alt='Time information'
-                                width={24}
-                                height={24}
-                            />
-
-                            <TooltipResponsive
-                                width={220}
-                                backgroundColor='white'
-                                colorLetter='black'
-                                content={
-                                    <>
-                                        <span>The fee </span>
-                                        <span>the transaction cost</span>
-                                    </>
-                                }
-                                top='34px'
-                                polygonRight
-                            />
-                        </TooltipContainer>
-                    </div>
-                </div>
-
-                {loadingTransactions ? (
-                    <div className='mt-6'>
-                        <Loader />
-                    </div>
-                ) : (
-                    <div
-                        className='font-medium flex flex-col gap-y-2 text-[16px] rounded-md border-2 border-white px-4 xl:px-8 py-3'
-                        style={{
-                            backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
-                            boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
-                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                        }}
-                    >
-                        {transactions.map(element => (
-                            <div className='flex gap-x-4 py-1 uppercase text-center items-center' key={element.f_hash}>
-                                <div className='w-1/3'>
-                                    <p>{getShortAddress(element?.f_hash)}</p>
-                                </div>
-
-                                <p className='w-1/3 lowercase'>{timeSince(element.f_timestamp * 1000)}</p>
-
-                                <p className='w-1/3'>{getShortAddress(element.f_from)}</p>
-                                <CustomImage
-                                    src={`/static/images/icons/send_${themeMode?.darkMode ? 'dark' : 'light'}.webp`}
-                                    alt='Send icon'
-                                    width={20}
-                                    height={20}
-                                />
-                                <p className='w-1/3'>{getShortAddress(element.f_to)}</p>
-
-                                <p className='w-1/3'>{(element.f_value / 10 ** 18).toLocaleString()} ETH</p>
-                                <p className='w-1/3'>{(element.f_gas_fee_cap / 10 ** 12).toLocaleString()} GWEI</p>
-                            </div>
-                        ))}
-
-                        {transactions.length == 0 && (
-                            <div className='flex justify-center p-2'>
-                                <p className='uppercase text-[14px] md:text-[16px]'>No transactions</p>
-                            </div>
-                        )}
-                    </div>
-                )}
-            </div>
-        );
-    };
-
-    //Transactions tab - table mobile
-    const getTransactionsMobile = () => {
-        return (
-            <div
-                ref={containerRef}
-                className='my-2 flex flex-col gap-2 font-medium text-[12px] w-11/12 mx-auto'
-                style={{
-                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                }}
-                onMouseMove={handleMouseMove}
-            >
-                {loadingTransactions ? (
-                    <div className='mt-6'>
-                        <Loader />
-                    </div>
-                ) : (
-                    <div>
-                        {transactions.map(element => (
-                            <div
-                                className='flex my-2 flex-col gap-y-2 text-[14px] py-4 px-14 border-2 border-white rounded-md'
-                                style={{
-                                    backgroundColor: themeMode?.darkMode
-                                        ? 'var(--bgFairDarkMode)'
-                                        : 'var(--bgMainLightMode)',
-                                    boxShadow: themeMode?.darkMode
-                                        ? 'var(--boxShadowCardDark)'
-                                        : 'var(--boxShadowCardLight)',
-                                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                                }}
-                                key={element.f_hash}
-                            >
-                                <div className='flex flex-row items-center justify-between'>
-                                    <p
-                                        className='font-semibold'
-                                        style={{
-                                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                                        }}
-                                    >
-                                        Txn Hash
-                                    </p>
-                                    <p>{getShortAddress(element?.f_hash)}</p>
-                                </div>
-                                <div className='flex flex-row items-center justify-between'>
-                                    <p
-                                        className='font-semibold'
-                                        style={{
-                                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                                        }}
-                                    >
-                                        Method
-                                    </p>
-                                    <p className='lowercase text-right'>{element.f_tx_type}</p>
-                                </div>
-                                <div className='flex flex-row items-center justify-between'>
-                                    <p
-                                        className='font-semibold'
-                                        style={{
-                                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                                        }}
-                                    >
-                                        Age
-                                    </p>
-                                    <p className='w-1/3 lowercase text-right'>
-                                        {timeSince(element.f_timestamp * 1000)}
-                                    </p>
-                                </div>
-                                <div className='flex flex-row justify-between items-center'>
-                                    <p
-                                        className='font-semibold'
-                                        style={{
-                                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                                        }}
-                                    >
-                                        From
-                                    </p>
-                                    <p
-                                        className='font-semibold'
-                                        style={{
-                                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                                        }}
-                                    >
-                                        To
-                                    </p>
-                                </div>
-                                <div className='flex flex-row justify-between items-center'>
-                                    <div className='flex flex-row items-center justify-between'>
-                                        <p>{getShortAddress(element?.f_from)}</p>
-                                    </div>
-                                    <CustomImage
-                                        src={`/static/images/icons/send_${themeMode?.darkMode ? 'dark' : 'light'}.webp`}
-                                        alt='Send icon'
-                                        width={20}
-                                        height={20}
-                                    />
-                                    <div className='flex flex-row items-center justify-between'>
-                                        <p>{getShortAddress(element?.f_to)}</p>
-                                    </div>
-                                </div>
-                                <div className='flex flex-row items-center justify-between'>
-                                    <p
-                                        className='font-semibold'
-                                        style={{
-                                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                                        }}
-                                    >
-                                        Value
-                                    </p>
-                                    <p>{(element.f_value / 10 ** 18).toLocaleString()} ETH</p>
-                                </div>
-                                <div className='flex flex-row items-center justify-between'>
-                                    <p
-                                        className='font-semibold'
-                                        style={{
-                                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                                        }}
-                                    >
-                                        Txn Fee
-                                    </p>
-                                    <p>{(element.f_gas_fee_cap / 10 ** 12).toLocaleString()} GWEI</p>
-                                </div>
-                            </div>
-                        ))}
-                        {transactions.length == 0 && (
-                            <div
-                                className='flex mt-2 justify-center rounded-md border-2 border-white px-4 py-4'
-                                style={{
-                                    backgroundColor: themeMode?.darkMode
-                                        ? 'var(--bgFairDarkMode)'
-                                        : 'var(--bgMainLightMode)',
-                                    boxShadow: themeMode?.darkMode
-                                        ? 'var(--boxShadowCardDark)'
-                                        : 'var(--boxShadowCardLight)',
-                                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                                }}
-                            >
-                                <p className='uppercase text-[14px]'>No transactions</p>
-                            </div>
-                        )}
-                    </div>
-                )}
             </div>
         );
     };
