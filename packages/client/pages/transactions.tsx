@@ -127,25 +127,25 @@ const Transactions = () => {
         return (
             <div
                 ref={containerRef}
-                className='flex flex-col mb-4 px-6 overflow-x-scroll overflow-y-hidden scrollbar-thin text-center sm:items-center'
+                className='flex flex-col mb-4 overflow-x-scroll overflow-y-hidden scrollbar-thin text-center mx-auto w-11/12 lg:w-10/12'
                 onMouseMove={handleMouseMove}
             >
                 <div
-                    className='font-semibold flex gap-x-1 justify-around px-2 xl:px-8 py-3 text-[14px] md:text-[16px] min-w-[800px]'
+                    className='font-semibold flex gap-x-1 justify-around px-2 xl:px-8 py-3 text-[14px] md:text-[16px] min-w-[800px] w-full'
                     style={{
                         color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
                     }}
                 >
-                    <p className='w-3/5'>Txn Hash</p>
-                    <p className='w-3/5'>Age</p>
-                    <p className='w-3/5'>From</p>
-                    <p className='w-3/5'>To</p>
-                    <p className='w-3/5'>Value</p>
-                    <p className='w-3/5'>Txn Fee</p>
+                    <p className='w-1/6'>Txn Hash</p>
+                    <p className='w-1/6'>Age</p>
+                    <p className='w-1/6'>From</p>
+                    <p className='w-1/6'>To</p>
+                    <p className='w-1/6'>Value</p>
+                    <p className='w-1/6'>Txn Fee</p>
                 </div>
 
                 <div
-                    className='flex flex-col justify-center gap-y-4 rounded-md border-2 border-white py-5 px-2 xl:px-8 min-w-[800px]'
+                    className='flex flex-col justify-center gap-y-4 rounded-md border-2 border-white py-5 px-2 xl:px-8 min-w-[800px] w-full'
                     style={{
                         backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
                         boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
@@ -160,17 +160,17 @@ const Transactions = () => {
                                 color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                             }}
                         >
-                            <p className='w-3/5'>{getShortAddress(transaction.f_hash)}</p>
+                            <p className='w-1/6'>{getShortAddress(transaction.f_hash)}</p>
 
-                            <p className='w-3/5'>{getAge(transaction.f_timestamp)}</p>
+                            <p className='w-1/6'>{getAge(transaction.f_timestamp)}</p>
 
-                            <p className='w-3/5'>{getShortAddress(transaction.f_from)}</p>
+                            <p className='w-1/6'>{getShortAddress(transaction.f_from)}</p>
 
-                            <p className='w-3/5'>{getShortAddress(transaction.f_to)}</p>
+                            <p className='w-1/6'>{getShortAddress(transaction.f_to)}</p>
 
-                            <p className='w-3/5'>{(transaction.f_value / 10 ** 18).toLocaleString()} ETH</p>
+                            <p className='w-1/6'>{(transaction.f_value / 10 ** 18).toLocaleString()} ETH</p>
 
-                            <p className='w-3/5'>{(transaction.f_gas_fee_cap / 10 ** 12).toLocaleString()} GWEI</p>
+                            <p className='w-1/6'>{(transaction.f_gas_fee_cap / 10 ** 12).toLocaleString()} GWEI</p>
                         </div>
                     ))}
                 </div>
@@ -220,7 +220,7 @@ const Transactions = () => {
                             >
                                 Age
                             </p>
-                            <p>{transaction.f_timestamp}</p>
+                            <p>{getAge(transaction.f_timestamp)}</p>
                         </div>
 
                         <div className='flex flex-row items-center justify-between uppercase'>
@@ -313,7 +313,7 @@ const Transactions = () => {
                 </h2>
             </div>
 
-            <div>{desktopView ? getTransactionsDesktop() : getTransactionsMobile()}</div>
+            <>{desktopView ? getTransactionsDesktop() : getTransactionsMobile()}</>
 
             {loading && (
                 <div className='mb-4'>
