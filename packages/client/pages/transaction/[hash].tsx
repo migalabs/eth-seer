@@ -220,11 +220,7 @@ const TransactionPage = () => {
     };
     //TABS - Overview & withdrawals
     const getInformationView = () => {
-        return (
-            <div className='flex flex-col mx-auto'>
-                {getSelectedTab()}
-            </div>
-        );
+        return <div className='flex flex-col mx-auto'>{getSelectedTab()}</div>;
     };
 
     //Overview tab - table
@@ -251,7 +247,6 @@ const TransactionPage = () => {
                     <Card title='Gas limit' text={'21000'} />
                     <Card title='Ethereum price' text={'$2062.63 / ETH'} />
                     <Card title='Input Data' text={String(block?.f_el_gas_used)} />
-
                 </div>
             </div>
         );
