@@ -1,7 +1,10 @@
-import React, { useState, useEffect, useContext, useRef } from 'react';
+import React, { useContext, useRef } from 'react';
 
 // Contexts
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
+
+// Hooks
+import useLargeView from '../../hooks/useLargeView';
 
 // Components
 import TooltipContainer from '../../components/ui/TooltipContainer';
@@ -29,14 +32,8 @@ const Transactions = ({ transactions, loadingTransactions }: Props) => {
     // Refs
     const containerRef = useRef<HTMLInputElement>(null);
 
-    // States
-    const [desktopView, setDesktopView] = useState(true);
-
-    useEffect(() => {
-        setDesktopView(window !== undefined && window.innerWidth > 768);
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    // Large View Hook
+    const largeView = useLargeView();
 
     // Function to handle the Mouse Move event
     const handleMouseMove = (e: any) => {
@@ -354,7 +351,7 @@ const Transactions = ({ transactions, loadingTransactions }: Props) => {
         );
     };
 
-    return <>{desktopView ? getTransactionsDesktop() : getTransactionsMobile()}</>;
+    return <>{largeView ? getTransactionsDesktop() : getTransactionsMobile()}</>;
 };
 
 export default Transactions;
