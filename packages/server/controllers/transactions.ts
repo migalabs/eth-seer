@@ -31,3 +31,32 @@ export const getTransactions = async (req: Request, res: Response) => {
         });
     }
 };
+
+export const getTransactionByHash = async (req: Request, res: Response) => {
+
+    try {
+        
+        const { hash } = req.params;
+
+        const { network } = req.query;
+
+        const pgPool = pgPools[network as string];
+
+        const transaction = 
+            await pgPool.query(`
+                SELECT f_tx_idx, f_gas_fee_cap, f_value, f_to, f_hash, f_timestamp, f_from, f_el_block_number
+                FROM t_transactions
+                WHERE LOWER(f_hash) = '${hash.toLowerCase()}'
+            `);
+
+        res.json({
+            transaction: transaction.rows[0]
+        });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            msg: 'An error occurred on the server'
+        });
+    }
+};
