@@ -11,6 +11,7 @@ import TooltipContainer from '../../components/ui/TooltipContainer';
 import TooltipResponsive from '../../components/ui/TooltipResponsive';
 import CustomImage from '../ui/CustomImage';
 import Loader from '../ui/Loader';
+import LinkTransaction from '../ui/LinkTransaction';
 
 // Helpers
 import { getShortAddress } from '../../helpers/addressHelper';
@@ -176,7 +177,7 @@ const Transactions = ({ transactions, loadingTransactions }: Props) => {
                             key={element.f_hash}
                         >
                             <div className='w-[calc(16.667%-20px)]'>
-                                <p>{getShortAddress(element?.f_hash)}</p>
+                                <LinkTransaction hash={element.f_hash} mxAuto />
                             </div>
 
                             <p className='w-[calc(16.667%-20px)] lowercase'>{getTimeAgo(element.f_timestamp * 1000)}</p>
@@ -254,7 +255,7 @@ const Transactions = ({ transactions, loadingTransactions }: Props) => {
                                 >
                                     Txn Hash
                                 </p>
-                                <p>{getShortAddress(element?.f_hash)}</p>
+                                <LinkTransaction hash={element.f_hash} />
                             </div>
                             <div className='flex flex-row items-center justify-between'>
                                 <p
