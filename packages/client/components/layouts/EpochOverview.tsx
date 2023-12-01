@@ -45,6 +45,7 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
             >
                 Epoch {epoch?.toLocaleString()}
             </span>
+
             <div
                 className={`flex items-center my-2 p-2 h-full border-2 ${lastEpoch && 'rounded-md'}`}
                 style={{

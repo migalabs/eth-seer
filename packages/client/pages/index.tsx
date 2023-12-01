@@ -13,6 +13,7 @@ import ChainOverview from '../components/layouts/ChainOverview';
 import Statitstics from '../components/layouts/Statitstics';
 import Problems from '../components/layouts/Problems';
 import SummaryOverview from '../components/ui/SummaryOverview';
+import ToggleHomepage from '../components/ui/ToggleHomepage';
 
 export default function Home() {
     // Router
@@ -102,9 +103,14 @@ export default function Home() {
                             information in an engaging manner to understand the Blockchain.
                         </h2>
                     </div>
-
                     <SummaryOverview />
-                    <ChainOverview />
+                    <div className='flex justify-center items-center'>
+                        <div className='flex flex-col items-start'>
+                            <ToggleHomepage />
+                            <ChainOverview />
+                        </div>
+                    </div>
+
                     <hr
                         className={`w-11/12 mx-auto my-4 rounded-md border-${
                             themeMode?.darkMode ? 'white' : 'darkGray'

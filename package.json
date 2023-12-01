@@ -19,5 +19,8 @@
     "bugs": {
         "url": "https://github.com/migalabs/eth-metadashboard/issues"
     },
-    "homepage": "https://github.com/migalabs/eth-metadashboard#readme"
+    "homepage": "https://github.com/migalabs/eth-metadashboard#readme",
+    "dependencies": {
+        "framer-motion": "^10.16.10"
+    }
 }

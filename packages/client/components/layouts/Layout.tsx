@@ -41,7 +41,6 @@ const Layout = ({ hideMetaDescription, children }: PropsWithChildren) => {
             <Header />
 
             <Background />
-
             <main className='my-6 flex-1'>{children}</main>
 
             <Footer></Footer>
