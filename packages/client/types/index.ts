@@ -60,7 +60,7 @@ export type BlockEL = {
     f_el_gas_limit?: number;
     f_el_gas_used?: number;
     f_el_transactions?: number;
-    f_payload_size_bytes?: number;
+    f_payload_size_bytes?: string;
 };
 
 export type Slot = {
