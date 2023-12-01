@@ -88,6 +88,7 @@ export type Transaction = {
     f_timestamp: number;
     f_from: string;
     f_tx_type: number;
+    f_el_block_number?: number;
 };
 
 export type Proposed = {
