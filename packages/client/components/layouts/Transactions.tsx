@@ -266,17 +266,6 @@ const Transactions = ({ transactions, loadingTransactions }: Props) => {
                                         color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
                                     }}
                                 >
-                                    Method
-                                </p>
-                                <p className='lowercase text-right'>{element.f_tx_type}</p>
-                            </div>
-                            <div className='flex flex-row items-center justify-between'>
-                                <p
-                                    className='font-semibold'
-                                    style={{
-                                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                                    }}
-                                >
                                     Age
                                 </p>
                                 <p>{getTimeAgo(element.f_timestamp * 1000)}</p>
