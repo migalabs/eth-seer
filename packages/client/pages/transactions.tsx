@@ -70,12 +70,12 @@ const Transactions = () => {
     return (
         <Layout hideMetaDescription>
             <Head>
-                <title>Transactions of the Ethereum Beacon Chain - EthSeer.io</title>
-                <meta name='description' content='Check the Ethereum chain transactions.' />
+                <title>Transactions of the Ethereum Chain - EthSeer.io</title>
                 <meta
-                    name='keywords'
-                    content='Ethereum, Epochs, Timeframes, Security, Validators, Consensus, Transactions'
+                    name='description'
+                    content='You can find all Ethereum transactions here, with their source, target, value transferred and cost.'
                 />
+                <meta name='keywords' content='Ethereum, Transactions, Execution Layer, Blocks, EVM' />
                 <link rel='canonical' href='https://ethseer.io/transactions' />
             </Head>
 
@@ -98,7 +98,7 @@ const Transactions = () => {
                         color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                     }}
                 >
-                    Transactions in Ethereum refer to a specific period of time in the Beacon Chain.
+                    Transactions are the atomic components that create the state of the Ethereum Virtual Machine.
                 </h2>
             </div>
 
