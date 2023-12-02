@@ -2,11 +2,12 @@ import { Router } from 'express';
 import { check, query } from 'express-validator';
 
 import {
-    getBlockById, getTransactionsByBlock,
+    getBlockById, getTransactionsByBlock, getBlocks
 } from '../controllers/blocks';
 
 import { checkFields } from '../middlewares/check-fields';
 import { existsNetwork } from '../helpers/network-validator';
+
 
 const router = Router();
 
@@ -23,6 +24,11 @@ router.get('/:id/transactions', [
     query('network').custom(existsNetwork),
     checkFields,
 ], getTransactionsByBlock);
+router.get('/', [
+    query('network').not().isEmpty(),
+    query('network').custom(existsNetwork),
+    checkFields,
+], getBlocks);
 
 
 export default router;

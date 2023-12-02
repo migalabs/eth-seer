@@ -91,8 +91,11 @@ export const getEntities = async (req: Request, res: Response) => {
 
         const entities  = 
             await pgPool.query(`
-                    SELECT DISTINCT f_pool_name
-                    FROM t_eth2_pubkeys;
+                    SELECT count(CASE  f_status WHEN 1 THEN 1 ELSE null END) as act_number_validators, f_pool_name
+                    FROM t_eth2_pubkeys
+                    LEFT OUTER JOIN 
+                    t_validator_last_status ON t_validator_last_status.f_val_idx = t_eth2_pubkeys.f_val_idx
+                    GROUP BY f_pool_name
                 `)
         
         res.json({
