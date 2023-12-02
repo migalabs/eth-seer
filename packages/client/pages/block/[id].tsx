@@ -351,7 +351,6 @@ const BlockPage = () => {
             return `${hours} hrs ${remainingMinutes} mins ago`;
         }
     };
-<<<<<<< HEAD:packages/client/pages/[network]/block/[id].tsx
 
     //CopyAddress
     const [copied, setCopied] = useState(null);
@@ -369,8 +368,6 @@ const BlockPage = () => {
         await navigator.clipboard.writeText(text);
         setCopied(id as any);
     };
-=======
->>>>>>> a8feff1f3bbd544207455605cc83597c805108c1:packages/client/pages/block/[id].tsx
 
     //Transactions tab - table desktop
     const getTransactionsDesktop = () => {
@@ -398,41 +395,10 @@ const BlockPage = () => {
                                 colorLetter='black'
                                 content={
                                     <>
-<<<<<<< HEAD:packages/client/pages/[network]/block/[id].tsx
                                         <span>
                                             A transaction hash, often denoted as TXN Hash, serves as a distinctive
                                             66-character identifier produced each time a transaction is executed.
                                         </span>
-                                    </>
-                                }
-                                top='34px'
-                                polygonLeft
-                            />
-                        </TooltipContainer>
-                    </div>
-                    <div className='flex items-center gap-x-1 justify-center w-1/3'>
-                        <p className='mt-0.5 font-semibold'>Method</p>
-                        <TooltipContainer>
-                            <CustomImage
-                                src='/static/images/icons/information_icon.webp'
-                                alt='Time information'
-                                width={24}
-                                height={24}
-                            />
-
-                            <TooltipResponsive
-                                width={220}
-                                backgroundColor='white'
-                                colorLetter='black'
-                                content={
-                                    <>
-                                        <span>
-                                            A function is executed depending on the decoded input data. In cases where
-                                            the functions are not recognized, the method ID is presented instead.
-                                        </span>
-=======
-                                        <span>The hash of the transaction</span>
->>>>>>> a8feff1f3bbd544207455605cc83597c805108c1:packages/client/pages/block/[id].tsx
                                     </>
                                 }
                                 top='34px'
@@ -456,12 +422,7 @@ const BlockPage = () => {
                                 colorLetter='black'
                                 content={
                                     <>
-<<<<<<< HEAD:packages/client/pages/[network]/block/[id].tsx
                                         <span>Time has passed since it was created.</span>
-=======
-                                        <span>How long ago</span>
-                                        <span>the transaction passed</span>
->>>>>>> a8feff1f3bbd544207455605cc83597c805108c1:packages/client/pages/block/[id].tsx
                                     </>
                                 }
                                 top='34px'
@@ -472,8 +433,6 @@ const BlockPage = () => {
                     <p className='mt-0.5 w-1/3'>To</p>
                     <div className='flex items-center gap-x-1 justify-center w-1/3'>
                         <p className='mt-0.5 font-semibold'>Value</p>
-<<<<<<< HEAD:packages/client/pages/[network]/block/[id].tsx
-=======
                         <TooltipContainer>
                             <CustomImage
                                 src='/static/images/icons/information_icon.webp'
@@ -496,7 +455,6 @@ const BlockPage = () => {
                                 top='34px'
                             />
                         </TooltipContainer>
->>>>>>> a8feff1f3bbd544207455605cc83597c805108c1:packages/client/pages/block/[id].tsx
                     </div>
                     <div className='flex items-center gap-x-1 justify-center w-1/3'>
                         <p className='mt-0.5 font-semibold'>Txn Fee</p>
@@ -514,12 +472,7 @@ const BlockPage = () => {
                                 colorLetter='black'
                                 content={
                                     <>
-<<<<<<< HEAD:packages/client/pages/[network]/block/[id].tsx
                                         <span>(Gas price*Gas used by Txns) in Ether</span>
-=======
-                                        <span>The fee </span>
-                                        <span>the transaction cost</span>
->>>>>>> a8feff1f3bbd544207455605cc83597c805108c1:packages/client/pages/block/[id].tsx
                                     </>
                                 }
                                 top='34px'
@@ -536,7 +489,6 @@ const BlockPage = () => {
                 ) : (
                     <div className='font-medium flex flex-col gap-y-2 text-[16px]  '>
                         {transactions.map(element => (
-<<<<<<< HEAD:packages/client/pages/[network]/block/[id].tsx
                             <div
                                 className='flex gap-x-4 uppercase text-center items-center px-4 xl:px-8 py-3 rounded-md border-2 border-white'
                                 style={{
@@ -574,14 +526,6 @@ const BlockPage = () => {
                                 <p className='lowercase w-1/3'>{element.f_tx_type}</p>
 
                                 <p className='lowercase w-1/3'>{timeSince(element.f_timestamp * 1000)}</p>
-=======
-                            <div className='flex gap-x-4 py-1 uppercase text-center items-center' key={element.f_hash}>
-                                <div className='w-1/3'>
-                                    <p>{getShortAddress(element?.f_hash)}</p>
-                                </div>
-
-                                <p className='w-1/3 lowercase'>{timeSince(element.f_timestamp * 1000)}</p>
->>>>>>> a8feff1f3bbd544207455605cc83597c805108c1:packages/client/pages/block/[id].tsx
 
                                 <div
                                     className='flex gap-1 justify-center items-center w-1/3 cursor cursor-pointer'
@@ -705,13 +649,7 @@ const BlockPage = () => {
                                     >
                                         Age
                                     </p>
-<<<<<<< HEAD:packages/client/pages/[network]/block/[id].tsx
                                     <p className='lowercase text-right'>{timeSince(element.f_timestamp * 1000)}</p>
-=======
-                                    <p className='w-1/3 lowercase text-right'>
-                                        {timeSince(element.f_timestamp * 1000)}
-                                    </p>
->>>>>>> a8feff1f3bbd544207455605cc83597c805108c1:packages/client/pages/block/[id].tsx
                                 </div>
                                 <div className='flex flex-row items-center justify-between'>
                                     <p
