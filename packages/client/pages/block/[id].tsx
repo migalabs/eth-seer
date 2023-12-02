@@ -3,28 +3,24 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 
 // Axios
-import axiosClient from '../../../config/axios';
+import axiosClient from '../../config/axios';
 
 // Contexts
-import ThemeModeContext from '../../../contexts/theme-mode/ThemeModeContext';
+import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
 // Components
-import Layout from '../../../components/layouts/Layout';
-import TabHeader from '../../../components/ui/TabHeader';
-import Loader from '../../../components/ui/Loader';
-import LinkValidator from '../../../components/ui/LinkValidator';
-import LinkSlot from '../../../components/ui/LinkSlot';
-import Arrow from '../../../components/ui/Arrow';
-import LinkEpoch from '../../../components/ui/LinkEpoch';
-import LinkEntity from '../../../components/ui/LinkEntity';
-import CustomImage from '../../../components/ui/CustomImage';
-import TooltipContainer from '../../../components/ui/TooltipContainer';
-import TooltipResponsive from '../../../components/ui/TooltipResponsive';
-import ValidatorStatus from '../../../components/ui/ValidatorStatus';
-import LinkBlock from '../../../components/ui/LinkBlock';
+import Layout from '../../components/layouts/Layout';
+import TabHeader from '../../components/ui/TabHeader';
+import Loader from '../../components/ui/Loader';
+import LinkSlot from '../../components/ui/LinkSlot';
+import Arrow from '../../components/ui/Arrow';
+import CustomImage from '../../components/ui/CustomImage';
+import TooltipContainer from '../../components/ui/TooltipContainer';
+import TooltipResponsive from '../../components/ui/TooltipResponsive';
+import LinkBlock from '../../components/ui/LinkBlock';
 
 // Types
-import { BlockEL, Withdrawal } from '../../../types';
+import { BlockEL, Transaction, Withdrawal } from '../../types';
 
 type CardProps = {
     title: string;
@@ -82,11 +78,13 @@ const BlockPage = () => {
     // States
     const [block, setBlock] = useState<BlockEL | null>(null);
     const [withdrawals, setWithdrawals] = useState<Array<Withdrawal>>([]);
+    const [transactions, setTransactions] = useState<Array<Transaction>>([]);
     const [existsBlock, setExistsBlock] = useState<boolean>(true);
     const [countdownText, setCountdownText] = useState<string>('');
     const [tabPageIndex, setTabPageIndex] = useState<number>(0);
     const [loadingBlock, setLoadingBlock] = useState<boolean>(true);
     const [loadingWithdrawals, setLoadingWithdrawals] = useState<boolean>(true);
+    const [loadingTransactions, setLoadingTransactions] = useState<boolean>(true);
     const [desktopView, setDesktopView] = useState(true);
     const [blockGenesis, setBlockGenesis] = useState(0);
 
@@ -98,7 +96,7 @@ const BlockPage = () => {
 
         if (network && ((id && !block) || (block && block.f_slot !== Number(id)))) {
             getBlock();
-            getWithdrawals();
+            getTransactions();
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -183,22 +181,22 @@ const BlockPage = () => {
         }
     };
 
-    // Get withdrawals
-    const getWithdrawals = async () => {
+    // Get transactions
+    const getTransactions = async () => {
         try {
-            setLoadingWithdrawals(true);
+            setLoadingTransactions(true);
 
-            const response = await axiosClient.get(`/api/slots/${id}/withdrawals`, {
+            const response = await axiosClient.get(`/api/blocks/${id}/transactions`, {
                 params: {
                     network,
                 },
             });
 
-            setWithdrawals(response.data.withdrawals);
+            setTransactions(response.data.transactions);
         } catch (error) {
             console.log(error);
         } finally {
-            setLoadingWithdrawals(false);
+            setLoadingTransactions(false);
         }
     };
 
@@ -328,14 +326,30 @@ const BlockPage = () => {
                     <Card title='Datetime (Local)' text={getTimeBlock()} />
                     <Card title='Transactions' text={String(block?.f_el_transactions)} />
                     <Card title='Fee recipient' text={getShortAddress(block?.f_el_fee_recp)} />
-                    <Card title='Block reward' text={'No data'} />
-                    <Card title='Total difficulty' text={'No data'} />
+                    {/* <Card title='Block reward' text={'No data'} />
+                    <Card title='Total difficulty' text={'No data'} /> */}
                     <Card title='Size' text={String(block?.f_payload_size_bytes) + ' bytes'} />
                     <Card title='Gas used' text={String(block?.f_el_gas_used)} />
                     <Card title='Gas limit' text={String(block?.f_el_gas_limit)} />
                 </div>
             </div>
         );
+    };
+
+    const timeSince = (timestamp: number) => {
+        const now = new Date();
+        const then = new Date(timestamp);
+        const diff = now.getTime() - then.getTime();
+
+        const minutes = Math.floor(diff / 60000);
+        const hours = Math.floor(minutes / 60);
+        const remainingMinutes = minutes % 60;
+
+        if (hours === 0) {
+            return `${remainingMinutes} mins ago`;
+        } else {
+            return `${hours} hrs ${remainingMinutes} mins ago`;
+        }
     };
 
     //Transactions tab - table desktop
@@ -368,35 +382,7 @@ const BlockPage = () => {
                                 colorLetter='black'
                                 content={
                                     <>
-                                        <span>Time at which the slot</span>
-                                        <span>should have passed</span>
-                                        <span>(calculated since genesis)</span>
-                                    </>
-                                }
-                                top='34px'
-                                polygonLeft
-                            />
-                        </TooltipContainer>
-                    </div>
-                    <div className='flex items-center gap-x-1 justify-center w-1/3'>
-                        <p className='mt-0.5 font-semibold'>Method</p>
-                        <TooltipContainer>
-                            <CustomImage
-                                src='/static/images/icons/information_icon.webp'
-                                alt='Time information'
-                                width={24}
-                                height={24}
-                            />
-
-                            <TooltipResponsive
-                                width={220}
-                                backgroundColor='white'
-                                colorLetter='black'
-                                content={
-                                    <>
-                                        <span>Time at which the slot</span>
-                                        <span>should have passed</span>
-                                        <span>(calculated since genesis)</span>
+                                        <span>The hash of the transaction</span>
                                     </>
                                 }
                                 top='34px'
@@ -420,13 +406,11 @@ const BlockPage = () => {
                                 colorLetter='black'
                                 content={
                                     <>
-                                        <span>Time at which the slot</span>
-                                        <span>should have passed</span>
-                                        <span>(calculated since genesis)</span>
+                                        <span>How long ago</span>
+                                        <span>the transaction passed</span>
                                     </>
                                 }
                                 top='34px'
-                                polygonLeft
                             />
                         </TooltipContainer>
                     </div>
@@ -448,13 +432,12 @@ const BlockPage = () => {
                                 colorLetter='black'
                                 content={
                                     <>
-                                        <span>Time at which the slot</span>
-                                        <span>should have passed</span>
-                                        <span>(calculated since genesis)</span>
+                                        <span>How much ETH</span>
+                                        <span>was sent</span>
+                                        <span>in the transaction</span>
                                     </>
                                 }
                                 top='34px'
-                                polygonLeft
                             />
                         </TooltipContainer>
                     </div>
@@ -474,19 +457,18 @@ const BlockPage = () => {
                                 colorLetter='black'
                                 content={
                                     <>
-                                        <span>Time at which the slot</span>
-                                        <span>should have passed</span>
-                                        <span>(calculated since genesis)</span>
+                                        <span>The fee </span>
+                                        <span>the transaction cost</span>
                                     </>
                                 }
                                 top='34px'
-                                polygonLeft
+                                polygonRight
                             />
                         </TooltipContainer>
                     </div>
                 </div>
 
-                {loadingWithdrawals ? (
+                {loadingTransactions ? (
                     <div className='mt-6'>
                         <Loader />
                     </div>
@@ -499,36 +481,29 @@ const BlockPage = () => {
                             color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                         }}
                     >
-                        {withdrawals.map(element => (
-                            <div
-                                className='flex gap-x-4 py-1 uppercase text-center items-center'
-                                key={element.f_val_idx}
-                            >
+                        {transactions.map(element => (
+                            <div className='flex gap-x-4 py-1 uppercase text-center items-center' key={element.f_hash}>
                                 <div className='w-1/3'>
-                                    <p>{getShortAddress(element?.f_address)}</p>
+                                    <p>{getShortAddress(element?.f_hash)}</p>
                                 </div>
 
-                                <div className='w-1/3'>
-                                    <LinkValidator validator={element.f_val_idx} mxAuto />
-                                </div>
+                                <p className='w-1/3 lowercase'>{timeSince(element.f_timestamp * 1000)}</p>
 
-                                <p className='w-1/3 lowercase'>{'9hrs 51mins ago'}</p>
-
-                                <p className='w-1/3'>{getShortAddress(element?.f_address)}</p>
+                                <p className='w-1/3'>{getShortAddress(element.f_from)}</p>
                                 <CustomImage
                                     src={`/static/images/icons/send_${themeMode?.darkMode ? 'dark' : 'light'}.webp`}
                                     alt='Send icon'
                                     width={20}
                                     height={20}
                                 />
-                                <p className='w-1/3'>{getShortAddress(element?.f_address)}</p>
+                                <p className='w-1/3'>{getShortAddress(element.f_to)}</p>
 
-                                <p className='w-1/3'>{(element.f_amount / 10 ** 9).toLocaleString()} ETH</p>
-                                <p className='w-1/3'>{(element.f_amount / 10 ** 9).toLocaleString()}</p>
+                                <p className='w-1/3'>{(element.f_value / 10 ** 18).toLocaleString()} ETH</p>
+                                <p className='w-1/3'>{(element.f_gas_fee_cap / 10 ** 12).toLocaleString()} GWEI</p>
                             </div>
                         ))}
 
-                        {withdrawals.length == 0 && (
+                        {transactions.length == 0 && (
                             <div className='flex justify-center p-2'>
                                 <p className='uppercase text-[14px] md:text-[16px]'>No transactions</p>
                             </div>
@@ -550,13 +525,13 @@ const BlockPage = () => {
                 }}
                 onMouseMove={handleMouseMove}
             >
-                {loadingWithdrawals ? (
+                {loadingTransactions ? (
                     <div className='mt-6'>
                         <Loader />
                     </div>
                 ) : (
                     <div>
-                        {withdrawals.map(element => (
+                        {transactions.map(element => (
                             <div
                                 className='flex my-2 flex-col gap-y-2 text-[14px] py-4 px-14 border-2 border-white rounded-md'
                                 style={{
@@ -568,7 +543,7 @@ const BlockPage = () => {
                                         : 'var(--boxShadowCardLight)',
                                     color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                                 }}
-                                key={element.f_val_idx}
+                                key={element.f_hash}
                             >
                                 <div className='flex flex-row items-center justify-between'>
                                     <p
@@ -579,7 +554,7 @@ const BlockPage = () => {
                                     >
                                         Txn Hash
                                     </p>
-                                    <p>{getShortAddress(element?.f_address)}</p>
+                                    <p>{getShortAddress(element?.f_hash)}</p>
                                 </div>
                                 <div className='flex flex-row items-center justify-between'>
                                     <p
@@ -590,7 +565,7 @@ const BlockPage = () => {
                                     >
                                         Method
                                     </p>
-                                    <LinkValidator validator={element.f_val_idx} mxAuto />
+                                    <p className='lowercase text-right'>{element.f_tx_type}</p>
                                 </div>
                                 <div className='flex flex-row items-center justify-between'>
                                     <p
@@ -601,7 +576,9 @@ const BlockPage = () => {
                                     >
                                         Age
                                     </p>
-                                    <p className='w-1/3 lowercase text-right'>{'9hrs 51mins ago'}</p>
+                                    <p className='w-1/3 lowercase text-right'>
+                                        {timeSince(element.f_timestamp * 1000)}
+                                    </p>
                                 </div>
                                 <div className='flex flex-row justify-between items-center'>
                                     <p
@@ -623,7 +600,7 @@ const BlockPage = () => {
                                 </div>
                                 <div className='flex flex-row justify-between items-center'>
                                     <div className='flex flex-row items-center justify-between'>
-                                        <p>{getShortAddress(element?.f_address)}</p>
+                                        <p>{getShortAddress(element?.f_from)}</p>
                                     </div>
                                     <CustomImage
                                         src={`/static/images/icons/send_${themeMode?.darkMode ? 'dark' : 'light'}.webp`}
@@ -632,7 +609,7 @@ const BlockPage = () => {
                                         height={20}
                                     />
                                     <div className='flex flex-row items-center justify-between'>
-                                        <p>{getShortAddress(element?.f_address)}</p>
+                                        <p>{getShortAddress(element?.f_to)}</p>
                                     </div>
                                 </div>
                                 <div className='flex flex-row items-center justify-between'>
@@ -644,7 +621,7 @@ const BlockPage = () => {
                                     >
                                         Value
                                     </p>
-                                    <p>{(element.f_amount / 10 ** 9).toLocaleString()} ETH</p>
+                                    <p>{(element.f_value / 10 ** 18).toLocaleString()} ETH</p>
                                 </div>
                                 <div className='flex flex-row items-center justify-between'>
                                     <p
@@ -655,11 +632,11 @@ const BlockPage = () => {
                                     >
                                         Txn Fee
                                     </p>
-                                    <p>{(element.f_amount / 10 ** 9).toLocaleString()}</p>
+                                    <p>{(element.f_gas_fee_cap / 10 ** 12).toLocaleString()} GWEI</p>
                                 </div>
                             </div>
                         ))}
-                        {withdrawals.length == 0 && (
+                        {transactions.length == 0 && (
                             <div
                                 className='flex mt-2 justify-center rounded-md border-2 border-white px-4 py-4'
                                 style={{
@@ -714,7 +691,7 @@ const BlockPage = () => {
                 </div>
             )}
 
-            {block && !loadingBlock && getInformationView()}
+            {block?.f_slot && !loadingBlock && getInformationView()}
         </Layout>
     );
 };
