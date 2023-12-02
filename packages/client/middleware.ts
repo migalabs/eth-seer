@@ -1,38 +1,25 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-// Cache for the networks
-let networksCache: string[] | null = null;
-let defaultNetworkCache: string | null = null;
+export async function fetchNetworks(): Promise<{ networks: string[]; defaultNetwork: string | null }> {
+    try {
+        const response = await fetch(`${process.env.URL_API}/api/networks`);
+        const networksData = await response.json();
 
-export async function fetchNetworks() {
-    if (!networksCache) {
-        try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_URL_API}/api/networks`);
-            const networksData = await response.json();
-            networksCache = networksData.networks;
-            if ((networksCache as string[]).length > 0) {
-                defaultNetworkCache = (networksCache as string[])[0];
-            }
-        } catch (err) {
-            console.error('Error fetching networks:', err);
-        }
+        return {
+            networks: networksData.networks,
+            defaultNetwork: networksData.networks ? networksData.networks[0] : null,
+        };
+    } catch (err) {
+        console.error('Error fetching networks:', err);
+        throw new Error('Error fetching networks');
     }
-    return { networks: networksCache, default_network: defaultNetworkCache };
 }
 
 export async function middleware(req: NextRequest) {
-    const { networks, default_network } = await fetchNetworks();
+    if (req.nextUrl.pathname.includes('_next') || req.nextUrl.pathname.includes('static')) return NextResponse.next();
 
-    const pathsWithoutNetwork = [
-        '/entity',
-        '/entities',
-        '/epoch',
-        '/epochs',
-        '/slot',
-        '/slots',
-        '/validator',
-        '/validators',
-    ];
+    const { networks, defaultNetwork } = await fetchNetworks();
+
     const oldPathsToReplace = [
         {
             singular: 'entity',
@@ -56,7 +43,18 @@ export async function middleware(req: NextRequest) {
         },
     ];
 
-    const isPathWithoutNetwork = pathsWithoutNetwork.find(item => req.nextUrl.pathname.startsWith(item));
+    let network = req.nextUrl.searchParams.get('network');
+
+    const networkInsidePath = networks?.find(item => req.nextUrl.pathname.includes(`/${item}/`));
+
+    let mustRedirect = false;
+
+    if (networkInsidePath) {
+        network = networkInsidePath;
+        req.nextUrl.pathname = req.nextUrl.pathname.replace(`/${network}/`, '/');
+        req.nextUrl.searchParams.set('network', network);
+        mustRedirect = true;
+    }
 
     const hasOldPath =
         oldPathsToReplace.filter(
@@ -67,34 +65,35 @@ export async function middleware(req: NextRequest) {
                     !req.nextUrl.pathname.includes('graffitis'))
         ).length > 0;
 
-    const replaceOldPaths = (url: string) => {
+    const replaceOldPaths = (pathname: string) => {
         oldPathsToReplace.forEach(item => {
-            if (url.includes(`/${item.plural}/`)) {
-                url = url.replace(`/${item.plural}/`, `/${item.singular}/`);
-            } else if (url.endsWith(`/${item.singular}`) && !url.includes('graffiti') && !url.includes('graffitis')) {
-                url = url.replace(`/${item.singular}`, `/${item.plural}`);
+            if (pathname.includes(`/${item.plural}/`)) {
+                pathname = pathname.replace(`/${item.plural}/`, `/${item.singular}/`);
+            } else if (
+                pathname.endsWith(`/${item.singular}`) &&
+                !pathname.includes('graffiti') &&
+                !pathname.includes('graffitis')
+            ) {
+                pathname = pathname.replace(`/${item.singular}`, `/${item.plural}`);
             }
         });
 
-        return url;
+        return pathname;
     };
 
-    if (isPathWithoutNetwork || req.nextUrl.pathname === '/') {
-        let newUrl = `${req.nextUrl.origin}/${default_network}${req.nextUrl.pathname}`;
+    if (!network || !networks?.includes(network)) {
+        req.nextUrl.searchParams.set('network', defaultNetwork as string);
 
         if (hasOldPath) {
-            newUrl = replaceOldPaths(newUrl);
+            req.nextUrl.pathname = replaceOldPaths(req.nextUrl.pathname);
         }
 
-        return NextResponse.redirect(newUrl);
+        return NextResponse.redirect(req.nextUrl);
     } else if (hasOldPath) {
-        return NextResponse.redirect(replaceOldPaths(req.nextUrl.href));
-    } else if (!req.nextUrl.pathname.includes('_next') && !req.nextUrl.pathname.includes('static')) {
-        const network = req.nextUrl.pathname.split('/')[1];
-
-        if (!networks?.includes(network)) {
-            return NextResponse.redirect(`${req.nextUrl.origin}/${default_network}`);
-        }
+        req.nextUrl.pathname = replaceOldPaths(req.nextUrl.pathname);
+        return NextResponse.redirect(req.nextUrl);
+    } else if (mustRedirect) {
+        return NextResponse.redirect(req.nextUrl);
     }
 
     return NextResponse.next();

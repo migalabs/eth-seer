@@ -3,19 +3,19 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 
 // Contexts
-import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
+import ThemeModeContext from '../contexts/theme-mode/ThemeModeContext';
 
 // Axios
-import axiosClient from '../../config/axios';
+import axiosClient from '../config/axios';
 
 // Components
-import Layout from '../../components/layouts/Layout';
-import BlocksLayout from '../../components/layouts/BlocksLayout';
-import Loader from '../../components/ui/Loader';
-import ViewMoreButton from '../../components/ui/ViewMoreButton';
+import Layout from '../components/layouts/Layout';
+import BlocksLayout from '../components/layouts/BlocksLayout';
+import Loader from '../components/ui/Loader';
+import ViewMoreButton from '../components/ui/ViewMoreButton';
 
 // Types
-import { Slot } from '../../types';
+import { BlockEL } from '../types';
 
 const Blocks = () => {
     // Theme Mode Context
@@ -26,25 +26,25 @@ const Blocks = () => {
     const { network } = router.query;
 
     // States
-    const [slots, setSlots] = useState<Slot[]>([]);
+    const [blocks, setBlocks] = useState<BlockEL[]>([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        if (network && slots.length === 0) {
-            getSlots(0);
+        if (network && blocks.length === 0) {
+            getBlocks(0);
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [network]);
 
-    const getSlots = async (page: number) => {
+    const getBlocks = async (page: number) => {
         try {
             setLoading(true);
 
             setCurrentPage(page);
 
-            const response = await axiosClient.get(`/api/slots`, {
+            const response = await axiosClient.get(`/api/blocks`, {
                 params: {
                     network,
                     page,
@@ -52,11 +52,12 @@ const Blocks = () => {
                 },
             });
 
-            setSlots(prevState => [
+            console.log('res', response.data);
+
+            setBlocks(prevState => [
                 ...prevState,
-                ...response.data.slots.filter(
-                    (slot: Slot) =>
-                        !prevState.find((prevSlot: Slot) => prevSlot.f_proposer_slot === slot.f_proposer_slot)
+                ...response.data.blocks.filter(
+                    (block: BlockEL) => !prevState.find((prevBlock: BlockEL) => prevBlock.f_slot === block.f_slot)
                 ),
             ]);
         } catch (error) {
@@ -102,7 +103,9 @@ const Blocks = () => {
                 </h2>
             </div>
 
-            <div className='mx-auto w-11/12 md:w-10/12 my-4'>{slots.length > 0 && <BlocksLayout slots={slots} />}</div>
+            <div className='mx-auto w-11/12 md:w-10/12 my-4'>
+                {blocks.length > 0 && <BlocksLayout blocks={blocks} />}
+            </div>
 
             {loading && (
                 <div className='my-6'>
@@ -110,7 +113,7 @@ const Blocks = () => {
                 </div>
             )}
 
-            {slots.length > 0 && <ViewMoreButton onClick={() => getSlots(currentPage + 1)} />}
+            {blocks.length > 0 && <ViewMoreButton onClick={() => getBlocks(currentPage + 1)} />}
         </Layout>
     );
 };
