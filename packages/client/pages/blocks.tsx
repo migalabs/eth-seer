@@ -2,15 +2,15 @@ import React, { useState, useEffect, useContext } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
-// Contexts
-import ThemeModeContext from '../contexts/theme-mode/ThemeModeContext';
-
 // Axios
 import axiosClient from '../config/axios';
 
+// Contexts
+import ThemeModeContext from '../contexts/theme-mode/ThemeModeContext';
+
 // Components
 import Layout from '../components/layouts/Layout';
-import BlocksLayout from '../components/layouts/BlocksLayout';
+import BlockList from '../components/layouts/Blocks';
 import Loader from '../components/ui/Loader';
 import ViewMoreButton from '../components/ui/ViewMoreButton';
 
@@ -103,9 +103,7 @@ const Blocks = () => {
                 </h2>
             </div>
 
-            <div className='mx-auto w-11/12 md:w-10/12 my-4'>
-                {blocks.length > 0 && <BlocksLayout blocks={blocks} />}
-            </div>
+            <div className='mx-auto w-11/12 md:w-10/12 my-4'>{blocks.length > 0 && <BlockList blocks={blocks} />}</div>
 
             {loading && (
                 <div className='my-6'>
