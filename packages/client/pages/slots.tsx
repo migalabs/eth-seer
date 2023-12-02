@@ -2,11 +2,11 @@ import React, { useState, useEffect, useContext } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
-// Contexts
-import ThemeModeContext from '../contexts/theme-mode/ThemeModeContext';
-
 // Axios
 import axiosClient from '../config/axios';
+
+// Contexts
+import ThemeModeContext from '../contexts/theme-mode/ThemeModeContext';
 
 // Components
 import Layout from '../components/layouts/Layout';
