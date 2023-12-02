@@ -3,28 +3,24 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 
 // Axios
-import axiosClient from '../../../config/axios';
+import axiosClient from '../../config/axios';
 
 // Contexts
-import ThemeModeContext from '../../../contexts/theme-mode/ThemeModeContext';
+import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
 // Components
-import Layout from '../../../components/layouts/Layout';
-import TabHeader from '../../../components/ui/TabHeader';
-import Loader from '../../../components/ui/Loader';
-import LinkValidator from '../../../components/ui/LinkValidator';
-import LinkSlot from '../../../components/ui/LinkSlot';
-import Arrow from '../../../components/ui/Arrow';
-import LinkEpoch from '../../../components/ui/LinkEpoch';
-import LinkEntity from '../../../components/ui/LinkEntity';
-import CustomImage from '../../../components/ui/CustomImage';
-import TooltipContainer from '../../../components/ui/TooltipContainer';
-import TooltipResponsive from '../../../components/ui/TooltipResponsive';
-import ValidatorStatus from '../../../components/ui/ValidatorStatus';
-import LinkBlock from '../../../components/ui/LinkBlock';
+import Layout from '../../components/layouts/Layout';
+import TabHeader from '../../components/ui/TabHeader';
+import Loader from '../../components/ui/Loader';
+import LinkSlot from '../../components/ui/LinkSlot';
+import Arrow from '../../components/ui/Arrow';
+import CustomImage from '../../components/ui/CustomImage';
+import TooltipContainer from '../../components/ui/TooltipContainer';
+import TooltipResponsive from '../../components/ui/TooltipResponsive';
+import LinkBlock from '../../components/ui/LinkBlock';
 
 // Types
-import { BlockEL, Transaction, Withdrawal } from '../../../types';
+import { BlockEL, Transaction, Withdrawal } from '../../types';
 
 type CardProps = {
     title: string;
@@ -330,8 +326,8 @@ const BlockPage = () => {
                     <Card title='Datetime (Local)' text={getTimeBlock()} />
                     <Card title='Transactions' text={String(block?.f_el_transactions)} />
                     <Card title='Fee recipient' text={getShortAddress(block?.f_el_fee_recp)} />
-                    <Card title='Block reward' text={'No data'} />
-                    <Card title='Total difficulty' text={'No data'} />
+                    {/* <Card title='Block reward' text={'No data'} />
+                    <Card title='Total difficulty' text={'No data'} /> */}
                     <Card title='Size' text={String(block?.f_payload_size_bytes) + ' bytes'} />
                     <Card title='Gas used' text={String(block?.f_el_gas_used)} />
                     <Card title='Gas limit' text={String(block?.f_el_gas_limit)} />
@@ -355,6 +351,7 @@ const BlockPage = () => {
             return `${hours} hrs ${remainingMinutes} mins ago`;
         }
     };
+<<<<<<< HEAD:packages/client/pages/[network]/block/[id].tsx
 
     //CopyAddress
     const [copied, setCopied] = useState(null);
@@ -372,6 +369,8 @@ const BlockPage = () => {
         await navigator.clipboard.writeText(text);
         setCopied(id as any);
     };
+=======
+>>>>>>> a8feff1f3bbd544207455605cc83597c805108c1:packages/client/pages/block/[id].tsx
 
     //Transactions tab - table desktop
     const getTransactionsDesktop = () => {
@@ -399,6 +398,7 @@ const BlockPage = () => {
                                 colorLetter='black'
                                 content={
                                     <>
+<<<<<<< HEAD:packages/client/pages/[network]/block/[id].tsx
                                         <span>
                                             A transaction hash, often denoted as TXN Hash, serves as a distinctive
                                             66-character identifier produced each time a transaction is executed.
@@ -430,6 +430,9 @@ const BlockPage = () => {
                                             A function is executed depending on the decoded input data. In cases where
                                             the functions are not recognized, the method ID is presented instead.
                                         </span>
+=======
+                                        <span>The hash of the transaction</span>
+>>>>>>> a8feff1f3bbd544207455605cc83597c805108c1:packages/client/pages/block/[id].tsx
                                     </>
                                 }
                                 top='34px'
@@ -453,11 +456,15 @@ const BlockPage = () => {
                                 colorLetter='black'
                                 content={
                                     <>
+<<<<<<< HEAD:packages/client/pages/[network]/block/[id].tsx
                                         <span>Time has passed since it was created.</span>
+=======
+                                        <span>How long ago</span>
+                                        <span>the transaction passed</span>
+>>>>>>> a8feff1f3bbd544207455605cc83597c805108c1:packages/client/pages/block/[id].tsx
                                     </>
                                 }
                                 top='34px'
-                                polygonLeft
                             />
                         </TooltipContainer>
                     </div>
@@ -465,6 +472,31 @@ const BlockPage = () => {
                     <p className='mt-0.5 w-1/3'>To</p>
                     <div className='flex items-center gap-x-1 justify-center w-1/3'>
                         <p className='mt-0.5 font-semibold'>Value</p>
+<<<<<<< HEAD:packages/client/pages/[network]/block/[id].tsx
+=======
+                        <TooltipContainer>
+                            <CustomImage
+                                src='/static/images/icons/information_icon.webp'
+                                alt='Time information'
+                                width={24}
+                                height={24}
+                            />
+
+                            <TooltipResponsive
+                                width={220}
+                                backgroundColor='white'
+                                colorLetter='black'
+                                content={
+                                    <>
+                                        <span>How much ETH</span>
+                                        <span>was sent</span>
+                                        <span>in the transaction</span>
+                                    </>
+                                }
+                                top='34px'
+                            />
+                        </TooltipContainer>
+>>>>>>> a8feff1f3bbd544207455605cc83597c805108c1:packages/client/pages/block/[id].tsx
                     </div>
                     <div className='flex items-center gap-x-1 justify-center w-1/3'>
                         <p className='mt-0.5 font-semibold'>Txn Fee</p>
@@ -482,11 +514,16 @@ const BlockPage = () => {
                                 colorLetter='black'
                                 content={
                                     <>
+<<<<<<< HEAD:packages/client/pages/[network]/block/[id].tsx
                                         <span>(Gas price*Gas used by Txns) in Ether</span>
+=======
+                                        <span>The fee </span>
+                                        <span>the transaction cost</span>
+>>>>>>> a8feff1f3bbd544207455605cc83597c805108c1:packages/client/pages/block/[id].tsx
                                     </>
                                 }
                                 top='34px'
-                                polygonLeft
+                                polygonRight
                             />
                         </TooltipContainer>
                     </div>
@@ -499,6 +536,7 @@ const BlockPage = () => {
                 ) : (
                     <div className='font-medium flex flex-col gap-y-2 text-[16px]  '>
                         {transactions.map(element => (
+<<<<<<< HEAD:packages/client/pages/[network]/block/[id].tsx
                             <div
                                 className='flex gap-x-4 uppercase text-center items-center px-4 xl:px-8 py-3 rounded-md border-2 border-white'
                                 style={{
@@ -536,6 +574,14 @@ const BlockPage = () => {
                                 <p className='lowercase w-1/3'>{element.f_tx_type}</p>
 
                                 <p className='lowercase w-1/3'>{timeSince(element.f_timestamp * 1000)}</p>
+=======
+                            <div className='flex gap-x-4 py-1 uppercase text-center items-center' key={element.f_hash}>
+                                <div className='w-1/3'>
+                                    <p>{getShortAddress(element?.f_hash)}</p>
+                                </div>
+
+                                <p className='w-1/3 lowercase'>{timeSince(element.f_timestamp * 1000)}</p>
+>>>>>>> a8feff1f3bbd544207455605cc83597c805108c1:packages/client/pages/block/[id].tsx
 
                                 <div
                                     className='flex gap-1 justify-center items-center w-1/3 cursor cursor-pointer'
@@ -582,7 +628,7 @@ const BlockPage = () => {
                                     />
                                 </div>
                                 <p className='w-1/3'>{(element.f_value / 10 ** 18).toLocaleString()} ETH</p>
-                                <p className='w-1/3'>{(element.f_gas_fee_cap / 10 ** 18).toLocaleString()}</p>
+                                <p className='w-1/3'>{(element.f_gas_fee_cap / 10 ** 12).toLocaleString()} GWEI</p>
                             </div>
                         ))}
 
@@ -659,7 +705,13 @@ const BlockPage = () => {
                                     >
                                         Age
                                     </p>
+<<<<<<< HEAD:packages/client/pages/[network]/block/[id].tsx
                                     <p className='lowercase text-right'>{timeSince(element.f_timestamp * 1000)}</p>
+=======
+                                    <p className='w-1/3 lowercase text-right'>
+                                        {timeSince(element.f_timestamp * 1000)}
+                                    </p>
+>>>>>>> a8feff1f3bbd544207455605cc83597c805108c1:packages/client/pages/block/[id].tsx
                                 </div>
                                 <div className='flex flex-row items-center justify-between'>
                                     <p
@@ -704,7 +756,7 @@ const BlockPage = () => {
                                     >
                                         Txn Fee
                                     </p>
-                                    <p>{(element.f_gas_fee_cap / 10 ** 18).toLocaleString()}</p>
+                                    <p>{(element.f_gas_fee_cap / 10 ** 12).toLocaleString()} GWEI</p>
                                 </div>
                             </div>
                         ))}
@@ -763,7 +815,7 @@ const BlockPage = () => {
                 </div>
             )}
 
-            {block && !loadingBlock && getInformationView()}
+            {block?.f_slot && !loadingBlock && getInformationView()}
         </Layout>
     );
 };

@@ -3,27 +3,27 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 
 // Axios
-import axiosClient from '../../../config/axios';
+import axiosClient from '../../config/axios';
 
 // Contexts
-import ThemeModeContext from '../../../contexts/theme-mode/ThemeModeContext';
+import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
 // Components
-import Layout from '../../../components/layouts/Layout';
-import BlockImage from '../../../components/ui/BlockImage';
-import TabHeader from '../../../components/ui/TabHeader';
-import Animation from '../../../components/layouts/Animation';
-import ProgressSmoothBar from '../../../components/ui/ProgressSmoothBar';
-import Loader from '../../../components/ui/Loader';
-import ValidatorStatus from '../../../components/ui/ValidatorStatus';
-import LinkEpoch from '../../../components/ui/LinkEpoch';
-import LinkSlot from '../../../components/ui/LinkSlot';
-import LinkEntity from '../../../components/ui/LinkEntity';
-import LinkValidator from '../../../components/ui/LinkValidator';
-import Arrow from '../../../components/ui/Arrow';
+import Layout from '../../components/layouts/Layout';
+import BlockImage from '../../components/ui/BlockImage';
+import TabHeader from '../../components/ui/TabHeader';
+import Animation from '../../components/layouts/Animation';
+import ProgressSmoothBar from '../../components/ui/ProgressSmoothBar';
+import Loader from '../../components/ui/Loader';
+import ValidatorStatus from '../../components/ui/ValidatorStatus';
+import LinkEpoch from '../../components/ui/LinkEpoch';
+import LinkSlot from '../../components/ui/LinkSlot';
+import LinkEntity from '../../components/ui/LinkEntity';
+import LinkValidator from '../../components/ui/LinkValidator';
+import Arrow from '../../components/ui/Arrow';
 
 // Types
-import { Validator, Slot, Withdrawal } from '../../../types';
+import { Validator, Slot, Withdrawal } from '../../types';
 
 type Props = {
     content: string;
