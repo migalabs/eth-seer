@@ -2,18 +2,22 @@ import React, { useContext, useEffect, useState } from 'react';
 import Head from 'next/head';
 
 // Contexts
-import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
+import ThemeModeContext from '../contexts/theme-mode/ThemeModeContext';
 
 // Components
-import Layout from '../../components/layouts/Layout';
-import EntityCard from '../../components/ui/EntityCard';
+import Layout from '../components/layouts/Layout';
+import EntityCard from '../components/ui/EntityCard';
 
 // Constants
 import { useRouter } from 'next/router';
-import axiosClient from '../../config/axios';
-import Loader from '../../components/ui/Loader';
-import Animation from '../../components/layouts/Animation';
+import axiosClient from '../config/axios';
+import Loader from '../components/ui/Loader';
+import Animation from '../components/layouts/Animation';
 
+type Entity = {
+    f_pool_name: string;
+    act_number_validators: number;
+};
 const Entities = () => {
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
@@ -23,7 +27,7 @@ const Entities = () => {
     const { network } = router.query;
 
     // States
-    const [entities, setEntities] = useState<string[]>([]);
+    const [entities, setEntities] = useState<Entity[]>([]);
     const [loading, setLoading] = useState(true);
     const [animation, setAnimation] = useState(false);
 
@@ -44,11 +48,18 @@ const Entities = () => {
                     network,
                 },
             });
-            const poolNames = response.data.entities.rows.map((pool: any) => pool.f_pool_name);
-            if (poolNames.length == 0) {
+
+            const data: Entity[] = response.data.entities.rows;
+
+            if (data.length == 0) {
                 setAnimation(true);
             }
-            setEntities(poolNames);
+
+            const sortedData = data.sort((a: Entity, b: Entity) => {
+                return b.act_number_validators - a.act_number_validators;
+            });
+
+            setEntities(sortedData);
         } catch (error) {
             console.log(error);
         } finally {
@@ -102,7 +113,9 @@ const Entities = () => {
             )}
             <div className='grid grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 w-11/12 md:w-10/12 gap-3 mx-auto mt-4'>
                 {entities.length > 0 &&
-                    entities.map((pool, index) => <EntityCard key={pool} index={index + 1} pool={pool} />)}
+                    entities.map(pool => (
+                        <EntityCard key={pool.f_pool_name} index={pool.act_number_validators} pool={pool.f_pool_name} />
+                    ))}
             </div>
             {animation && <Animation text={`There are no entities`} />}
         </Layout>
