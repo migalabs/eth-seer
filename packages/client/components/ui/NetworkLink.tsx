@@ -17,16 +17,16 @@ const NetworkLink = ({ children, href, ...rest }: Props) => {
     let adjustedHref = href;
 
     if (typeof href === 'string') {
-        adjustedHref = network ? `/${network}${href}` : href;
+        adjustedHref = network ? `${href}?network=${network}` : href;
     } else if (typeof href === 'object' && href.pathname) {
         adjustedHref = {
             ...href,
-            pathname: network ? `/${network}${href.pathname}` : href.pathname,
+            pathname: network ? `${href.pathname}?network=${network}` : href.pathname,
         };
     }
 
     return (
-        <Link href={adjustedHref} {...rest}>
+        <Link href={adjustedHref} prefetch={false} {...rest}>
             {children}
         </Link>
     );
