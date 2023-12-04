@@ -13,9 +13,9 @@ export const getTransactions = async (req: Request, res: Response) => {
 
         const transactions = 
             await pgPool.query(`
-                SELECT f_tx_idx, f_gas_fee_cap, f_value, f_to, f_hash, f_timestamp, f_from
+                SELECT f_tx_idx, f_gas_fee_cap, f_value, f_to, f_hash, f_timestamp, f_from, f_el_block_number
                 FROM t_transactions
-                ORDER BY f_timestamp DESC
+                ORDER by f_el_block_number desc, f_timestamp desc
                 OFFSET ${skip}
                 LIMIT ${Number(limit)}
             `);
@@ -46,7 +46,7 @@ export const getTransactionByHash = async (req: Request, res: Response) => {
             await pgPool.query(`
                 SELECT f_tx_idx, f_gas_fee_cap, f_value, f_to, f_hash, f_timestamp, f_from, f_el_block_number
                 FROM t_transactions
-                WHERE LOWER(f_hash) = '${hash.toLowerCase()}'
+                WHERE f_hash = '${hash}'
             `);
 
         res.json({
