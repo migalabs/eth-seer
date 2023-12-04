@@ -48,7 +48,7 @@ const Transactions = () => {
                 params: {
                     network,
                     page,
-                    limit: 1,
+                    limit: 20,
                 },
             });
 
