@@ -136,6 +136,14 @@ const SearchEngine = () => {
             });
         }
 
+        if (searchContent.startsWith('0x')) {
+            // It can be a transaction
+            items.push({
+                label: `Transaction: ${searchContent}`,
+                link: `/transaction/${searchContent}`,
+            });
+        }
+
         // It can be an entity
         const expression = new RegExp(searchContent, 'i');
 
