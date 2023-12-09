@@ -279,6 +279,12 @@ const BlockPage = () => {
         );
     };
 
+    //%Gas usage / limit
+    const percentGas = (a: number, b: number) => {
+            return (a / b) * 100;
+    };
+  
+
     //Overview tab - table
     const getOverview = () => {
         return (
@@ -299,9 +305,9 @@ const BlockPage = () => {
                     <Card title='Fee recipient' text={getShortAddress(block?.f_el_fee_recp)} />
                     {/* <Card title='Block reward' text={'No data'} />
                     <Card title='Total difficulty' text={'No data'} /> */}
-                    <Card title='Size' text={String(block?.f_payload_size_bytes) + ' bytes'} />
-                    <Card title='Gas used' text={String(block?.f_el_gas_used)} />
-                    <Card title='Gas limit' text={String(block?.f_el_gas_limit)} />
+                    <Card title='Size' text={Number(block?.f_payload_size_bytes)?.toLocaleString() + ' bytes' }/>
+                    <Card title='Gas used' text={block?.f_el_gas_used?.toLocaleString() + ' (' + percentGas(block?.f_el_gas_used as number, block?.f_el_gas_limit as number).toFixed(2) + "%)"} />
+                    <Card title='Gas limit' text={block?.f_el_gas_limit?.toLocaleString()} />
                 </div>
             </div>
         );
