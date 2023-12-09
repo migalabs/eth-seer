@@ -12,6 +12,7 @@ import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 import Layout from '../../components/layouts/Layout';
 import Loader from '../../components/ui/Loader';
 import LinkBlock from '../../components/ui/LinkBlock';
+import TabHeader from '../../components/ui/TabHeader';
 
 // Helpers
 import { getShortAddress } from '../../helpers/addressHelper';
@@ -22,11 +23,12 @@ import { Transaction } from '../../types';
 type CardProps = {
     title: string;
     text?: string;
+    wrapText?: boolean;
     content?: React.ReactNode;
 };
 
 //Card style
-const Card = ({ title, text, content }: CardProps) => {
+const Card = ({ title, text, wrapText, content }: CardProps) => {
     // Theme Mode Context
     const { themeMode } = React.useContext(ThemeModeContext) ?? {};
     return (
@@ -42,7 +44,7 @@ const Card = ({ title, text, content }: CardProps) => {
             <div className='flex gap-2 items-center'>
                 {text && (
                     <p
-                        className='uppercase text-[14px] md:text-[16px] font-medium'
+                        className={`uppercase text-[14px] md:text-[16px] font-medium ${wrapText ? 'break-all' : ''}`}
                         style={{
                             color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                         }}
@@ -67,6 +69,7 @@ const TransactionPage = () => {
 
     // States
     const [transaction, setTransaction] = useState<Transaction | null>(null);
+    const [tabPageIndex, setTabPageIndex] = useState(0);
     const [loading, setLoading] = useState(true);
 
     // UseEffect
@@ -97,21 +100,28 @@ const TransactionPage = () => {
         }
     };
 
-    const getInformationView = () => {
-        return <div className='flex flex-col mx-auto'>{getOverview()}</div>;
+    // Tabs
+    const getSelectedTab = () => {
+        switch (tabPageIndex) {
+            case 0:
+                return getOverview();
+
+            case 1:
+                return getMoreDetails();
+        }
     };
 
     const getOverview = () => {
         return (
             <div
-                className='rounded-md mt-4 p-8 w-11/12 md:w-1/2 mx-auto border-2 border-white'
+                className='rounded-md mt-4 p-8 border-2 border-white'
                 style={{
                     backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
                     boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
                     color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                 }}
             >
-                <div className='flex flex-col mx-auto gap-y-5 md:gap-y-8 '>
+                <div className='flex flex-col gap-y-5 md:gap-y-8 '>
                     <Card title='Transaction Hash' text={getShortAddress(hash as string)} />
                     <Card title='Block' content={<LinkBlock block={transaction?.f_el_block_number} />} />
                     <Card
@@ -125,6 +135,29 @@ const TransactionPage = () => {
                         title='Transaction Fee'
                         text={`${((transaction?.f_gas_fee_cap ?? 0) / 10 ** 12).toLocaleString()} GWEI`}
                     />
+                    <Card
+                        title='Gas Price'
+                        text={`${((transaction?.f_gas_price ?? 0) / 10 ** 12).toLocaleString()} GWEI`}
+                    />
+                </div>
+            </div>
+        );
+    };
+
+    const getMoreDetails = () => {
+        return (
+            <div
+                className='rounded-md mt-4 p-8 border-2 border-white'
+                style={{
+                    backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
+                    boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
+                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
+                }}
+            >
+                <div className='flex flex-col mx-auto gap-y-5 md:gap-y-8 '>
+                    <Card title='Usage Gas' text={Number(transaction?.f_gas).toLocaleString() ?? ''} />
+                    <Card title='Txn Type' text={transaction?.f_tx_type.toString() ?? ''} />
+                    <Card title='Input Data' text={transaction?.f_data} wrapText />
                 </div>
             </div>
         );
@@ -151,7 +184,24 @@ const TransactionPage = () => {
                 </div>
             )}
 
-            {transaction && getInformationView()}
+            {transaction && (
+                <div className='flex flex-col w-11/12 md:w-1/2 mx-auto'>
+                    <div className='flex flex-col sm:flex-row gap-4'>
+                        <TabHeader
+                            header='Overview'
+                            isSelected={tabPageIndex === 0}
+                            onClick={() => setTabPageIndex(0)}
+                        />
+                        <TabHeader
+                            header='More Details'
+                            isSelected={tabPageIndex === 1}
+                            onClick={() => setTabPageIndex(1)}
+                        />
+                    </div>
+
+                    {getSelectedTab()}
+                </div>
+            )}
         </Layout>
     );
 };
