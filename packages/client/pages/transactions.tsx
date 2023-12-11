@@ -49,6 +49,7 @@ const Transactions = () => {
                     network,
                     page,
                     limit: 20,
+                    threshold: transactions.length > 0 ? transactions[transactions.length - 1].f_tx_idx : null,
                 },
             });
 
@@ -56,7 +57,9 @@ const Transactions = () => {
                 ...prevState,
                 ...response.data.transactions.filter(
                     (transaction: Transaction) =>
-                        !prevState.find((prevTransaction: Transaction) => prevTransaction.f_hash === transaction.f_hash)
+                        !prevState.find(
+                            (prevTransaction: Transaction) => prevTransaction.f_tx_idx === transaction.f_tx_idx
+                        )
                 ),
             ]);
         } catch (error) {

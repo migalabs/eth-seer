@@ -81,6 +81,7 @@ export type Withdrawal = {
 };
 
 export type Transaction = {
+    f_tx_idx: number;
     f_value: number;
     f_gas_fee_cap: number;
     f_to: string;
