@@ -12,6 +12,7 @@ import TooltipResponsive from '../../components/ui/TooltipResponsive';
 import CustomImage from '../ui/CustomImage';
 import Loader from '../ui/Loader';
 import LinkTransaction from '../ui/LinkTransaction';
+import CopyIcon from '../ui/CopyIcon';
 
 // Helpers
 import { getShortAddress } from '../../helpers/addressHelper';
@@ -176,13 +177,18 @@ const Transactions = ({ transactions, loadingTransactions }: Props) => {
                             className='flex justify-around gap-x-4 py-1 uppercase text-center items-center'
                             key={element.f_hash}
                         >
-                            <div className='w-[calc(16.667%-20px)]'>
-                                <LinkTransaction hash={element.f_hash} mxAuto />
+                            <div className='flex gap-x-2 justify-center items-center w-[calc(16.667%-20px)]'>
+                                <CopyIcon value={element.f_hash} />
+
+                                <LinkTransaction hash={element.f_hash} />
                             </div>
 
                             <p className='w-[calc(16.667%-20px)] lowercase'>{getTimeAgo(element.f_timestamp * 1000)}</p>
 
-                            <p className='w-[calc(16.667%-20px)]'>{getShortAddress(element.f_from)}</p>
+                            <div className='flex gap-x-2 justify-center items-center w-[calc(16.667%-20px)]'>
+                                <CopyIcon value={element.f_from} />
+                                <p>{getShortAddress(element.f_from)}</p>
+                            </div>
 
                             <div className='w-5'>
                                 <CustomImage
@@ -193,7 +199,10 @@ const Transactions = ({ transactions, loadingTransactions }: Props) => {
                                 />
                             </div>
 
-                            <p className='w-[calc(16.667%-20px)]'>{getShortAddress(element.f_to)}</p>
+                            <div className='flex gap-x-2 justify-center items-center w-[calc(16.667%-20px)]'>
+                                <CopyIcon value={element.f_to} />
+                                <p>{getShortAddress(element.f_to)}</p>
+                            </div>
 
                             <p className='w-[calc(16.667%-20px)]'>
                                 {(element.f_value / 10 ** 18).toLocaleString()} ETH
@@ -234,7 +243,7 @@ const Transactions = ({ transactions, loadingTransactions }: Props) => {
                 <div>
                     {transactions.map(element => (
                         <div
-                            className='flex my-2 flex-col gap-y-2 text-[14px] py-4 px-14 border-2 border-white rounded-md'
+                            className='flex my-2 flex-col gap-y-2 text-[14px] py-4 p-2 border-2 border-white rounded-md'
                             style={{
                                 backgroundColor: themeMode?.darkMode
                                     ? 'var(--bgFairDarkMode)'
@@ -246,7 +255,7 @@ const Transactions = ({ transactions, loadingTransactions }: Props) => {
                             }}
                             key={element.f_hash}
                         >
-                            <div className='flex flex-row items-center justify-between'>
+                            <div className='flex items-center justify-between'>
                                 <p
                                     className='font-semibold'
                                     style={{
@@ -255,9 +264,13 @@ const Transactions = ({ transactions, loadingTransactions }: Props) => {
                                 >
                                     Txn Hash
                                 </p>
-                                <LinkTransaction hash={element.f_hash} />
+
+                                <div className='flex gap-x-2 items-center'>
+                                    <CopyIcon value={element.f_hash} />
+                                    <LinkTransaction hash={element.f_hash} />
+                                </div>
                             </div>
-                            <div className='flex flex-row items-center justify-between'>
+                            <div className='flex items-center justify-between'>
                                 <p
                                     className='font-semibold'
                                     style={{
@@ -268,7 +281,7 @@ const Transactions = ({ transactions, loadingTransactions }: Props) => {
                                 </p>
                                 <p>{getTimeAgo(element.f_timestamp * 1000)}</p>
                             </div>
-                            <div className='flex flex-row justify-between items-center'>
+                            <div className='flex justify-between items-center'>
                                 <p
                                     className='font-semibold'
                                     style={{
@@ -286,8 +299,9 @@ const Transactions = ({ transactions, loadingTransactions }: Props) => {
                                     To
                                 </p>
                             </div>
-                            <div className='flex flex-row justify-between items-center'>
-                                <div className='flex flex-row items-center justify-between'>
+                            <div className='flex justify-between items-center'>
+                                <div className='flex gap-x-2 items-center'>
+                                    <CopyIcon value={element?.f_from} />
                                     <p>{getShortAddress(element?.f_from)}</p>
                                 </div>
                                 <CustomImage
@@ -296,11 +310,12 @@ const Transactions = ({ transactions, loadingTransactions }: Props) => {
                                     width={20}
                                     height={20}
                                 />
-                                <div className='flex flex-row items-center justify-between'>
+                                <div className='flex gap-x-2 items-center'>
+                                    <CopyIcon value={element?.f_to} />
                                     <p>{getShortAddress(element?.f_to)}</p>
                                 </div>
                             </div>
-                            <div className='flex flex-row items-center justify-between'>
+                            <div className='flex items-center justify-between'>
                                 <p
                                     className='font-semibold'
                                     style={{
@@ -311,7 +326,7 @@ const Transactions = ({ transactions, loadingTransactions }: Props) => {
                                 </p>
                                 <p>{(element.f_value / 10 ** 18).toLocaleString()} ETH</p>
                             </div>
-                            <div className='flex flex-row items-center justify-between'>
+                            <div className='flex items-center justify-between'>
                                 <p
                                     className='font-semibold'
                                     style={{
