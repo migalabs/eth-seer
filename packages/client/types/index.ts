@@ -93,6 +93,7 @@ export type Transaction = {
     f_gas_price: number;
     f_gas: number;
     f_data: string;
+    f_nonce: number;
 };
 
 export type Proposed = {
