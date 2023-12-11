@@ -133,11 +133,11 @@ const TransactionPage = () => {
                     <Card title='Value' text={`${((transaction?.f_value ?? 0) / 10 ** 18).toLocaleString()} ETH`} />
                     <Card
                         title='Transaction Fee'
-                        text={`${((transaction?.f_gas_fee_cap ?? 0) / 10 ** 12).toLocaleString()} GWEI`}
+                        text={`${((transaction?.f_gas_fee_cap ?? 0) / 10 ** 9).toLocaleString()} GWEI`}
                     />
                     <Card
                         title='Gas Price'
-                        text={`${((transaction?.f_gas_price ?? 0) / 10 ** 12).toLocaleString()} GWEI`}
+                        text={`${((transaction?.f_gas_price ?? 0) / 10 ** 9).toLocaleString()} GWEI`}
                     />
                 </div>
             </div>
@@ -156,8 +156,9 @@ const TransactionPage = () => {
             >
                 <div className='flex flex-col mx-auto gap-y-5 md:gap-y-8 '>
                     <Card title='Usage Gas' text={Number(transaction?.f_gas).toLocaleString() ?? ''} />
+                    <Card title='Nonce' text={transaction?.f_nonce.toString() ?? '0'} />
                     <Card title='Txn Type' text={transaction?.f_tx_type.toString() ?? ''} />
-                    <Card title='Input Data' text={transaction?.f_data} wrapText />
+                    <Card title='Input Data' text={transaction?.f_data ?? ''} wrapText />
                 </div>
             </div>
         );

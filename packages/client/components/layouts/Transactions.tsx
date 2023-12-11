@@ -215,7 +215,7 @@ const Transactions = ({ transactions, loadingTransactions }: Props) => {
                                 {(element.f_value / 10 ** 18).toLocaleString()} ETH
                             </p>
                             <p className='w-[calc(16.667%-20px)]'>
-                                {(element.f_gas_fee_cap / 10 ** 12).toLocaleString()} GWEI
+                                {(element.f_gas_fee_cap / 10 ** 9).toLocaleString()} GWEI
                             </p>
                         </div>
                     ))}
@@ -342,7 +342,7 @@ const Transactions = ({ transactions, loadingTransactions }: Props) => {
                                 >
                                     Txn Fee
                                 </p>
-                                <p>{(element.f_gas_fee_cap / 10 ** 12).toLocaleString()} GWEI</p>
+                                <p>{(element.f_gas_fee_cap / 10 ** 9).toLocaleString()} GWEI</p>
                             </div>
                         </div>
                     ))}
