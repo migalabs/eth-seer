@@ -302,17 +302,13 @@ const BlockPage = () => {
                     <Card title='Datetime (Local)' text={getTimeBlock()} />
                     <Card title='Transactions' text={String(block?.f_el_transactions)} />
                     <Card title='Fee recipient' text={getShortAddress(block?.f_el_fee_recp)} />
-                    {/* <Card title='Block reward' text={'No data'} />
-                    <Card title='Total difficulty' text={'No data'} /> */}
-                    <Card title='Size' text={Number(block?.f_payload_size_bytes)?.toLocaleString() + ' bytes'} />
+                    <Card title='Size' text={`${Number(block?.f_payload_size_bytes)?.toLocaleString()} bytes`} />
                     <Card
                         title='Gas used'
-                        text={
-                            block?.f_el_gas_used?.toLocaleString() +
-                            ' (' +
-                            percentGas(block?.f_el_gas_used as number, block?.f_el_gas_limit as number).toFixed(2) +
-                            '%)'
-                        }
+                        text={`${block?.f_el_gas_used?.toLocaleString()} (${percentGas(
+                            block?.f_el_gas_used as number,
+                            block?.f_el_gas_limit as number
+                        ).toFixed(2)} %)`}
                     />
                     <Card title='Gas limit' text={block?.f_el_gas_limit?.toLocaleString()} />
                 </div>
