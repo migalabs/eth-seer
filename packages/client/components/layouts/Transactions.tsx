@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from 'react';
+import React, { useContext, useRef, useEffect, useState } from 'react';
 
 // Contexts
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
@@ -36,6 +36,13 @@ const Transactions = ({ transactions, loadingTransactions }: Props) => {
 
     // Large View Hook
     const largeView = useLargeView();
+
+    // States
+    const [isClient, setIsClient] = useState(false);
+
+    useEffect(() => {
+        setIsClient(true);
+    }, []);
 
     // Function to handle the Mouse Move event
     const handleMouseMove = (e: any) => {
@@ -366,6 +373,10 @@ const Transactions = ({ transactions, loadingTransactions }: Props) => {
             </div>
         );
     };
+
+    if (!isClient) {
+        return null;
+    }
 
     return <>{largeView ? getTransactionsDesktop() : getTransactionsMobile()}</>;
 };

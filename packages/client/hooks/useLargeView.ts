@@ -1,15 +1,16 @@
 import { useState, useEffect } from 'react';
 
 const useLargeView = () => {
-    const isWindowAvailable = typeof window !== 'undefined';
-    const [largeView, setLargeView] = useState(isWindowAvailable ? window.innerWidth > 768 : true);
+    const [largeView, setLargeView] = useState(true);
 
     useEffect(() => {
         const handleResize = () => {
             setLargeView(window.innerWidth > 768);
         };
 
+        handleResize();
         window.addEventListener('resize', handleResize);
+
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
