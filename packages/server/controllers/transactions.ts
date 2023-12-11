@@ -5,7 +5,7 @@ export const getTransactions = async (req: Request, res: Response) => {
 
     try {
         
-        const { network, page = 0, limit = 10 } = req.query;
+        const { network, page = 0, limit = 10, threshold } = req.query;
 
         const pgPool = pgPools[network as string];
 
@@ -16,7 +16,8 @@ export const getTransactions = async (req: Request, res: Response) => {
                 SELECT f_tx_idx, f_gas_fee_cap, f_value, f_to, f_hash, f_timestamp, f_from, f_el_block_number,
                 f_gas_price, f_gas, f_tx_type, f_data
                 FROM t_transactions
-                ORDER by f_el_block_number desc, f_timestamp desc
+                ${threshold ? `WHERE f_tx_idx <= ${Number(threshold)}` : ''}
+                ORDER by f_el_block_number DESC, f_tx_idx DESC, f_timestamp DESC
                 OFFSET ${skip}
                 LIMIT ${Number(limit)}
             `);
