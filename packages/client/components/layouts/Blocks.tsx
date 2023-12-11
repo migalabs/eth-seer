@@ -1,15 +1,18 @@
 import React, { useState, useRef, useContext, useEffect } from 'react';
+import { useRouter } from 'next/router';
+
+// Axios
+import axiosClient from '../../config/axios';
 
 // Contexts
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
-// Types
-import { BlockEL } from '../../types';
-
-import axiosClient from '../../config/axios';
-import { useRouter } from 'next/router';
+// Components
 import LinkBlock from '../ui/LinkBlock';
 import LinkSlot from '../ui/LinkSlot';
+
+// Types
+import { BlockEL } from '../../types';
 
 // Props
 type Props = {
