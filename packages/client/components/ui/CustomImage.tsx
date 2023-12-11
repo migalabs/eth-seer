@@ -8,10 +8,11 @@ type Props = {
     height: number;
     className?: string;
     priority?: boolean;
+    title?: string;
     onClick?: () => void;
 };
 
-const CustomImage = ({ src, alt, width, height, className, priority, onClick }: Props) => {
+const CustomImage = ({ src, alt, width, height, className, priority, title, onClick }: Props) => {
     const assetPrefix = process.env.NEXT_PUBLIC_ASSET_PREFIX ?? '';
 
     return (
@@ -22,6 +23,7 @@ const CustomImage = ({ src, alt, width, height, className, priority, onClick }: 
             height={height}
             className={className}
             priority={priority}
+            title={title}
             onClick={onClick}
         />
     );
