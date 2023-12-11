@@ -60,6 +60,10 @@ const Menu = () => {
                 name: 'Blocks',
                 route: '/blocks',
             },
+            {
+                name: 'Transactions',
+                route: '/transactions',
+            },
         ],
         Networks:
             networks.length > 0
