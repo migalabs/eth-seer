@@ -358,14 +358,27 @@ const BlockPage = () => {
         }
     };
 
+    //CopyAddress
+    const [copied, setCopied] = useState(null);
+    useEffect(() => {
+        if (copied) {
+            setTimeout(() => {
+                setCopied(null);
+            }, 250);
+        }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [copied]);
+
+    const handleCopyClick = async (id: string, text: string) => {
+        await navigator.clipboard.writeText(text);
+        setCopied(id as any);
+    };
+
     //Transactions tab - table desktop
     const getTransactionsDesktop = () => {
         return (
-            <div
-                ref={containerRef}
-                className='flex flex-col overflow-x-scroll overflow-y-hidden scrollbar-thin w-11/12 mx-auto mt-4'
-                onMouseMove={handleMouseMove}
-            >
+            <div ref={containerRef} className='flex flex-col w-11/12 mx-auto mt-4' onMouseMove={handleMouseMove}>
                 <div
                     className='flex gap-x-4 justify-around px-4 xl:px-8 font-semibold py-3 text-[16px] text-center'
                     style={{
@@ -373,7 +386,7 @@ const BlockPage = () => {
                     }}
                 >
                     <div className='flex items-center gap-x-1 justify-center w-1/3'>
-                        <p className='mt-0.5 font-semibold'>Txn Hash</p>
+                        <p className='font-semibold'>Txn Hash</p>
                         <TooltipContainer>
                             <CustomImage
                                 src='/static/images/icons/information_icon.webp'
@@ -388,7 +401,10 @@ const BlockPage = () => {
                                 colorLetter='black'
                                 content={
                                     <>
-                                        <span>The hash of the transaction</span>
+                                        <span>
+                                            A transaction hash, often denoted as TXN Hash, serves as a distinctive
+                                            66-character identifier produced each time a transaction is executed.
+                                        </span>
                                     </>
                                 }
                                 top='34px'
@@ -412,8 +428,7 @@ const BlockPage = () => {
                                 colorLetter='black'
                                 content={
                                     <>
-                                        <span>How long ago</span>
-                                        <span>the transaction passed</span>
+                                        <span>Time has passed since it was created.</span>
                                     </>
                                 }
                                 top='34px'
@@ -458,13 +473,12 @@ const BlockPage = () => {
                             />
 
                             <TooltipResponsive
-                                width={220}
+                                width={180}
                                 backgroundColor='white'
                                 colorLetter='black'
                                 content={
                                     <>
-                                        <span>The fee </span>
-                                        <span>the transaction cost</span>
+                                        <span>(Gas price*Gas used by Txns) in Ether</span>
                                     </>
                                 }
                                 top='34px'
@@ -479,31 +493,90 @@ const BlockPage = () => {
                         <Loader />
                     </div>
                 ) : (
-                    <div
-                        className='font-medium flex flex-col gap-y-2 text-[16px] rounded-md border-2 border-white px-4 xl:px-8 py-3'
-                        style={{
-                            backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
-                            boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
-                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                        }}
-                    >
+                    <div className='font-medium flex flex-col gap-y-2 text-[16px]  '>
                         {transactions.map(element => (
-                            <div className='flex gap-x-4 py-1 uppercase text-center items-center' key={element.f_hash}>
-                                <div className='w-1/3'>
-                                    <p>{getShortAddress(element?.f_hash)}</p>
+                            <div
+                                className='flex gap-x-4 uppercase text-center items-center px-4 xl:px-8 py-3 rounded-md border-2 border-white'
+                                style={{
+                                    backgroundColor: themeMode?.darkMode
+                                        ? 'var(--bgFairDarkMode)'
+                                        : 'var(--bgMainLightMode)',
+                                    boxShadow: themeMode?.darkMode
+                                        ? 'var(--boxShadowCardDark)'
+                                        : 'var(--boxShadowCardLight)',
+                                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
+                                }}
+                                key={element.f_hash}
+                            >
+                                <div
+                                    className='flex gap-1 justify-start items-center w-1/3 cursor cursor-pointer'
+                                    onClick={() => handleCopyClick(`${element.f_hash}#hash`, element.f_hash)}
+                                >
+                                    <p
+                                        className='md:hover:underline underline-offset-4 decoration-2'
+                                        style={{ color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)' }}
+                                    >
+                                        {getShortAddress(element?.f_hash)}
+                                    </p>
+
+                                    <CustomImage
+                                        src={`/static/images/icons/${
+                                            copied == `${element.f_hash}#hash` ? 'copied' : 'copy'
+                                        }_${themeMode?.darkMode ? 'dark' : 'light'}.webp`}
+                                        alt='Copy icon'
+                                        width={20}
+                                        height={20}
+                                    />
                                 </div>
 
-                                <p className='w-1/3 lowercase'>{timeSince(element.f_timestamp * 1000)}</p>
+                                <p className='lowercase w-1/3'>{element.f_tx_type}</p>
 
-                                <p className='w-1/3'>{getShortAddress(element.f_from)}</p>
+                                <p className='lowercase w-1/3'>{timeSince(element.f_timestamp * 1000)}</p>
+
+                                <div
+                                    className='flex gap-1 justify-center items-center w-1/3 cursor cursor-pointer'
+                                    onClick={() => handleCopyClick(`${element.f_hash}#from`, element.f_from)}
+                                >
+                                    <p
+                                        className='md:hover:underline underline-offset-4 decoration-2'
+                                        style={{ color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)' }}
+                                    >
+                                        {getShortAddress(element.f_from)}
+                                    </p>
+                                    <CustomImage
+                                        src={`/static/images/icons/${
+                                            copied == `${element.f_hash}#from` ? 'copied' : 'copy'
+                                        }_${themeMode?.darkMode ? 'dark' : 'light'}.webp`}
+                                        alt='Copy icon'
+                                        width={20}
+                                        height={20}
+                                    />
+                                </div>
                                 <CustomImage
                                     src={`/static/images/icons/send_${themeMode?.darkMode ? 'dark' : 'light'}.webp`}
                                     alt='Send icon'
-                                    width={20}
-                                    height={20}
+                                    width={25}
+                                    height={25}
                                 />
-                                <p className='w-1/3'>{getShortAddress(element.f_to)}</p>
-
+                                <div
+                                    className='flex gap-1 justify-center items-center w-1/3 cursor cursor-pointer'
+                                    onClick={() => handleCopyClick(`${element.f_hash}#to`, element.f_to)}
+                                >
+                                    <p
+                                        className='md:hover:underline underline-offset-4 decoration-2'
+                                        style={{ color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)' }}
+                                    >
+                                        {getShortAddress(element.f_to)}
+                                    </p>
+                                    <CustomImage
+                                        src={`/static/images/icons/${
+                                            copied == `${element.f_hash}#to` ? 'copied' : 'copy'
+                                        }_${themeMode?.darkMode ? 'dark' : 'light'}.webp`}
+                                        alt='Copy icon'
+                                        width={20}
+                                        height={20}
+                                    />
+                                </div>
                                 <p className='w-1/3'>{(element.f_value / 10 ** 18).toLocaleString()} ETH</p>
                                 <p className='w-1/3'>{(element.f_gas_fee_cap / 10 ** 12).toLocaleString()} GWEI</p>
                             </div>
@@ -539,7 +612,7 @@ const BlockPage = () => {
                     <div>
                         {transactions.map(element => (
                             <div
-                                className='flex my-2 flex-col gap-y-2 text-[14px] py-4 px-14 border-2 border-white rounded-md'
+                                className='flex my-2 flex-col gap-y-2 text-[14px] py-4 px-6 border-2 border-white rounded-md'
                                 style={{
                                     backgroundColor: themeMode?.darkMode
                                         ? 'var(--bgFairDarkMode)'
@@ -582,11 +655,9 @@ const BlockPage = () => {
                                     >
                                         Age
                                     </p>
-                                    <p className='w-1/3 lowercase text-right'>
-                                        {timeSince(element.f_timestamp * 1000)}
-                                    </p>
+                                    <p className='lowercase text-right'>{timeSince(element.f_timestamp * 1000)}</p>
                                 </div>
-                                <div className='flex flex-row justify-between items-center'>
+                                <div className='flex flex-row items-center justify-between'>
                                     <p
                                         className='font-semibold'
                                         style={{
@@ -595,6 +666,10 @@ const BlockPage = () => {
                                     >
                                         From
                                     </p>
+
+                                    <p>{getShortAddress(element?.f_from)}</p>
+                                </div>
+                                <div className='flex flex-row items-center justify-between'>
                                     <p
                                         className='font-semibold'
                                         style={{
@@ -603,20 +678,7 @@ const BlockPage = () => {
                                     >
                                         To
                                     </p>
-                                </div>
-                                <div className='flex flex-row justify-between items-center'>
-                                    <div className='flex flex-row items-center justify-between'>
-                                        <p>{getShortAddress(element?.f_from)}</p>
-                                    </div>
-                                    <CustomImage
-                                        src={`/static/images/icons/send_${themeMode?.darkMode ? 'dark' : 'light'}.webp`}
-                                        alt='Send icon'
-                                        width={20}
-                                        height={20}
-                                    />
-                                    <div className='flex flex-row items-center justify-between'>
-                                        <p>{getShortAddress(element?.f_to)}</p>
-                                    </div>
+                                    <p>{getShortAddress(element?.f_to)}</p>
                                 </div>
                                 <div className='flex flex-row items-center justify-between'>
                                     <p
