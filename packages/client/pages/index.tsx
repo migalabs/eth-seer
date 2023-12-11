@@ -92,7 +92,7 @@ export default function Home() {
                         }}
                     >
                         <h2
-                            className='text-center'
+                            className='text-center leading-6'
                             style={{
                                 color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                             }}
