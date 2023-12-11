@@ -27,7 +27,7 @@ const Transactions = () => {
     // States
     const [transactions, setTransactions] = useState<Transaction[]>([]);
     const [currentPage, setCurrentPage] = useState(0);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     // UseEffect
     useEffect(() => {
