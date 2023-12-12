@@ -19,9 +19,5 @@
     "bugs": {
         "url": "https://github.com/migalabs/eth-metadashboard/issues"
     },
-    "homepage": "https://github.com/migalabs/eth-metadashboard#readme",
-    "dependencies": {
-        "@heroicons/react": "^2.0.18",
-        "@material-tailwind/react": "^2.1.4"
-    }
+    "homepage": "https://github.com/migalabs/eth-metadashboard#readme"
 }
