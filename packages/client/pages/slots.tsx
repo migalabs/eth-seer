@@ -2,11 +2,11 @@ import React, { useState, useEffect, useContext } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
-// Contexts
-import ThemeModeContext from '../contexts/theme-mode/ThemeModeContext';
-
 // Axios
 import axiosClient from '../config/axios';
+
+// Contexts
+import ThemeModeContext from '../contexts/theme-mode/ThemeModeContext';
 
 // Components
 import Layout from '../components/layouts/Layout';
@@ -92,7 +92,7 @@ const Slots = () => {
                 style={{ background: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--bgMainLightMode)' }}
             >
                 <h2
-                    className='text-white text-[14px] 2xl:text-[18px] text-center leading-5'
+                    className='text-white text-[14px] 2xl:text-[18px] text-center leading-6'
                     style={{
                         color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                     }}

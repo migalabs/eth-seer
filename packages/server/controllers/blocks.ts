@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { pgPools, pgListeners } from '../config/db';
+import { pgPools } from '../config/db';
 
 export const getBlocks = async (req: Request, res: Response) => {
 
