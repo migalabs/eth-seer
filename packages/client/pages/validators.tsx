@@ -19,6 +19,9 @@ import Pagination from '../components/ui/Pagination';
 import { Validator } from '../types';
 
 const Validators = () => {
+    // Constants
+    const LIMIT = 10;
+
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
 
@@ -31,6 +34,7 @@ const Validators = () => {
 
     // States
     const [validators, setValidators] = useState<Validator[]>([]);
+    const [validatorsCount, setValidatorsCount] = useState(0);
     const [loading, setLoading] = useState(false);
     const [desktopView, setDesktopView] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
@@ -43,11 +47,35 @@ const Validators = () => {
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [network]);
+
     useEffect(() => {
         setDesktopView(window !== undefined && window.innerWidth > 768);
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    const getValidators = async (page: number) => {
+        try {
+            setLoading(true);
+
+            setCurrentPage(page);
+
+            const response = await axiosClient.get('/api/validators', {
+                params: {
+                    network,
+                    page,
+                    limit: LIMIT,
+                },
+            });
+
+            setValidators(response.data.validators);
+            setValidatorsCount(response.data.totalCount);
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const handleMouseMove = (e: any) => {
         if (containerRef.current) {
@@ -59,40 +87,6 @@ const Validators = () => {
             } else if (x > containerRef.current.clientWidth * (1 - limit)) {
                 containerRef.current.scrollLeft += 10;
             }
-        }
-    };
-
-    // Clear existing validators when the page changes
-    const handlePageChange = (newPage: number) => {
-        setValidators([]);
-        getValidators(newPage);
-        setCurrentPage(newPage);
-    };
-
-    //VALIDATORS TABLE
-    const getValidators = async (page: number) => {
-        try {
-            setLoading(true);
-
-            const response = await axiosClient.get('/api/validators', {
-                params: {
-                    network,
-                    page: page,
-                    limit: 10,
-                },
-            });
-
-            setValidators(prevState => [
-                ...prevState,
-                ...response.data.validators.filter(
-                    (validator: Validator) =>
-                        !prevState.find((prevValidator: Validator) => prevValidator.f_val_idx === validator.f_val_idx)
-                ),
-            ]);
-        } catch (error) {
-            console.log(error);
-        } finally {
-            setLoading(false);
         }
     };
 
@@ -262,7 +256,11 @@ const Validators = () => {
                     performance.
                 </h2>
             </div>
-            <Pagination active={currentPage} onChangePage={handlePageChange} />
+            <Pagination
+                currentPage={currentPage}
+                totalPages={Math.ceil(validatorsCount / LIMIT)}
+                onChangePage={getValidators}
+            />
             <div>{desktopView ? getValidatorsDesktop() : getValidatorsMobile()}</div>;
         </Layout>
     );

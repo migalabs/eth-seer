@@ -30,6 +30,7 @@ const Entities = () => {
 
     // States
     const [entities, setEntities] = useState<Entity[]>([]);
+    const [entitiesCount, setEntitiesCount] = useState(0);
     const [loading, setLoading] = useState(true);
     const [animation, setAnimation] = useState(false);
 
@@ -51,17 +52,16 @@ const Entities = () => {
                 },
             });
 
-            const data: Entity[] = response.data.entities.rows;
-
-            if (data.length == 0) {
+            if (response.data.entities.length === 0) {
                 setAnimation(true);
             }
 
-            const sortedData = data.sort((a: Entity, b: Entity) => {
-                return b.act_number_validators - a.act_number_validators;
-            });
-
-            setEntities(sortedData);
+            setEntities(
+                response.data.entities.toSorted(
+                    (a: Entity, b: Entity) => b.act_number_validators - a.act_number_validators
+                )
+            );
+            setEntitiesCount(response.data.totalCount);
         } catch (error) {
             console.log(error);
         } finally {

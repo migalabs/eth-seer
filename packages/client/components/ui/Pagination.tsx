@@ -5,25 +5,27 @@ import { ArrowRightIcon, ArrowLeftIcon } from '@heroicons/react/24/outline';
 // Contexts
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
-interface PaginationProps {
-    active: number;
+// Props
+interface Props {
+    currentPage: number;
+    totalPages: number;
     onChangePage: (newPage: number) => void;
 }
 
-export function Pagination({ active, onChangePage }: PaginationProps) {
+const Pagination = ({ currentPage, totalPages, onChangePage }: Props) => {
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
 
     const next = () => {
-        try {
-            onChangePage(active + 1);
-        } catch (error) {
-            console.error('Error in next:', error);
+        if (currentPage < totalPages) {
+            onChangePage(currentPage + 1);
         }
     };
 
     const prev = () => {
-        onChangePage(active - 1);
+        if (currentPage > 0) {
+            onChangePage(currentPage - 1);
+        }
     };
 
     return (
@@ -32,7 +34,7 @@ export function Pagination({ active, onChangePage }: PaginationProps) {
                 size='sm'
                 variant='outlined'
                 onClick={prev}
-                disabled={active === 1}
+                disabled={currentPage === 0}
                 style={{
                     borderColor: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                     color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
@@ -42,18 +44,24 @@ export function Pagination({ active, onChangePage }: PaginationProps) {
             >
                 <ArrowLeftIcon strokeWidth={2} className='h-4 w-4' />
             </IconButton>
+
             <Typography
                 style={{ color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)' }}
                 className='font-normal text-[16px]'
             >
-                Page <strong style={{ color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)' }}>{active}</strong>{' '}
-                of <strong style={{ color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)' }}>10</strong>
+                Page{' '}
+                <strong style={{ color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)' }}>
+                    {currentPage + 1}
+                </strong>{' '}
+                of{' '}
+                <strong style={{ color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)' }}>{totalPages}</strong>
             </Typography>
+
             <IconButton
                 size='sm'
                 variant='outlined'
                 onClick={next}
-                disabled={active === 10}
+                disabled={currentPage === totalPages - 1}
                 style={{
                     borderColor: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                     color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
@@ -65,6 +73,6 @@ export function Pagination({ active, onChangePage }: PaginationProps) {
             </IconButton>
         </div>
     );
-}
+};
 
 export default Pagination;

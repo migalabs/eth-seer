@@ -27,6 +27,7 @@ const Blocks = () => {
 
     // States
     const [blocks, setBlocks] = useState<BlockEL[]>([]);
+    const [blocksCount, setBlocksCount] = useState(0);
     const [currentPage, setCurrentPage] = useState(0);
     const [loading, setLoading] = useState(true);
 
@@ -58,6 +59,8 @@ const Blocks = () => {
                     (block: BlockEL) => !prevState.find((prevBlock: BlockEL) => prevBlock.f_slot === block.f_slot)
                 ),
             ]);
+
+            setBlocksCount(response.data.totalCount);
         } catch (error) {
             console.log(error);
         } finally {
