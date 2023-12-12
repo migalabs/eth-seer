@@ -7,10 +7,11 @@ const EpochsReducer = (state: any, action: any) => {
                 ...state,
                 epochs: [
                     ...state.epochs,
-                    ...action.payload.filter(
+                    ...action.payload.epochs.filter(
                         (item: any) => !state.epochs.some((item2: any) => item.f_epoch === item2.f_epoch)
                     ),
                 ].sort((a, b) => b.f_epoch - a.f_epoch),
+                epochsTotalCount: action.payload.epochsTotalCount,
             };
 
         case SET_LAST_PAGE_FETCHED:

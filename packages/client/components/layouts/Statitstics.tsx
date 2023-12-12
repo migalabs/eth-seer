@@ -590,7 +590,9 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
                                                     <span>
                                                         Missing Target: {epoch.f_missing_target?.toLocaleString()}
                                                     </span>
-                                                    <span>Attestations: {epoch.f_num_active_vals?.toLocaleString()}</span>
+                                                    <span>
+                                                        Attestations: {epoch.f_num_active_vals?.toLocaleString()}
+                                                    </span>
                                                 </>
                                             }
                                             widthTooltip={220}
@@ -608,7 +610,9 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
                                                     <span>
                                                         Missing Source: {epoch.f_missing_source?.toLocaleString()}
                                                     </span>
-                                                    <span>Attestations: {epoch.f_num_active_vals?.toLocaleString()}</span>
+                                                    <span>
+                                                        Attestations: {epoch.f_num_active_vals?.toLocaleString()}
+                                                    </span>
                                                 </>
                                             }
                                             widthTooltip={220}
@@ -624,7 +628,9 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
                                             tooltipContent={
                                                 <>
                                                     <span>Missing Head: {epoch.f_missing_head?.toLocaleString()}</span>
-                                                    <span>Attestations: {epoch.f_num_active_vals?.toLocaleString()}</span>
+                                                    <span>
+                                                        Attestations: {epoch.f_num_active_vals?.toLocaleString()}
+                                                    </span>
                                                 </>
                                             }
                                             widthTooltip={220}

@@ -27,6 +27,7 @@ const Slots = () => {
 
     // States
     const [slots, setSlots] = useState<Slot[]>([]);
+    const [slotsCount, setSlotsCount] = useState(0);
     const [currentPage, setCurrentPage] = useState(0);
     const [loading, setLoading] = useState(true);
 
@@ -59,6 +60,8 @@ const Slots = () => {
                         !prevState.find((prevSlot: Slot) => prevSlot.f_proposer_slot === slot.f_proposer_slot)
                 ),
             ]);
+
+            setSlotsCount(response.data.count);
         } catch (error) {
             console.log(error);
         } finally {
