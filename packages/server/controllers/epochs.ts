@@ -14,7 +14,7 @@ export const getEpochsStatistics = async (req: Request, res: Response) => {
         const [ epochsStats, blocksStats ] =
          await Promise.all([
             pgPool.query(`
-                SELECT f_epoch, f_slot, f_num_att_vals, f_num_vals, 
+                SELECT f_epoch, f_slot, f_num_att_vals, f_num_active_vals, 
                 f_att_effective_balance_eth, f_total_effective_balance_eth,
                 f_missing_source, f_missing_target, f_missing_head
                 FROM t_epoch_metrics_summary
@@ -67,7 +67,7 @@ export const getEpochById = async (req: Request, res: Response) => {
         const [ epochStats, blocksProposed, withdrawals ] = 
             await Promise.all([
                 pgPool.query(`
-                    SELECT f_epoch, f_slot, f_num_att_vals, f_num_vals, 
+                    SELECT f_epoch, f_slot, f_num_att_vals, f_num_active_vals, 
                     f_att_effective_balance_eth, f_total_effective_balance_eth,
                     f_missing_source, f_missing_target, f_missing_head
                     FROM t_epoch_metrics_summary

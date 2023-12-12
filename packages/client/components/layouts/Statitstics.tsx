@@ -583,14 +583,14 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
                                             title='Target'
                                             color='#343434'
                                             backgroundColor='#f5f5f5'
-                                            percent={1 - epoch.f_missing_target / epoch.f_num_vals}
+                                            percent={1 - epoch.f_missing_target / epoch.f_num_active_vals}
                                             tooltipColor='orange'
                                             tooltipContent={
                                                 <>
                                                     <span>
                                                         Missing Target: {epoch.f_missing_target?.toLocaleString()}
                                                     </span>
-                                                    <span>Attestations: {epoch.f_num_vals?.toLocaleString()}</span>
+                                                    <span>Attestations: {epoch.f_num_active_vals?.toLocaleString()}</span>
                                                 </>
                                             }
                                             widthTooltip={220}
@@ -601,14 +601,14 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
                                             title='Source'
                                             color='#343434'
                                             backgroundColor='#f5f5f5'
-                                            percent={1 - epoch.f_missing_source / epoch.f_num_vals}
+                                            percent={1 - epoch.f_missing_source / epoch.f_num_active_vals}
                                             tooltipColor='blue'
                                             tooltipContent={
                                                 <>
                                                     <span>
                                                         Missing Source: {epoch.f_missing_source?.toLocaleString()}
                                                     </span>
-                                                    <span>Attestations: {epoch.f_num_vals?.toLocaleString()}</span>
+                                                    <span>Attestations: {epoch.f_num_active_vals?.toLocaleString()}</span>
                                                 </>
                                             }
                                             widthTooltip={220}
@@ -619,12 +619,12 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
                                             title='Head'
                                             color='#343434'
                                             backgroundColor='#f5f5f5'
-                                            percent={1 - epoch.f_missing_head / epoch.f_num_vals}
+                                            percent={1 - epoch.f_missing_head / epoch.f_num_active_vals}
                                             tooltipColor='purple'
                                             tooltipContent={
                                                 <>
                                                     <span>Missing Head: {epoch.f_missing_head?.toLocaleString()}</span>
-                                                    <span>Attestations: {epoch.f_num_vals?.toLocaleString()}</span>
+                                                    <span>Attestations: {epoch.f_num_active_vals?.toLocaleString()}</span>
                                                 </>
                                             }
                                             widthTooltip={220}
@@ -823,12 +823,12 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
                                 title='Target'
                                 color='#343434'
                                 backgroundColor='#f5f5f5'
-                                percent={1 - epoch.f_missing_target / epoch.f_num_vals}
+                                percent={1 - epoch.f_missing_target / epoch.f_num_active_vals}
                                 tooltipColor='orange'
                                 tooltipContent={
                                     <>
                                         <span>Missing Target: {epoch.f_missing_target?.toLocaleString()}</span>
-                                        <span>Attestations: {epoch.f_num_vals?.toLocaleString()}</span>
+                                        <span>Attestations: {epoch.f_num_active_vals?.toLocaleString()}</span>
                                     </>
                                 }
                                 widthTooltip={220}
@@ -838,12 +838,12 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
                                 title='Source'
                                 color='#343434'
                                 backgroundColor='#f5f5f5'
-                                percent={1 - epoch.f_missing_source / epoch.f_num_vals}
+                                percent={1 - epoch.f_missing_source / epoch.f_num_active_vals}
                                 tooltipColor='blue'
                                 tooltipContent={
                                     <>
                                         <span>Missing Source: {epoch.f_missing_source?.toLocaleString()}</span>
-                                        <span>Attestations: {epoch.f_num_vals?.toLocaleString()}</span>
+                                        <span>Attestations: {epoch.f_num_active_vals?.toLocaleString()}</span>
                                     </>
                                 }
                                 widthTooltip={220}
@@ -853,12 +853,12 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
                                 title='Head'
                                 color='#343434'
                                 backgroundColor='#f5f5f5'
-                                percent={1 - epoch.f_missing_head / epoch.f_num_vals}
+                                percent={1 - epoch.f_missing_head / epoch.f_num_active_vals}
                                 tooltipColor='purple'
                                 tooltipContent={
                                     <>
                                         <span>Missing Head: {epoch.f_missing_head?.toLocaleString()}</span>
-                                        <span>Attestations: {epoch.f_num_vals?.toLocaleString()}</span>
+                                        <span>Attestations: {epoch.f_num_active_vals?.toLocaleString()}</span>
                                     </>
                                 }
                                 widthTooltip={220}
@@ -902,7 +902,7 @@ const Statitstics = ({ showCalculatingEpochs }: Props) => {
                                 title='Attesting/Total active'
                                 color='#343434'
                                 backgroundColor='#f5f5f5'
-                                percent={epoch.f_num_att_vals / epoch.f_num_vals}
+                                percent={epoch.f_num_att_vals / epoch.f_num_active_vals}
                                 tooltipColor='bluedark'
                                 tooltipContent={
                                     <>
