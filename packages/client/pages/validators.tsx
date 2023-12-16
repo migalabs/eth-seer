@@ -257,16 +257,21 @@ const Validators = () => {
                     performance.
                 </h2>
             </div>
-            <Pagination
-                currentPage={currentPage}
-                totalPages={Math.ceil(validatorsCount / LIMIT)}
-                onChangePage={getValidators}
-            />
-            <div>{desktopView ? getValidatorsDesktop() : getValidatorsMobile()}</div>;
-            {loading && (
-                <div className='mb-4'>
+
+            {validatorsCount > 0 && (
+                <Pagination
+                    currentPage={currentPage}
+                    totalPages={Math.ceil(validatorsCount / LIMIT)}
+                    onChangePage={getValidators}
+                />
+            )}
+
+            {loading ? (
+                <div className='my-6'>
                     <Loader />
                 </div>
+            ) : (
+                <>{desktopView ? getValidatorsDesktop() : getValidatorsMobile()}</>
             )}
         </Layout>
     );
