@@ -14,6 +14,7 @@ import ValidatorStatus from '../components/ui/ValidatorStatus';
 import LinkValidator from '../components/ui/LinkValidator';
 import LinkEntity from '../components/ui/LinkEntity';
 import Pagination from '../components/ui/Pagination';
+import Loader from '../components/ui/Loader';
 
 // Types
 import { Validator } from '../types';
@@ -262,6 +263,11 @@ const Validators = () => {
                 onChangePage={getValidators}
             />
             <div>{desktopView ? getValidatorsDesktop() : getValidatorsMobile()}</div>;
+            {loading && (
+                <div className='mb-4'>
+                    <Loader />
+                </div>
+            )}
         </Layout>
     );
 };
