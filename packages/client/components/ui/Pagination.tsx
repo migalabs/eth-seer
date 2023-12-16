@@ -38,9 +38,8 @@ const Pagination = ({ currentPage, totalPages, onChangePage }: Props) => {
                 style={{
                     borderColor: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                     color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                    borderWidth: '2px',
                 }}
-                className='flex items-center justify-center'
+                className='flex items-center justify-center border-2'
             >
                 <ArrowLeftIcon strokeWidth={2} className='h-4 w-4' />
             </IconButton>
@@ -51,10 +50,12 @@ const Pagination = ({ currentPage, totalPages, onChangePage }: Props) => {
             >
                 Page{' '}
                 <strong style={{ color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)' }}>
-                    {currentPage + 1}
+                    {(currentPage + 1).toLocaleString()}
                 </strong>{' '}
                 of{' '}
-                <strong style={{ color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)' }}>{totalPages}</strong>
+                <strong style={{ color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)' }}>
+                    {totalPages.toLocaleString()}
+                </strong>
             </Typography>
 
             <IconButton
@@ -65,9 +66,8 @@ const Pagination = ({ currentPage, totalPages, onChangePage }: Props) => {
                 style={{
                     borderColor: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                     color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                    borderWidth: '2px',
                 }}
-                className='flex items-center justify-center'
+                className='flex items-center justify-center border-2'
             >
                 <ArrowRightIcon strokeWidth={2} className='h-4 w-4' />
             </IconButton>
