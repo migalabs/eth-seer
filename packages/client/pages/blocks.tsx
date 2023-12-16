@@ -12,12 +12,15 @@ import ThemeModeContext from '../contexts/theme-mode/ThemeModeContext';
 import Layout from '../components/layouts/Layout';
 import BlockList from '../components/layouts/Blocks';
 import Loader from '../components/ui/Loader';
-import ViewMoreButton from '../components/ui/ViewMoreButton';
+import Pagination from '../components/ui/Pagination';
 
 // Types
 import { BlockEL } from '../types';
 
 const Blocks = () => {
+    // Constants
+    const LIMIT = 32;
+
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
 
@@ -49,17 +52,11 @@ const Blocks = () => {
                 params: {
                     network,
                     page,
-                    limit: 32,
+                    limit: LIMIT,
                 },
             });
 
-            setBlocks(prevState => [
-                ...prevState,
-                ...response.data.blocks.filter(
-                    (block: BlockEL) => !prevState.find((prevBlock: BlockEL) => prevBlock.f_slot === block.f_slot)
-                ),
-            ]);
-
+            setBlocks(response.data.blocks);
             setBlocksCount(response.data.totalCount);
         } catch (error) {
             console.log(error);
@@ -104,15 +101,21 @@ const Blocks = () => {
                 </h2>
             </div>
 
-            <div className='mx-auto w-11/12 md:w-10/12 my-4'>{blocks.length > 0 && <BlockList blocks={blocks} />}</div>
+            {blocksCount > 0 && (
+                <Pagination
+                    currentPage={currentPage}
+                    totalPages={Math.ceil(blocksCount / LIMIT)}
+                    onChangePage={getBlocks}
+                />
+            )}
 
-            {loading && (
+            {loading ? (
                 <div className='my-6'>
                     <Loader />
                 </div>
+            ) : (
+                <BlockList blocks={blocks} />
             )}
-
-            {blocks.length > 0 && <ViewMoreButton onClick={() => getBlocks(currentPage + 1)} />}
         </Layout>
     );
 };

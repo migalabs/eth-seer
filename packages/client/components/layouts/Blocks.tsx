@@ -129,16 +129,11 @@ const Blocks = ({ blocks }: Props) => {
                             <p className='w-[20%]'>{(element.f_el_transactions ?? 0).toLocaleString()}</p>
                         </div>
                     ))}
-
-                    {blocks.length === 0 && (
-                        <div className='flex justify-center p-2'>
-                            <p className='uppercase text-[16px]'>No blocks</p>
-                        </div>
-                    )}
                 </div>
             </div>
         );
     };
+
     //View blocks table mobile
     const getContentBlocksMobile = () => {
         return (
@@ -230,17 +225,21 @@ const Blocks = ({ blocks }: Props) => {
                         </div>
                     </div>
                 ))}
-
-                {blocks.length === 0 && (
-                    <div className='flex justify-center p-2'>
-                        <p className='uppercase text-[14px]'>No blocks</p>
-                    </div>
-                )}
             </div>
         );
     };
 
-    return <div>{desktopView ? getContentBlocksDesktop() : getContentBlocksMobile()}</div>;
+    return (
+        <div className='mx-auto w-11/12 md:w-10/12'>
+            {blocks.length > 0 ? (
+                <>{desktopView ? getContentBlocksDesktop() : getContentBlocksMobile()}</>
+            ) : (
+                <div className='flex justify-center p-2'>
+                    <p className='uppercase text-[14px] md:text-[16px]'>No blocks</p>
+                </div>
+            )}
+        </div>
+    );
 };
 
 export default Blocks;
