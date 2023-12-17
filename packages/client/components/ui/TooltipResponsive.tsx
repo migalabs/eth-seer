@@ -30,7 +30,7 @@ const TooltipResponsive = ({ width, content, top, polygonLeft, polygonRight, too
         if (tooltipAbove) {
             return '-100px';
         } else {
-            return '30px';
+            return top ?? '30px';
         }
     };
 
