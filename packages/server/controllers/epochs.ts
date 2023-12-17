@@ -29,7 +29,7 @@ export const getEpochsStatistics = async (req: Request, res: Response) => {
                 GROUP BY epoch
                 ORDER BY epoch DESC
                 OFFSET ${skip}
-                LIMIT ${Number(limit)}
+                LIMIT ${Number(limit) + 1}
             `),
             pgPool.query(`
                 SELECT COUNT(*) AS count

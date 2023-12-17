@@ -10,7 +10,7 @@ import ThemeModeContext from '../contexts/theme-mode/ThemeModeContext';
 // Components
 import Layout from '../components/layouts/Layout';
 import ChainOverview from '../components/layouts/ChainOverview';
-import Statitstics from '../components/layouts/Statitstics';
+import Statitstics from '../components/layouts/Statistics';
 import Problems from '../components/layouts/Problems';
 import SummaryOverview from '../components/ui/SummaryOverview';
 
@@ -119,7 +119,7 @@ export default function Home() {
                         >
                             Epoch statistics
                         </h2>
-                        <Statitstics showCalculatingEpochs />
+                        <Statitstics />
                     </div>
                 </Layout>
             ) : (

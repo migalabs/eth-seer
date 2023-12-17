@@ -5,16 +5,18 @@ import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
 type Props = {
     width: number;
-    backgroundColor: string;
-    colorLetter: string;
     content: any;
     top?: string;
     polygonLeft?: boolean;
     polygonRight?: boolean;
+    tooltipAbove?: boolean;
 };
 
-const TooltipResponsive = ({ width, backgroundColor, colorLetter, content, top, polygonLeft, polygonRight }: Props) => {
-    const GetParentLeftPosition = () => {
+const TooltipResponsive = ({ width, content, top, polygonLeft, polygonRight, tooltipAbove }: Props) => {
+    // Theme Mode Context
+    const { themeMode } = useContext(ThemeModeContext) ?? {};
+
+    const getParentLeftPosition = () => {
         if (polygonLeft) {
             return '-25px';
         } else if (polygonRight) {
@@ -24,7 +26,15 @@ const TooltipResponsive = ({ width, backgroundColor, colorLetter, content, top, 
         }
     };
 
-    const GetPolygonLeftPosition = () => {
+    const getParentTopPosition = () => {
+        if (tooltipAbove) {
+            return '-100px';
+        } else {
+            return '30px';
+        }
+    };
+
+    const getPolygonLeftPosition = () => {
         if (polygonLeft) {
             return '15px';
         } else if (polygonRight) {
@@ -34,32 +44,45 @@ const TooltipResponsive = ({ width, backgroundColor, colorLetter, content, top, 
         }
     };
 
-    // Theme Mode Context
-    const { themeMode } = useContext(ThemeModeContext) ?? {};
+    const getPolygonTopPosition = () => {
+        if (tooltipAbove) {
+            return 'calc(100% - 1px)';
+        } else {
+            return '0';
+        }
+    };
+
+    const getPoints = () => {
+        if (tooltipAbove) {
+            return '20,0 127.5,107.5 235,0';
+        } else {
+            return '20,0 127.5,-107.5 235,0';
+        }
+    };
 
     return (
         <div
             className='absolute flex-col text-center rounded-md py-4 px-4 mt-2 mx-auto font-medium hidden z-[var(--zIndexTooltip)] text-[12px] leading-5 normal-case'
             style={{
                 width,
-                left: GetParentLeftPosition(),
+                left: getParentLeftPosition(),
                 backgroundColor: themeMode?.darkMode ? 'var(--darkGray)' : 'var(--white)',
                 color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                top: top ?? '30px',
+                top: getParentTopPosition(),
             }}
         >
             {content}
             <svg
-                className='absolute h-5 top-0 overflow-visible w-10'
-                x='00px'
+                className='absolute h-5 overflow-visible w-10'
+                x='0px'
                 y='0px'
                 viewBox='0 0 255 255'
                 xmlSpace='preserve'
-                style={{ left: GetPolygonLeftPosition() }}
+                style={{ left: getPolygonLeftPosition(), top: getPolygonTopPosition() }}
             >
                 <polygon
                     style={{ fill: themeMode?.darkMode ? 'var(--darkGray)' : 'var(--white)' }}
-                    points='20,0 127.5,-107.5 235,0'
+                    points={getPoints()}
                 />
             </svg>
         </div>
