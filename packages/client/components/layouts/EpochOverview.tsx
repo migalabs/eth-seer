@@ -72,8 +72,6 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
 
                                     <TooltipResponsive
                                         width={225}
-                                        colorLetter='black'
-                                        backgroundColor='white'
                                         content={
                                             <div className='flex flex-col gap-y-1 items-center'>
                                                 <span>Entity: {getEntityName(block.f_pool_name as string)}</span>
