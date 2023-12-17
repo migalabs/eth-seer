@@ -2,11 +2,11 @@ import React, { useContext } from 'react';
 import Head from 'next/head';
 
 // Contexts
-import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
+import ThemeModeContext from '../contexts/theme-mode/ThemeModeContext';
 
 // Components
-import Layout from '../../components/layouts/Layout';
-import Statitstics from '../../components/layouts/Statitstics';
+import Layout from '../components/layouts/Layout';
+import Statitstics from '../components/layouts/Statitstics';
 
 const Epochs = () => {
     // Theme Mode Context
@@ -41,7 +41,7 @@ const Epochs = () => {
                     style={{ background: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--bgMainLightMode)' }}
                 >
                     <h2
-                        className='text-[14px] 2xl:text-[18px] mx-auto leading-5'
+                        className='text-[14px] 2xl:text-[18px] mx-auto leading-6'
                         style={{
                             color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                         }}
