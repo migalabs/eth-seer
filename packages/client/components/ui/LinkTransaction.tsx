@@ -7,14 +7,17 @@ import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 import LinkIcon from './LinkIcon';
 import NetworkLink from './NetworkLink';
 
+// Helpers
+import { getShortAddress } from '../../helpers/addressHelper';
+
 // Types
 type Props = {
-    slot: number | undefined;
+    hash: string | undefined;
     children?: React.ReactNode;
     mxAuto?: boolean;
 };
 
-const LinkSlot = ({ slot, children, mxAuto }: Props) => {
+const LinkTransaction = ({ hash, children, mxAuto }: Props) => {
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
 
@@ -24,7 +27,7 @@ const LinkSlot = ({ slot, children, mxAuto }: Props) => {
 
     return (
         <NetworkLink
-            href={`/slot/${slot}`}
+            href={`/transaction/${hash}`}
             passHref
             className={`flex gap-x-1 items-center text-[14px] md:text-[16px]  font-medium md:hover:underline underline-offset-4 decoration-2 w-fit ${
                 mxAuto ? 'mx-auto' : ''
@@ -33,7 +36,7 @@ const LinkSlot = ({ slot, children, mxAuto }: Props) => {
         >
             {children ?? (
                 <>
-                    <p>{slot?.toLocaleString()}</p>
+                    <span>{getShortAddress(hash)}</span>
                     <LinkIcon />
                 </>
             )}
@@ -41,4 +44,4 @@ const LinkSlot = ({ slot, children, mxAuto }: Props) => {
     );
 };
 
-export default LinkSlot;
+export default LinkTransaction;
