@@ -59,7 +59,7 @@ const EpochOverview = ({ epoch, blocks, lastEpoch, showClient }: Props) => {
     return (
         <div className='flex flex-col'>
             <span
-                className='capitalize text-center text-[14px]'
+                className='capitalize text-center text-[16px] md:text-[18px]'
                 style={{
                     color: themeMode?.darkMode ? 'var(--white)' : 'var(--newOrange)',
                 }}
@@ -70,14 +70,13 @@ const EpochOverview = ({ epoch, blocks, lastEpoch, showClient }: Props) => {
             <div
                 className={`flex items-center my-2 p-2 h-full border-2 ${lastEpoch && 'rounded-md'}`}
                 style={{
-                    borderColor: lastEpoch ? `${themeMode?.darkMode ? 'var(--white)' : 'var(--white)'}` : 'transparent',
+                    borderColor: lastEpoch ? 'var(--white)' : 'transparent',
                 }}
             >
                 <div
-                    className='grid grid-cols-4 md:grid-cols-8 w-fit md:max-h-full border-2 mx-auto gap-2 rounded-md p-6'
+                    className='grid grid-cols-4 md:grid-cols-8 w-fit md:max-h-full border-2 border-[var(--white)] mx-auto gap-2 rounded-md p-6'
                     style={{
                         backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
-                        borderColor: themeMode?.darkMode ? 'var(--white)' : 'var(--white)',
                         boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
                     }}
                 >
@@ -101,9 +100,9 @@ const EpochOverview = ({ epoch, blocks, lastEpoch, showClient }: Props) => {
                                         content={
                                             <div className='flex flex-col gap-y-1 items-center'>
                                                 <span>
-                                                    {!showClient
-                                                        ? getEntityText(block.f_pool_name as string)
-                                                        : getClientText(block.f_cl_client as string)}
+                                                    {showClient
+                                                        ? getClientText(block.f_cl_client as string)
+                                                        : getEntityText(block.f_pool_name as string)}
                                                 </span>
                                                 <span>
                                                     Proposer: {Number(block.f_proposer_index)?.toLocaleString()}

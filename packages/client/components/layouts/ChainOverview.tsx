@@ -7,12 +7,9 @@ import BlocksContext from '../../contexts/blocks/BlocksContext';
 // Components
 import EpochOverview from './EpochOverview';
 import Arrow from '../ui/Arrow';
+import ToggleHomepage from '../ui/ToggleHomepage';
 
-type Props = {
-    showClient: boolean;
-};
-
-const ChainOverview = ({ showClient }: Props) => {
+const ChainOverview = () => {
     // Router
     const router = useRouter();
     const { network } = router.query;
@@ -27,6 +24,7 @@ const ChainOverview = ({ showClient }: Props) => {
     const [arrowLeftHidden, setArrowLeftHidden] = useState(false);
     const [currentPage, setCurrentPage] = useState(0);
     const [numberEpochsViewed, setNumberEpochsViewed] = useState(1);
+    const [showClient, setShowClient] = useState(false);
 
     useEffect(() => {
         if (network && blocks && !blocks.epochs) {
@@ -74,7 +72,7 @@ const ChainOverview = ({ showClient }: Props) => {
     };
 
     return (
-        <div className='flex flex-row justify-center space-x-4 md:space-x-5 px-7'>
+        <div className='flex justify-center space-x-4 md:space-x-5'>
             <div className='flex items-center mt-8'>
                 <Arrow
                     direction='left'
@@ -85,22 +83,30 @@ const ChainOverview = ({ showClient }: Props) => {
                 />
             </div>
 
-            {blocks &&
-                blocks.epochs &&
-                Object.entries(blocks.epochs)
-                    .slice(
-                        Object.entries(blocks.epochs).length - numberEpochsViewed - count,
-                        Object.entries(blocks.epochs).length - count
-                    )
-                    .map(([epoch, blocksEpoch]) => (
-                        <EpochOverview
-                            key={epoch}
-                            epoch={Number(epoch)}
-                            blocks={blocksEpoch.sort((a, b) => a.f_slot - b.f_slot)}
-                            lastEpoch={epoch === lastEpoch.toString()}
-                            showClient={showClient}
-                        />
-                    ))}
+            <div className='flex flex-col gap-y-4'>
+                <div className='flex justify-center md:justify-start pl-2'>
+                    <ToggleHomepage showClient={showClient} onToggle={() => setShowClient(!showClient)} />
+                </div>
+
+                <div className='flex justify-center space-x-4 md:space-x-5'>
+                    {blocks &&
+                        blocks.epochs &&
+                        Object.entries(blocks.epochs)
+                            .slice(
+                                Object.entries(blocks.epochs).length - numberEpochsViewed - count,
+                                Object.entries(blocks.epochs).length - count
+                            )
+                            .map(([epoch, blocksEpoch]) => (
+                                <EpochOverview
+                                    key={epoch}
+                                    epoch={Number(epoch)}
+                                    blocks={blocksEpoch.toSorted((a, b) => a.f_slot - b.f_slot)}
+                                    lastEpoch={epoch === lastEpoch.toString()}
+                                    showClient={showClient}
+                                />
+                            ))}
+                </div>
+            </div>
 
             <div className='flex items-center mt-8'>
                 <Arrow

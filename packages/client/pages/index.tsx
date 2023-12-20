@@ -13,7 +13,6 @@ import ChainOverview from '../components/layouts/ChainOverview';
 import Statitstics from '../components/layouts/Statitstics';
 import Problems from '../components/layouts/Problems';
 import SummaryOverview from '../components/ui/SummaryOverview';
-import ToggleHomepage from '../components/ui/ToggleHomepage';
 
 export default function Home() {
     // Router
@@ -37,7 +36,6 @@ export default function Home() {
     // States
     const [eventSourceBlocksCreated, setEventSourceBlocksCreated] = useState(false);
     const [eventSourceEpochsCreated, setEventSourceEpochsCreated] = useState(false);
-    const [showClient, setShowClient] = useState(false);
 
     useEffect(() => {
         if (network && !eventSourceBlocksCreated) {
@@ -104,19 +102,16 @@ export default function Home() {
                             information in an engaging manner to understand the Blockchain.
                         </h2>
                     </div>
+
                     <SummaryOverview />
-                    <div className='flex justify-center items-center'>
-                        <div className='flex flex-col items-start'>
-                            <ToggleHomepage showClient={showClient} setShowClient={setShowClient} />
-                            <ChainOverview showClient={showClient} />
-                        </div>
-                    </div>
+                    <ChainOverview />
 
                     <hr
                         className={`w-11/12 mx-auto my-4 rounded-md border-${
                             themeMode?.darkMode ? 'white' : 'darkGray'
                         }`}
-                    ></hr>
+                    />
+
                     <div className='text-center mt-3'>
                         <h2
                             className='text-[26px] md:text-[34px] font-semibold capitalize mb-3'
