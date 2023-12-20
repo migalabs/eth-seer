@@ -7,7 +7,7 @@ import BlocksContext from '../../contexts/blocks/BlocksContext';
 // Components
 import EpochOverview from './EpochOverview';
 import Arrow from '../ui/Arrow';
-import ToggleHomepage from '../ui/ToggleHomepage';
+import Toggle from '../ui/Toggle';
 
 const ChainOverview = () => {
     // Router
@@ -85,7 +85,12 @@ const ChainOverview = () => {
 
             <div className='flex flex-col gap-y-4'>
                 <div className='flex justify-center md:justify-start pl-2'>
-                    <ToggleHomepage showClient={showClient} onToggle={() => setShowClient(!showClient)} />
+                    <Toggle
+                        value={showClient}
+                        labelLeft='CL Clients'
+                        labelRight='Entities'
+                        onToggle={() => setShowClient(!showClient)}
+                    />
                 </div>
 
                 <div className='flex justify-center space-x-4 md:space-x-5'>
