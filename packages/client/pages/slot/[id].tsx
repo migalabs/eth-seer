@@ -329,6 +329,8 @@ const Slot = () => {
                         />
                     )}
 
+                    {existsBlock && <Card title='Client' text={block?.f_cl_client?.toLocaleString() ?? 'others'} />}
+
                     {existsBlock && (
                         <Card
                             title='Status'

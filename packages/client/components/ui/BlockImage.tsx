@@ -7,21 +7,23 @@ import CustomImage from './CustomImage';
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
 // Constants
-import { POOLS } from '../../constants';
+import { CLIENTS, POOLS } from '../../constants';
 
 type Props = {
     poolName: string;
+    clientName: string;
     proposed?: boolean;
     width: number;
     height: number;
     showCheck?: boolean;
+    showClient?: boolean;
 };
 
-const BlockImage = ({ poolName, proposed = true, width, height, showCheck }: Props) => {
+const BlockImage = ({ poolName, clientName, proposed = true, width, height, showCheck, showClient = false }: Props) => {
     // Theme Mode Context
     const { themeMode } = React.useContext(ThemeModeContext) ?? {};
 
-    const getUrl = () => {
+    const getUrlEntity = () => {
         if (poolName && POOLS.includes(poolName.toUpperCase())) {
             return `/static/images/blocks/cubes/${poolName.toLowerCase()}.webp`;
         } else if (poolName && poolName.toLowerCase().includes('lido')) {
@@ -33,10 +35,18 @@ const BlockImage = ({ poolName, proposed = true, width, height, showCheck }: Pro
         }
     };
 
+    const getUrlClient = () => {
+        if (clientName && CLIENTS.includes(clientName.toUpperCase())) {
+            return `/static/images/blocks/cubes/clients/${clientName.toLowerCase()}.webp`;
+        } else {
+            return `/static/images/blocks/cubes/unknown-ethereum-entity.webp`;
+        }
+    };
+
     return (
         <div className='relative'>
             <CustomImage
-                src={getUrl()}
+                src={!showClient ? getUrlEntity() : getUrlClient()}
                 alt='Logo'
                 width={width}
                 height={height}

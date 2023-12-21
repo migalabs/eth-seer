@@ -8,7 +8,11 @@ import BlocksContext from '../../contexts/blocks/BlocksContext';
 import EpochOverview from './EpochOverview';
 import Arrow from '../ui/Arrow';
 
-const ChainOverview = () => {
+type Props = {
+    showClient: boolean;
+};
+
+const ChainOverview = ({ showClient }: Props) => {
     // Router
     const router = useRouter();
     const { network } = router.query;
@@ -94,6 +98,7 @@ const ChainOverview = () => {
                             epoch={Number(epoch)}
                             blocks={blocksEpoch.sort((a, b) => a.f_slot - b.f_slot)}
                             lastEpoch={epoch === lastEpoch.toString()}
+                            showClient={showClient}
                         />
                     ))}
 

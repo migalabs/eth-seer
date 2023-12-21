@@ -48,6 +48,7 @@ export type Block = {
     f_sync_bits?: number;
     f_timestamp: number;
     f_voluntary_exits?: number;
+    f_cl_client?: string;
 };
 
 export type BlockEL = {
