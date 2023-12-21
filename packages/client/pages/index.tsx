@@ -37,6 +37,7 @@ export default function Home() {
     // States
     const [eventSourceBlocksCreated, setEventSourceBlocksCreated] = useState(false);
     const [eventSourceEpochsCreated, setEventSourceEpochsCreated] = useState(false);
+    const [showClient, setShowClient] = useState(false);
 
     useEffect(() => {
         if (network && !eventSourceBlocksCreated) {
@@ -106,8 +107,8 @@ export default function Home() {
                     <SummaryOverview />
                     <div className='flex justify-center items-center'>
                         <div className='flex flex-col items-start'>
-                            <ToggleHomepage />
-                            <ChainOverview />
+                            <ToggleHomepage showClient={showClient} setShowClient={setShowClient} />
+                            <ChainOverview showClient={showClient} />
                         </div>
                     </div>
 
