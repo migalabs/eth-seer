@@ -105,11 +105,13 @@ export default function Home() {
 
                     <SummaryOverview />
                     <ChainOverview />
+
                     <hr
                         className={`w-11/12 mx-auto my-4 rounded-md border-${
                             themeMode?.darkMode ? 'white' : 'darkGray'
                         }`}
-                    ></hr>
+                    />
+
                     <div className='text-center mt-3'>
                         <h2
                             className='text-[26px] md:text-[34px] font-semibold capitalize mb-3'
