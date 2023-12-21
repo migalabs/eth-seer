@@ -105,7 +105,7 @@ const ChainOverview = () => {
                                 <EpochOverview
                                     key={epoch}
                                     epoch={Number(epoch)}
-                                    blocks={blocksEpoch.toSorted((a, b) => a.f_slot - b.f_slot)}
+                                    blocks={[...blocksEpoch].sort((a, b) => a.f_slot - b.f_slot)}
                                     lastEpoch={epoch === lastEpoch.toString()}
                                     showClient={showClient}
                                 />

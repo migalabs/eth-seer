@@ -11,7 +11,7 @@ import { CLIENTS, POOLS } from '../../constants';
 
 type Props = {
     poolName: string;
-    clientName: string;
+    clientName?: string;
     proposed?: boolean;
     width: number;
     height: number;
