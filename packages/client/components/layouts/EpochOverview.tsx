@@ -17,9 +17,10 @@ type Props = {
     epoch: number;
     blocks: Block[];
     lastEpoch: boolean;
+    showClient: boolean;
 };
 
-const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
+const EpochOverview = ({ epoch, blocks, lastEpoch, showClient }: Props) => {
     // Theme Mode Context
     const { themeMode } = React.useContext(ThemeModeContext) ?? {};
 
@@ -35,27 +36,47 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
         }
     };
 
+    const getClientName = (f_client_name: string) => {
+        if (f_client_name) {
+            if (f_client_name.length > 18) {
+                return `${f_client_name.substring(0, 15)}...`;
+            } else {
+                return f_client_name;
+            }
+        } else {
+            return 'others';
+        }
+    };
+
+    const getEntityText = (f_pool_name: string) => {
+        return `Entity: ${getEntityName(f_pool_name)}`;
+    };
+
+    const getClientText = (f_client_name: string) => {
+        return `Client: ${getClientName(f_client_name)}`;
+    };
+
     return (
         <div className='flex flex-col'>
             <span
-                className='capitalize text-center text-[14px]'
+                className='capitalize text-center text-[16px] md:text-[18px]'
                 style={{
                     color: themeMode?.darkMode ? 'var(--white)' : 'var(--newOrange)',
                 }}
             >
                 Epoch {epoch?.toLocaleString()}
             </span>
+
             <div
                 className={`flex items-center my-2 p-2 h-full border-2 ${lastEpoch && 'rounded-md'}`}
                 style={{
-                    borderColor: lastEpoch ? `${themeMode?.darkMode ? 'var(--white)' : 'var(--white)'}` : 'transparent',
+                    borderColor: lastEpoch ? 'var(--white)' : 'transparent',
                 }}
             >
                 <div
-                    className='grid grid-cols-4 md:grid-cols-8 w-fit md:max-h-full border-2 mx-auto gap-2 rounded-md p-6'
+                    className='grid grid-cols-4 md:grid-cols-8 w-fit md:max-h-full border-2 border-[var(--white)] mx-auto gap-2 rounded-md p-6'
                     style={{
                         backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
-                        borderColor: themeMode?.darkMode ? 'var(--white)' : 'var(--white)',
                         boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
                     }}
                 >
@@ -65,9 +86,11 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
                                 <TooltipContainer>
                                     <BlockImage
                                         poolName={block.f_pool_name ?? 'others'}
+                                        clientName={block.f_cl_client?.toLowerCase() ?? 'others'}
                                         proposed={block.f_proposed}
                                         height={55}
                                         width={55}
+                                        showClient={showClient}
                                     />
 
                                     <TooltipResponsive
@@ -76,7 +99,11 @@ const EpochOverview = ({ epoch, blocks, lastEpoch }: Props) => {
                                         backgroundColor='white'
                                         content={
                                             <div className='flex flex-col gap-y-1 items-center'>
-                                                <span>Entity: {getEntityName(block.f_pool_name as string)}</span>
+                                                <span>
+                                                    {showClient
+                                                        ? getClientText(block.f_cl_client as string)
+                                                        : getEntityText(block.f_pool_name as string)}
+                                                </span>
                                                 <span>
                                                     Proposer: {Number(block.f_proposer_index)?.toLocaleString()}
                                                 </span>
