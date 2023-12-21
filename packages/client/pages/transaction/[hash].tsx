@@ -23,14 +23,14 @@ import { Transaction } from '../../types';
 type CardProps = {
     title: string;
     text?: string;
-    wrapText?: boolean;
     content?: React.ReactNode;
 };
 
 //Card style
-const Card = ({ title, text, wrapText, content }: CardProps) => {
+const Card = ({ title, text, content }: CardProps) => {
     // Theme Mode Context
     const { themeMode } = React.useContext(ThemeModeContext) ?? {};
+
     return (
         <div className='flex flex-row items-center justify-between gap-5 md:gap-20'>
             <p
@@ -41,20 +41,19 @@ const Card = ({ title, text, wrapText, content }: CardProps) => {
             >
                 {title}:
             </p>
-            <div className='flex gap-2 items-center'>
-                {text && (
-                    <p
-                        className={`uppercase text-[14px] md:text-[16px] font-medium ${wrapText ? 'break-all' : ''}`}
-                        style={{
-                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                        }}
-                    >
-                        {text}
-                    </p>
-                )}
 
-                {content && <>{content}</>}
-            </div>
+            {text && (
+                <p
+                    className={`uppercase text-[14px] md:text-[16px] font-medium`}
+                    style={{
+                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
+                    }}
+                >
+                    {text}
+                </p>
+            )}
+
+            {content && <>{content}</>}
         </div>
     );
 };
@@ -158,7 +157,17 @@ const TransactionPage = () => {
                     <Card title='Usage Gas' text={Number(transaction?.f_gas).toLocaleString() ?? ''} />
                     <Card title='Nonce' text={transaction?.f_nonce.toString() ?? '0'} />
                     <Card title='Txn Type' text={transaction?.f_tx_type.toString() ?? ''} />
-                    <Card title='Input Data' text={transaction?.f_data ?? ''} wrapText />
+                    <Card
+                        title='Input Data'
+                        content={
+                            transaction?.f_data && (
+                                <textarea
+                                    className='flex-1 max-w-[60%] h-24 p-2 rounded-md border-2 border-white text-black text-[14px]'
+                                    value={transaction?.f_data}
+                                />
+                            )
+                        }
+                    />
                 </div>
             </div>
         );
