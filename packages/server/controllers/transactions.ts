@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { pgPools } from '../config/db';
+import { ADDRESS_ZERO_SHORT } from '../helpers/address';
 
 export const getTransactions = async (req: Request, res: Response) => {
 
@@ -22,7 +23,10 @@ export const getTransactions = async (req: Request, res: Response) => {
             `);
 
         res.json({
-            transactions: transactions.rows
+            transactions: transactions.rows.map((tx: any) => ({
+                ...tx,
+                f_to: tx.f_to ? tx.f_to : ADDRESS_ZERO_SHORT,
+            }))
         });
 
     } catch (error) {
@@ -51,8 +55,15 @@ export const getTransactionByHash = async (req: Request, res: Response) => {
                 WHERE f_hash = '${hash}'
             `);
 
+        if (!transaction.rows.length) {
+            return res.json();
+        }
+
         res.json({
-            transaction: transaction.rows[0]
+            transaction: {
+                ...transaction.rows[0],
+                f_to: transaction.rows[0].f_to ? transaction.rows[0].f_to : ADDRESS_ZERO_SHORT,
+            }
         });
 
     } catch (error) {
