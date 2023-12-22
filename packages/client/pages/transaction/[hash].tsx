@@ -13,6 +13,7 @@ import Layout from '../../components/layouts/Layout';
 import Loader from '../../components/ui/Loader';
 import LinkBlock from '../../components/ui/LinkBlock';
 import TabHeader from '../../components/ui/TabHeader';
+import CopyIcon from '../../components/ui/CopyIcon';
 
 // Helpers
 import { getShortAddress } from '../../helpers/addressHelper';
@@ -121,14 +122,44 @@ const TransactionPage = () => {
                 }}
             >
                 <div className='flex flex-col gap-y-5 md:gap-y-8 '>
-                    <Card title='Transaction Hash' text={getShortAddress(hash as string)} />
+                    <Card
+                        title='Transaction Hash'
+                        content={
+                            <div className='flex gap-x-2 justify-center items-center'>
+                                <CopyIcon value={hash as string} />
+                                <p className='text-[14px] md:text-[16px] font-medium'>
+                                    {getShortAddress(hash as string).toUpperCase()}
+                                </p>
+                            </div>
+                        }
+                    />
                     <Card title='Block' content={<LinkBlock block={transaction?.f_el_block_number} />} />
                     <Card
                         title='Datetime (Local)'
                         text={new Date((transaction?.f_timestamp ?? 0) * 1000).toLocaleString('ja-JP')}
                     />
-                    <Card title='From' text={getShortAddress(transaction?.f_from)} />
-                    <Card title='To' text={getShortAddress(transaction?.f_to)} />
+                    <Card
+                        title='From'
+                        content={
+                            <div className='flex gap-x-2 justify-center items-center'>
+                                <CopyIcon value={transaction?.f_from ?? ''} />
+                                <p className='text-[14px] md:text-[16px] font-medium'>
+                                    {getShortAddress(transaction?.f_from?.toUpperCase())}
+                                </p>
+                            </div>
+                        }
+                    />
+                    <Card
+                        title='To'
+                        content={
+                            <div className='flex gap-x-2 justify-center items-center'>
+                                <CopyIcon value={transaction?.f_to ?? ''} />
+                                <p className='text-[14px] md:text-[16px] font-medium'>
+                                    {getShortAddress(transaction?.f_to?.toUpperCase())}
+                                </p>
+                            </div>
+                        }
+                    />
                     <Card title='Value' text={`${((transaction?.f_value ?? 0) / 10 ** 18).toLocaleString()} ETH`} />
                     <Card
                         title='Transaction Fee'
