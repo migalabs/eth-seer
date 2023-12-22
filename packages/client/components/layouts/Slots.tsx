@@ -149,12 +149,6 @@ const Slots = ({ slots }: Props) => {
                             <p className='w-[20%]'>{(element.withdrawals / 10 ** 9).toLocaleString()} ETH</p>
                         </div>
                     ))}
-
-                    {slots.length === 0 && (
-                        <div className='flex justify-center p-2'>
-                            <p className='uppercase text-[16px]'>No slots</p>
-                        </div>
-                    )}
                 </div>
             </div>
         );
@@ -255,17 +249,21 @@ const Slots = ({ slots }: Props) => {
                         </div>
                     </div>
                 ))}
-
-                {slots.length === 0 && (
-                    <div className='flex justify-center p-2'>
-                        <p className='uppercase text-[14px]'>No slots</p>
-                    </div>
-                )}
             </div>
         );
     };
 
-    return <div>{desktopView ? getContentSlotsDesktop() : getContentSlotsMobile()}</div>;
+    return (
+        <div className='mx-auto w-11/12 md:w-10/12'>
+            {slots.length > 0 ? (
+                <>{desktopView ? getContentSlotsDesktop() : getContentSlotsMobile()}</>
+            ) : (
+                <div className='flex justify-center p-2'>
+                    <p className='uppercase text-[14px] md:text-[16px]'>No slots</p>
+                </div>
+            )}
+        </div>
+    );
 };
 
 export default Slots;

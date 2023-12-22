@@ -11,20 +11,27 @@ export const getValidators = async (req: Request, res: Response) => {
 
         const skip = Number(page) * Number(limit);
 
-        const validators = 
-            await pgPool.query(`
-                SELECT t_validator_last_status.f_val_idx, t_validator_last_status.f_balance_eth, 
-                t_eth2_pubkeys.f_pool_name, t_status.f_status
-                FROM t_validator_last_status
-                LEFT OUTER JOIN t_eth2_pubkeys ON t_validator_last_status.f_val_idx = t_eth2_pubkeys.f_val_idx
-                LEFT OUTER JOIN t_status ON t_validator_last_status.f_status = t_status.f_id
-                ORDER BY t_validator_last_status.f_val_idx DESC
-                OFFSET ${skip}
-                LIMIT ${Number(limit)}
-            `);
+        const [validators, count] = 
+            await Promise.all([
+                pgPool.query(`
+                    SELECT t_validator_last_status.f_val_idx, t_validator_last_status.f_balance_eth, 
+                    t_eth2_pubkeys.f_pool_name, t_status.f_status
+                    FROM t_validator_last_status
+                    LEFT OUTER JOIN t_eth2_pubkeys ON t_validator_last_status.f_val_idx = t_eth2_pubkeys.f_val_idx
+                    LEFT OUTER JOIN t_status ON t_validator_last_status.f_status = t_status.f_id
+                    ORDER BY t_validator_last_status.f_val_idx DESC
+                    OFFSET ${skip}
+                    LIMIT ${Number(limit)}
+                `),
+                pgPool.query(`
+                    SELECT COUNT(*) AS count
+                    FROM t_validator_last_status
+                `),
+            ]);
 
         res.json({
-            validators: validators.rows
+            validators: validators.rows,
+            totalCount: Number(count.rows[0].count),
         });
 
     } catch (error) {
