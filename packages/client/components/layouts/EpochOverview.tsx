@@ -95,8 +95,6 @@ const EpochOverview = ({ epoch, blocks, lastEpoch, showClient }: Props) => {
 
                                     <TooltipResponsive
                                         width={225}
-                                        colorLetter='black'
-                                        backgroundColor='white'
                                         content={
                                             <div className='flex flex-col gap-y-1 items-center'>
                                                 <span>

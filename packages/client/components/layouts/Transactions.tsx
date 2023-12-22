@@ -84,8 +84,6 @@ const Transactions = ({ transactions, loadingTransactions }: Props) => {
 
                             <TooltipResponsive
                                 width={220}
-                                backgroundColor='white'
-                                colorLetter='black'
                                 content={<span>The hash of the transaction</span>}
                                 top='34px'
                                 polygonLeft
@@ -104,8 +102,6 @@ const Transactions = ({ transactions, loadingTransactions }: Props) => {
 
                             <TooltipResponsive
                                 width={220}
-                                backgroundColor='white'
-                                colorLetter='black'
                                 content={
                                     <>
                                         <span>How long ago</span>
@@ -131,8 +127,6 @@ const Transactions = ({ transactions, loadingTransactions }: Props) => {
 
                             <TooltipResponsive
                                 width={220}
-                                backgroundColor='white'
-                                colorLetter='black'
                                 content={
                                     <>
                                         <span>How much ETH</span>
@@ -156,8 +150,6 @@ const Transactions = ({ transactions, loadingTransactions }: Props) => {
 
                             <TooltipResponsive
                                 width={220}
-                                backgroundColor='white'
-                                colorLetter='black'
                                 content={
                                     <>
                                         <span>The fee </span>

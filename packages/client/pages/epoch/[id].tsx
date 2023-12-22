@@ -340,8 +340,11 @@ const EpochComponent = () => {
             )}
 
             {!loadingEpoch && epoch && existsEpochRef.current && (
-                <div className='mx-auto w-11/12 md:w-10/12'>
-                    <div>{getContentEpochStats()}</div>
+                <>
+                    <div className='mx-auto w-11/12 md:w-10/12'>
+                        <div>{getContentEpochStats()}</div>
+                    </div>
+
                     {loadingSlots ? (
                         <div className='mt-6'>
                             <Loader />
@@ -349,7 +352,7 @@ const EpochComponent = () => {
                     ) : (
                         <Slots slots={slots} />
                     )}
-                </div>
+                </>
             )}
 
             {!loadingEpoch && animation && <EpochAnimation notEpoch={notEpoch} />}

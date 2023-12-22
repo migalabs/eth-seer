@@ -17,6 +17,7 @@ const EpochsState = (props: any) => {
 
     const initialState = {
         epochs: [],
+        epochsTotalCount: 0,
         lastPageFetched: false,
     };
 
@@ -74,7 +75,10 @@ const EpochsState = (props: any) => {
 
             dispatch({
                 type: ADD_EPOCHS,
-                payload: response.data.epochsStats,
+                payload: {
+                    epochs: response.data.epochsStats,
+                    epochsTotalCount: response.data.totalCount,
+                },
             });
 
             if (response.data.epochsStats.length === 0) {

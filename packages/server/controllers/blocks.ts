@@ -11,7 +11,7 @@ export const getBlocks = async (req: Request, res: Response) => {
 
         const skip = Number(page) * Number(limit);
 
-        const [ blocks ] = 
+        const [ blocks, count ] = 
             await Promise.all([
                 pgPool.query(`
                     SELECT f_timestamp, f_slot, f_epoch
@@ -22,11 +22,16 @@ export const getBlocks = async (req: Request, res: Response) => {
                     ORDER BY f_el_block_number DESC
                     OFFSET ${skip}
                     LIMIT ${Number(limit)}
-                `)
+                `),
+                pgPool.query(`
+                    SELECT COUNT(*) AS count
+                    FROM t_block_metrics
+                `),
             ]);
 
         res.json({
-            blocks: blocks.rows
+            blocks: blocks.rows,
+            totalCount: Number(count.rows[0].count),
         }); 
     
     } catch (error) {
