@@ -1,11 +1,12 @@
 import { Request, Response } from 'express';
 import { pgPools } from '../config/db';
+import { ADDRESS_ZERO_SHORT } from '../helpers/address';
 
 export const getTransactions = async (req: Request, res: Response) => {
 
     try {
         
-        const { network, page = 0, limit = 10, threshold } = req.query;
+        const { network, page = 0, limit = 10 } = req.query;
 
         const pgPool = pgPools[network as string];
 
@@ -16,14 +17,16 @@ export const getTransactions = async (req: Request, res: Response) => {
                 SELECT f_tx_idx, f_gas_fee_cap, f_value, f_to, f_hash, f_timestamp, f_from, f_el_block_number,
                 f_gas_price, f_gas, f_tx_type, f_data
                 FROM t_transactions
-                ${threshold ? `WHERE f_tx_idx <= ${Number(threshold)}` : ''}
                 ORDER by f_el_block_number DESC, f_tx_idx DESC, f_timestamp DESC
                 OFFSET ${skip}
                 LIMIT ${Number(limit)}
             `);
 
         res.json({
-            transactions: transactions.rows
+            transactions: transactions.rows.map((tx: any) => ({
+                ...tx,
+                f_to: tx.f_to ? tx.f_to : ADDRESS_ZERO_SHORT,
+            }))
         });
 
     } catch (error) {
@@ -52,8 +55,15 @@ export const getTransactionByHash = async (req: Request, res: Response) => {
                 WHERE f_hash = '${hash}'
             `);
 
+        if (!transaction.rows.length) {
+            return res.json();
+        }
+
         res.json({
-            transaction: transaction.rows[0]
+            transaction: {
+                ...transaction.rows[0],
+                f_to: transaction.rows[0].f_to ? transaction.rows[0].f_to : ADDRESS_ZERO_SHORT,
+            }
         });
 
     } catch (error) {

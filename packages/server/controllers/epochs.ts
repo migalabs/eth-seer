@@ -11,7 +11,7 @@ export const getEpochsStatistics = async (req: Request, res: Response) => {
         
         const skip = Number(page) * Number(limit);
 
-        const [ epochsStats, blocksStats ] =
+        const [ epochsStats, blocksStats, epochsCount ] =
          await Promise.all([
             pgPool.query(`
                 SELECT f_epoch, f_slot, f_num_att_vals, f_num_active_vals, 
@@ -29,8 +29,12 @@ export const getEpochsStatistics = async (req: Request, res: Response) => {
                 GROUP BY epoch
                 ORDER BY epoch DESC
                 OFFSET ${skip}
-                LIMIT ${Number(limit)}
-            `)
+                LIMIT ${Number(limit) + 1}
+            `),
+            pgPool.query(`
+                SELECT COUNT(*) AS count
+                FROM t_epoch_metrics_summary
+            `),
         ]);
 
         let arrayEpochs = [];
@@ -44,7 +48,8 @@ export const getEpochsStatistics = async (req: Request, res: Response) => {
         });    
         
         res.json({
-            epochsStats: arrayEpochs
+            epochsStats: arrayEpochs,
+            totalCount: Number(epochsCount.rows[0].count),
         });
 
     } catch (error) {

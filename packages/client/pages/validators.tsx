@@ -11,15 +11,18 @@ import ThemeModeContext from '../contexts/theme-mode/ThemeModeContext';
 // Components
 import Layout from '../components/layouts/Layout';
 import ValidatorStatus from '../components/ui/ValidatorStatus';
-import Loader from '../components/ui/Loader';
-import ViewMoreButton from '../components/ui/ViewMoreButton';
 import LinkValidator from '../components/ui/LinkValidator';
 import LinkEntity from '../components/ui/LinkEntity';
+import Pagination from '../components/ui/Pagination';
+import Loader from '../components/ui/Loader';
 
 // Types
 import { Validator } from '../types';
 
 const Validators = () => {
+    // Constants
+    const LIMIT = 10;
+
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
 
@@ -32,9 +35,10 @@ const Validators = () => {
 
     // States
     const [validators, setValidators] = useState<Validator[]>([]);
-    const [currentPage, setCurrentPage] = useState(0);
+    const [validatorsCount, setValidatorsCount] = useState(0);
     const [loading, setLoading] = useState(false);
     const [desktopView, setDesktopView] = useState(true);
+    const [currentPage, setCurrentPage] = useState(1);
 
     // UseEffect
     useEffect(() => {
@@ -44,11 +48,35 @@ const Validators = () => {
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [network]);
+
     useEffect(() => {
         setDesktopView(window !== undefined && window.innerWidth > 768);
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    const getValidators = async (page: number) => {
+        try {
+            setLoading(true);
+
+            setCurrentPage(page);
+
+            const response = await axiosClient.get('/api/validators', {
+                params: {
+                    network,
+                    page,
+                    limit: LIMIT,
+                },
+            });
+
+            setValidators(response.data.validators);
+            setValidatorsCount(response.data.totalCount);
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const handleMouseMove = (e: any) => {
         if (containerRef.current) {
@@ -63,33 +91,6 @@ const Validators = () => {
         }
     };
 
-    //VALIDATORS TABLE
-    const getValidators = async (page: number) => {
-        try {
-            setLoading(true);
-            setCurrentPage(page);
-
-            const response = await axiosClient.get('/api/validators', {
-                params: {
-                    network,
-                    page,
-                    limit: 20,
-                },
-            });
-
-            setValidators(prevState => [
-                ...prevState,
-                ...response.data.validators.filter(
-                    (validator: Validator) =>
-                        !prevState.find((prevValidator: Validator) => prevValidator.f_val_idx === validator.f_val_idx)
-                ),
-            ]);
-        } catch (error) {
-            console.log(error);
-        } finally {
-            setLoading(false);
-        }
-    };
     //View table desktop
     const getValidatorsDesktop = () => {
         return (
@@ -110,19 +111,18 @@ const Validators = () => {
                     <p className='w-[25%]'>Status</p>
                 </div>
 
-                <div
-                    className='flex flex-col justify-center gap-y-4 rounded-md border-2 border-white py-5 px-2 xl:px-8 min-w-[700px] w-11/12 md:w-10/12'
-                    style={{
-                        backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
-                        boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
-                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                    }}
-                >
+                <div className='w-11/12 md:w-10/12'>
                     {validators.map((validator: Validator) => (
                         <div
                             key={validator.f_val_idx}
-                            className='font-medium flex gap-x-1 justify-around items-center text-[14px] md:text-[16px]'
+                            className='font-medium my-2 flex gap-x-1 justify-around items-center text-[14px] md:text-[16px] rounded-md border-2 border-white p-2 xl:px-8'
                             style={{
+                                backgroundColor: themeMode?.darkMode
+                                    ? 'var(--bgFairDarkMode)'
+                                    : 'var(--bgMainLightMode)',
+                                boxShadow: themeMode?.darkMode
+                                    ? 'var(--boxShadowCardDark)'
+                                    : 'var(--boxShadowCardLight)',
                                 color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                             }}
                         >
@@ -257,13 +257,22 @@ const Validators = () => {
                     performance.
                 </h2>
             </div>
-            <div>{desktopView ? getValidatorsDesktop() : getValidatorsMobile()}</div>;
-            {loading && (
-                <div className='mb-4'>
+
+            {validatorsCount > 0 && (
+                <Pagination
+                    currentPage={currentPage}
+                    totalPages={Math.ceil(validatorsCount / LIMIT)}
+                    onChangePage={getValidators}
+                />
+            )}
+
+            {loading ? (
+                <div className='my-6'>
                     <Loader />
                 </div>
+            ) : (
+                <>{desktopView ? getValidatorsDesktop() : getValidatorsMobile()}</>
             )}
-            <ViewMoreButton onClick={() => getValidators(currentPage + 1)} />
         </Layout>
     );
 };

@@ -10,13 +10,17 @@ import ThemeModeContext from '../contexts/theme-mode/ThemeModeContext';
 
 // Components
 import Layout from '../components/layouts/Layout';
-import ViewMoreButton from '../components/ui/ViewMoreButton';
-import TransactionsComponent from '../components/layouts/Transactions';
+import TransactionList from '../components/layouts/Transactions';
+import Loader from '../components/ui/Loader';
+import Pagination from '../components/ui/Pagination';
 
 // Types
 import { Transaction } from '../types';
 
 const Transactions = () => {
+    // Constants
+    const LIMIT = 10;
+
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
 
@@ -28,6 +32,7 @@ const Transactions = () => {
     const [transactions, setTransactions] = useState<Transaction[]>([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [loading, setLoading] = useState(true);
+    const [firstQueryFetched, setFirstQueryFetched] = useState(false);
 
     // UseEffect
     useEffect(() => {
@@ -48,20 +53,12 @@ const Transactions = () => {
                 params: {
                     network,
                     page,
-                    limit: 20,
-                    threshold: transactions.length > 0 ? transactions[transactions.length - 1].f_tx_idx : null,
+                    limit: LIMIT,
                 },
             });
 
-            setTransactions(prevState => [
-                ...prevState,
-                ...response.data.transactions.filter(
-                    (transaction: Transaction) =>
-                        !prevState.find(
-                            (prevTransaction: Transaction) => prevTransaction.f_tx_idx === transaction.f_tx_idx
-                        )
-                ),
-            ]);
+            setTransactions(response.data.transactions);
+            setFirstQueryFetched(true);
         } catch (error) {
             console.log(error);
         } finally {
@@ -105,11 +102,17 @@ const Transactions = () => {
                 </h2>
             </div>
 
-            <div className='mb-6'>
-                <TransactionsComponent loadingTransactions={loading} transactions={transactions} />
-            </div>
+            {firstQueryFetched && (
+                <Pagination currentPage={currentPage} totalPages={5000} onChangePage={getTransactions} />
+            )}
 
-            <ViewMoreButton onClick={() => getTransactions(currentPage + 1)} />
+            {loading ? (
+                <div className='my-6'>
+                    <Loader />
+                </div>
+            ) : (
+                <TransactionList loadingTransactions={loading} transactions={transactions} />
+            )}
         </Layout>
     );
 };

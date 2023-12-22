@@ -7,9 +7,10 @@ import TooltipResponsive from './TooltipResponsive';
 type Props = {
     tooltipContent: any;
     totalBlocks: Array<number>;
+    tooltipAbove?: boolean;
 };
 
-const ProgressTileBar = ({ tooltipContent, totalBlocks }: Props) => {
+const ProgressTileBar = ({ tooltipContent, totalBlocks, tooltipAbove }: Props) => {
     const addBars = (restBlocks: Array<number>) => {
         return restBlocks.map((element, idx) => (
             <div key={idx} className={`w-[3px] h-2.5 ${element === 1 && 'bg-[var(--lightGray)]'}`} />
@@ -48,13 +49,7 @@ const ProgressTileBar = ({ tooltipContent, totalBlocks }: Props) => {
                         </div>
                     </div>
 
-                    <TooltipResponsive
-                        width={200}
-                        backgroundColor=''
-                        colorLetter=''
-                        content={tooltipContent}
-                        top='35px'
-                    />
+                    <TooltipResponsive width={200} content={tooltipContent} top='35px' tooltipAbove={tooltipAbove} />
                 </div>
             </TooltipContainer>
         </div>

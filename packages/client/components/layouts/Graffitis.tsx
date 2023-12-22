@@ -129,8 +129,6 @@ const Graffitis = () => {
 
                         <TooltipResponsive
                             width={220}
-                            backgroundColor='white'
-                            colorLetter='black'
                             content={
                                 <>
                                     <span>Time at which the slot</span>
@@ -153,13 +151,7 @@ const Graffitis = () => {
                             height={24}
                         />
 
-                        <TooltipResponsive
-                            width={130}
-                            backgroundColor='white'
-                            colorLetter='black'
-                            content={<span>Slot number</span>}
-                            top='34px'
-                        />
+                        <TooltipResponsive width={130} content={<span>Slot number</span>} top='34px' />
                     </TooltipContainer>
                 </div>
 
@@ -173,13 +165,7 @@ const Graffitis = () => {
                             height={24}
                         />
 
-                        <TooltipResponsive
-                            width={160}
-                            backgroundColor='white'
-                            colorLetter='black'
-                            content={<span>Validator number</span>}
-                            top='34px'
-                        />
+                        <TooltipResponsive width={160} content={<span>Validator number</span>} top='34px' />
                     </TooltipContainer>
                 </div>
 
@@ -193,20 +179,14 @@ const Graffitis = () => {
                             height={24}
                         />
 
-                        <TooltipResponsive
-                            width={160}
-                            backgroundColor='white'
-                            colorLetter='black'
-                            content={<span>Graffiti text</span>}
-                            top='34px'
-                        />
+                        <TooltipResponsive width={160} content={<span>Graffiti text</span>} top='34px' />
                     </TooltipContainer>
                 </div>
             </div>
 
             <div className='flex flex-col justify-center gap-y-4 min-w-[700px]'>
                 {blocks &&
-                    blocks.map((block: Block, idx: number) => (
+                    blocks.map((block: Block) => (
                         <div
                             key={block.f_slot}
                             className='flex gap-x-1 justify-around items-center text-[14px] md:text-[16px] border-2 border-white rounded-md px-2 xl:px-8 py-9'
@@ -298,8 +278,6 @@ const Graffitis = () => {
 
                                     <TooltipResponsive
                                         width={220}
-                                        backgroundColor='white'
-                                        colorLetter='black'
                                         content={
                                             <>
                                                 <span>Time at which the slot</span>
@@ -336,13 +314,7 @@ const Graffitis = () => {
                                         height={24}
                                     />
 
-                                    <TooltipResponsive
-                                        width={160}
-                                        backgroundColor='white'
-                                        colorLetter='black'
-                                        content={<span>Validator number</span>}
-                                        top='34px'
-                                    />
+                                    <TooltipResponsive width={160} content={<span>Validator number</span>} top='34px' />
                                 </TooltipContainer>
                             </div>
                             <div>
@@ -368,13 +340,7 @@ const Graffitis = () => {
                                         height={24}
                                     />
 
-                                    <TooltipResponsive
-                                        width={160}
-                                        backgroundColor='white'
-                                        colorLetter='black'
-                                        content={<span>Graffiti text</span>}
-                                        top='34px'
-                                    />
+                                    <TooltipResponsive width={160} content={<span>Graffiti text</span>} top='34px' />
                                 </TooltipContainer>
                             </div>
                             <div>

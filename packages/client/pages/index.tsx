@@ -10,7 +10,7 @@ import ThemeModeContext from '../contexts/theme-mode/ThemeModeContext';
 // Components
 import Layout from '../components/layouts/Layout';
 import ChainOverview from '../components/layouts/ChainOverview';
-import Statitstics from '../components/layouts/Statitstics';
+import Statitstics from '../components/layouts/Statistics';
 import Problems from '../components/layouts/Problems';
 import SummaryOverview from '../components/ui/SummaryOverview';
 
@@ -105,11 +105,13 @@ export default function Home() {
 
                     <SummaryOverview />
                     <ChainOverview />
+
                     <hr
                         className={`w-11/12 mx-auto my-4 rounded-md border-${
                             themeMode?.darkMode ? 'white' : 'darkGray'
                         }`}
-                    ></hr>
+                    />
+
                     <div className='text-center mt-3'>
                         <h2
                             className='text-[26px] md:text-[34px] font-semibold capitalize mb-3'
@@ -119,7 +121,7 @@ export default function Home() {
                         >
                             Epoch statistics
                         </h2>
-                        <Statitstics showCalculatingEpochs />
+                        <Statitstics />
                     </div>
                 </Layout>
             ) : (
