@@ -13,6 +13,7 @@ type Props = {
     tooltipContent?: any;
     width?: number;
     widthTooltip?: number;
+    tooltipAbove?: boolean;
 };
 
 const ProgressSmoothBar = ({
@@ -24,6 +25,7 @@ const ProgressSmoothBar = ({
     tooltipContent,
     width,
     widthTooltip,
+    tooltipAbove,
 }: Props) => {
     const widthInnerDiv = percent > 0 ? Math.min(Number(percent * 100), 100).toFixed(0) : 100;
 
@@ -41,9 +43,8 @@ const ProgressSmoothBar = ({
 
                             <TooltipResponsive
                                 width={widthTooltip ?? 100}
-                                backgroundColor={backgroundColor}
-                                colorLetter={color}
                                 content={tooltipContent}
+                                tooltipAbove={tooltipAbove}
                             />
                         </TooltipContainer>
                     ) : (

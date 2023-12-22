@@ -11,7 +11,7 @@ export const getSlots = async (req: Request, res: Response) => {
 
         const skip = Number(page) * Number(limit);
 
-        const [ slotsEpoch, withdrawals ] = 
+        const [ slotsEpoch, withdrawals, count ] = 
             await Promise.all([
                 pgPool.query(`
                     SELECT t_proposer_duties.*, t_eth2_pubkeys.f_pool_name
@@ -26,6 +26,10 @@ export const getSlots = async (req: Request, res: Response) => {
                     FROM t_withdrawals
                     OFFSET ${skip}
                     LIMIT ${Number(limit)}
+                `),
+                pgPool.query(`
+                    SELECT COUNT(*) AS count
+                    FROM t_proposer_duties
                 `)
             ]);
 
@@ -38,7 +42,8 @@ export const getSlots = async (req: Request, res: Response) => {
         }));
 
         res.json({
-            slots
+            slots,
+            totalCount: Number(count.rows[0].count),
         }); 
     
     } catch (error) {

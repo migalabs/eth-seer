@@ -12,12 +12,15 @@ import ThemeModeContext from '../contexts/theme-mode/ThemeModeContext';
 import Layout from '../components/layouts/Layout';
 import SlotsList from '../components/layouts/Slots';
 import Loader from '../components/ui/Loader';
-import ViewMoreButton from '../components/ui/ViewMoreButton';
+import Pagination from '../components/ui/Pagination';
 
 // Types
 import { Slot } from '../types';
 
 const Slots = () => {
+    // Constants
+    const LIMIT = 32;
+
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
 
@@ -27,6 +30,7 @@ const Slots = () => {
 
     // States
     const [slots, setSlots] = useState<Slot[]>([]);
+    const [slotsCount, setSlotsCount] = useState(0);
     const [currentPage, setCurrentPage] = useState(0);
     const [loading, setLoading] = useState(true);
 
@@ -48,17 +52,12 @@ const Slots = () => {
                 params: {
                     network,
                     page,
-                    limit: 32,
+                    limit: LIMIT,
                 },
             });
 
-            setSlots(prevState => [
-                ...prevState,
-                ...response.data.slots.filter(
-                    (slot: Slot) =>
-                        !prevState.find((prevSlot: Slot) => prevSlot.f_proposer_slot === slot.f_proposer_slot)
-                ),
-            ]);
+            setSlots(response.data.slots);
+            setSlotsCount(response.data.totalCount);
         } catch (error) {
             console.log(error);
         } finally {
@@ -103,15 +102,21 @@ const Slots = () => {
                 </h2>
             </div>
 
-            <div className='mx-auto w-11/12 md:w-10/12 my-4'>{slots.length > 0 && <SlotsList slots={slots} />}</div>
+            {slotsCount > 0 && (
+                <Pagination
+                    currentPage={currentPage}
+                    totalPages={Math.ceil(slotsCount / LIMIT)}
+                    onChangePage={getSlots}
+                />
+            )}
 
-            {loading && (
+            {loading ? (
                 <div className='my-6'>
                     <Loader />
                 </div>
+            ) : (
+                <SlotsList slots={slots} />
             )}
-
-            {slots.length > 0 && <ViewMoreButton onClick={() => getSlots(currentPage + 1)} />}
         </Layout>
     );
 };

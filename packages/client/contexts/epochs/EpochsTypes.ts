@@ -6,6 +6,7 @@ export const SET_LAST_PAGE_FETCHED = 'SET_LAST_PAGE_FETCHED';
 
 export interface IEpochs {
     epochs: Epoch[];
+    epochsTotalCount: number;
     lastPageFetched: boolean;
 }
 

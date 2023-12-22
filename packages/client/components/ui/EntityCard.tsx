@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useRef, useState } from 'react';
+import React, { useContext } from 'react';
 
 // Contexts
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
@@ -8,20 +8,13 @@ import BlockImage from './BlockImage';
 import NetworkLink from './NetworkLink';
 
 type Props = {
-    index: number;
+    activeValidators: number;
     pool: string;
 };
 
-const EntityCard = ({ index, pool }: Props) => {
+const EntityCard = ({ activeValidators, pool }: Props) => {
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
-    const [desktopView, setDesktopView] = useState(window.innerWidth > 768);
-
-    useEffect(() => {
-        setDesktopView(window !== undefined && window.innerWidth > 768);
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     return (
         <NetworkLink href={`/entities/${pool.toLocaleLowerCase()}`}>
@@ -37,16 +30,13 @@ const EntityCard = ({ index, pool }: Props) => {
                 </div>
 
                 <div className='flex flex-col items-center md:items-start'>
-                    <span
-                        className='text-[14px] md:text-[16px] font-semibold uppercase text-center md:text-start'
-                        style={{
-                            wordWrap: 'break-word',
-                            maxWidth: desktopView ? 'none' : '150px',
-                        }}
-                    >
+                    <span className='text-[14px] md:text-[16px] font-semibold uppercase text-center md:text-start md:max-w-[150px] break-all'>
                         {pool}
                     </span>
-                    <span className='font-light text-[14px] md:text-[16px]'>{String(index)} Act. validators</span>
+
+                    <span className='font-light text-[14px] md:text-[16px]'>
+                        {activeValidators.toLocaleString()} A. Validators
+                    </span>
                 </div>
             </div>
         </NetworkLink>
