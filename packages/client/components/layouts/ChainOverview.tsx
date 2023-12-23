@@ -84,14 +84,16 @@ const ChainOverview = () => {
             </div>
 
             <div className='flex flex-col gap-y-4'>
-                <div className='flex justify-center md:justify-start pl-2'>
-                    <Toggle
-                        value={showClient}
-                        labelLeft='CL Clients'
-                        labelRight='Entities'
-                        onToggle={() => setShowClient(!showClient)}
-                    />
-                </div>
+                {network === 'mainnet' && (
+                    <div className='flex justify-center md:justify-start pl-2'>
+                        <Toggle
+                            value={showClient}
+                            labelLeft='CL Clients'
+                            labelRight='Entities'
+                            onToggle={() => setShowClient(!showClient)}
+                        />
+                    </div>
+                )}
 
                 <div className='flex justify-center space-x-4 md:space-x-5'>
                     {blocks &&
