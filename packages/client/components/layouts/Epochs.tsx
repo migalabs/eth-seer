@@ -485,7 +485,7 @@ const Epochs = ({ epochs, blocksPerEpoch, showCalculatingEpochs }: Props) => {
                             color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                         }}
                     >
-                        <div className='flex flex-col w-[10%]'>
+                        <div className='flex flex-col text-center w-[10%]'>
                             <p>{new Date(blockGenesis + epoch.f_epoch * 32 * 12000).toLocaleDateString('ja-JP')}</p>
                             <p>{new Date(blockGenesis + epoch.f_epoch * 32 * 12000).toLocaleTimeString('ja-JP')}</p>
                         </div>

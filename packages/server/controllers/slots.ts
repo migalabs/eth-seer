@@ -64,14 +64,22 @@ export const getBlocks = async (req: Request, res: Response) => {
 
         const skip = Number(page) * Number(limit);
 
+        const select = network === 'mainnet' 
+            ? ', t_slot_client_guesses.f_best_guess_single AS f_cl_client' 
+            : '';
+            
+        const joinDuties = network === 'mainnet' 
+            ? 'LEFT OUTER JOIN t_slot_client_guesses ON t_proposer_duties.f_proposer_slot = t_slot_client_guesses.f_slot' 
+            : '';
+
         if (Number(page) > 0) {
 
             const blocks = await pgPool.query(`
                 SELECT (f_proposer_slot/32) AS f_epoch, f_proposer_slot AS f_slot, f_proposed, t_eth2_pubkeys.f_pool_name,
-                t_proposer_duties.f_val_idx AS f_proposer_index, t_slot_client_guesses.f_best_guess_single AS f_cl_client
+                t_proposer_duties.f_val_idx AS f_proposer_index ${select}
                 FROM t_proposer_duties
                 LEFT OUTER JOIN t_eth2_pubkeys ON t_proposer_duties.f_val_idx = t_eth2_pubkeys.f_val_idx
-                LEFT OUTER JOIN t_slot_client_guesses ON t_proposer_duties.f_proposer_slot = t_slot_client_guesses.f_slot
+                ${joinDuties}
                 ORDER BY f_proposer_slot DESC
                 OFFSET ${skip}
                 LIMIT ${Number(limit)}
@@ -83,23 +91,26 @@ export const getBlocks = async (req: Request, res: Response) => {
 
         } else {
 
+            const joinMetrics = network === 'mainnet'
+                ? 'LEFT OUTER JOIN t_slot_client_guesses ON t_block_metrics.f_slot = t_slot_client_guesses.f_slot'
+                : '';
+
             const [actualBlocks, finalBlocks] = await Promise.all([
                 pgPool.query(`
                     SELECT (f_proposer_slot/32) AS f_epoch, f_proposer_slot AS f_slot, f_proposed, t_eth2_pubkeys.f_pool_name,
-                    t_proposer_duties.f_val_idx AS f_proposer_index, t_slot_client_guesses.f_best_guess_single AS f_cl_client
+                    t_proposer_duties.f_val_idx AS f_proposer_index ${select}
                     FROM t_proposer_duties
                     LEFT OUTER JOIN t_eth2_pubkeys ON t_proposer_duties.f_val_idx = t_eth2_pubkeys.f_val_idx
-                    LEFT OUTER JOIN t_slot_client_guesses ON t_proposer_duties.f_proposer_slot = t_slot_client_guesses.f_slot
+                    ${joinDuties}
                     ORDER BY f_proposer_slot DESC
                     OFFSET ${skip}
                     LIMIT ${Number(limit)}
                 `),
                 pgPool.query(`
-                    SELECT t_block_metrics.f_epoch, t_block_metrics.f_slot, t_eth2_pubkeys.f_pool_name, t_block_metrics.f_proposed, t_block_metrics.f_proposer_index,
-                    t_block_metrics.f_graffiti, t_block_metrics.f_el_block_number, t_slot_client_guesses.f_best_guess_single AS f_cl_client
+                    SELECT t_block_metrics.f_epoch, t_block_metrics.f_slot, t_eth2_pubkeys.f_pool_name, t_block_metrics.f_proposed, t_block_metrics.f_proposer_index, t_block_metrics.f_graffiti, t_block_metrics.f_el_block_number ${select}
                     FROM t_block_metrics
                     LEFT OUTER JOIN t_eth2_pubkeys ON t_block_metrics.f_proposer_index = t_eth2_pubkeys.f_val_idx
-                    LEFT OUTER JOIN t_slot_client_guesses ON t_block_metrics.f_slot = t_slot_client_guesses.f_slot
+                    ${joinMetrics}
                     WHERE t_block_metrics.f_epoch IN (
                         SELECT DISTINCT(f_epoch)
                         FROM t_block_metrics
@@ -135,6 +146,14 @@ export const getSlotById = async (req: Request, res: Response) => {
 
         const pgPool = pgPools[network as string];
 
+        const select = network === 'mainnet' 
+            ? ', t_slot_client_guesses.f_best_guess_single AS f_cl_client' 
+            : '';
+            
+        const join = network === 'mainnet' 
+            ? 'LEFT OUTER JOIN t_slot_client_guesses ON t_block_metrics.f_slot = t_slot_client_guesses.f_slot' 
+            : '';
+
         const [ block, proposerDuties ] = 
             await Promise.all([
                 pgPool.query(`
@@ -144,10 +163,10 @@ export const getSlotById = async (req: Request, res: Response) => {
                     t_block_metrics.f_att_slashings, t_block_metrics.f_voluntary_exits, t_block_metrics.f_sync_bits,
                     t_block_metrics.f_el_fee_recp, t_block_metrics.f_el_gas_limit, t_block_metrics.f_el_gas_used,
                     t_block_metrics.f_el_transactions, t_block_metrics.f_el_block_hash, t_eth2_pubkeys.f_pool_name,
-                    t_block_metrics.f_el_block_number, t_slot_client_guesses.f_best_guess_single AS f_cl_client
+                    t_block_metrics.f_el_block_number ${select}
                     FROM t_block_metrics
                     LEFT OUTER JOIN t_eth2_pubkeys ON t_block_metrics.f_proposer_index = t_eth2_pubkeys.f_val_idx
-                    LEFT OUTER JOIN t_slot_client_guesses ON t_block_metrics.f_slot = t_slot_client_guesses.f_slot
+                    ${join}
                     WHERE t_block_metrics.f_slot = '${id}'
                 `),
                 pgPool.query(`
