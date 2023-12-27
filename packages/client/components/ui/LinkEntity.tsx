@@ -11,9 +11,10 @@ import NetworkLink from './NetworkLink';
 type Props = {
     entity: string;
     children?: React.ReactNode;
+    mxAuto?: boolean;
 };
 
-const LinkEntity = ({ entity, children }: Props) => {
+const LinkEntity = ({ entity, children, mxAuto }: Props) => {
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
 
@@ -24,7 +25,9 @@ const LinkEntity = ({ entity, children }: Props) => {
         <NetworkLink
             href={`/entity/${entity}`}
             passHref
-            className='flex text-[14px] md:text-[16px] uppercase font-medium md:hover:underline underline-offset-4 decoration-2 gap-x-1 items-center w-fit md:mx-auto'
+            className={`flex gap-x-1 items-center text-[14px] md:text-[16px] font-medium md:hover:underline underline-offset-4 decoration-2 w-fit uppercase ${
+                mxAuto ? 'mx-auto' : ''
+            }`}
             style={baseStyle}
         >
             {children ?? (

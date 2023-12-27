@@ -133,7 +133,7 @@ const Validators = () => {
                             <p className='w-[25%]'>{validator.f_balance_eth} ETH</p>
 
                             <div className='w-[25%] uppercase'>
-                                <LinkEntity entity={validator.f_pool_name || 'others'} />
+                                <LinkEntity entity={validator.f_pool_name || 'others'} mxAuto />
                             </div>
 
                             <div className='flex justify-center w-[25%]'>
@@ -175,7 +175,7 @@ const Validators = () => {
                             >
                                 Validator ID
                             </p>
-                            <LinkValidator validator={validator.f_val_idx} mxAuto />
+                            <LinkValidator validator={validator.f_val_idx} />
                         </div>
 
                         <div className='flex flex-row items-center justify-between'>

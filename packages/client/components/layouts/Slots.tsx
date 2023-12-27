@@ -123,7 +123,7 @@ const Slots = ({ slots }: Props) => {
                                 className='w-[20%] uppercase md:hover:underline underline-offset-4 decoration-2'
                                 style={{ color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)' }}
                             >
-                                <LinkEntity entity={element.f_pool_name || 'others'} />
+                                <LinkEntity entity={element.f_pool_name || 'others'} mxAuto />
                             </div>
 
                             <div
