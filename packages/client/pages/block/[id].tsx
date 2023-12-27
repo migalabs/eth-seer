@@ -16,47 +16,10 @@ import LinkSlot from '../../components/ui/LinkSlot';
 import Arrow from '../../components/ui/Arrow';
 import LinkBlock from '../../components/ui/LinkBlock';
 import Transactions from '../../components/layouts/Transactions';
+import Card from '../../components/ui/Card';
 
 // Types
 import { BlockEL, Transaction } from '../../types';
-
-type CardProps = {
-    title: string;
-    text?: string;
-    content?: React.ReactNode;
-};
-
-//Card style
-const Card = ({ title, text, content }: CardProps) => {
-    // Theme Mode Context
-    const { themeMode } = React.useContext(ThemeModeContext) ?? {};
-    return (
-        <div className='flex flex-row items-center justify-between gap-5 md:gap-20'>
-            <p
-                className='text-[14px] md:text-[16px] font-medium'
-                style={{
-                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                }}
-            >
-                {title}:
-            </p>
-            <div className='flex gap-2 items-center'>
-                {text && (
-                    <p
-                        className='uppercase text-[14px] md:text-[16px] font-medium'
-                        style={{
-                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                        }}
-                    >
-                        {text}
-                    </p>
-                )}
-
-                {content && <>{content}</>}
-            </div>
-        </div>
-    );
-};
 
 const BlockPage = () => {
     // Theme Mode Context

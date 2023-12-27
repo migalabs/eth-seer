@@ -19,49 +19,10 @@ import LinkEpoch from '../../components/ui/LinkEpoch';
 import LinkEntity from '../../components/ui/LinkEntity';
 import LinkBlock from '../../components/ui/LinkBlock';
 import EpochAnimation from '../../components/layouts/EpochAnimation';
+import Card from '../../components/ui/Card';
 
 // Types
 import { Block, Withdrawal } from '../../types';
-
-type CardProps = {
-    title: string;
-    text?: string;
-    content?: React.ReactNode;
-};
-
-//Card style
-const Card = ({ title, text, content }: CardProps) => {
-    // Theme Mode Context
-    const { themeMode } = React.useContext(ThemeModeContext) ?? {};
-    return (
-        <>
-            <div className='flex flex-row items-center justify-between gap-5 md:gap-20'>
-                <p
-                    className='text-[14px] md:text-[16px] font-medium'
-                    style={{
-                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                    }}
-                >
-                    {title}:
-                </p>
-                <div className='flex gap-2 items-center'>
-                    {text && (
-                        <p
-                            className='uppercase text-[14px] md:text-[16px] font-medium'
-                            style={{
-                                color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                            }}
-                        >
-                            {text}
-                        </p>
-                    )}
-
-                    {content && <>{content}</>}
-                </div>
-            </div>
-        </>
-    );
-};
 
 const Slot = () => {
     // Theme Mode Context
@@ -290,14 +251,13 @@ const Slot = () => {
             <div className='flex flex-col w-11/12 md:w-1/2 mx-auto'>
                 <div className='flex flex-col sm:flex-row gap-4'>
                     <TabHeader header='Overview' isSelected={tabPageIndex === 0} onClick={() => setTabPageIndex(0)} />
+
                     {existsBlock && (
-                        <>
-                            <TabHeader
-                                header='Withdrawals'
-                                isSelected={tabPageIndex === 1}
-                                onClick={() => setTabPageIndex(1)}
-                            />
-                        </>
+                        <TabHeader
+                            header='Withdrawals'
+                            isSelected={tabPageIndex === 1}
+                            onClick={() => setTabPageIndex(1)}
+                        />
                     )}
                 </div>
                 {getSelectedTab()}

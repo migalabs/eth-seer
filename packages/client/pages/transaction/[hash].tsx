@@ -14,6 +14,7 @@ import Loader from '../../components/ui/Loader';
 import LinkBlock from '../../components/ui/LinkBlock';
 import TabHeader from '../../components/ui/TabHeader';
 import CopyIcon from '../../components/ui/CopyIcon';
+import Card from '../../components/ui/Card';
 
 // Helpers
 import { getShortAddress } from '../../helpers/addressHelper';
@@ -25,38 +26,6 @@ type CardProps = {
     title: string;
     text?: string;
     content?: React.ReactNode;
-};
-
-//Card style
-const Card = ({ title, text, content }: CardProps) => {
-    // Theme Mode Context
-    const { themeMode } = React.useContext(ThemeModeContext) ?? {};
-
-    return (
-        <div className='flex flex-row items-center justify-between gap-5 md:gap-20'>
-            <p
-                className='text-[14px] md:text-[16px] font-medium'
-                style={{
-                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                }}
-            >
-                {title}:
-            </p>
-
-            {text && (
-                <p
-                    className={`uppercase text-[14px] md:text-[16px] font-medium`}
-                    style={{
-                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                    }}
-                >
-                    {text}
-                </p>
-            )}
-
-            {content && <>{content}</>}
-        </div>
-    );
 };
 
 const TransactionPage = () => {
