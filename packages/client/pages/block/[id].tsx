@@ -251,11 +251,9 @@ const BlockPage = () => {
     const getOverview = () => {
         return (
             <div
-                className='rounded-md mt-4 p-8 w-11/12 md:w-1/2 mx-auto border-2 border-white'
+                className='rounded-md mt-4 p-8 w-11/12 md:w-1/2 mx-auto border-2 border-white text-[var(--black)] dark:text-[var(--white)] bg-[var(--bgMainLightMode)] dark:bg-[var(--bgFairDarkMode)]'
                 style={{
-                    backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
                     boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
-                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                 }}
             >
                 {/* Table */}
@@ -292,12 +290,7 @@ const BlockPage = () => {
                     <Arrow direction='left' />
                 </LinkBlock>
 
-                <h1
-                    className='text-center font-semibold text-[32px] md:text-[50px]'
-                    style={{
-                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                    }}
-                >
+                <h1 className='text-center font-semibold text-[32px] md:text-[50px] text-[var(--black)] dark:text-[var(--white)]'>
                     Block {Number(id)?.toLocaleString()}
                 </h1>
 

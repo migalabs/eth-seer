@@ -1,7 +1,4 @@
-import React, { useContext } from 'react';
-
-// Contexts
-import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
+import React from 'react';
 
 type Props = {
     width: number;
@@ -13,9 +10,6 @@ type Props = {
 };
 
 const TooltipResponsive = ({ width, content, top, polygonLeft, polygonRight, tooltipAbove }: Props) => {
-    // Theme Mode Context
-    const { themeMode } = useContext(ThemeModeContext) ?? {};
-
     const getParentLeftPosition = () => {
         if (polygonLeft) {
             return '-25px';
@@ -62,12 +56,10 @@ const TooltipResponsive = ({ width, content, top, polygonLeft, polygonRight, too
 
     return (
         <div
-            className='absolute flex-col text-center rounded-md py-4 px-4 mt-2 mx-auto font-medium hidden z-[var(--zIndexTooltip)] text-[12px] leading-5 normal-case'
+            className='absolute flex-col text-center rounded-md py-4 px-4 mt-2 mx-auto font-medium hidden z-[var(--zIndexTooltip)] text-[12px] leading-5 normal-case text-[var(--black)] dark:text-[var(--white)] bg-[var(--white)] dark:bg-[var(--darkGray)]'
             style={{
                 width,
                 left: getParentLeftPosition(),
-                backgroundColor: themeMode?.darkMode ? 'var(--darkGray)' : 'var(--white)',
-                color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                 top: getParentTopPosition(),
             }}
         >
@@ -80,10 +72,7 @@ const TooltipResponsive = ({ width, content, top, polygonLeft, polygonRight, too
                 xmlSpace='preserve'
                 style={{ left: getPolygonLeftPosition(), top: getPolygonTopPosition() }}
             >
-                <polygon
-                    style={{ fill: themeMode?.darkMode ? 'var(--darkGray)' : 'var(--white)' }}
-                    points={getPoints()}
-                />
+                <polygon className='fill-[var(--white)] dark:fill-[var(--darkGray)]' points={getPoints()} />
             </svg>
         </div>
     );

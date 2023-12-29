@@ -111,12 +111,7 @@ const Graffitis = () => {
             className='flex flex-col overflow-x-scroll overflow-y-hidden scrollbar-thin pb-4 w-11/12 md:w-10/12 mx-auto'
             onMouseMove={handleMouseMove}
         >
-            <div
-                className='flex gap-x-1 justify-around xl:px-8 py-3 font-medium md:text-[16px] text-[14px]'
-                style={{
-                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                }}
-            >
+            <div className='flex gap-x-1 justify-around xl:px-8 py-3 font-medium md:text-[16px] text-[14px] text-[var(--darkGray)] dark:text-[var(--white)]'>
                 <div className='flex w-[20%] items-center gap-x-1 justify-center'>
                     <p className='mt-0.5 font-semibold'>Time</p>
                     <TooltipContainer>
@@ -189,15 +184,11 @@ const Graffitis = () => {
                     blocks.map((block: Block) => (
                         <div
                             key={block.f_slot}
-                            className='flex gap-x-1 justify-around items-center text-[14px] md:text-[16px] border-2 border-white rounded-md px-2 xl:px-8 py-9'
+                            className='flex gap-x-1 justify-around items-center text-[14px] md:text-[16px] border-2 border-white rounded-md px-2 xl:px-8 py-9 text-[var(--black)] dark:text-[var(--white)] bg-[var(--bgFairLightMode)] dark:bg-[var(--bgFairDarkMode)]'
                             style={{
-                                backgroundColor: themeMode?.darkMode
-                                    ? 'var(--bgFairDarkMode)'
-                                    : 'var(--bgFairLightMode)',
                                 boxShadow: themeMode?.darkMode
                                     ? 'var(--boxShadowCardDark)'
                                     : 'var(--boxShadowCardLight)',
-                                color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                             }}
                         >
                             <div className='flex flex-col w-[20%] font-medium'>
@@ -205,17 +196,11 @@ const Graffitis = () => {
                                 <p>{new Date(blockGenesis + block.f_slot * 12000).toLocaleTimeString('ja-JP')}</p>
                             </div>
 
-                            <div
-                                className='w-[20%] font-medium md:hover:underline underline-offset-4 decoration-2'
-                                style={{ color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)' }}
-                            >
+                            <div className='w-[20%] font-medium md:hover:underline underline-offset-4 decoration-2 text-[var(--darkPurple)] dark:text-[var(--purple)]'>
                                 <LinkSlot slot={block.f_slot} mxAuto />
                             </div>
 
-                            <div
-                                className='w-[20%] font-medium md:hover:underline underline-offset-4 decoration-2'
-                                style={{ color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)' }}
-                            >
+                            <div className='w-[20%] font-medium md:hover:underline underline-offset-4 decoration-2 text-[var(--darkPurple)] dark:text-[var(--purple)]'>
                                 <LinkValidator validator={block.f_proposer_index} mxAuto />
                             </div>
 
@@ -242,11 +227,9 @@ const Graffitis = () => {
                 blocks.map((block: Block) => (
                     <div
                         key={block.f_slot}
-                        className='flex flex-col gap-y-4 justify-around items-center md:text-[16px] font-medium text-[14px] rounded-md px-3 py-7'
+                        className='flex flex-col gap-y-4 justify-around items-center md:text-[16px] font-medium text-[14px] rounded-md px-3 py-7 text-[var(--black)] dark:text-[var(--white)] bg-[var(--bgFairLightMode)] dark:bg-[var(--bgFairDarkMode)]'
                         style={{
-                            backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgFairLightMode)',
                             boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
-                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                         }}
                     >
                         <div className='flex gap-x-1 justify-center cursor-pointer'>
@@ -260,12 +243,7 @@ const Graffitis = () => {
 
                         <div className='flex flex-col gap-x-4 w-full '>
                             <div className='flex gap-x-1 justify-center mb-1'>
-                                <p
-                                    className='text-[14px] mt-1 font-semibold'
-                                    style={{
-                                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                                    }}
-                                >
+                                <p className='text-[14px] mt-1 font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>
                                     Time
                                 </p>
                                 <TooltipContainer>
@@ -298,12 +276,7 @@ const Graffitis = () => {
 
                         <div className='flex flex-col gap-x-4 w-full'>
                             <div className='flex gap-x-1 justify-center mb-1'>
-                                <p
-                                    className='text-[14px] mt-1 font-semibold'
-                                    style={{
-                                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                                    }}
-                                >
+                                <p className='text-[14px] mt-1 font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>
                                     Validator
                                 </p>
                                 <TooltipContainer>
@@ -324,12 +297,7 @@ const Graffitis = () => {
 
                         <div className='flex flex-col gap-x-4 w-full'>
                             <div className='flex gap-x-1 justify-center mb-1'>
-                                <p
-                                    className='text-[14px] mt-1 font-semibold'
-                                    style={{
-                                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                                    }}
-                                >
+                                <p className='text-[14px] mt-1 font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>
                                     Graffiti
                                 </p>
                                 <TooltipContainer>
@@ -361,13 +329,8 @@ const Graffitis = () => {
     );
 
     return (
-        <div className='text-center text-white'>
-            <h1
-                className='text-center mt-14 xl:mt-0 font-semibold text-[32px] md:text-[50px] capitalize'
-                style={{
-                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                }}
-            >
+        <div className='text-center'>
+            <h1 className='text-center mt-14 xl:mt-0 font-semibold text-[32px] md:text-[50px] capitalize text-[var(--black)] dark:text-[var(--white)]'>
                 Graffiti Search Result
             </h1>
 

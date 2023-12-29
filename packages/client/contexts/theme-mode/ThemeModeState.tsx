@@ -33,9 +33,11 @@ const ThemeModeState = (props: any) => {
         const body = document.querySelector('body');
 
         if (state.darkMode) {
-            body?.style.setProperty('background-image', 'var(--background-dark)');
+            document.documentElement.classList.add('dark');
+            body?.style.setProperty('background-image', 'var(--backgroundDark)');
         } else {
-            body?.style.setProperty('background-image', 'var(--background-light)');
+            document.documentElement.classList.remove('dark');
+            body?.style.setProperty('background-image', 'var(--backgroundLight)');
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps

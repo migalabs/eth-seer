@@ -82,12 +82,7 @@ const Slots = ({ slots }: Props) => {
                 onMouseMove={handleMouseMove}
             >
                 <div>
-                    <div
-                        className='font-semibold flex gap-4 py-3 text-center items-center flex-row justify-around text-[16px]'
-                        style={{
-                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                        }}
-                    >
+                    <div className='font-semibold flex gap-4 py-3 text-center items-center flex-row justify-around text-[16px] text-[var(--darkGray)] dark:text-[var(--white)]'>
                         {titles.map((title, index) => (
                             <p key={index} className='w-[20%]'>
                                 {title}
@@ -97,15 +92,11 @@ const Slots = ({ slots }: Props) => {
 
                     {slots.map(element => (
                         <div
-                            className='flex gap-4 py-3 text-center font-medium items-center flex-row justify-around text-[16px] rounded-md border-2 border-white my-2'
+                            className='flex gap-4 py-3 text-center font-medium items-center flex-row justify-around text-[16px] rounded-md border-2 border-white my-2 text-[var(--black)] dark:text-[var(--white)] bg-[var(--bgMainLightMode)] dark:bg-[var(--bgFairDarkMode)]'
                             style={{
-                                backgroundColor: themeMode?.darkMode
-                                    ? 'var(--bgFairDarkMode)'
-                                    : 'var(--bgMainLightMode)',
                                 boxShadow: themeMode?.darkMode
                                     ? 'var(--boxShadowCardDark)'
                                     : 'var(--boxShadowCardLight)',
-                                color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                             }}
                             key={element.f_proposer_slot}
                         >
@@ -119,24 +110,15 @@ const Slots = ({ slots }: Props) => {
                                 />
                             </div>
 
-                            <div
-                                className='w-[20%] uppercase md:hover:underline underline-offset-4 decoration-2'
-                                style={{ color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)' }}
-                            >
+                            <div className='w-[20%] uppercase md:hover:underline underline-offset-4 decoration-2 text-[var(--darkPurple)] dark:text-[var(--purple)]'>
                                 <LinkEntity entity={element.f_pool_name || 'others'} mxAuto />
                             </div>
 
-                            <div
-                                className='w-[20%] md:hover:underline underline-offset-4 decoration-2'
-                                style={{ color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)' }}
-                            >
+                            <div className='w-[20%] md:hover:underline underline-offset-4 decoration-2 text-[var(--darkPurple)] dark:text-[var(--purple)]'>
                                 <LinkValidator validator={element.f_val_idx} mxAuto />
                             </div>
 
-                            <div
-                                className='w-[20%] md:hover:underline underline-offset-4 decoration-2'
-                                style={{ color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)' }}
-                            >
+                            <div className='w-[20%] md:hover:underline underline-offset-4 decoration-2 text-[var(--darkPurple)] dark:text-[var(--purple)]'>
                                 <LinkSlot slot={element.f_proposer_slot} mxAuto />
                             </div>
 
@@ -156,19 +138,12 @@ const Slots = ({ slots }: Props) => {
     //View slots table mobile
     const getContentSlotsMobile = () => {
         return (
-            <div
-                className='flex flex-col gap-2 font-medium text-[14px] my-4'
-                style={{
-                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                }}
-            >
+            <div className='flex flex-col gap-2 font-medium text-[14px] my-4 text-[var(--black)] dark:text-[var(--white)]'>
                 {slots.map(slot => (
                     <div
-                        className='flex flex-row items-center justify-around py-4 px-2 border-2 border-white rounded-md'
+                        className='flex flex-row items-center justify-around py-4 px-2 border-2 border-white rounded-md text-[var(--black)] dark:text-[var(--white)] bg-[var(--bgMainLightMode)] dark:bg-[var(--bgFairDarkMode)]'
                         style={{
-                            backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
                             boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
-                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                         }}
                         key={slot.f_proposer_slot}
                     >
@@ -181,39 +156,22 @@ const Slots = ({ slots }: Props) => {
                         />
                         <div className='flex flex-col'>
                             <div className='flex flex-row items-center justify-between gap-x-14 py-1'>
-                                <p
-                                    className='font-semibold'
-                                    style={{
-                                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                                    }}
-                                >
+                                <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>
                                     Proposer:
                                 </p>
                                 <LinkValidator validator={slot.f_val_idx} />
                             </div>
 
                             <div className='flex flex-row items-center justify-between py-1'>
-                                <p
-                                    className='font-semibold'
-                                    style={{
-                                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                                    }}
-                                >
-                                    Slot:
-                                </p>
+                                <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Slot:</p>
                                 <LinkSlot slot={slot.f_proposer_slot} />
                             </div>
 
                             <div className='flex flex-row items-center justify-between py-1'>
-                                <p
-                                    className='font-semibold'
-                                    style={{
-                                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                                    }}
-                                >
+                                <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>
                                     Datetime:
                                 </p>
-                                <div className='flex flex-col justify-between py-1'>
+                                <div className='flex flex-col text-end'>
                                     <p>
                                         {new Date(
                                             blockGenesis + Number(slot.f_proposer_slot) * 12000
@@ -236,12 +194,7 @@ const Slots = ({ slots }: Props) => {
                             </div>
 
                             <div className='flex flex-row items-center justify-between'>
-                                <p
-                                    className='font-semibold'
-                                    style={{
-                                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                                    }}
-                                >
+                                <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>
                                     Withdrawals:
                                 </p>
                                 <p>{(slot.withdrawals / 10 ** 9).toLocaleString()} ETH</p>

@@ -41,7 +41,7 @@ export default function Document() {
                         --boxShadowCardLight: 0px 4px 4px 0px rgba(0, 0, 0, 0.15) inset;
 
                         //BACKGROUND:
-                        --background-light: linear-gradient(
+                        --backgroundLight: linear-gradient(
                             180deg,
                             rgba(192, 175, 238, 1) 0%,
                             rgba(215, 200, 255, 1) 24%,
@@ -49,7 +49,7 @@ export default function Document() {
                             rgba(235, 227, 255, 1) 74%,
                             rgba(253, 253, 255, 1) 100%
                         );
-                        --background-dark: linear-gradient(
+                        --backgroundDark: linear-gradient(
                             180deg,
                             rgba(169, 154, 207, 1) 0%,
                             rgba(121, 107, 156, 1) 16%,
@@ -78,7 +78,7 @@ export default function Document() {
                     }
 
                     body {
-                        background-image: var(--background-light);
+                        background-image: var(--backgroundLight);
                         background-repeat: no-repeat;
                         background-size: cover;
                         background-attachment: scroll;

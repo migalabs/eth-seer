@@ -81,12 +81,7 @@ const Blocks = ({ blocks }: Props) => {
                 onMouseMove={handleMouseMove}
             >
                 <div>
-                    <div
-                        className='font-semibold flex gap-4 py-3 text-center items-center flex-row justify-around text-[16px]'
-                        style={{
-                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                        }}
-                    >
+                    <div className='font-semibold flex gap-4 py-3 text-center items-center flex-row justify-around text-[16px] text-[var(--darkGray)] dark:text-[var(--white)]'>
                         {titles.map((title, index) => (
                             <p key={index} className='w-[20%]'>
                                 {title}
@@ -96,29 +91,19 @@ const Blocks = ({ blocks }: Props) => {
 
                     {blocks.map(element => (
                         <div
-                            className='flex gap-4 py-3 text-center font-medium items-center flex-row justify-around text-[16px] rounded-md border-2 border-white my-2'
+                            className='flex gap-4 py-3 text-center font-medium items-center flex-row justify-around text-[16px] rounded-md border-2 border-white my-2 text-[var(--black)] dark:text-[var(--white)] bg-[var(--bgMainLightMode)] dark:bg-[var(--bgFairDarkMode)]'
                             style={{
-                                backgroundColor: themeMode?.darkMode
-                                    ? 'var(--bgFairDarkMode)'
-                                    : 'var(--bgMainLightMode)',
                                 boxShadow: themeMode?.darkMode
                                     ? 'var(--boxShadowCardDark)'
                                     : 'var(--boxShadowCardLight)',
-                                color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                             }}
                             key={element.f_slot}
                         >
-                            <div
-                                className='w-[20%] md:hover:underline underline-offset-4 decoration-2'
-                                style={{ color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)' }}
-                            >
+                            <div className='w-[20%] md:hover:underline underline-offset-4 decoration-2 text-[var(--darkPurple)] dark:text-[var(--purple)]'>
                                 <LinkBlock block={element.f_el_block_number} mxAuto />
                             </div>
 
-                            <div
-                                className='w-[20%] md:hover:underline underline-offset-4 decoration-2'
-                                style={{ color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)' }}
-                            >
+                            <div className='w-[20%] md:hover:underline underline-offset-4 decoration-2 text-[var(--darkPurple)] dark:text-[var(--purple)]'>
                                 <LinkSlot slot={element.f_slot} mxAuto />
                             </div>
 
@@ -137,54 +122,30 @@ const Blocks = ({ blocks }: Props) => {
     //View blocks table mobile
     const getContentBlocksMobile = () => {
         return (
-            <div
-                className='flex flex-col gap-2 font-medium text-[14px] my-4'
-                style={{
-                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                }}
-            >
+            <div className='flex flex-col gap-2 font-medium text-[14px] my-4 text-[var(--black)] dark:text-[var(--white)]'>
                 {blocks.map(block => (
                     <div
-                        className='flex flex-row  py-2 px-2 border-2 border-white rounded-md'
+                        className='flex flex-row  py-2 px-2 border-2 border-white rounded-md text-[var(--black)] dark:text-[var(--white)] bg-[var(--bgMainLightMode)] dark:bg-[var(--bgFairDarkMode)]'
                         style={{
-                            backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
                             boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
-                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                         }}
                         key={block.f_slot}
                     >
                         <div className='flex flex-col mx-auto w-10/12'>
                             <div className='flex flex-row items-center justify-between py-1'>
-                                <p
-                                    className='font-semibold'
-                                    style={{
-                                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                                    }}
-                                >
+                                <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>
                                     Block number:
                                 </p>
                                 <LinkBlock block={block.f_el_block_number} />
                             </div>
 
                             <div className='flex flex-row items-center justify-between py-1'>
-                                <p
-                                    className='font-semibold'
-                                    style={{
-                                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                                    }}
-                                >
-                                    Slot:
-                                </p>
+                                <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Slot:</p>
                                 <LinkSlot slot={block.f_slot} />
                             </div>
 
                             <div className='flex flex-row items-center justify-between py-1'>
-                                <p
-                                    className='font-semibold'
-                                    style={{
-                                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                                    }}
-                                >
+                                <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>
                                     Datetime:
                                 </p>
                                 <div className='flex flex-row gap-2 py-1'>
@@ -212,12 +173,7 @@ const Blocks = ({ blocks }: Props) => {
                             </div>
 
                             <div className='flex flex-row items-center justify-between'>
-                                <p
-                                    className='font-semibold'
-                                    style={{
-                                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                                    }}
-                                >
+                                <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>
                                     Transactions:
                                 </p>
                                 <p>{(block.f_el_transactions ?? 0).toLocaleString()}</p>

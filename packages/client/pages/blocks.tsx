@@ -1,12 +1,9 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
 // Axios
 import axiosClient from '../config/axios';
-
-// Contexts
-import ThemeModeContext from '../contexts/theme-mode/ThemeModeContext';
 
 // Components
 import Layout from '../components/layouts/Layout';
@@ -20,9 +17,6 @@ import { BlockEL } from '../types';
 const Blocks = () => {
     // Constants
     const LIMIT = 32;
-
-    // Theme Mode Context
-    const { themeMode } = useContext(ThemeModeContext) ?? {};
 
     // Router
     const router = useRouter();
@@ -77,25 +71,12 @@ const Blocks = () => {
                 <link rel='canonical' href='https://ethseer.io/blocks' />
             </Head>
 
-            <h1
-                className='text-center mt-10 xl:mt-0 font-semibold text-[32px] md:text-[50px] capitalize'
-                style={{
-                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                }}
-            >
+            <h1 className='text-center mt-10 xl:mt-0 font-semibold text-[32px] md:text-[50px] capitalize text-[var(--black)] dark:text-[var(--white)]'>
                 Ethereum Blocks
             </h1>
 
-            <div
-                className='mx-auto py-4 px-6 border-2 border-[var(--purple)] rounded-md flex w-11/12 lg:w-10/12'
-                style={{ background: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--bgMainLightMode)' }}
-            >
-                <h2
-                    className='text-white text-[14px] 2xl:text-[18px] text-center leading-6'
-                    style={{
-                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                    }}
-                >
+            <div className='mx-auto py-4 px-6 border-2 border-[var(--purple)] rounded-md flex w-11/12 lg:w-10/12 bg-[var(--bgMainLightMode)] dark:bg-[var(--bgDarkMode)]'>
+                <h2 className='text-[14px] 2xl:text-[18px] text-center leading-6 text-[var(--black)] dark:text-[var(--white)]'>
                     Blocks are the fundamental unit of consensus for blockchains. In it you will find a number of
                     transactions and interactions with smart contracts.
                 </h2>
