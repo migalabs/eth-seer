@@ -221,9 +221,7 @@ const EntityComponent = () => {
     //OVERVIEW PAGE
     return (
         <Layout>
-            <div className='flex gap-x-3 justify-center items-center mt-14 xl:mt-0 mb-5'>
-                <Title>{name}</Title>
-            </div>
+            <Title className='uppercase'>{name}</Title>
 
             {loading && (
                 <div className='mt-6'>
