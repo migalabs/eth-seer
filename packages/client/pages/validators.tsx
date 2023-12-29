@@ -19,6 +19,7 @@ import Title from '../components/ui/Title';
 
 // Types
 import { Validator } from '../types';
+import PageDescription from '../components/ui/PageDescription';
 
 const Validators = () => {
     // Constants
@@ -196,14 +197,11 @@ const Validators = () => {
 
             <Title>Ethereum Validators</Title>
 
-            <div className='mx-auto md:my-0 my-2 py-4 px-6 border-2 border-[var(--purple)] rounded-md flex w-11/12 lg:w-10/12 bg-[var(--bgMainLightMode)] dark:bg-[var(--bgDarkMode)]'>
-                <h2 className='text-[14px] 2xl:text-[18px] mx-auto text-center leading-6 text-[var(--black)] dark:text-[var(--white)]'>
-                    Validators participate in the consensus protocol by proposing and validating blocks. They are
-                    subject to rewards and penalties based on their behavior. Ethseer displays information about the
-                    current validators in the Beacon Chain, including detailed information about each validator and its
-                    performance.
-                </h2>
-            </div>
+            <PageDescription>
+                Validators participate in the consensus protocol by proposing and validating blocks. They are subject to
+                rewards and penalties based on their behavior. Ethseer displays information about the current validators
+                in the Beacon Chain, including detailed information about each validator and its performance.
+            </PageDescription>
 
             {validatorsCount > 0 && (
                 <Pagination

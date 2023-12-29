@@ -50,7 +50,7 @@ const TitleWithArrows = ({ type, value }: Props) => {
         <div className='flex gap-x-3 justify-center items-center mt-14 xl:mt-0 mb-5'>
             {getArrow('left')}
 
-            <Title>
+            <Title className='capitalize'>
                 {type} {!Number.isNaN(value) && value.toLocaleString()}
             </Title>
 
