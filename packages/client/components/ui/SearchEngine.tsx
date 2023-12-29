@@ -48,10 +48,9 @@ type SearchEngineItem = {
 };
 
 const SearchEngine = () => {
+    // Router
     const router = useRouter();
     const { network } = router.query;
-
-    const assetPrefix = process.env.NEXT_PUBLIC_ASSET_PREFIX ?? '';
 
     // Theme Mode Context
     const { themeMode } = React.useContext(ThemeModeContext) ?? {};
