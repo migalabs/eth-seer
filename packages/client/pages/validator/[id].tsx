@@ -20,29 +20,10 @@ import LinkEpoch from '../../components/ui/LinkEpoch';
 import LinkSlot from '../../components/ui/LinkSlot';
 import LinkEntity from '../../components/ui/LinkEntity';
 import TitleWithArrows from '../../components/ui/TitleWithArrows';
+import CardContent from '../../components/ui/CardContent';
 
 // Types
 import { Validator, Slot, Withdrawal } from '../../types';
-
-// Props
-type Props = {
-    content: string;
-    bg: string;
-    color: string;
-    boxShadow: string;
-};
-
-//Style card
-const CardContent = ({ content, bg, color, boxShadow }: Props) => {
-    return (
-        <span
-            className='block px-5 rounded-md font-medium capitalize py-2 text-center w-52'
-            style={{ background: color, borderColor: bg, color: bg, boxShadow: boxShadow }}
-        >
-            {content}
-        </span>
-    );
-};
 
 const ValidatorComponent = () => {
     // Theme Mode Context
@@ -184,15 +165,17 @@ const ValidatorComponent = () => {
                             <div className='flex justify-center gap-x-5 '>
                                 <CardContent
                                     content={`Proposed: ${getNumberProposedBlocks(proposedBlocks)}`}
-                                    bg='var(--white)'
-                                    color='var(--proposedGreen)'
+                                    color='var(--white)'
+                                    bg='var(--proposedGreen)'
                                     boxShadow='var(--boxShadowGreen)'
+                                    width={200}
                                 />
                                 <CardContent
                                     content={`Missed:  ${getNumberMissedBlocks(proposedBlocks)}`}
-                                    bg='var(--white)'
-                                    color='var(--missedRed)'
+                                    color='var(--white)'
+                                    bg='var(--missedRed)'
                                     boxShadow='var(--boxShadowRed)'
+                                    width={200}
                                 />
                             </div>
                         </div>
@@ -405,16 +388,18 @@ const ValidatorComponent = () => {
                         <div className='flex flex-col md:flex-row gap-x-4 gap-y-2'>
                             <CardContent
                                 content={`Proposed: ${validator.proposed_blocks_performance}`}
-                                bg='var(--white)'
-                                color='var(--proposedGreen)'
+                                color='var(--white)'
+                                bg='var(--proposedGreen)'
                                 boxShadow='var(--boxShadowGreen)'
+                                width={200}
                             />
 
                             <CardContent
                                 content={`Missed: ${validator.missed_blocks_performance}`}
-                                bg='var(--white)'
-                                color='var(--missedRed)'
+                                color='var(--white)'
+                                bg='var(--missedRed)'
                                 boxShadow='var(--boxShadowRed)'
+                                width={200}
                             />
                         </div>
                     </div>

@@ -14,28 +14,10 @@ import Loader from '../../components/ui/Loader';
 import ProgressSmoothBar from '../../components/ui/ProgressSmoothBar';
 import TabHeader from '../../components/ui/TabHeader';
 import Title from '../../components/ui/Title';
+import CardContent from '../../components/ui/CardContent';
 
 // Types
 import { Entity } from '../../types';
-
-type Props = {
-    content: string;
-    bg: string;
-    color: string;
-    boxShadow: string;
-};
-
-//Card style
-const CardContent = ({ content, bg, color, boxShadow }: Props) => {
-    return (
-        <span
-            className='block px-5 rounded-md font-medium capitalize py-2 text-center w-52'
-            style={{ background: bg, color: color, boxShadow: boxShadow }}
-        >
-            {content}
-        </span>
-    );
-};
 
 const EntityComponent = () => {
     // Theme Mode Context
@@ -219,6 +201,7 @@ const EntityComponent = () => {
                                 bg='var(--proposedGreen)'
                                 color='var(--white)'
                                 boxShadow='var(--boxShadowGreen)'
+                                width={200}
                             />
 
                             <CardContent
@@ -226,6 +209,7 @@ const EntityComponent = () => {
                                 bg='var(--missedRed)'
                                 color='var(--white)'
                                 boxShadow='var(--boxShadowRed)'
+                                width={200}
                             />
                         </div>
                     </div>
@@ -261,7 +245,7 @@ const EntityComponent = () => {
                                     Aggregate Balance:
                                 </p>
                                 <p className='text-[var(--black)] dark:text-[var(--white)]'>
-                                    {entityDay && entityDay.aggregate_balance?.toLocaleString()} ETH
+                                    {entityDay.aggregate_balance?.toLocaleString()} ETH
                                 </p>
                             </div>
                             {/* Blocks */}
@@ -269,20 +253,18 @@ const EntityComponent = () => {
                                 <p className='w-44 sm:w-60 text-[var(--black)] dark:text-[var(--white)]'>Blocks:</p>
                                 <div className='flex flex-col lg:flex-row items-center gap-x-4 gap-y-2'>
                                     <CardContent
-                                        content={`Proposed: ${
-                                            entityDay && entityDay.proposed_blocks.f_proposed?.toLocaleString()
-                                        }`}
+                                        content={`Proposed: ${entityDay.proposed_blocks.f_proposed?.toLocaleString()}`}
                                         bg='var(--proposedGreen)'
                                         color='var(--white)'
                                         boxShadow='var(--boxShadowGreen)'
+                                        width={200}
                                     />
                                     <CardContent
-                                        content={`Missed: ${
-                                            entityDay && entityDay.proposed_blocks.f_missed?.toLocaleString()
-                                        }`}
+                                        content={`Missed: ${entityDay.proposed_blocks.f_missed?.toLocaleString()}`}
                                         bg='var(--missedRed)'
                                         color='var(--white)'
                                         boxShadow='var(--boxShadowRed)'
+                                        width={200}
                                     />
                                 </div>
                             </div>
@@ -293,28 +275,32 @@ const EntityComponent = () => {
                                 </p>
                                 <div className='flex flex-col xl:flex-row items-center gap-x-4 gap-y-2'>
                                     <CardContent
-                                        content={`Deposited: ${entityDay && entityDay.deposited?.toLocaleString()}`}
+                                        content={`Deposited: ${entityDay.deposited?.toLocaleString()}`}
                                         bg='var(--depositedBlue)'
                                         color='var(--white)'
                                         boxShadow='var(--boxShadowBlue)'
+                                        width={200}
                                     />
                                     <CardContent
-                                        content={`Active: ${entityDay && entityDay.active?.toLocaleString()}`}
+                                        content={`Active: ${entityDay.active?.toLocaleString()}`}
                                         bg='var(--proposedGreen)'
                                         color='var(--white)'
                                         boxShadow='var(--boxShadowGreen)'
+                                        width={200}
                                     />
                                     <CardContent
-                                        content={`Slashed: ${entityDay && entityDay.slashed?.toLocaleString()}`}
+                                        content={`Slashed: ${entityDay.slashed?.toLocaleString()}`}
                                         bg='var(--missedRed)'
                                         color='var(--white)'
                                         boxShadow='var(--boxShadowRed)'
+                                        width={200}
                                     />
                                     <CardContent
-                                        content={`Exited: ${entityDay && entityDay.exited?.toLocaleString()}`}
+                                        content={`Exited: ${entityDay.exited?.toLocaleString()}`}
                                         bg='var(--exitedPurple)'
                                         color='var(--white)'
                                         boxShadow='var(--boxShadowPurple)'
+                                        width={200}
                                     />
                                 </div>
                             </div>

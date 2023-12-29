@@ -15,28 +15,10 @@ import EpochAnimation from '../../components/layouts/EpochAnimation';
 import Loader from '../../components/ui/Loader';
 import Slots from '../../components/layouts/Slots';
 import TitleWithArrows from '../../components/ui/TitleWithArrows';
+import CardContent from '../../components/ui/CardContent';
 
 // Types
 import { Epoch, Slot } from '../../types';
-
-type Props = {
-    content: string;
-    bg: string;
-    color: string;
-    boxShadow: string;
-};
-
-//Card style
-const CardContent = ({ content, bg, color, boxShadow }: Props) => {
-    return (
-        <span
-            className='block w-40 text-center capitalize rounded-md font-medium p-2'
-            style={{ background: color, borderColor: bg, color: bg, boxShadow: boxShadow }}
-        >
-            {content}
-        </span>
-    );
-};
 
 const EpochComponent = () => {
     // Theme Mode Context
@@ -188,15 +170,17 @@ const EpochComponent = () => {
                     <div className='flex justify-center gap-x-4 pt-3 md:pt-0'>
                         <CardContent
                             content={`Proposed: ${epoch?.proposed_blocks}`}
-                            bg='var(--white)'
-                            color='var(--proposedGreen)'
+                            color='var(--white)'
+                            bg='var(--proposedGreen)'
                             boxShadow='var(--boxShadowRed)'
+                            width={160}
                         />
                         <CardContent
                             content={`Missed: ${32 - Number(epoch?.proposed_blocks)}`}
-                            bg='var(--white)'
-                            color='var(--missedRed)'
+                            color='var(--white)'
+                            bg='var(--missedRed)'
                             boxShadow='var(--boxShadowRed)'
+                            width={160}
                         />
                     </div>
                 </div>
