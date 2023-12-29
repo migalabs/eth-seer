@@ -13,6 +13,7 @@ import Animation from '../../components/layouts/Animation';
 import Loader from '../../components/ui/Loader';
 import ProgressSmoothBar from '../../components/ui/ProgressSmoothBar';
 import TabHeader from '../../components/ui/TabHeader';
+import Title from '../../components/ui/Title';
 
 // Types
 import { Entity } from '../../types';
@@ -237,9 +238,7 @@ const EntityComponent = () => {
     return (
         <Layout>
             <div className='flex gap-x-3 justify-center items-center mt-14 xl:mt-0 mb-5'>
-                <h1 className='uppercase text-center font-medium text-[32px] md:text-[50px] text-[var(--black)] dark:text-[var(--white)]'>
-                    {name}
-                </h1>
+                <Title>{name}</Title>
             </div>
 
             {loading && (
