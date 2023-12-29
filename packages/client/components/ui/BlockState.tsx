@@ -3,9 +3,6 @@ import React from 'react';
 // Components
 import CustomImage from './CustomImage';
 
-// Contexts
-import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
-
 // Constants
 import { POOLS } from '../../constants';
 
@@ -18,18 +15,15 @@ type Props = {
 };
 
 const BlockState = ({ poolName, proposed = true, width, height, showCheck }: Props) => {
-    // Theme Mode Context
-    const { themeMode } = React.useContext(ThemeModeContext) ?? {};
-
     const getUrl = () => {
         if (poolName && POOLS.includes(poolName.toUpperCase())) {
             return `/static/images/blocks/cubes/${poolName.toLowerCase()}.webp`;
         } else if (poolName && poolName.toLowerCase().includes('lido')) {
-            return `/static/images/blocks/cubes/lido.webp`;
+            return '/static/images/blocks/cubes/lido.webp';
         } else if (poolName && poolName.toLowerCase().includes('whale')) {
-            return `/static/images/blocks/cubes/whale-ethereum-entity.webp`;
+            return '/static/images/blocks/cubes/whale-ethereum-entity.webp';
         } else {
-            return `/static/images/blocks/cubes/unknown-ethereum-entity.webp`;
+            return '/static/images/blocks/cubes/unknown-ethereum-entity.webp';
         }
     };
 

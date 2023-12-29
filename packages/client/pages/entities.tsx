@@ -77,25 +77,12 @@ const Entities = () => {
             </Head>
 
             {/* Header */}
-            <h1
-                className='text-center font-semibold text-[32px] md:text-[50px] mt-10 xl:mt-0 capitalize m-2 md:m-0'
-                style={{
-                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                }}
-            >
+            <h1 className='text-center font-semibold text-[32px] md:text-[50px] mt-10 xl:mt-0 capitalize m-2 md:m-0 text-[var(--black)] dark:text-[var(--white)]'>
                 Ethereum Staking Entities
             </h1>
 
-            <div
-                className='mx-auto py-4 px-6 border-2 border-[var(--purple)] rounded-md flex w-11/12 lg:w-10/12'
-                style={{ background: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--bgMainLightMode)' }}
-            >
-                <h2
-                    className='text-white text-[14px] 2xl:text-[18px] text-center leading-6'
-                    style={{
-                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                    }}
-                >
+            <div className='mx-auto py-4 px-6 border-2 border-[var(--purple)] rounded-md flex w-11/12 lg:w-10/12 bg-[var(--bgMainLightMode)] dark:bg-[var(--bgDarkMode)]'>
+                <h2 className='text-[14px] 2xl:text-[18px] text-center leading-6 text-[var(--black)] dark:text-[var(--white)]'>
                     An entity can range from an individual running many validators to an institutional organization
                     providing staking services. If it is running at least 100 validators, we catalog it as an entity.
                     Ethseer obtains information about the entities to which validators belong to through graffiti,
@@ -106,20 +93,14 @@ const Entities = () => {
             <hr className='w-11/12 lg:w-10/12 mx-auto my-4 border-white' />
 
             <div className='w-11/12 lg:w-10/12 mx-auto mt-4'>
-                <p
-                    className='text-[14px] md:text-[16px] text-center'
-                    style={{
-                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                    }}
-                >
+                <p className='text-[14px] md:text-[16px] text-center text-[var(--black)] dark:text-[var(--white)]'>
                     This is a card example with the entity information you&apos;ll find:
                 </p>
 
                 <div
-                    className='flex flex-row w-[350px] justify-start mx-auto mt-4 items-center py-4 px-2 border-2 gap-2 rounded-md bg-[var(--bgFairLightMode)]'
+                    className='flex flex-row w-[350px] justify-start mx-auto mt-4 items-center py-4 px-2 border-2 gap-2 rounded-md bg-[var(--bgFairLightMode)] text-[var(--black)] dark:text-[var(--white)]'
                     style={{
                         boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
-                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                     }}
                 >
                     <CustomImage

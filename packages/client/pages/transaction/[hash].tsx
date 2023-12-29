@@ -83,11 +83,9 @@ const TransactionPage = () => {
     const getOverview = () => {
         return (
             <div
-                className='rounded-md mt-4 p-8 border-2 border-white'
+                className='rounded-md mt-4 p-8 border-2 border-white text-[var(--black)] dark:text-[var(--white)] bg-[var(--bgMainLightMode)] dark:bg-[var(--bgFairDarkMode)]'
                 style={{
-                    backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
                     boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
-                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                 }}
             >
                 <div className='flex flex-col gap-y-5 md:gap-y-8 '>
@@ -146,11 +144,9 @@ const TransactionPage = () => {
     const getMoreDetails = () => {
         return (
             <div
-                className='rounded-md mt-4 p-8 border-2 border-white'
+                className='rounded-md mt-4 p-8 border-2 border-white text-[var(--black)] dark:text-[var(--white)] bg-[var(--bgMainLightMode)] dark:bg-[var(--bgFairDarkMode)]'
                 style={{
-                    backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
                     boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
-                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                 }}
             >
                 <div className='flex flex-col mx-auto gap-y-5 md:gap-y-8 '>
@@ -179,12 +175,7 @@ const TransactionPage = () => {
                 <meta name='robots' property='noindex' />
             </Head>
 
-            <h1
-                className='text-center font-medium text-[32px] md:text-[50px] mt-14 xl:mt-0 mb-5'
-                style={{
-                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                }}
-            >
+            <h1 className='text-center font-medium text-[32px] md:text-[50px] mt-14 xl:mt-0 mb-5 text-[var(--black)] dark:text-[var(--white)]'>
                 Transaction
             </h1>
 

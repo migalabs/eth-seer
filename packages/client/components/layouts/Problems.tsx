@@ -16,10 +16,11 @@ const Problems = () => {
     const router = useRouter();
     const { network } = router.query;
 
-    // Contexts
-    const { setWorking } = React.useContext(StatusContext) ?? {};
     // Theme Mode Context
     const { themeMode } = React.useContext(ThemeModeContext) ?? {};
+
+    // Status Contexts
+    const { setWorking } = React.useContext(StatusContext) ?? {};
 
     useEffect(() => {
         if (network) {
@@ -61,10 +62,8 @@ const Problems = () => {
     return (
         <div className='flex flex-col h-screen justify-center items-center mx-auto w-9/12'>
             <div
-                className='my-4 p-5 rounded-md'
+                className='my-4 p-5 rounded-md text-[var(--darkGray)] dark:text-[var(--white)] bg-[var(--bgMainLightMode)] dark:bg-[var(--bgFairDarkMode)]'
                 style={{
-                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                    backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
                     boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
                 }}
             >
@@ -76,10 +75,7 @@ const Problems = () => {
                     className='mx-auto'
                 />
 
-                <p
-                    className='md:text-[30px] text-[20px] uppercase text-center'
-                    style={{ color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)' }}
-                >
+                <p className='md:text-[30px] text-[20px] uppercase text-center text-[var(--black)] dark:text-[var(--white)]'>
                     Sorry, we&apos;re experiencing some problems with the server connection. Please try again in 5
                     minutes. Thank you.
                 </p>

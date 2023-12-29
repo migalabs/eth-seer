@@ -17,15 +17,15 @@ const TabHeader = ({ header, isSelected, onClick }: Props) => {
 
     const getBackgroundColor = () => {
         if (isSelected) {
-            return themeMode?.darkMode ? 'var(--white)' : 'var(--white)';
+            return 'var(--white)';
         } else {
-            return themeMode?.darkMode ? 'var(--bgFairLightMode)' : 'var(--bgFairLightMode)';
+            return 'var(--bgFairLightMode)';
         }
     };
 
     const getColor = () => {
         if (isSelected) {
-            return themeMode?.darkMode ? 'var(--black)' : 'var(--black)';
+            return 'var(--black)';
         } else {
             return themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)';
         }

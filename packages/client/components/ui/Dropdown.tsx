@@ -1,11 +1,7 @@
-import React, { useState, useContext, Fragment } from 'react';
-
-// Contexts
-import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
+import React, { useState } from 'react';
 
 //Components
 import NetworkLink from './NetworkLink';
-import Link from 'next/link';
 
 // Types
 type Item = {
@@ -20,9 +16,8 @@ type Props = {
 };
 
 const Dropdown = ({ name, items, useNetworkLink }: Props) => {
+    // States
     const [isOpen, setIsOpen] = useState(false);
-
-    const { themeMode } = useContext(ThemeModeContext) ?? {};
 
     const handleMouseEnter = () => {
         if (window.innerWidth >= 768) {
@@ -44,10 +39,7 @@ const Dropdown = ({ name, items, useNetworkLink }: Props) => {
 
     return (
         <div
-            className='relative py-2 md:p-0'
-            style={{
-                color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-            }}
+            className='relative py-2 md:p-0 text-[var(--black)] dark:text-[var(--white)]'
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
         >
@@ -80,21 +72,13 @@ const Dropdown = ({ name, items, useNetworkLink }: Props) => {
                 } absolute right-0`}
             >
                 {isOpen && (
-                    <div
-                        className='p-1 md:p-3 rounded-md md:border'
-                        style={{
-                            background: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--white)',
-                            borderColor: themeMode?.darkMode ? 'var(--white)' : 'var(----darkGray)',
-                        }}
-                    >
+                    <div className='p-1 md:p-3 rounded-md md:border bg-[var(--white)] dark:bg-[var(--bgDarkMode)] border-[var(--darkGray)] dark:border-[var(--white)]'>
                         {items.map(item => {
                             return useNetworkLink ? (
                                 <NetworkLink
                                     key={item.name}
                                     href={item.route}
-                                    className={`block px-4 py-2 my-1 text-[16px] rounded-md bg-[#a19f9f50] md:bg-transparent md:hover:bg-[#c9b6f8] transition md:font-semibold md:hover:text-${
-                                        themeMode?.darkMode ? 'black' : 'white'
-                                    }`}
+                                    className='block px-4 py-2 my-1 text-[16px] rounded-md bg-[#a19f9f50] md:bg-transparent md:hover:bg-[#c9b6f8] transition md:font-semibold md:hover:text-[var(--white)] dark:md:hover:text-[var(--black)]'
                                 >
                                     {item.name}
                                 </NetworkLink>
@@ -102,9 +86,7 @@ const Dropdown = ({ name, items, useNetworkLink }: Props) => {
                                 <a
                                     key={item.name}
                                     href={item.route}
-                                    className={`block px-4 py-2 my-1 text-[16px] rounded-md bg-[#a19f9f50] md:bg-transparent md:hover:bg-[#c9b6f8] transition md:font-semibold md:hover:text-${
-                                        themeMode?.darkMode ? 'black' : 'white'
-                                    }`}
+                                    className='block px-4 py-2 my-1 text-[16px] rounded-md bg-[#a19f9f50] md:bg-transparent md:hover:bg-[#c9b6f8] transition md:font-semibold md:hover:text-[var(--white)] dark:md:hover:text-[var(--black)]'
                                 >
                                     {item.name}
                                 </a>

@@ -106,11 +106,9 @@ const Epochs = ({ epochs, blocksPerEpoch, showCalculatingEpochs }: Props) => {
 
         return (
             <div
-                className='flex gap-x-1 font-medium justify-around items-center text-[14px] rounded-md border-2 border-[#c9b6f8] px-2 xl:px-8 py-3'
+                className='flex gap-x-1 font-medium justify-around items-center text-[14px] rounded-md border-2 border-[#c9b6f8] px-2 xl:px-8 py-3 text-[var(--black)] dark:text-[var(--white)] bg-[#5b5b5b50] dark:bg-[var(--bgDarkMode)]'
                 style={{
-                    backgroundColor: themeMode?.darkMode ? 'var(--bgDarkMode)' : '#5b5b5b50',
                     boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
-                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                 }}
             >
                 <div className='flex flex-col w-[10%] pt-2.5 pb-2.5'>
@@ -163,11 +161,9 @@ const Epochs = ({ epochs, blocksPerEpoch, showCalculatingEpochs }: Props) => {
 
         return (
             <div
-                className='flex flex-col  font-medium gap-y-4 justify-around items-center text-[14px] border-2 border-[#c9b6f8] rounded-md px-3 py-4'
+                className='flex flex-col  font-medium gap-y-4 justify-around items-center text-[14px] border-2 border-[#c9b6f8] rounded-md px-3 py-4 text-[var(--black)] dark:text-[var(--white)] bg-[#5b5b5b50] dark:bg-[var(--bgDarkMode)]'
                 style={{
-                    backgroundColor: themeMode?.darkMode ? 'var(--bgDarkMode)' : '#5b5b5b50',
                     boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
-                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                 }}
             >
                 <div className='flex gap-x-1 justify-center'>
@@ -179,12 +175,7 @@ const Epochs = ({ epochs, blocksPerEpoch, showCalculatingEpochs }: Props) => {
 
                 <div className='flex flex-col gap-x-4 w-full'>
                     <div className='flex gap-x-1 justify-center mb-1'>
-                        <p
-                            className='mt-1 font-semibold'
-                            style={{ color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)' }}
-                        >
-                            Time
-                        </p>
+                        <p className='mt-1 font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Time</p>
                         <TooltipContainer>
                             <CustomImage
                                 src='/static/images/icons/information_icon.webp'
@@ -215,12 +206,7 @@ const Epochs = ({ epochs, blocksPerEpoch, showCalculatingEpochs }: Props) => {
 
                 <div className='flex flex-col w-full'>
                     <div className='flex gap-x-1 justify-center mb-1'>
-                        <p
-                            className='mt-1 font-semibold'
-                            style={{ color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)' }}
-                        >
-                            Blocks
-                        </p>
+                        <p className='mt-1 font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Blocks</p>
                         <TooltipContainer>
                             <CustomImage
                                 src='/static/images/icons/information_icon.webp'
@@ -264,10 +250,7 @@ const Epochs = ({ epochs, blocksPerEpoch, showCalculatingEpochs }: Props) => {
 
                 <div className='flex flex-col w-full'>
                     <div className='flex gap-x-1 items-center justify-center mb-1'>
-                        <p
-                            className='mt-1 font-semibold'
-                            style={{ color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)' }}
-                        >
+                        <p className='mt-1 font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>
                             Attestation Accuracy
                         </p>
                         <TooltipContainer>
@@ -300,10 +283,7 @@ const Epochs = ({ epochs, blocksPerEpoch, showCalculatingEpochs }: Props) => {
 
                 <div className='flex flex-col w-full'>
                     <div className='flex gap-x-1 items-center justify-center mb-1'>
-                        <p
-                            className='mt-1 font-semibold'
-                            style={{ color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)' }}
-                        >
+                        <p className='mt-1 font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>
                             Voting Participation
                         </p>
 
@@ -348,12 +328,7 @@ const Epochs = ({ epochs, blocksPerEpoch, showCalculatingEpochs }: Props) => {
             className='flex flex-col overflow-x-scroll overflow-y-hidden scrollbar-thin'
             onMouseMove={handleMouseMove}
         >
-            <div
-                className='flex gap-x-1 justify-around px-2 xl:px-8 pb-3 capitalize text-[14px] md:text-[16px] min-w-[1150px] '
-                style={{
-                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                }}
-            >
+            <div className='flex gap-x-1 justify-around px-2 xl:px-8 pb-3 capitalize text-[14px] md:text-[16px] min-w-[1150px] text-[var(--darkGray)] dark:text-[var(--white)]'>
                 <div className='flex w-[10%] items-center gap-x-1 justify-center'>
                     <p className='mt-0.5 font-semibold'>Time</p>
                     <TooltipContainer>
@@ -478,21 +453,16 @@ const Epochs = ({ epochs, blocksPerEpoch, showCalculatingEpochs }: Props) => {
                 {epochs.map((epoch: Epoch, idx: number) => (
                     <div
                         key={epoch.f_epoch}
-                        className='flex gap-x-1 justify-around items-center text-[14px] rounded-md font-medium border-2 border-[#c9b6f8] px-2 xl:px-8 py-3'
+                        className='flex gap-x-1 justify-around items-center text-[14px] rounded-md font-medium border-2 border-[#c9b6f8] px-2 xl:px-8 py-3 text-[var(--black)] dark:text-[var(--white)] bg-[var(--bgFairLightMode)] dark:bg-[var(--bgFairDarkMode)]'
                         style={{
-                            backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgFairLightMode)',
                             boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
-                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                         }}
                     >
                         <div className='flex flex-col text-center w-[10%]'>
                             <p>{new Date(blockGenesis + epoch.f_epoch * 32 * 12000).toLocaleDateString('ja-JP')}</p>
                             <p>{new Date(blockGenesis + epoch.f_epoch * 32 * 12000).toLocaleTimeString('ja-JP')}</p>
                         </div>
-                        <div
-                            className='w-[11%] font-medium md:hover:underline underline-offset-4 decoration-2'
-                            style={{ color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)' }}
-                        >
+                        <div className='w-[11%] font-medium md:hover:underline underline-offset-4 decoration-2 text-[var(--darkPurple)] dark:text-[var(--purple)]'>
                             <LinkEpoch epoch={epoch.f_epoch} mxAuto />
                         </div>
 
@@ -607,11 +577,9 @@ const Epochs = ({ epochs, blocksPerEpoch, showCalculatingEpochs }: Props) => {
             {epochs.map((epoch: Epoch) => (
                 <div
                     key={epoch.f_epoch}
-                    className='flex flex-col font-medium gap-y-4 justify-around items-center text-[14px] rounded-md border-2 border-[#c9b6f8] px-3 py-4'
+                    className='flex flex-col font-medium gap-y-4 justify-around items-center text-[14px] rounded-md border-2 border-[#c9b6f8] px-3 py-4 text-[var(--black)] dark:text-[var(--white)] bg-[var(--bgFairLightMode)] dark:bg-[var(--bgFairDarkMode)]'
                     style={{
-                        backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgFairLightMode)',
                         boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardLDark)' : 'var(--boxShadowCardLight)',
-                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                     }}
                 >
                     <div className='flex gap-x-1 justify-center'>
@@ -622,12 +590,7 @@ const Epochs = ({ epochs, blocksPerEpoch, showCalculatingEpochs }: Props) => {
                     </div>
                     <div className='flex flex-col gap-x-4 w-full'>
                         <div className='flex gap-x-1 justify-center mb-1'>
-                            <p
-                                className='mt-1 font-semibold'
-                                style={{ color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)' }}
-                            >
-                                Time
-                            </p>
+                            <p className='mt-1 font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Time</p>
                             <TooltipContainer>
                                 <CustomImage
                                     src='/static/images/icons/information_icon.webp'
@@ -649,7 +612,7 @@ const Epochs = ({ epochs, blocksPerEpoch, showCalculatingEpochs }: Props) => {
                                 />
                             </TooltipContainer>
                         </div>
-                        <div>
+                        <div className='text-center'>
                             <p>{new Date(blockGenesis + epoch.f_epoch * 32 * 12000).toLocaleDateString('ja-JP')}</p>
                             <p>{new Date(blockGenesis + epoch.f_epoch * 32 * 12000).toLocaleTimeString('ja-JP')}</p>
                         </div>
@@ -657,12 +620,7 @@ const Epochs = ({ epochs, blocksPerEpoch, showCalculatingEpochs }: Props) => {
 
                     <div className='flex flex-col w-full'>
                         <div className='flex gap-x-1 justify-center mb-1'>
-                            <p
-                                className='mt-1 font-semibold'
-                                style={{ color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)' }}
-                            >
-                                Blocks
-                            </p>
+                            <p className='mt-1 font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Blocks</p>
                             <TooltipContainer>
                                 <CustomImage
                                     src='/static/images/icons/information_icon.webp'
@@ -699,10 +657,7 @@ const Epochs = ({ epochs, blocksPerEpoch, showCalculatingEpochs }: Props) => {
 
                     <div className='flex flex-col w-full gap-y-2'>
                         <div className='flex gap-x-1 items-center justify-center mb-1'>
-                            <p
-                                className='mt-1 font-semibold'
-                                style={{ color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)' }}
-                            >
+                            <p className='mt-1 font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>
                                 Attestation Accuracy
                             </p>
                             <TooltipContainer>
@@ -775,10 +730,7 @@ const Epochs = ({ epochs, blocksPerEpoch, showCalculatingEpochs }: Props) => {
 
                     <div className='flex flex-col w-full gap-y-2'>
                         <div className='flex gap-x-1 items-center justify-center mb-1'>
-                            <p
-                                className='mt-1 font-semibold'
-                                style={{ color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)' }}
-                            >
+                            <p className='mt-1 font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>
                                 Voting Participation
                             </p>
                             <TooltipContainer>

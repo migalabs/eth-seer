@@ -66,12 +66,7 @@ const Transactions = ({ transactions, loadingTransactions }: Props) => {
                 className='flex flex-col overflow-x-scroll overflow-y-hidden scrollbar-thin w-11/12 xl:w-10/12 mx-auto mt-4'
                 onMouseMove={handleMouseMove}
             >
-                <div
-                    className='flex gap-x-4 justify-around px-4 xl:px-8 font-semibold py-3 text-[16px] text-center min-w-[1130px]'
-                    style={{
-                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                    }}
-                >
+                <div className='flex gap-x-4 justify-around px-4 xl:px-8 font-semibold py-3 text-[16px] text-center min-w-[1130px] text-[var(--darkGray)] dark:text-[var(--white)]'>
                     <div className='flex items-center gap-x-1 justify-center w-[calc(16.667%-20px)]'>
                         <p className='mt-0.5 font-semibold'>Txn Hash</p>
                         <TooltipContainer>
@@ -164,11 +159,9 @@ const Transactions = ({ transactions, loadingTransactions }: Props) => {
                 </div>
 
                 <div
-                    className='font-medium flex flex-col gap-y-2 text-[16px] rounded-md border-2 border-white px-4 xl:px-8 py-3 min-w-[1130px]'
+                    className='font-medium flex flex-col gap-y-2 text-[16px] rounded-md border-2 border-white px-4 xl:px-8 py-3 min-w-[1130px] text-[var(--black)] dark:text-[var(--white)] bg-[var(--bgMainLightMode)] dark:bg-[var(--bgFairDarkMode)]'
                     style={{
-                        backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
                         boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
-                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                     }}
                 >
                     {transactions.map(element => (
@@ -233,34 +226,22 @@ const Transactions = ({ transactions, loadingTransactions }: Props) => {
         return (
             <div
                 ref={containerRef}
-                className='my-2 flex flex-col gap-2 font-medium text-[12px] w-11/12 mx-auto'
-                style={{
-                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                }}
+                className='my-2 flex flex-col gap-2 font-medium text-[12px] w-11/12 mx-auto text-[var(--black)] dark:text-[var(--white)]'
                 onMouseMove={handleMouseMove}
             >
                 <div>
                     {transactions.map(element => (
                         <div
-                            className='flex my-2 flex-col gap-y-2 text-[14px] py-4 p-2 border-2 border-white rounded-md'
+                            className='flex my-2 flex-col gap-y-2 text-[14px] py-4 p-2 border-2 border-white rounded-md text-[var(--black)] dark:text-[var(--white)] bg-[var(--bgMainLightMode)] dark:bg-[var(--bgFairDarkMode)]'
                             style={{
-                                backgroundColor: themeMode?.darkMode
-                                    ? 'var(--bgFairDarkMode)'
-                                    : 'var(--bgMainLightMode)',
                                 boxShadow: themeMode?.darkMode
                                     ? 'var(--boxShadowCardDark)'
                                     : 'var(--boxShadowCardLight)',
-                                color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                             }}
                             key={element.f_hash}
                         >
                             <div className='flex items-center justify-between'>
-                                <p
-                                    className='font-semibold'
-                                    style={{
-                                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                                    }}
-                                >
+                                <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>
                                     Txn Hash
                                 </p>
 
@@ -270,33 +251,12 @@ const Transactions = ({ transactions, loadingTransactions }: Props) => {
                                 </div>
                             </div>
                             <div className='flex items-center justify-between'>
-                                <p
-                                    className='font-semibold'
-                                    style={{
-                                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                                    }}
-                                >
-                                    Age
-                                </p>
+                                <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Age</p>
                                 <p>{getTimeAgo(element.f_timestamp * 1000)}</p>
                             </div>
                             <div className='flex justify-between items-center'>
-                                <p
-                                    className='font-semibold'
-                                    style={{
-                                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                                    }}
-                                >
-                                    From
-                                </p>
-                                <p
-                                    className='font-semibold'
-                                    style={{
-                                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                                    }}
-                                >
-                                    To
-                                </p>
+                                <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>From</p>
+                                <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>To</p>
                             </div>
                             <div className='flex justify-between items-center'>
                                 <div className='flex gap-x-2 items-center'>
@@ -315,25 +275,11 @@ const Transactions = ({ transactions, loadingTransactions }: Props) => {
                                 </div>
                             </div>
                             <div className='flex items-center justify-between'>
-                                <p
-                                    className='font-semibold'
-                                    style={{
-                                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                                    }}
-                                >
-                                    Value
-                                </p>
+                                <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Value</p>
                                 <p>{(element.f_value / 10 ** 18).toLocaleString()} ETH</p>
                             </div>
                             <div className='flex items-center justify-between'>
-                                <p
-                                    className='font-semibold'
-                                    style={{
-                                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                                    }}
-                                >
-                                    Txn Fee
-                                </p>
+                                <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Txn Fee</p>
                                 <p>{(element.f_gas_fee_cap / 10 ** 9).toLocaleString()} GWEI</p>
                             </div>
                         </div>
@@ -341,15 +287,11 @@ const Transactions = ({ transactions, loadingTransactions }: Props) => {
 
                     {!loadingTransactions && transactions.length === 0 && (
                         <div
-                            className='flex mt-2 justify-center rounded-md border-2 border-white px-4 py-4'
+                            className='flex mt-2 justify-center rounded-md border-2 border-white px-4 py-4 text-[var(--black)] dark:text-[var(--white)] bg-[var(--bgMainLightMode)] dark:bg-[var(--bgFairDarkMode)]'
                             style={{
-                                backgroundColor: themeMode?.darkMode
-                                    ? 'var(--bgFairDarkMode)'
-                                    : 'var(--bgMainLightMode)',
                                 boxShadow: themeMode?.darkMode
                                     ? 'var(--boxShadowCardDark)'
                                     : 'var(--boxShadowCardLight)',
-                                color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                             }}
                         >
                             <p className='uppercase text-[14px]'>No transactions</p>

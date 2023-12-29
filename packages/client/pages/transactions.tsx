@@ -1,12 +1,9 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
 // Axios
 import axiosClient from '../config/axios';
-
-// Contexts
-import ThemeModeContext from '../contexts/theme-mode/ThemeModeContext';
 
 // Components
 import Layout from '../components/layouts/Layout';
@@ -20,9 +17,6 @@ import { Transaction } from '../types';
 const Transactions = () => {
     // Constants
     const LIMIT = 10;
-
-    // Theme Mode Context
-    const { themeMode } = useContext(ThemeModeContext) ?? {};
 
     // Router
     const router = useRouter();
@@ -79,25 +73,12 @@ const Transactions = () => {
                 <link rel='canonical' href='https://ethseer.io/transactions' />
             </Head>
 
-            <h1
-                className='text-center font-semibold text-[32px] md:text-[50px] mt-10 xl:mt-0 capitalize'
-                style={{
-                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                }}
-            >
+            <h1 className='text-center font-semibold text-[32px] md:text-[50px] mt-10 xl:mt-0 capitalize text-[var(--black)] dark:text-[var(--white)]'>
                 Ethereum Transactions
             </h1>
 
-            <div
-                className='mx-auto md:my-0 my-2 py-4 px-6 border-2 border-[var(--purple)] rounded-md flex w-11/12 lg:w-10/12'
-                style={{ background: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--bgMainLightMode)' }}
-            >
-                <h2
-                    className='text-[14px] 2xl:text-[18px] mx-auto text-center leading-5'
-                    style={{
-                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                    }}
-                >
+            <div className='mx-auto md:my-0 my-2 py-4 px-6 border-2 border-[var(--purple)] rounded-md flex w-11/12 lg:w-10/12 bg-[var(--bgMainLightMode)] dark:bg-[var(--bgDarkMode)]'>
+                <h2 className='text-[14px] 2xl:text-[18px] mx-auto text-center leading-5 text-[var(--black)] dark:text-[var(--white)]'>
                     Transactions are the atomic components that create the state of the Ethereum Virtual Machine.
                 </h2>
             </div>

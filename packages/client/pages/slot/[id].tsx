@@ -269,11 +269,9 @@ const Slot = () => {
     const getOverview = () => {
         return (
             <div
-                className='rounded-md mt-4 p-8 border-2 border-white'
+                className='rounded-md mt-4 p-8 border-2 border-white text-[var(--black)] dark:text-[var(--white)] bg-[var(--bgMainLightMode)] dark:bg-[var(--bgFairDarkMode)]'
                 style={{
-                    backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
                     boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
-                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                 }}
             >
                 {/* Table */}
@@ -375,12 +373,7 @@ const Slot = () => {
                 className='flex flex-col mt-2.5 overflow-x-scroll overflow-y-hidden scrollbar-thin'
                 onMouseMove={handleMouseMove}
             >
-                <div
-                    className='flex gap-x-4 justify-around px-4 xl:px-8 min-w-[470px] font-semibold py-3 text-[14px] md:text-[16px] text-center'
-                    style={{
-                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                    }}
-                >
+                <div className='flex gap-x-4 justify-around px-4 xl:px-8 min-w-[470px] font-semibold py-3 text-[14px] md:text-[16px] text-center text-[var(--darkGray)] dark:text-[var(--white)]'>
                     <p className='mt-0.5 w-1/3'>Validator</p>
                     <p className='mt-0.5 w-1/3'>Address</p>
                     <p className='mt-0.5 w-1/3'>Amount</p>
@@ -392,11 +385,9 @@ const Slot = () => {
                     </div>
                 ) : (
                     <div
-                        className='font-medium flex flex-col gap-y-2 min-w-[470px] text-[14px] md:text-[16px] rounded-md border-2 border-white px-4 xl:px-8 py-3'
+                        className='font-medium flex flex-col gap-y-2 min-w-[470px] text-[14px] md:text-[16px] rounded-md border-2 border-white px-4 xl:px-8 py-3 text-[var(--black)] dark:text-[var(--white)] bg-[var(--bgMainLightMode)] dark:bg-[var(--bgFairDarkMode)]'
                         style={{
-                            backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
                             boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
-                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                         }}
                     >
                         {withdrawals.map(element => (
@@ -432,10 +423,7 @@ const Slot = () => {
         return (
             <div
                 ref={containerRef}
-                className='my-2 flex flex-col gap-2 font-medium text-[12px]'
-                style={{
-                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                }}
+                className='my-2 flex flex-col gap-2 font-medium text-[12px] text-[var(--black)] dark:text-[var(--white)]'
                 onMouseMove={handleMouseMove}
             >
                 {loadingWithdrawals ? (
@@ -446,49 +434,30 @@ const Slot = () => {
                     <div>
                         {withdrawals.map(element => (
                             <div
-                                className='flex my-2 flex-col gap-y-2 text-[14px] py-4 px-14 border-2 border-white rounded-md'
+                                className='flex my-2 flex-col gap-y-2 text-[14px] py-4 px-14 border-2 border-white rounded-md text-[var(--black)] dark:text-[var(--white)] bg-[var(--bgMainLightMode)] dark:bg-[var(--bgFairDarkMode)]'
                                 style={{
-                                    backgroundColor: themeMode?.darkMode
-                                        ? 'var(--bgFairDarkMode)'
-                                        : 'var(--bgMainLightMode)',
                                     boxShadow: themeMode?.darkMode
                                         ? 'var(--boxShadowCardDark)'
                                         : 'var(--boxShadowCardLight)',
-                                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                                 }}
                                 key={element.f_val_idx}
                             >
                                 <div className='flex flex-row items-center justify-between'>
-                                    <p
-                                        className='font-semibold'
-                                        style={{
-                                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                                        }}
-                                    >
+                                    <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>
                                         Validator
                                     </p>
                                     <LinkValidator validator={element.f_val_idx} mxAuto />
                                 </div>
 
                                 <div className='flex flex-row items-center justify-between'>
-                                    <p
-                                        className='font-semibold'
-                                        style={{
-                                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                                        }}
-                                    >
+                                    <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>
                                         Address
                                     </p>
                                     <p>{getShortAddress(element?.f_address)}</p>
                                 </div>
 
                                 <div className='flex flex-row items-center justify-between'>
-                                    <p
-                                        className='font-semibold'
-                                        style={{
-                                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                                        }}
-                                    >
+                                    <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>
                                         Amount
                                     </p>
                                     <p>{(element.f_amount / 10 ** 9).toLocaleString()} ETH</p>
@@ -497,15 +466,11 @@ const Slot = () => {
                         ))}
                         {withdrawals.length == 0 && (
                             <div
-                                className='flex mt-2 justify-center rounded-md border-2 border-white px-4 py-4'
+                                className='flex mt-2 justify-center rounded-md border-2 border-white px-4 py-4 text-[var(--black)] dark:text-[var(--white)] bg-[var(--bgMainLightMode)] dark:bg-[var(--bgDarkMode)]'
                                 style={{
-                                    backgroundColor: themeMode?.darkMode
-                                        ? 'var(--bgFairDarkMode)'
-                                        : 'var(--bgMainLightMode)',
                                     boxShadow: themeMode?.darkMode
                                         ? 'var(--boxShadowCardDark)'
                                         : 'var(--boxShadowCardLight)',
-                                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                                 }}
                             >
                                 <p className='uppercase text-[14px]'>No withdrawals</p>
@@ -531,12 +496,7 @@ const Slot = () => {
                         <Arrow direction='left' />
                     </LinkSlot>
 
-                    <h1
-                        className='text-center font-semibold text-[32px] md:text-[50px]'
-                        style={{
-                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                        }}
-                    >
+                    <h1 className='text-center font-semibold text-[32px] md:text-[50px] text-[var(--black)] dark:text-[var(--white)]'>
                         Slot {Number(id)?.toLocaleString()}
                     </h1>
 
@@ -545,6 +505,7 @@ const Slot = () => {
                     </LinkSlot>
                 </div>
             )}
+
             {loadingBlock && (
                 <div className='mt-6'>
                     <Loader />

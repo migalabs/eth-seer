@@ -1,9 +1,6 @@
-import React, { useEffect, useState, useRef, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import { setCookie, hasCookie } from 'cookies-next';
 import styled from '@emotion/styled';
-
-//Context
-import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
 // Components
 import CustomImage from '../ui/CustomImage';
@@ -92,9 +89,6 @@ const Consent = () => {
     useEffect(() => {
         setConsent(hasCookie('localConsent'));
     }, []);
-
-    // Theme Mode Context
-    const { themeMode } = React.useContext(ThemeModeContext) ?? {};
 
     const acceptCookie = () => {
         setConsent(true);

@@ -173,23 +173,19 @@ const EpochComponent = () => {
     const getContentEpochStats = () => {
         return (
             <div
-                className='flex flex-col gap-y-4 p-6 md:px-20 md:py-10 text-[14px] md:text-[16px] font-medium rounded-md border-2 border-white'
+                className='flex flex-col gap-y-4 p-6 md:px-20 md:py-10 text-[14px] md:text-[16px] font-medium rounded-md border-2 border-white text-[var(--darkGray)] dark:text-[var(--white)] bg-[var(--bgMainLightMode)] dark:bg-[var(--bgFairDarkMode)]'
                 style={{
-                    backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
                     boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
-                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
                 }}
             >
                 <div className='flex flex-row items-center gap-x-5'>
-                    <p className={` w-40 sm:w-60 text-${themeMode?.darkMode ? 'white' : 'black'}`}>Datetime (Local):</p>
-                    <p className={`text-${themeMode?.darkMode ? 'white' : 'black'}`}>
+                    <p className='w-40 sm:w-60 text-[var(--black)] dark:text-[var(--white)]'>Datetime (Local):</p>
+                    <p className='text-[var(--black)] dark:text-[var(--white)]'>
                         {new Date(blockGenesis + Number(id) * 32 * 12000).toLocaleString('ja-JP')}
                     </p>
                 </div>
                 <div className='flex flex-col sm:flex-row gap-x-5'>
-                    <p className={` w-40 sm:w-60 text-${themeMode?.darkMode ? 'white' : 'black'}`}>
-                        Blocks (out of 32):
-                    </p>
+                    <p className='w-40 sm:w-60 text-[var(--black)] dark:text-[var(--white)]'>Blocks (out of 32):</p>
                     <div className='flex justify-center gap-x-4 pt-3 md:pt-0'>
                         <CardContent
                             content={`Proposed: ${epoch?.proposed_blocks}`}
@@ -206,18 +202,12 @@ const EpochComponent = () => {
                     </div>
                 </div>
                 <div className='flex flex-col'>
-                    <p className={` w-40 sm:w-60 text-${themeMode?.darkMode ? 'white' : 'black'}`}>
-                        Attestation Accuracy:
-                    </p>
+                    <p className='w-40 sm:w-60 text-[var(--black)] dark:text-[var(--white)]'>Attestation Accuracy:</p>
                     {epoch && epoch.f_epoch === undefined && (
                         <p className='w-32 uppercase  ml-10 mt-2 text-start'>{calculatingText}</p>
                     )}
                     {epoch && epoch.f_epoch !== undefined && (
-                        <div
-                            className={`flex flex-col font-medium xl:flex-row items-center gap-2 md:gap-4 text-[12px] md:text-[14px] text-${
-                                themeMode?.darkMode ? 'white' : 'black'
-                            }`}
-                        >
+                        <div className='flex flex-col font-medium xl:flex-row items-center gap-2 md:gap-4 text-[12px] md:text-[14px] text-[var(--black)] dark:text-[var(--white)]'>
                             <ProgressSmoothBar
                                 title='Target'
                                 color='#343434'
@@ -269,9 +259,7 @@ const EpochComponent = () => {
                     )}
                 </div>
                 <div className='flex flex-col'>
-                    <p className={` w-40 sm:w-60 text-${themeMode?.darkMode ? 'white' : 'black'}`}>
-                        Voting Participation:
-                    </p>
+                    <p className='w-40 sm:w-60 text-[var(--black)] dark:text-[var(--white)]'>Voting Participation:</p>
                     {epoch && epoch.f_epoch === undefined && (
                         <p className='w-32 uppercase ml-10 mt-2 text-start'>{calculatingText}</p>
                     )}
@@ -296,8 +284,8 @@ const EpochComponent = () => {
                     </div>
                 </div>
                 <div className='flex flex-row items-center gap-x-5'>
-                    <p className={` w-40 sm:w-60 text-${themeMode?.darkMode ? 'white' : 'black'}`}>Withdrawals:</p>
-                    <p className={`text-${themeMode?.darkMode ? 'white' : 'black'}`}>
+                    <p className='w-40 sm:w-60 text-[var(--black)] dark:text-[var(--white)]'>Withdrawals:</p>
+                    <p className='text-[var(--black)] dark:text-[var(--white)]'>
                         {((epoch?.withdrawals ?? 0) / 10 ** 9).toLocaleString()} ETH
                     </p>
                 </div>
@@ -319,12 +307,7 @@ const EpochComponent = () => {
                         <Arrow direction='left' />
                     </LinkEpoch>
 
-                    <h1
-                        className='text-center font-semibold text-[32px] md:text-[50px]'
-                        style={{
-                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                        }}
-                    >
+                    <h1 className='text-center font-semibold text-[32px] md:text-[50px] text-[var(--black)] dark:text-[var(--white)]'>
                         Epoch {Number(id)?.toLocaleString()}
                     </h1>
 

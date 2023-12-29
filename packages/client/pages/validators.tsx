@@ -100,10 +100,7 @@ const Validators = () => {
                 onMouseMove={handleMouseMove}
             >
                 <div
-                    className='font-semibold flex gap-x-1 justify-around px-2 xl:px-8 py-3 text-[14px] md:text-[16px] min-w-[700px] w-11/12 md:w-10/12'
-                    style={{
-                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                    }}
+                    className='font-semibold flex gap-x-1 justify-around px-2 xl:px-8 py-3 text-[14px] md:text-[16px] min-w-[700px] w-11/12 md:w-10/12 text-[var(--darkGray)] dark:text-[var(--white)]'
                 >
                     <p className='w-[25%]'>Validator ID</p>
                     <p className='w-[25%]'>Balance</p>
@@ -115,15 +112,11 @@ const Validators = () => {
                     {validators.map((validator: Validator) => (
                         <div
                             key={validator.f_val_idx}
-                            className='font-medium my-2 flex gap-x-1 justify-around items-center text-[14px] md:text-[16px] rounded-md border-2 border-white p-2 xl:px-8'
+                            className='font-medium my-2 flex gap-x-1 justify-around items-center text-[14px] md:text-[16px] rounded-md border-2 border-white p-2 xl:px-8 text-[var(--black)] dark:text-[var(--white)] bg-[var(--bgMainLightMode)] dark:bg-[var(--bgFairDarkMode)]'
                             style={{
-                                backgroundColor: themeMode?.darkMode
-                                    ? 'var(--bgFairDarkMode)'
-                                    : 'var(--bgMainLightMode)',
                                 boxShadow: themeMode?.darkMode
                                     ? 'var(--boxShadowCardDark)'
                                     : 'var(--boxShadowCardLight)',
-                                color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                             }}
                         >
                             <div className='w-[25%]'>
@@ -150,28 +143,20 @@ const Validators = () => {
         return (
             <div
                 ref={containerRef}
-                className='mt-4 flex flex-col gap-2 font-medium text-[14px] w-11/12 mx-auto'
+                className='mt-4 flex flex-col gap-2 font-medium text-[14px] w-11/12 mx-auto text-[var(--black)] dark:text-[var(--white)]'
                 onMouseMove={handleMouseMove}
-                style={{
-                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                }}
             >
                 {validators.map((validator: Validator) => (
                     <div
                         key={validator.f_val_idx}
-                        className='flex flex-col gap-y-2 py-4 px-14 border-2 border-white rounded-md'
+                        className='flex flex-col gap-y-2 py-4 px-14 border-2 border-white rounded-md text-[var(--black)] dark:text-[var(--white)] bg-[var(--bgMainLightMode)] dark:bg-[var(--bgFairDarkMode)]'
                         style={{
-                            backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
                             boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
-                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                         }}
                     >
                         <div className='flex flex-row items-center justify-between'>
                             <p
-                                className='font-semibold'
-                                style={{
-                                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                                }}
+                                className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'
                             >
                                 Validator ID
                             </p>
@@ -180,22 +165,16 @@ const Validators = () => {
 
                         <div className='flex flex-row items-center justify-between'>
                             <p
-                                className='font-semibold'
-                                style={{
-                                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                                }}
+                                className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'
                             >
                                 Balance
                             </p>
                             <p>{validator.f_balance_eth} ETH</p>
                         </div>
 
-                        <div className='flex flex-row items-center justify-between uppercase'>
+                        <div className='flex flex-row items-center justify-between'>
                             <p
-                                className='capitalize font-semibold'
-                                style={{
-                                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                                }}
+                                className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'
                             >
                                 Entity
                             </p>
@@ -204,10 +183,7 @@ const Validators = () => {
 
                         <div className='flex flex-row items-center justify-between'>
                             <p
-                                className='font-semibold'
-                                style={{
-                                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                                }}
+                                className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'
                             >
                                 Status
                             </p>
@@ -234,22 +210,15 @@ const Validators = () => {
             </Head>
             {/* Header */}
             <h1
-                className='text-center font-semibold text-[32px] md:text-[50px] mt-10 xl:mt-0 capitalize'
-                style={{
-                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                }}
+                className='text-center font-semibold text-[32px] md:text-[50px] mt-10 xl:mt-0 text-[var(--black)] dark:text-[var(--white)]'
             >
                 Ethereum Validators
             </h1>
             <div
-                className='mx-auto md:my-0 my-2 py-4 px-6 border-2 border-[var(--purple)] rounded-md flex w-11/12 lg:w-10/12'
-                style={{ background: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--bgMainLightMode)' }}
+                className='mx-auto md:my-0 my-2 py-4 px-6 border-2 border-[var(--purple)] rounded-md flex w-11/12 lg:w-10/12 bg-[var(--bgMainLightMode)] dark:bg-[var(--bgDarkMode)]'
             >
                 <h2
-                    className='text-[14px] 2xl:text-[18px] mx-auto text-center leading-6'
-                    style={{
-                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                    }}
+                    className='text-[14px] 2xl:text-[18px] mx-auto text-center leading-6 text-[var(--black)] dark:text-[var(--white)]'
                 >
                     Validators participate in the consensus protocol by proposing and validating blocks. They are
                     subject to rewards and penalties based on their behavior. Ethseer displays information about the
