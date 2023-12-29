@@ -15,6 +15,7 @@ import LinkBlock from '../../components/ui/LinkBlock';
 import TabHeader from '../../components/ui/TabHeader';
 import CopyIcon from '../../components/ui/CopyIcon';
 import Card from '../../components/ui/Card';
+import Title from '../../components/ui/Title';
 
 // Helpers
 import { getShortAddress } from '../../helpers/addressHelper';
@@ -175,9 +176,7 @@ const TransactionPage = () => {
                 <meta name='robots' property='noindex' />
             </Head>
 
-            <h1 className='text-center font-medium text-[32px] md:text-[50px] mt-14 xl:mt-0 mb-5 text-[var(--black)] dark:text-[var(--white)]'>
-                Transaction
-            </h1>
+            <Title>Transaction</Title>
 
             {loading && (
                 <div className='mt-6'>

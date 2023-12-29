@@ -10,6 +10,7 @@ import Layout from '../components/layouts/Layout';
 import SlotsList from '../components/layouts/Slots';
 import Loader from '../components/ui/Loader';
 import Pagination from '../components/ui/Pagination';
+import Title from '../components/ui/Title';
 
 // Types
 import { Slot } from '../types';
@@ -71,9 +72,7 @@ const Slots = () => {
                 <link rel='canonical' href='https://ethseer.io/slots' />
             </Head>
 
-            <h1 className='text-center mt-10 xl:mt-0 font-semibold text-[32px] md:text-[50px] capitalize text-[var(--black)] dark:text-[var(--white)]'>
-                Ethereum Slots
-            </h1>
+            <Title>Ethereum Slots</Title>
 
             <div className='mx-auto py-4 px-6 border-2 border-[var(--purple)] rounded-md flex w-11/12 lg:w-10/12 bg-[var(--bgMainLightMode)] dark:bg-[var(--bgDarkMode)]'>
                 <h2 className='text-[14px] 2xl:text-[18px] text-center leading-6 text-[var(--black)] dark:text-[var(--white)]'>

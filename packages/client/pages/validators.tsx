@@ -15,6 +15,7 @@ import LinkValidator from '../components/ui/LinkValidator';
 import LinkEntity from '../components/ui/LinkEntity';
 import Pagination from '../components/ui/Pagination';
 import Loader from '../components/ui/Loader';
+import Title from '../components/ui/Title';
 
 // Types
 import { Validator } from '../types';
@@ -192,10 +193,9 @@ const Validators = () => {
                 <meta name='keywords' content='Ethereum, Staking, Validators, PoS, Rewards, Performance, Slashing' />
                 <link rel='canonical' href='https://ethseer.io/validators' />
             </Head>
-            {/* Header */}
-            <h1 className='text-center font-semibold text-[32px] md:text-[50px] mt-10 xl:mt-0 text-[var(--black)] dark:text-[var(--white)]'>
-                Ethereum Validators
-            </h1>
+
+            <Title>Ethereum Validators</Title>
+
             <div className='mx-auto md:my-0 my-2 py-4 px-6 border-2 border-[var(--purple)] rounded-md flex w-11/12 lg:w-10/12 bg-[var(--bgMainLightMode)] dark:bg-[var(--bgDarkMode)]'>
                 <h2 className='text-[14px] 2xl:text-[18px] mx-auto text-center leading-6 text-[var(--black)] dark:text-[var(--white)]'>
                     Validators participate in the consensus protocol by proposing and validating blocks. They are
