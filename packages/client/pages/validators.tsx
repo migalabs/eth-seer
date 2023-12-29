@@ -99,9 +99,7 @@ const Validators = () => {
                 className='flex flex-col mb-4 px-6 md:px-0 overflow-x-scroll overflow-y-hidden scrollbar-thin text-center sm:items-center'
                 onMouseMove={handleMouseMove}
             >
-                <div
-                    className='font-semibold flex gap-x-1 justify-around px-2 xl:px-8 py-3 text-[14px] md:text-[16px] min-w-[700px] w-11/12 md:w-10/12 text-[var(--darkGray)] dark:text-[var(--white)]'
-                >
+                <div className='font-semibold flex gap-x-1 justify-around px-2 xl:px-8 py-3 text-[14px] md:text-[16px] min-w-[700px] w-11/12 md:w-10/12 text-[var(--darkGray)] dark:text-[var(--white)]'>
                     <p className='w-[25%]'>Validator ID</p>
                     <p className='w-[25%]'>Balance</p>
                     <p className='w-[25%]'>Entity</p>
@@ -155,38 +153,24 @@ const Validators = () => {
                         }}
                     >
                         <div className='flex flex-row items-center justify-between'>
-                            <p
-                                className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'
-                            >
+                            <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>
                                 Validator ID
                             </p>
                             <LinkValidator validator={validator.f_val_idx} />
                         </div>
 
                         <div className='flex flex-row items-center justify-between'>
-                            <p
-                                className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'
-                            >
-                                Balance
-                            </p>
+                            <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Balance</p>
                             <p>{validator.f_balance_eth} ETH</p>
                         </div>
 
                         <div className='flex flex-row items-center justify-between'>
-                            <p
-                                className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'
-                            >
-                                Entity
-                            </p>
+                            <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Entity</p>
                             <LinkEntity entity={validator.f_pool_name || 'others'} />
                         </div>
 
                         <div className='flex flex-row items-center justify-between'>
-                            <p
-                                className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'
-                            >
-                                Status
-                            </p>
+                            <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Status</p>
                             <ValidatorStatus status={validator.f_status} />
                         </div>
                     </div>
@@ -209,17 +193,11 @@ const Validators = () => {
                 <link rel='canonical' href='https://ethseer.io/validators' />
             </Head>
             {/* Header */}
-            <h1
-                className='text-center font-semibold text-[32px] md:text-[50px] mt-10 xl:mt-0 text-[var(--black)] dark:text-[var(--white)]'
-            >
+            <h1 className='text-center font-semibold text-[32px] md:text-[50px] mt-10 xl:mt-0 text-[var(--black)] dark:text-[var(--white)]'>
                 Ethereum Validators
             </h1>
-            <div
-                className='mx-auto md:my-0 my-2 py-4 px-6 border-2 border-[var(--purple)] rounded-md flex w-11/12 lg:w-10/12 bg-[var(--bgMainLightMode)] dark:bg-[var(--bgDarkMode)]'
-            >
-                <h2
-                    className='text-[14px] 2xl:text-[18px] mx-auto text-center leading-6 text-[var(--black)] dark:text-[var(--white)]'
-                >
+            <div className='mx-auto md:my-0 my-2 py-4 px-6 border-2 border-[var(--purple)] rounded-md flex w-11/12 lg:w-10/12 bg-[var(--bgMainLightMode)] dark:bg-[var(--bgDarkMode)]'>
+                <h2 className='text-[14px] 2xl:text-[18px] mx-auto text-center leading-6 text-[var(--black)] dark:text-[var(--white)]'>
                     Validators participate in the consensus protocol by proposing and validating blocks. They are
                     subject to rewards and penalties based on their behavior. Ethseer displays information about the
                     current validators in the Beacon Chain, including detailed information about each validator and its
