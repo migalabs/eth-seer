@@ -11,6 +11,7 @@ import BlockList from '../components/layouts/Blocks';
 import Loader from '../components/ui/Loader';
 import Pagination from '../components/ui/Pagination';
 import Title from '../components/ui/Title';
+import PageDescription from '../components/ui/PageDescription';
 
 // Types
 import { BlockEL } from '../types';
@@ -74,12 +75,10 @@ const Blocks = () => {
 
             <Title>Ethereum Blocks</Title>
 
-            <div className='mx-auto py-4 px-6 border-2 border-[var(--purple)] rounded-md flex w-11/12 lg:w-10/12 bg-[var(--bgMainLightMode)] dark:bg-[var(--bgDarkMode)]'>
-                <h2 className='text-[14px] 2xl:text-[18px] text-center leading-6 text-[var(--black)] dark:text-[var(--white)]'>
-                    Blocks are the fundamental unit of consensus for blockchains. In it you will find a number of
-                    transactions and interactions with smart contracts.
-                </h2>
-            </div>
+            <PageDescription>
+                Blocks are the fundamental unit of consensus for blockchains. In it you will find a number of
+                transactions and interactions with smart contracts.
+            </PageDescription>
 
             {blocksCount > 0 && (
                 <Pagination

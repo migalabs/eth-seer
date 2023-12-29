@@ -15,6 +15,7 @@ import CustomImage from '../components/ui/CustomImage';
 import Loader from '../components/ui/Loader';
 import Animation from '../components/layouts/Animation';
 import Title from '../components/ui/Title';
+import PageDescription from '../components/ui/PageDescription';
 
 type Entity = {
     f_pool_name: string;
@@ -79,14 +80,12 @@ const Entities = () => {
 
             <Title>Ethereum Staking Entities</Title>
 
-            <div className='mx-auto py-4 px-6 border-2 border-[var(--purple)] rounded-md flex w-11/12 lg:w-10/12 bg-[var(--bgMainLightMode)] dark:bg-[var(--bgDarkMode)]'>
-                <h2 className='text-[14px] 2xl:text-[18px] text-center leading-6 text-[var(--black)] dark:text-[var(--white)]'>
-                    An entity can range from an individual running many validators to an institutional organization
-                    providing staking services. If it is running at least 100 validators, we catalog it as an entity.
-                    Ethseer obtains information about the entities to which validators belong to through graffiti,
-                    deposit address analysis, among others. EthSeer also monitors their performance.
-                </h2>
-            </div>
+            <PageDescription>
+                An entity can range from an individual running many validators to an institutional organization
+                providing staking services. If it is running at least 100 validators, we catalog it as an entity.
+                Ethseer obtains information about the entities to which validators belong to through graffiti, deposit
+                address analysis, among others. EthSeer also monitors their performance.
+            </PageDescription>
 
             <hr className='w-11/12 lg:w-10/12 mx-auto my-4 border-white' />
 

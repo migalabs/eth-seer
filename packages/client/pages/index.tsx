@@ -13,6 +13,7 @@ import Statitstics from '../components/layouts/Statistics';
 import Problems from '../components/layouts/Problems';
 import SummaryOverview from '../components/ui/SummaryOverview';
 import Title from '../components/ui/Title';
+import PageDescription from '../components/ui/PageDescription';
 
 export default function Home() {
     // Router
@@ -72,13 +73,11 @@ export default function Home() {
                 <Layout>
                     <Title>Ethereum Blockchain Explorer</Title>
 
-                    <div className='mx-auto py-4 px-6 text-[14px] 2xl:text-[18px] border rounded-md w-11/12 lg:w-10/12 mb-5 bg-[var(--bgMainLightMode)] dark:bg-[var(--bgDarkMode)] border-[var(--lightGray)] dark:border-[var(--white)]'>
-                        <h2 className='text-center leading-6 text-[var(--black)] dark:text-[var(--white)]'>
-                            EthSeer provides information about the Beacon Chain of Ethereum. It displays the blocks
-                            being produced in real-time with a user-friendly interface and allows users to search for
-                            information in an engaging manner to understand the Blockchain.
-                        </h2>
-                    </div>
+                    <PageDescription>
+                        EthSeer provides information about the Beacon Chain of Ethereum. It displays the blocks being
+                        produced in real-time with a user-friendly interface and allows users to search for information
+                        in an engaging manner to understand the Blockchain.
+                    </PageDescription>
 
                     <SummaryOverview />
                     <ChainOverview />

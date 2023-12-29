@@ -11,6 +11,7 @@ import TransactionList from '../components/layouts/Transactions';
 import Loader from '../components/ui/Loader';
 import Pagination from '../components/ui/Pagination';
 import Title from '../components/ui/Title';
+import PageDescription from '../components/ui/PageDescription';
 
 // Types
 import { Transaction } from '../types';
@@ -76,11 +77,9 @@ const Transactions = () => {
 
             <Title>Ethereum Transactions</Title>
 
-            <div className='mx-auto md:my-0 my-2 py-4 px-6 border-2 border-[var(--purple)] rounded-md flex w-11/12 lg:w-10/12 bg-[var(--bgMainLightMode)] dark:bg-[var(--bgDarkMode)]'>
-                <h2 className='text-[14px] 2xl:text-[18px] mx-auto text-center leading-5 text-[var(--black)] dark:text-[var(--white)]'>
-                    Transactions are the atomic components that create the state of the Ethereum Virtual Machine.
-                </h2>
-            </div>
+            <PageDescription>
+                Transactions are the atomic components that create the state of the Ethereum Virtual Machine.
+            </PageDescription>
 
             {firstQueryFetched && (
                 <Pagination currentPage={currentPage} totalPages={5000} onChangePage={getTransactions} />

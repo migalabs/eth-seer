@@ -17,6 +17,7 @@ import ViewMoreButton from '../ui/ViewMoreButton';
 import LinkValidator from '../ui/LinkValidator';
 import LinkSlot from '../ui/LinkSlot';
 import LinkIcon from '../ui/LinkIcon';
+import Title from '../ui/Title';
 
 // Types
 import { Block } from '../../types';
@@ -330,9 +331,7 @@ const Graffitis = () => {
 
     return (
         <div className='text-center'>
-            <h1 className='text-center mt-14 xl:mt-0 font-semibold text-[32px] md:text-[50px] capitalize text-[var(--black)] dark:text-[var(--white)]'>
-                Graffiti Search Result
-            </h1>
+            <Title>Graffiti Search Result</Title>
 
             <div className='mt-6'>
                 {blocks.length === 0 && loading && <Loader />}
