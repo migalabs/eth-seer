@@ -12,6 +12,7 @@ import ChainOverview from '../components/layouts/ChainOverview';
 import Statitstics from '../components/layouts/Statistics';
 import Problems from '../components/layouts/Problems';
 import SummaryOverview from '../components/ui/SummaryOverview';
+import Title from '../components/ui/Title';
 
 export default function Home() {
     // Router
@@ -69,11 +70,7 @@ export default function Home() {
         <>
             {status && status.working ? (
                 <Layout>
-                    <div className='text-center mb-5 mt-14 xl:mt-0'>
-                        <h1 className='text-[32px] md:text-[50px] capitalize font-semibold text-[var(--black)] dark:text-[var(--white)]'>
-                            Ethereum blockchain explorer
-                        </h1>
-                    </div>
+                    <Title>Ethereum Blockchain Explorer</Title>
 
                     <div className='mx-auto py-4 px-6 text-[14px] 2xl:text-[18px] border rounded-md w-11/12 lg:w-10/12 mb-5 bg-[var(--bgMainLightMode)] dark:bg-[var(--bgDarkMode)] border-[var(--lightGray)] dark:border-[var(--white)]'>
                         <h2 className='text-center leading-6 text-[var(--black)] dark:text-[var(--white)]'>

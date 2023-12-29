@@ -14,6 +14,7 @@ import EntityCard from '../components/ui/EntityCard';
 import CustomImage from '../components/ui/CustomImage';
 import Loader from '../components/ui/Loader';
 import Animation from '../components/layouts/Animation';
+import Title from '../components/ui/Title';
 
 type Entity = {
     f_pool_name: string;
@@ -76,10 +77,7 @@ const Entities = () => {
                 <link rel='canonical' href='https://ethseer.io/entities' />
             </Head>
 
-            {/* Header */}
-            <h1 className='text-center font-semibold text-[32px] md:text-[50px] mt-10 xl:mt-0 capitalize m-2 md:m-0 text-[var(--black)] dark:text-[var(--white)]'>
-                Ethereum Staking Entities
-            </h1>
+            <Title>Ethereum Staking Entities</Title>
 
             <div className='mx-auto py-4 px-6 border-2 border-[var(--purple)] rounded-md flex w-11/12 lg:w-10/12 bg-[var(--bgMainLightMode)] dark:bg-[var(--bgDarkMode)]'>
                 <h2 className='text-[14px] 2xl:text-[18px] text-center leading-6 text-[var(--black)] dark:text-[var(--white)]'>
