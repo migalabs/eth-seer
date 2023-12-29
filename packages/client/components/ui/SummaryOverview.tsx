@@ -14,8 +14,6 @@ type Summary = {
 };
 
 const SummaryOverview = () => {
-    const assetPrefix = process.env.NEXT_PUBLIC_ASSET_PREFIX ?? '';
-
     // Router
     const router = useRouter();
     const { network } = router.query;
