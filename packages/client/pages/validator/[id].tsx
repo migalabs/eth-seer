@@ -19,12 +19,12 @@ import ValidatorStatus from '../../components/ui/ValidatorStatus';
 import LinkEpoch from '../../components/ui/LinkEpoch';
 import LinkSlot from '../../components/ui/LinkSlot';
 import LinkEntity from '../../components/ui/LinkEntity';
-import LinkValidator from '../../components/ui/LinkValidator';
-import Arrow from '../../components/ui/Arrow';
+import TitleWithArrows from '../../components/ui/TitleWithArrows';
 
 // Types
 import { Validator, Slot, Withdrawal } from '../../types';
 
+// Props
 type Props = {
     content: string;
     bg: string;
@@ -674,22 +674,8 @@ const ValidatorComponent = () => {
                 <meta name='robots' property='noindex' />
             </Head>
 
-            {/* Header */}
-            {id && (
-                <div className='flex gap-x-3 justify-center items-center mt-14 xl:mt-0 mb-5'>
-                    <LinkValidator validator={Number(id) - 1}>
-                        <Arrow direction='left' />
-                    </LinkValidator>
+            <TitleWithArrows type='validator' value={Number(id)} />
 
-                    <h1 className='text-center font-semibold text-[32px] md:text-[50px] text-[var(--black)] dark:text-[var(--white)]'>
-                        Validator {Number(id)?.toLocaleString()}
-                    </h1>
-
-                    <LinkValidator validator={Number(id) + 1}>
-                        <Arrow direction='right' />
-                    </LinkValidator>
-                </div>
-            )}
             {loadingValidator && (
                 <div className='mb-4'>
                     <Loader />

@@ -13,13 +13,12 @@ import Layout from '../../components/layouts/Layout';
 import TabHeader from '../../components/ui/TabHeader';
 import Loader from '../../components/ui/Loader';
 import LinkValidator from '../../components/ui/LinkValidator';
-import LinkSlot from '../../components/ui/LinkSlot';
-import Arrow from '../../components/ui/Arrow';
 import LinkEpoch from '../../components/ui/LinkEpoch';
 import LinkEntity from '../../components/ui/LinkEntity';
 import LinkBlock from '../../components/ui/LinkBlock';
 import EpochAnimation from '../../components/layouts/EpochAnimation';
 import Card from '../../components/ui/Card';
+import TitleWithArrows from '../../components/ui/TitleWithArrows';
 
 // Types
 import { Block, Withdrawal } from '../../types';
@@ -489,22 +488,7 @@ const Slot = () => {
                 <meta name='robots' property='noindex' />
             </Head>
 
-            {/* Header */}
-            {id && (
-                <div className='flex gap-x-3 justify-center items-center mt-14 xl:mt-0 mb-5'>
-                    <LinkSlot slot={Number(id) - 1}>
-                        <Arrow direction='left' />
-                    </LinkSlot>
-
-                    <h1 className='text-center font-semibold text-[32px] md:text-[50px] text-[var(--black)] dark:text-[var(--white)]'>
-                        Slot {Number(id)?.toLocaleString()}
-                    </h1>
-
-                    <LinkSlot slot={Number(id) + 1}>
-                        <Arrow direction='right' />
-                    </LinkSlot>
-                </div>
-            )}
+            <TitleWithArrows type='slot' value={Number(id)} />
 
             {loadingBlock && (
                 <div className='mt-6'>

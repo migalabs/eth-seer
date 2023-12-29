@@ -13,9 +13,8 @@ import Layout from '../../components/layouts/Layout';
 import ProgressSmoothBar from '../../components/ui/ProgressSmoothBar';
 import EpochAnimation from '../../components/layouts/EpochAnimation';
 import Loader from '../../components/ui/Loader';
-import LinkEpoch from '../../components/ui/LinkEpoch';
 import Slots from '../../components/layouts/Slots';
-import Arrow from '../../components/ui/Arrow';
+import TitleWithArrows from '../../components/ui/TitleWithArrows';
 
 // Types
 import { Epoch, Slot } from '../../types';
@@ -300,22 +299,8 @@ const EpochComponent = () => {
                 <meta name='robots' property='noindex' />
             </Head>
 
-            {/* Header */}
-            {id && (
-                <div className='flex gap-x-3 justify-center items-center mb-5 mt-14 xl:mt-0'>
-                    <LinkEpoch epoch={Number(id) - 1}>
-                        <Arrow direction='left' />
-                    </LinkEpoch>
+            <TitleWithArrows type='epoch' value={Number(id)} />
 
-                    <h1 className='text-center font-semibold text-[32px] md:text-[50px] text-[var(--black)] dark:text-[var(--white)]'>
-                        Epoch {Number(id)?.toLocaleString()}
-                    </h1>
-
-                    <LinkEpoch epoch={Number(id) + 1}>
-                        <Arrow direction='right' />
-                    </LinkEpoch>
-                </div>
-            )}
             {loadingEpoch && (
                 <div className='mt-6'>
                     <Loader />

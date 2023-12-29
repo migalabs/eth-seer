@@ -13,10 +13,9 @@ import Layout from '../../components/layouts/Layout';
 import TabHeader from '../../components/ui/TabHeader';
 import Loader from '../../components/ui/Loader';
 import LinkSlot from '../../components/ui/LinkSlot';
-import Arrow from '../../components/ui/Arrow';
-import LinkBlock from '../../components/ui/LinkBlock';
 import Transactions from '../../components/layouts/Transactions';
 import Card from '../../components/ui/Card';
+import TitleWithArrows from '../../components/ui/TitleWithArrows';
 
 // Types
 import { BlockEL, Transaction } from '../../types';
@@ -284,20 +283,7 @@ const BlockPage = () => {
                 <meta name='robots' property='noindex' />
             </Head>
 
-            {/* Header */}
-            <div className='flex gap-x-3 justify-center items-center mt-14 xl:mt-0 mb-5'>
-                <LinkBlock block={Number(id) - 1}>
-                    <Arrow direction='left' />
-                </LinkBlock>
-
-                <h1 className='text-center font-semibold text-[32px] md:text-[50px] text-[var(--black)] dark:text-[var(--white)]'>
-                    Block {Number(id)?.toLocaleString()}
-                </h1>
-
-                <LinkBlock block={Number(id) + 1}>
-                    <Arrow direction='right' />
-                </LinkBlock>
-            </div>
+            <TitleWithArrows type='block' value={Number(id)} />
 
             {loadingBlock && (
                 <div className='mt-6'>
