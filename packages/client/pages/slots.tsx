@@ -11,6 +11,7 @@ import SlotsList from '../components/layouts/Slots';
 import Loader from '../components/ui/Loader';
 import Pagination from '../components/ui/Pagination';
 import Title from '../components/ui/Title';
+import PageDescription from '../components/ui/PageDescription';
 
 // Types
 import { Slot } from '../types';
@@ -74,13 +75,10 @@ const Slots = () => {
 
             <Title>Ethereum Slots</Title>
 
-            <div className='mx-auto py-4 px-6 border-2 border-[var(--purple)] rounded-md flex w-11/12 lg:w-10/12 bg-[var(--bgMainLightMode)] dark:bg-[var(--bgDarkMode)]'>
-                <h2 className='text-[14px] 2xl:text-[18px] text-center leading-6 text-[var(--black)] dark:text-[var(--white)]'>
-                    Every epoch is divided into regular interval called slots, which occur every 12 seconds. At every
-                    slot, one validator can propose a block, and the other validators need to attest on the canonical
-                    chain.
-                </h2>
-            </div>
+            <PageDescription>
+                Every epoch is divided into regular interval called slots, which occur every 12 seconds. At every slot,
+                one validator can propose a block, and the other validators need to attest on the canonical chain.
+            </PageDescription>
 
             {slotsCount > 0 && (
                 <Pagination

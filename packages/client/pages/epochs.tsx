@@ -11,6 +11,7 @@ import EpochList from '../components/layouts/Epochs';
 import Loader from '../components/ui/Loader';
 import Pagination from '../components/ui/Pagination';
 import Title from '../components/ui/Title';
+import PageDescription from '../components/ui/PageDescription';
 
 const Epochs = () => {
     // Constants
@@ -72,12 +73,10 @@ const Epochs = () => {
 
             <Title>Ethereum Epochs</Title>
 
-            <div className='mx-auto py-4 px-6 border-2 border-[var(--purple)] rounded-md flex w-11/12 lg:w-10/12 bg-[var(--bgMainLightMode)] dark:bg-[var(--bgDarkMode)]'>
-                <h2 className='text-[14px] 2xl:text-[18px] text-center leading-6 text-[var(--black)] dark:text-[var(--white)]'>
-                    Epochs in Ethereum refer to a specific period of time in the Beacon Chain. Each epoch is composed of
-                    32 slots and has a duration of 6.4 minutes.
-                </h2>
-            </div>
+            <PageDescription>
+                Epochs in Ethereum refer to a specific period of time in the Beacon Chain. Each epoch is composed of 32
+                slots and has a duration of 6.4 minutes.
+            </PageDescription>
 
             {epochsCount > 0 && (
                 <Pagination
