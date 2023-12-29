@@ -110,7 +110,6 @@ export default function Document() {
                 <meta property='og:title' content='Ethereum Blockchain Explorer - EthSeer.io' />
                 <meta property='og:image' content='http://ethseer.io/static/images/ethseer_metadata.png' />
                 <meta httpEquiv='Content-Security-Policy' content='upgrade-insecure-requests' />
-                <link href='/static/css/theme-mode-switch.css' rel='stylesheet' />
             </Head>
 
             <body>
