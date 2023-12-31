@@ -7,6 +7,9 @@ import axiosClient from '../../config/axios';
 // Contexts
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
+// Hooks
+import useLargeView from '../../hooks/useLargeView';
+
 // Components
 import LinkBlock from '../ui/LinkBlock';
 import LinkSlot from '../ui/LinkSlot';
@@ -30,13 +33,13 @@ const Blocks = ({ blocks }: Props) => {
     // Refs
     const containerRef = useRef<HTMLInputElement>(null);
 
+    // Large View Hook
+    const isLargeView = useLargeView();
+
     // States
-    const [desktopView, setDesktopView] = useState(true);
     const [blockGenesis, setBlockGenesis] = useState(0);
 
     useEffect(() => {
-        setDesktopView(window !== undefined && window.innerWidth > 768);
-
         if (network && blockGenesis == 0) {
             getBlockGenesis(network as string);
         }
@@ -188,7 +191,7 @@ const Blocks = ({ blocks }: Props) => {
     return (
         <div className='mx-auto w-11/12 md:w-10/12'>
             {blocks.length > 0 ? (
-                <>{desktopView ? getContentBlocksDesktop() : getContentBlocksMobile()}</>
+                <>{isLargeView ? getContentBlocksDesktop() : getContentBlocksMobile()}</>
             ) : (
                 <div className='flex justify-center p-2'>
                     <p className='uppercase text-[14px] md:text-[16px]'>No blocks</p>

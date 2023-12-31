@@ -3,6 +3,10 @@ import React, { useContext, useState } from 'react';
 // Contexts
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
+// Hooks
+import useLargeView from '../../hooks/useLargeView';
+
+// Props
 type Props = {
     header: string;
     isSelected: boolean;
@@ -13,6 +17,10 @@ const TabHeader = ({ header, isSelected, onClick }: Props) => {
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
 
+    // Large View Hook
+    const isLargeView = useLargeView();
+
+    // States
     const [isHovered, setIsHovered] = useState(false);
 
     const getBackgroundColor = () => {
@@ -37,7 +45,7 @@ const TabHeader = ({ header, isSelected, onClick }: Props) => {
     };
 
     const handleMouseEnter = () => {
-        if (window.innerWidth >= 768) {
+        if (isLargeView) {
             setIsHovered(true);
         }
     };

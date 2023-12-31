@@ -8,6 +8,9 @@ import axiosClient from '../config/axios';
 // Contexts
 import ThemeModeContext from '../contexts/theme-mode/ThemeModeContext';
 
+// Hooks
+import useLargeView from '../hooks/useLargeView';
+
 // Components
 import Layout from '../components/layouts/Layout';
 import ValidatorStatus from '../components/ui/ValidatorStatus';
@@ -35,11 +38,13 @@ const Validators = () => {
     // Refs
     const containerRef = useRef<HTMLInputElement>(null);
 
+    // Large View Hook
+    const isLargeView = useLargeView();
+
     // States
     const [validators, setValidators] = useState<Validator[]>([]);
     const [validatorsCount, setValidatorsCount] = useState(0);
     const [loading, setLoading] = useState(false);
-    const [desktopView, setDesktopView] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
 
     // UseEffect
@@ -50,12 +55,6 @@ const Validators = () => {
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [network]);
-
-    useEffect(() => {
-        setDesktopView(window !== undefined && window.innerWidth > 768);
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     const getValidators = async (page: number) => {
         try {
@@ -216,7 +215,7 @@ const Validators = () => {
                     <Loader />
                 </div>
             ) : (
-                <>{desktopView ? getValidatorsDesktop() : getValidatorsMobile()}</>
+                <>{isLargeView ? getValidatorsDesktop() : getValidatorsMobile()}</>
             )}
         </Layout>
     );

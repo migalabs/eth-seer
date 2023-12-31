@@ -8,6 +8,9 @@ import axiosClient from '../../config/axios';
 // Contexts
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
+// Hooks
+import useLargeView from '../../hooks/useLargeView';
+
 // Components
 import Layout from '../../components/layouts/Layout';
 import TabHeader from '../../components/ui/TabHeader';
@@ -36,6 +39,9 @@ const Slot = () => {
     const existsBlockRef = useRef(true);
     const containerRef = useRef<HTMLInputElement>(null);
 
+    // Large View Hook
+    const isLargeView = useLargeView();
+
     // States
     const [block, setBlock] = useState<Block | null>(null);
     const [withdrawals, setWithdrawals] = useState<Array<Withdrawal>>([]);
@@ -44,7 +50,6 @@ const Slot = () => {
     const [tabPageIndex, setTabPageIndex] = useState<number>(0);
     const [loadingBlock, setLoadingBlock] = useState<boolean>(true);
     const [loadingWithdrawals, setLoadingWithdrawals] = useState<boolean>(true);
-    const [desktopView, setDesktopView] = useState(true);
     const [blockGenesis, setBlockGenesis] = useState(0);
 
     // UseEffect
@@ -60,11 +65,6 @@ const Slot = () => {
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [network, id]);
-    useEffect(() => {
-        setDesktopView(window !== undefined && window.innerWidth > 768);
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     const shuffle = useCallback(() => {
         const text: string = getCountdownText();
@@ -240,7 +240,7 @@ const Slot = () => {
                 return getOverview();
 
             case 1:
-                return desktopView ? getWithdrawalsDesktop() : getWithdrawalsMobile();
+                return isLargeView ? getWithdrawalsDesktop() : getWithdrawalsMobile();
         }
     };
 

@@ -8,6 +8,9 @@ import axiosClient from '../../config/axios';
 // Contexts
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
+// Hooks
+import useLargeView from '../../hooks/useLargeView';
+
 // Components
 import Layout from '../../components/layouts/Layout';
 import BlockImage from '../../components/ui/BlockImage';
@@ -37,6 +40,9 @@ const ValidatorComponent = () => {
     const validatorRef = useRef(0);
     const containerRef = useRef<HTMLInputElement>(null);
 
+    // Large View Hook
+    const isLargeView = useLargeView();
+
     // States
     const [validatorHour, setValidatorHour] = useState<Validator | null>(null);
     const [validatorDay, setValidatorDay] = useState<Validator | null>(null);
@@ -44,7 +50,6 @@ const ValidatorComponent = () => {
     const [proposedBlocks, setProposedBlocks] = useState<Slot[]>([]);
     const [withdrawals, setWithdrawals] = useState<Withdrawal[]>([]);
     const [animation, setAnimation] = useState(false);
-    const [desktopView, setDesktopView] = useState(true);
     const [tabPageIndex, setTabPageIndex] = useState(0);
     const [tabPageIndexValidatorPerformance, setTabPageIndexValidatorPerformance] = useState(0);
     const [loadingValidator, setLoadingValidator] = useState(true);
@@ -63,8 +68,6 @@ const ValidatorComponent = () => {
             getProposedBlocks();
             getWithdrawals();
         }
-
-        setDesktopView(window !== undefined && window.innerWidth > 768);
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [network, id]);
@@ -275,7 +278,7 @@ const ValidatorComponent = () => {
                         </div>
                     );
                 } else {
-                    return desktopView ? getContentProposedBlocks() : getContentProposedBlocksMobile();
+                    return isLargeView ? getContentProposedBlocks() : getContentProposedBlocksMobile();
                 }
 
             case 1:
@@ -286,7 +289,7 @@ const ValidatorComponent = () => {
                         </div>
                     );
                 } else {
-                    return desktopView ? getContentWithdrawals() : getContentWithdrawalsMobile();
+                    return isLargeView ? getContentWithdrawals() : getContentWithdrawalsMobile();
                 }
         }
     };
