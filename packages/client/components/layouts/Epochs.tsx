@@ -7,6 +7,9 @@ import axiosClient from '../../config/axios';
 // Contexts
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
+// Hooks
+import useLargeView from '../../hooks/useLargeView';
+
 // Components
 import ProgressTileBar from '../ui/ProgressTileBar';
 import ProgressSmoothBar from '../ui/ProgressSmoothBar';
@@ -37,8 +40,10 @@ const Epochs = ({ epochs, blocksPerEpoch, showCalculatingEpochs }: Props) => {
     // Refs
     const containerRef = useRef<HTMLInputElement>(null);
 
+    // Large View Hook
+    const isLargeView = useLargeView();
+
     // States
-    const [desktopView, setDesktopView] = useState(true);
     const [calculatingText, setCalculatingText] = useState('');
     const [blockGenesis, setBlockGenesis] = useState(0);
 
@@ -47,8 +52,6 @@ const Epochs = ({ epochs, blocksPerEpoch, showCalculatingEpochs }: Props) => {
         if (network && blockGenesis === 0) {
             getBlockGenesis(network as string);
         }
-
-        setDesktopView(window !== undefined && window.innerWidth > 768);
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [network]);
@@ -778,7 +781,7 @@ const Epochs = ({ epochs, blocksPerEpoch, showCalculatingEpochs }: Props) => {
         </div>
     );
 
-    return <div className='mx-auto w-11/12 md:w-10/12'>{desktopView ? getDesktopView() : getPhoneView()}</div>;
+    return <div className='mx-auto w-11/12 md:w-10/12'>{isLargeView ? getDesktopView() : getPhoneView()}</div>;
 };
 
 export default Epochs;

@@ -7,6 +7,9 @@ import axiosClient from '../../config/axios';
 // Contexts
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
+// Hooks
+import useLargeView from '../../hooks/useLargeView';
+
 // Components
 import TooltipContainer from '../ui/TooltipContainer';
 import CustomImage from '../ui/CustomImage';
@@ -33,8 +36,10 @@ const Graffitis = () => {
     // Refs
     const containerRef = useRef<HTMLInputElement>(null);
 
+    // Large View Hook
+    const isLargeView = useLargeView();
+
     // States
-    const [desktopView, setDesktopView] = useState(true);
     const [currentPage, setCurrentPage] = useState(0);
     const [disableViewMore, setDisableViewMore] = useState(true);
     const [animation, setAnimation] = useState(false);
@@ -43,8 +48,6 @@ const Graffitis = () => {
     const [blockGenesis, setBlockGenesis] = useState(0);
 
     useEffect(() => {
-        setDesktopView(window !== undefined && window.innerWidth > 768);
-
         if (network && graffiti && blocks.length === 0) {
             getGraffities(0);
         }
@@ -336,7 +339,7 @@ const Graffitis = () => {
             <div className='mt-6'>
                 {blocks.length === 0 && loading && <Loader />}
 
-                {blocks.length !== 0 && (desktopView ? getDesktopView() : getPhoneView())}
+                {blocks.length !== 0 && (isLargeView ? getDesktopView() : getPhoneView())}
 
                 {animation && <Animation text={`"${graffiti}" not found`} />}
             </div>

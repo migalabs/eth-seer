@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 
+// Hooks
+import useLargeView from '../../hooks/useLargeView';
+
 //Components
 import NetworkLink from './NetworkLink';
 
@@ -9,6 +12,7 @@ type Item = {
     route: string;
 };
 
+// Props
 type Props = {
     name: string;
     items: Item[];
@@ -16,23 +20,26 @@ type Props = {
 };
 
 const Dropdown = ({ name, items, useNetworkLink }: Props) => {
+    // Large View Hook
+    const largeView = useLargeView();
+
     // States
     const [isOpen, setIsOpen] = useState(false);
 
     const handleMouseEnter = () => {
-        if (window.innerWidth >= 768) {
+        if (largeView) {
             setIsOpen(true);
         }
     };
 
     const handleMouseLeave = () => {
-        if (window.innerWidth >= 768) {
+        if (largeView) {
             setIsOpen(false);
         }
     };
 
     const handleButtonClick = () => {
-        if (window.innerWidth < 768) {
+        if (!largeView) {
             setIsOpen(!isOpen);
         }
     };
