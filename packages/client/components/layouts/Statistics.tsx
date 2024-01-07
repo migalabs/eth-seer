@@ -6,7 +6,6 @@ import BlocksContext from '../../contexts/blocks/BlocksContext';
 import EpochsContext from '../../contexts/epochs/EpochsContext';
 
 // Components
-import Loader from '../ui/Loader';
 import ViewMoreButton from '../ui/ViewMoreButton';
 import Epochs from './Epochs';
 
@@ -24,7 +23,7 @@ const Statistics = () => {
     // States
     const [currentPage, setCurrentPage] = useState(0);
     const [blocksLoaded, setBlocksLoaded] = useState(false);
-    const [loadingEpochs, setLoadingEpochs] = useState(false);
+    const [loadingEpochs, setLoadingEpochs] = useState(true);
 
     //UseEffect
     useEffect(() => {
@@ -35,8 +34,7 @@ const Statistics = () => {
         }
 
         // Fetching epochs
-        if (network && epochs && epochs.epochs.length === 0 && !loadingEpochs) {
-            setLoadingEpochs(true);
+        if (network && epochs && epochs.epochs.length === 0) {
             getEpochs?.(network as string, 0);
         }
 
@@ -56,17 +54,17 @@ const Statistics = () => {
 
     return (
         <>
-            {epochs && epochs.epochs.length > 0 && blocks && blocks.epochs && (
-                <Epochs epochs={epochs.epochs} blocksPerEpoch={blocks.epochs} showCalculatingEpochs />
+            {epochs && blocks && (
+                <Epochs
+                    epochs={epochs.epochs}
+                    blocksPerEpoch={blocks.epochs}
+                    showCalculatingEpochs
+                    fetchingEpochs={loadingEpochs}
+                    showRowsWhileFetching
+                />
             )}
 
-            {loadingEpochs && (
-                <div className='mt-4 mb-6'>
-                    <Loader />
-                </div>
-            )}
-
-            <div className='mt-2'>
+            <div className='mt-6'>
                 <ViewMoreButton onClick={handleViewMore} />
             </div>
         </>

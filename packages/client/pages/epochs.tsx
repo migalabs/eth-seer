@@ -8,7 +8,6 @@ import axiosClient from '../config/axios';
 // Components
 import Layout from '../components/layouts/Layout';
 import EpochList from '../components/layouts/Epochs';
-import Loader from '../components/ui/Loader';
 import Pagination from '../components/ui/Pagination';
 import Title from '../components/ui/Title';
 import PageDescription from '../components/ui/PageDescription';
@@ -58,7 +57,6 @@ const Epochs = () => {
         }
     };
 
-    //OVERVIEW PAGE
     return (
         <Layout hideMetaDescription>
             <Head>
@@ -86,15 +84,7 @@ const Epochs = () => {
                 />
             )}
 
-            {loading ? (
-                <div className='my-6'>
-                    <Loader />
-                </div>
-            ) : (
-                <div className='my-4'>
-                    <EpochList epochs={epochs} />
-                </div>
-            )}
+            <EpochList epochs={epochs} fetchingEpochs={loading} />
         </Layout>
     );
 };

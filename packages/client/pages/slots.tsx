@@ -8,7 +8,6 @@ import axiosClient from '../config/axios';
 // Components
 import Layout from '../components/layouts/Layout';
 import SlotsList from '../components/layouts/Slots';
-import Loader from '../components/ui/Loader';
 import Pagination from '../components/ui/Pagination';
 import Title from '../components/ui/Title';
 import PageDescription from '../components/ui/PageDescription';
@@ -18,7 +17,7 @@ import { Slot } from '../types';
 
 const Slots = () => {
     // Constants
-    const LIMIT = 32;
+    const LIMIT = 10;
 
     // Router
     const router = useRouter();
@@ -44,7 +43,7 @@ const Slots = () => {
 
             setCurrentPage(page);
 
-            const response = await axiosClient.get(`/api/slots`, {
+            const response = await axiosClient.get('/api/slots', {
                 params: {
                     network,
                     page,
@@ -88,13 +87,7 @@ const Slots = () => {
                 />
             )}
 
-            {loading ? (
-                <div className='my-6'>
-                    <Loader />
-                </div>
-            ) : (
-                <SlotsList slots={slots} />
-            )}
+            <SlotsList slots={slots} fetchingSlots={loading} />
         </Layout>
     );
 };

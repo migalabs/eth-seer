@@ -1,12 +1,9 @@
-import React, { useState, useEffect, useContext, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
 // Axios
 import axiosClient from '../config/axios';
-
-// Contexts
-import ThemeModeContext from '../contexts/theme-mode/ThemeModeContext';
 
 // Hooks
 import useLargeView from '../hooks/useLargeView';
@@ -17,26 +14,20 @@ import ValidatorStatus from '../components/ui/ValidatorStatus';
 import LinkValidator from '../components/ui/LinkValidator';
 import LinkEntity from '../components/ui/LinkEntity';
 import Pagination from '../components/ui/Pagination';
-import Loader from '../components/ui/Loader';
 import Title from '../components/ui/Title';
+import PageDescription from '../components/ui/PageDescription';
+import { LargeTable, LargeTableHeader, LargeTableRow, SmallTable, SmallTableCard } from '../components/ui/Table';
 
 // Types
 import { Validator } from '../types';
-import PageDescription from '../components/ui/PageDescription';
 
 const Validators = () => {
     // Constants
     const LIMIT = 10;
 
-    // Theme Mode Context
-    const { themeMode } = useContext(ThemeModeContext) ?? {};
-
     // Router
     const router = useRouter();
     const { network } = router.query;
-
-    // Refs
-    const containerRef = useRef<HTMLInputElement>(null);
 
     // Large View Hook
     const isLargeView = useLargeView();
@@ -44,8 +35,8 @@ const Validators = () => {
     // States
     const [validators, setValidators] = useState<Validator[]>([]);
     const [validatorsCount, setValidatorsCount] = useState(0);
-    const [loading, setLoading] = useState(false);
-    const [currentPage, setCurrentPage] = useState(1);
+    const [loading, setLoading] = useState(true);
+    const [currentPage, setCurrentPage] = useState(0);
 
     // UseEffect
     useEffect(() => {
@@ -79,109 +70,63 @@ const Validators = () => {
         }
     };
 
-    const handleMouseMove = (e: any) => {
-        if (containerRef.current) {
-            const x = e.pageX;
-            const limit = 0.15;
+    // Large View
+    const getValidatorsLargeView = () => (
+        <LargeTable minWidth={700} noRowsText='No Validators' fetchingRows={loading}>
+            <LargeTableHeader text='Validator' />
+            <LargeTableHeader text='Balance' />
+            <LargeTableHeader text='Entity' />
+            <LargeTableHeader text='Status' />
 
-            if (x < containerRef.current.clientWidth * limit) {
-                containerRef.current.scrollLeft -= 10;
-            } else if (x > containerRef.current.clientWidth * (1 - limit)) {
-                containerRef.current.scrollLeft += 10;
-            }
-        }
-    };
-
-    //View table desktop
-    const getValidatorsDesktop = () => {
-        return (
-            <div
-                ref={containerRef}
-                className='flex flex-col mb-4 px-6 md:px-0 overflow-x-scroll overflow-y-hidden scrollbar-thin text-center sm:items-center'
-                onMouseMove={handleMouseMove}
-            >
-                <div className='font-semibold flex gap-x-1 justify-around px-2 xl:px-8 py-3 text-[14px] md:text-[16px] min-w-[700px] w-11/12 md:w-10/12 text-[var(--darkGray)] dark:text-[var(--white)]'>
-                    <p className='w-[25%]'>Validator ID</p>
-                    <p className='w-[25%]'>Balance</p>
-                    <p className='w-[25%]'>Entity</p>
-                    <p className='w-[25%]'>Status</p>
-                </div>
-
-                <div className='w-11/12 md:w-10/12'>
-                    {validators.map((validator: Validator) => (
-                        <div
-                            key={validator.f_val_idx}
-                            className='font-medium my-2 flex gap-x-1 justify-around items-center text-[14px] md:text-[16px] rounded-md border-2 border-white p-2 xl:px-8 text-[var(--black)] dark:text-[var(--white)] bg-[var(--bgMainLightMode)] dark:bg-[var(--bgFairDarkMode)]'
-                            style={{
-                                boxShadow: themeMode?.darkMode
-                                    ? 'var(--boxShadowCardDark)'
-                                    : 'var(--boxShadowCardLight)',
-                            }}
-                        >
-                            <div className='w-[25%]'>
-                                <LinkValidator validator={validator.f_val_idx} mxAuto />
-                            </div>
-
-                            <p className='w-[25%]'>{validator.f_balance_eth} ETH</p>
-
-                            <div className='w-[25%] uppercase'>
-                                <LinkEntity entity={validator.f_pool_name || 'others'} mxAuto />
-                            </div>
-
-                            <div className='flex justify-center w-[25%]'>
-                                <ValidatorStatus status={validator.f_status} />
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </div>
-        );
-    };
-    //View table mobile
-    const getValidatorsMobile = () => {
-        return (
-            <div
-                ref={containerRef}
-                className='mt-4 flex flex-col gap-2 font-medium text-[14px] w-11/12 mx-auto text-[var(--black)] dark:text-[var(--white)]'
-                onMouseMove={handleMouseMove}
-            >
-                {validators.map((validator: Validator) => (
-                    <div
-                        key={validator.f_val_idx}
-                        className='flex flex-col gap-y-2 py-4 px-14 border-2 border-white rounded-md text-[var(--black)] dark:text-[var(--white)] bg-[var(--bgMainLightMode)] dark:bg-[var(--bgFairDarkMode)]'
-                        style={{
-                            boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
-                        }}
-                    >
-                        <div className='flex flex-row items-center justify-between'>
-                            <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>
-                                Validator ID
-                            </p>
-                            <LinkValidator validator={validator.f_val_idx} />
-                        </div>
-
-                        <div className='flex flex-row items-center justify-between'>
-                            <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Balance</p>
-                            <p>{validator.f_balance_eth} ETH</p>
-                        </div>
-
-                        <div className='flex flex-row items-center justify-between'>
-                            <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Entity</p>
-                            <LinkEntity entity={validator.f_pool_name || 'others'} />
-                        </div>
-
-                        <div className='flex flex-row items-center justify-between'>
-                            <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Status</p>
-                            <ValidatorStatus status={validator.f_status} />
-                        </div>
+            {validators.map((validator: Validator) => (
+                <LargeTableRow key={validator.f_val_idx}>
+                    <div className='w-[25%]'>
+                        <LinkValidator validator={validator.f_val_idx} mxAuto />
                     </div>
-                ))}
-            </div>
-        );
-    };
 
-    //OVERVIEW PAGE
-    //Overview validators page
+                    <p className='w-[25%] text-center'>{validator.f_balance_eth} ETH</p>
+
+                    <div className='w-[25%]'>
+                        <LinkEntity entity={validator.f_pool_name} mxAuto />
+                    </div>
+
+                    <div className='flex justify-center w-[25%]'>
+                        <ValidatorStatus status={validator.f_status} />
+                    </div>
+                </LargeTableRow>
+            ))}
+        </LargeTable>
+    );
+
+    // Small View
+    const getValidatorsMobile = () => (
+        <SmallTable noRowsText='No Validators' fetchingRows={loading}>
+            {validators.map((validator: Validator) => (
+                <SmallTableCard key={validator.f_val_idx}>
+                    <div className='flex w-full items-center justify-between'>
+                        <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Validator</p>
+                        <LinkValidator validator={validator.f_val_idx} />
+                    </div>
+
+                    <div className='flex w-full items-center justify-between'>
+                        <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Balance</p>
+                        <p>{validator.f_balance_eth} ETH</p>
+                    </div>
+
+                    <div className='flex w-full items-center justify-between'>
+                        <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Entity</p>
+                        <LinkEntity entity={validator.f_pool_name} />
+                    </div>
+
+                    <div className='flex w-full items-center justify-between'>
+                        <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Status</p>
+                        <ValidatorStatus status={validator.f_status} />
+                    </div>
+                </SmallTableCard>
+            ))}
+        </SmallTable>
+    );
+
     return (
         <Layout hideMetaDescription>
             <Head>
@@ -210,13 +155,7 @@ const Validators = () => {
                 />
             )}
 
-            {loading ? (
-                <div className='my-6'>
-                    <Loader />
-                </div>
-            ) : (
-                <>{isLargeView ? getValidatorsDesktop() : getValidatorsMobile()}</>
-            )}
+            <>{isLargeView ? getValidatorsLargeView() : getValidatorsMobile()}</>
         </Layout>
     );
 };

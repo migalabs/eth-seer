@@ -8,7 +8,6 @@ import axiosClient from '../config/axios';
 // Components
 import Layout from '../components/layouts/Layout';
 import BlockList from '../components/layouts/Blocks';
-import Loader from '../components/ui/Loader';
 import Pagination from '../components/ui/Pagination';
 import Title from '../components/ui/Title';
 import PageDescription from '../components/ui/PageDescription';
@@ -18,7 +17,7 @@ import { BlockEL } from '../types';
 
 const Blocks = () => {
     // Constants
-    const LIMIT = 32;
+    const LIMIT = 10;
 
     // Router
     const router = useRouter();
@@ -44,7 +43,7 @@ const Blocks = () => {
 
             setCurrentPage(page);
 
-            const response = await axiosClient.get(`/api/blocks`, {
+            const response = await axiosClient.get('/api/blocks', {
                 params: {
                     network,
                     page,
@@ -88,13 +87,7 @@ const Blocks = () => {
                 />
             )}
 
-            {loading ? (
-                <div className='my-6'>
-                    <Loader />
-                </div>
-            ) : (
-                <BlockList blocks={blocks} />
-            )}
+            <BlockList blocks={blocks} fetchingBlocks={loading} />
         </Layout>
     );
 };

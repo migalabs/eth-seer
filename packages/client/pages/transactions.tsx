@@ -8,7 +8,6 @@ import axiosClient from '../config/axios';
 // Components
 import Layout from '../components/layouts/Layout';
 import TransactionList from '../components/layouts/Transactions';
-import Loader from '../components/ui/Loader';
 import Pagination from '../components/ui/Pagination';
 import Title from '../components/ui/Title';
 import PageDescription from '../components/ui/PageDescription';
@@ -30,7 +29,6 @@ const Transactions = () => {
     const [loading, setLoading] = useState(true);
     const [firstQueryFetched, setFirstQueryFetched] = useState(false);
 
-    // UseEffect
     useEffect(() => {
         if (network && transactions.length === 0) {
             getTransactions(0);
@@ -39,7 +37,6 @@ const Transactions = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [network]);
 
-    //TRANSACTIONS TABLE
     const getTransactions = async (page: number) => {
         try {
             setLoading(true);
@@ -62,7 +59,6 @@ const Transactions = () => {
         }
     };
 
-    //Overview Transaction page
     return (
         <Layout hideMetaDescription>
             <Head>
@@ -82,16 +78,10 @@ const Transactions = () => {
             </PageDescription>
 
             {firstQueryFetched && (
-                <Pagination currentPage={currentPage} totalPages={5000} onChangePage={getTransactions} />
+                <Pagination currentPage={currentPage} totalPages={10000} onChangePage={getTransactions} />
             )}
 
-            {loading ? (
-                <div className='my-6'>
-                    <Loader />
-                </div>
-            ) : (
-                <TransactionList loadingTransactions={loading} transactions={transactions} />
-            )}
+            <TransactionList transactions={transactions} fetchingTransactions={loading} />
         </Layout>
     );
 };
