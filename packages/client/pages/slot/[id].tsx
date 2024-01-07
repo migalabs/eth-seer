@@ -22,6 +22,10 @@ import LinkBlock from '../../components/ui/LinkBlock';
 import EpochAnimation from '../../components/layouts/EpochAnimation';
 import Card from '../../components/ui/Card';
 import TitleWithArrows from '../../components/ui/TitleWithArrows';
+import { LargeTable, LargeTableHeader, LargeTableRow, SmallTable, SmallTableCard } from '../../components/ui/Table';
+
+// Helpers
+import { getShortAddress } from '../../helpers/addressHelper';
 
 // Types
 import { Block, Withdrawal } from '../../types';
@@ -37,7 +41,6 @@ const Slot = () => {
     // Refs
     const slotRef = useRef(0);
     const existsBlockRef = useRef(true);
-    const containerRef = useRef<HTMLInputElement>(null);
 
     // Large View Hook
     const isLargeView = useLargeView();
@@ -52,7 +55,6 @@ const Slot = () => {
     const [loadingWithdrawals, setLoadingWithdrawals] = useState<boolean>(true);
     const [blockGenesis, setBlockGenesis] = useState(0);
 
-    // UseEffect
     useEffect(() => {
         if (id) {
             slotRef.current = Number(id);
@@ -91,7 +93,7 @@ const Slot = () => {
                         network,
                     },
                 }),
-                axiosClient.get(`/api/networks/block/genesis`, {
+                axiosClient.get('/api/networks/block/genesis', {
                     params: {
                         network,
                     },
@@ -159,11 +161,6 @@ const Slot = () => {
         }
     };
 
-    // Get Short Address
-    const getShortAddress = (address: string | undefined) => {
-        return address && `${address.slice(0, 6)}...${address.slice(address.length - 6, address.length)}`;
-    };
-
     // Get Time Block
     const getTimeBlock = () => {
         let text;
@@ -217,22 +214,6 @@ const Slot = () => {
         return text;
     };
 
-    // Get Handle Mouse
-    const handleMouseMove = (e: any) => {
-        if (containerRef.current) {
-            const x = e.pageX;
-            const limit = 0.15;
-
-            if (x < containerRef.current.clientWidth * limit) {
-                containerRef.current.scrollLeft -= 10;
-            } else if (x > containerRef.current.clientWidth * (1 - limit)) {
-                containerRef.current.scrollLeft += 10;
-            }
-        }
-    };
-
-    //TABLE
-
     //TABS
     const getSelectedTab = () => {
         switch (tabPageIndex) {
@@ -240,246 +221,162 @@ const Slot = () => {
                 return getOverview();
 
             case 1:
-                return isLargeView ? getWithdrawalsDesktop() : getWithdrawalsMobile();
+                return isLargeView ? getWithdrawalsLargeView() : getWithdrawalsSmallView();
         }
     };
 
     //TABS - Overview & withdrawals
-    const getInformationView = () => {
-        return (
-            <div className='flex flex-col w-11/12 md:w-1/2 mx-auto'>
-                <div className='flex flex-col sm:flex-row gap-4'>
-                    <TabHeader header='Overview' isSelected={tabPageIndex === 0} onClick={() => setTabPageIndex(0)} />
+    const getInformationView = () => (
+        <div className='flex flex-col w-11/12 xl:w-1/2 mx-auto'>
+            <div className='flex flex-col sm:flex-row gap-4'>
+                <TabHeader header='Overview' isSelected={tabPageIndex === 0} onClick={() => setTabPageIndex(0)} />
 
-                    {existsBlock && (
-                        <TabHeader
-                            header='Withdrawals'
-                            isSelected={tabPageIndex === 1}
-                            onClick={() => setTabPageIndex(1)}
-                        />
-                    )}
-                </div>
-                {getSelectedTab()}
+                {existsBlock && (
+                    <TabHeader
+                        header='Withdrawals'
+                        isSelected={tabPageIndex === 1}
+                        onClick={() => setTabPageIndex(1)}
+                    />
+                )}
             </div>
-        );
-    };
+
+            {getSelectedTab()}
+        </div>
+    );
 
     //Overview tab - table
-    const getOverview = () => {
-        return (
-            <div
-                className='rounded-md mt-4 p-8 border-2 border-white text-[var(--black)] dark:text-[var(--white)] bg-[var(--bgMainLightMode)] dark:bg-[var(--bgFairDarkMode)]'
-                style={{
-                    boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
-                }}
-            >
-                {/* Table */}
-                <div className='flex flex-col mx-auto gap-y-5 md:gap-y-8 '>
-                    <Card title='Epoch' content={<LinkEpoch epoch={block?.f_epoch} />} />
-                    <Card title='Block number' content={<LinkBlock block={block?.f_el_block_number} />} />
-                    <Card title='Slot' text={block?.f_slot?.toLocaleString()} />
+    const getOverview = () => (
+        <div
+            className='rounded-md mt-4 p-8 border-2 border-white text-[var(--black)] dark:text-[var(--white)] bg-[var(--bgMainLightMode)] dark:bg-[var(--bgFairDarkMode)]'
+            style={{
+                boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
+            }}
+        >
+            <div className='flex flex-col mx-auto gap-y-5 md:gap-y-8 '>
+                <Card title='Epoch' content={<LinkEpoch epoch={block?.f_epoch} />} />
+                <Card title='Block' content={<LinkBlock block={block?.f_el_block_number} />} />
+                <Card title='Slot' text={block?.f_slot?.toLocaleString()} />
 
-                    {existsBlock && (
-                        <Card
-                            title='Entity'
-                            content={<LinkEntity entity={block?.f_pool_name?.toLocaleString() ?? 'others'} />}
-                        />
-                    )}
+                {existsBlock && <Card title='Entity' content={<LinkEntity entity={block?.f_pool_name} />} />}
 
-                    {existsBlock && network === 'mainnet' && (
-                        <Card title='Client' text={block?.f_cl_client?.toLocaleString() ?? 'others'} />
-                    )}
+                {existsBlock && network === 'mainnet' && <Card title='Client' text={block?.f_cl_client ?? 'Others'} />}
 
-                    {existsBlock && (
-                        <Card
-                            title='Status'
-                            content={
-                                block?.f_proposed ? (
-                                    <span
-                                        className='bg-[#53945a] text-white md:w-52 w-40 px-6 text-center py-2 text-[14px] md:text-[16px] rounded-md capitalize font-medium'
-                                        style={{ boxShadow: 'var(--boxShadowGreen)' }}
-                                    >
-                                        Proposed
-                                    </span>
-                                ) : (
-                                    <span
-                                        className='bg-[#e86666] text-white md:w-52 w-40 px-6 py-2 text-center text-[14px] md:text-[16px] rounded-md capitalize font-medium'
-                                        style={{ boxShadow: 'var(--boxShadowRed)' }}
-                                    >
-                                        Missed
-                                    </span>
-                                )
-                            }
-                        />
-                    )}
+                {existsBlock && (
+                    <Card
+                        title='Status'
+                        content={
+                            block?.f_proposed ? (
+                                <span
+                                    className='bg-[#53945a] text-white md:w-52 w-40 px-6 text-center py-2 text-[14px] md:text-[16px] rounded-md capitalize font-medium'
+                                    style={{ boxShadow: 'var(--boxShadowGreen)' }}
+                                >
+                                    Proposed
+                                </span>
+                            ) : (
+                                <span
+                                    className='bg-[#e86666] text-white md:w-52 w-40 px-6 py-2 text-center text-[14px] md:text-[16px] rounded-md capitalize font-medium'
+                                    style={{ boxShadow: 'var(--boxShadowRed)' }}
+                                >
+                                    Missed
+                                </span>
+                            )
+                        }
+                    />
+                )}
 
-                    <Card title='Datetime (Local)' text={getTimeBlock()} />
+                <Card title='Datetime (Local)' text={getTimeBlock()} />
 
-                    {existsBlock && (
-                        <Card title='Proposer index' content={<LinkValidator validator={block?.f_proposer_index} />} />
-                    )}
+                {existsBlock && (
+                    <Card title='Proposer index' content={<LinkValidator validator={block?.f_proposer_index} />} />
+                )}
 
-                    {existsBlock && <Card title='Graffiti' text={block?.f_proposed ? block?.f_graffiti : '---'} />}
+                {existsBlock && <Card title='Graffiti' text={block?.f_proposed ? block?.f_graffiti : '---'} />}
 
-                    {existsBlock && (
-                        <Card
-                            title='Sync bits'
-                            text={block?.f_proposed ? block?.f_sync_bits?.toLocaleString() : '---'}
-                        />
-                    )}
+                {existsBlock && (
+                    <Card title='Sync bits' text={block?.f_proposed ? block?.f_sync_bits?.toLocaleString() : '---'} />
+                )}
 
-                    {existsBlock && (
-                        <Card
-                            title='Attestations'
-                            text={block?.f_proposed ? block?.f_attestations?.toLocaleString() : '---'}
-                        />
-                    )}
+                {existsBlock && (
+                    <Card
+                        title='Attestations'
+                        text={block?.f_proposed ? block?.f_attestations?.toLocaleString() : '---'}
+                    />
+                )}
 
-                    {existsBlock && (
-                        <Card
-                            title='Voluntary exits'
-                            text={block?.f_proposed ? block?.f_voluntary_exits?.toLocaleString() : '---'}
-                        />
-                    )}
+                {existsBlock && (
+                    <Card
+                        title='Voluntary exits'
+                        text={block?.f_proposed ? block?.f_voluntary_exits?.toLocaleString() : '---'}
+                    />
+                )}
 
-                    {existsBlock && (
-                        <Card
-                            title='Proposer slashings'
-                            text={block?.f_proposed ? block?.f_proposer_slashings?.toLocaleString() : '---'}
-                        />
-                    )}
+                {existsBlock && (
+                    <Card
+                        title='Proposer slashings'
+                        text={block?.f_proposed ? block?.f_proposer_slashings?.toLocaleString() : '---'}
+                    />
+                )}
 
-                    {existsBlock && (
-                        <Card
-                            title='Attestation Slashing'
-                            text={block?.f_proposed ? block?.f_att_slashings?.toLocaleString() : '---'}
-                        />
-                    )}
+                {existsBlock && (
+                    <Card
+                        title='Attestation slashing'
+                        text={block?.f_proposed ? block?.f_att_slashings?.toLocaleString() : '---'}
+                    />
+                )}
 
-                    {existsBlock && (
-                        <Card title='Deposits' text={block?.f_proposed ? block?.f_deposits?.toLocaleString() : '---'} />
-                    )}
-                </div>
-            </div>
-        );
-    };
-
-    //Withdrawals tab - table desktop
-    const getWithdrawalsDesktop = () => {
-        return (
-            <div
-                ref={containerRef}
-                className='flex flex-col mt-2.5 overflow-x-scroll overflow-y-hidden scrollbar-thin'
-                onMouseMove={handleMouseMove}
-            >
-                <div className='flex gap-x-4 justify-around px-4 xl:px-8 min-w-[470px] font-semibold py-3 text-[14px] md:text-[16px] text-center text-[var(--darkGray)] dark:text-[var(--white)]'>
-                    <p className='mt-0.5 w-1/3'>Validator</p>
-                    <p className='mt-0.5 w-1/3'>Address</p>
-                    <p className='mt-0.5 w-1/3'>Amount</p>
-                </div>
-
-                {loadingWithdrawals ? (
-                    <div className='mt-6'>
-                        <Loader />
-                    </div>
-                ) : (
-                    <div
-                        className='font-medium flex flex-col gap-y-2 min-w-[470px] text-[14px] md:text-[16px] rounded-md border-2 border-white px-4 xl:px-8 py-3 text-[var(--black)] dark:text-[var(--white)] bg-[var(--bgMainLightMode)] dark:bg-[var(--bgFairDarkMode)]'
-                        style={{
-                            boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
-                        }}
-                    >
-                        {withdrawals.map(element => (
-                            <div
-                                className='flex gap-x-4 py-1 uppercase text-center items-center'
-                                key={element.f_val_idx}
-                            >
-                                <div className='w-1/3'>
-                                    <LinkValidator validator={element.f_val_idx} mxAuto />
-                                </div>
-
-                                <div className='w-1/3'>
-                                    <p>{getShortAddress(element?.f_address)}</p>
-                                </div>
-
-                                <p className='w-1/3'>{(element.f_amount / 10 ** 9).toLocaleString()} ETH</p>
-                            </div>
-                        ))}
-
-                        {withdrawals.length == 0 && (
-                            <div className='flex justify-center p-2'>
-                                <p className='uppercase text-[14px] md:text-[16px]'>No withdrawals</p>
-                            </div>
-                        )}
-                    </div>
+                {existsBlock && (
+                    <Card title='Deposits' text={block?.f_proposed ? block?.f_deposits?.toLocaleString() : '---'} />
                 )}
             </div>
-        );
-    };
+        </div>
+    );
 
-    //Withdrawals tab - table mobile
-    const getWithdrawalsMobile = () => {
-        return (
-            <div
-                ref={containerRef}
-                className='my-2 flex flex-col gap-2 font-medium text-[12px] text-[var(--black)] dark:text-[var(--white)]'
-                onMouseMove={handleMouseMove}
-            >
-                {loadingWithdrawals ? (
-                    <div className='mt-6'>
-                        <Loader />
+    // Withdrawals Large View
+    const getWithdrawalsLargeView = () => (
+        <LargeTable minWidth={500} fullWidth noRowsText='No Withdrawals' fetchingRows={loadingWithdrawals}>
+            <LargeTableHeader text='Validator' />
+            <LargeTableHeader text='Address' />
+            <LargeTableHeader text='Amount' />
+
+            {withdrawals.map(withdrawal => (
+                <LargeTableRow key={withdrawal.f_val_idx}>
+                    <div className='w-1/3'>
+                        <LinkValidator validator={withdrawal.f_val_idx} mxAuto />
                     </div>
-                ) : (
-                    <div>
-                        {withdrawals.map(element => (
-                            <div
-                                className='flex my-2 flex-col gap-y-2 text-[14px] py-4 px-14 border-2 border-white rounded-md text-[var(--black)] dark:text-[var(--white)] bg-[var(--bgMainLightMode)] dark:bg-[var(--bgFairDarkMode)]'
-                                style={{
-                                    boxShadow: themeMode?.darkMode
-                                        ? 'var(--boxShadowCardDark)'
-                                        : 'var(--boxShadowCardLight)',
-                                }}
-                                key={element.f_val_idx}
-                            >
-                                <div className='flex flex-row items-center justify-between'>
-                                    <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>
-                                        Validator
-                                    </p>
-                                    <LinkValidator validator={element.f_val_idx} mxAuto />
-                                </div>
 
-                                <div className='flex flex-row items-center justify-between'>
-                                    <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>
-                                        Address
-                                    </p>
-                                    <p>{getShortAddress(element?.f_address)}</p>
-                                </div>
-
-                                <div className='flex flex-row items-center justify-between'>
-                                    <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>
-                                        Amount
-                                    </p>
-                                    <p>{(element.f_amount / 10 ** 9).toLocaleString()} ETH</p>
-                                </div>
-                            </div>
-                        ))}
-                        {withdrawals.length == 0 && (
-                            <div
-                                className='flex mt-2 justify-center rounded-md border-2 border-white px-4 py-4 text-[var(--black)] dark:text-[var(--white)] bg-[var(--bgMainLightMode)] dark:bg-[var(--bgDarkMode)]'
-                                style={{
-                                    boxShadow: themeMode?.darkMode
-                                        ? 'var(--boxShadowCardDark)'
-                                        : 'var(--boxShadowCardLight)',
-                                }}
-                            >
-                                <p className='uppercase text-[14px]'>No withdrawals</p>
-                            </div>
-                        )}
+                    <div className='w-1/3'>
+                        <p>{getShortAddress(withdrawal.f_address)}</p>
                     </div>
-                )}
-            </div>
-        );
-    };
+
+                    <p className='w-1/3'>{(withdrawal.f_amount / 10 ** 9).toLocaleString()} ETH</p>
+                </LargeTableRow>
+            ))}
+        </LargeTable>
+    );
+
+    // Withdrawals Small View
+    const getWithdrawalsSmallView = () => (
+        <SmallTable fullWidth noRowsText='No Withdrawals' fetchingRows={loadingWithdrawals}>
+            {withdrawals.map(withdrawal => (
+                <SmallTableCard key={withdrawal.f_val_idx}>
+                    <div className='flex w-full items-center justify-between'>
+                        <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Validator</p>
+                        <LinkValidator validator={withdrawal.f_val_idx} mxAuto />
+                    </div>
+
+                    <div className='flex w-full items-center justify-between'>
+                        <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Address</p>
+                        <p>{getShortAddress(withdrawal?.f_address)}</p>
+                    </div>
+
+                    <div className='flex w-full items-center justify-between'>
+                        <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Amount</p>
+                        <p>{(withdrawal.f_amount / 10 ** 9).toLocaleString()} ETH</p>
+                    </div>
+                </SmallTableCard>
+            ))}
+        </SmallTable>
+    );
 
     //OVERVIEW SLOT PAGE
     return (

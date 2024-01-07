@@ -47,6 +47,8 @@ const ChainOverview = () => {
 
         if (isLargeView) {
             setNumberEpochsViewed(2);
+        } else {
+            setNumberEpochsViewed(1);
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -17,16 +17,19 @@ import Transactions from '../../components/layouts/Transactions';
 import Card from '../../components/ui/Card';
 import TitleWithArrows from '../../components/ui/TitleWithArrows';
 
+// Helpers
+import { getShortAddress } from '../../helpers/addressHelper';
+
 // Types
 import { BlockEL, Transaction } from '../../types';
 
 const BlockPage = () => {
-    // Theme Mode Context
-    const { themeMode } = useContext(ThemeModeContext) ?? {};
-
     // Next router
     const router = useRouter();
     const { network, id } = router.query;
+
+    // Theme Mode Context
+    const { themeMode } = useContext(ThemeModeContext) ?? {};
 
     // Refs
     const slotRef = useRef(0);
@@ -35,11 +38,11 @@ const BlockPage = () => {
     // States
     const [block, setBlock] = useState<BlockEL | null>(null);
     const [transactions, setTransactions] = useState<Array<Transaction>>([]);
-    const [existsBlock, setExistsBlock] = useState<boolean>(true);
-    const [countdownText, setCountdownText] = useState<string>('');
-    const [tabPageIndex, setTabPageIndex] = useState<number>(0);
-    const [loadingBlock, setLoadingBlock] = useState<boolean>(true);
-    const [loadingTransactions, setLoadingTransactions] = useState<boolean>(true);
+    const [existsBlock, setExistsBlock] = useState(true);
+    const [countdownText, setCountdownText] = useState('');
+    const [tabPageIndex, setTabPageIndex] = useState(0);
+    const [loadingBlock, setLoadingBlock] = useState(true);
+    const [loadingTransactions, setLoadingTransactions] = useState(true);
     const [blockGenesis, setBlockGenesis] = useState(0);
 
     // UseEffect
@@ -149,15 +152,6 @@ const BlockPage = () => {
         }
     };
 
-    // Get Short Address
-    const getShortAddress = (address: string | undefined) => {
-        if (typeof address === 'string') {
-            return `${address.slice(0, 6)}...${address.slice(address.length - 6, address.length)}`;
-        } else {
-            return 'Invalid Address';
-        }
-    };
-
     // Get Time Block
     const getTimeBlock = () => {
         let text;
@@ -219,62 +213,60 @@ const BlockPage = () => {
                 return getOverview();
 
             case 1:
-                return <Transactions transactions={transactions} loadingTransactions={loadingTransactions} />;
+                return (
+                    <Transactions transactions={transactions} fullWidth fetchingTransactions={loadingTransactions} />
+                );
         }
     };
+
     //TABS - Overview & withdrawals
-    const getInformationView = () => {
-        return (
-            <div className='flex flex-col mx-auto'>
-                <div className='flex flex-col sm:flex-row gap-4 w-1/2 mx-auto'>
-                    <TabHeader header='Overview' isSelected={tabPageIndex === 0} onClick={() => setTabPageIndex(0)} />
-                    {existsBlock && (
-                        <TabHeader
-                            header='Transactions'
-                            isSelected={tabPageIndex === 1}
-                            onClick={() => setTabPageIndex(1)}
-                        />
-                    )}
-                </div>
-                {getSelectedTab()}
-            </div>
-        );
-    };
+    const getInformationView = () => (
+        <div className='flex flex-col w-11/12 xl:w-10/12 mx-auto'>
+            <div className={`flex flex-col sm:flex-row gap-4 ${tabPageIndex === 0 ? 'xl:w-1/2 xl:mx-auto' : ''}`}>
+                <TabHeader header='Overview' isSelected={tabPageIndex === 0} onClick={() => setTabPageIndex(0)} />
 
-    //%Gas usage / limit
-    const percentGas = (a: number, b: number) => {
-        return (a / b) * 100;
-    };
-
-    //Overview tab - table
-    const getOverview = () => {
-        return (
-            <div
-                className='rounded-md mt-4 p-8 w-11/12 md:w-1/2 mx-auto border-2 border-white text-[var(--black)] dark:text-[var(--white)] bg-[var(--bgMainLightMode)] dark:bg-[var(--bgFairDarkMode)]'
-                style={{
-                    boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
-                }}
-            >
-                {/* Table */}
-                <div className='flex flex-col mx-auto gap-y-5 md:gap-y-8 '>
-                    <Card title='Block hash' text={getShortAddress(block?.f_el_block_hash)} />
-                    <Card title='Slot' content={<LinkSlot slot={block?.f_slot} />} />
-                    <Card title='Datetime (Local)' text={getTimeBlock()} />
-                    <Card title='Transactions' text={String(block?.f_el_transactions)} />
-                    <Card title='Fee recipient' text={getShortAddress(block?.f_el_fee_recp)} />
-                    <Card title='Size' text={`${Number(block?.f_payload_size_bytes)?.toLocaleString()} bytes`} />
-                    <Card
-                        title='Gas used'
-                        text={`${block?.f_el_gas_used?.toLocaleString()} (${percentGas(
-                            block?.f_el_gas_used as number,
-                            block?.f_el_gas_limit as number
-                        ).toFixed(2)} %)`}
+                {existsBlock && (
+                    <TabHeader
+                        header='Transactions'
+                        isSelected={tabPageIndex === 1}
+                        onClick={() => setTabPageIndex(1)}
                     />
-                    <Card title='Gas limit' text={block?.f_el_gas_limit?.toLocaleString()} />
-                </div>
+                )}
             </div>
-        );
-    };
+
+            {getSelectedTab()}
+        </div>
+    );
+
+    // Percent Gas usage / limit
+    const percentGas = (a: number, b: number) => (a / b) * 100;
+
+    // Overview Tab
+    const getOverview = () => (
+        <div
+            className='rounded-md mt-4 p-8 w-full xl:w-1/2 mx-auto border-2 border-white text-[var(--black)] dark:text-[var(--white)] bg-[var(--bgMainLightMode)] dark:bg-[var(--bgFairDarkMode)]'
+            style={{
+                boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
+            }}
+        >
+            <div className='flex flex-col mx-auto gap-y-5 md:gap-y-8 '>
+                <Card title='Block hash' text={getShortAddress(block?.f_el_block_hash)} />
+                <Card title='Slot' content={<LinkSlot slot={block?.f_slot} />} />
+                <Card title='Datetime (Local)' text={getTimeBlock()} />
+                <Card title='Transactions' text={String(block?.f_el_transactions)} />
+                <Card title='Fee recipient' text={getShortAddress(block?.f_el_fee_recp)} />
+                <Card title='Size' text={`${Number(block?.f_payload_size_bytes)?.toLocaleString()} bytes`} />
+                <Card
+                    title='Gas used'
+                    text={`${block?.f_el_gas_used?.toLocaleString()} (${percentGas(
+                        block?.f_el_gas_used as number,
+                        block?.f_el_gas_limit as number
+                    ).toFixed(2)} %)`}
+                />
+                <Card title='Gas limit' text={block?.f_el_gas_limit?.toLocaleString()} />
+            </div>
+        </div>
+    );
 
     //OVERVIEW BLOCK PAGE
     return (

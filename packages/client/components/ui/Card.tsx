@@ -15,7 +15,7 @@ const Card = ({ title, text, content }: CardProps) => {
             </span>
 
             {text && (
-                <span className='uppercase text-[14px] md:text-[16px] font-medium text-[var(--black)] dark:text-[var(--white)]'>
+                <span className='uppercase text-[14px] md:text-[16px] font-medium text-[var(--black)] dark:text-[var(--white)] text-end'>
                     {text}
                 </span>
             )}

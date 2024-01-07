@@ -34,7 +34,7 @@ const Pagination = ({ currentPage, totalPages, onChangePage }: Props) => {
                 <ArrowLeftIcon strokeWidth={2} className='h-4 w-4' />
             </IconButton>
 
-            <Typography className='font-normal text-[16px] text-[var(--black)] dark:text-[var(--white)]'>
+            <Typography className='font-normal text-[14px] md:text-[16px] text-[var(--black)] dark:text-[var(--white)]'>
                 Page{' '}
                 <strong className='text-[var(--black)] dark:text-[var(--white)]'>
                     {(currentPage + 1).toLocaleString()}
