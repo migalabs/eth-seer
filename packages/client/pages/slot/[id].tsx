@@ -10,6 +10,7 @@ import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
 // Hooks
 import useLargeView from '../../hooks/useLargeView';
+import useCountdownText from '../../hooks/useCountdownText';
 
 // Components
 import Layout from '../../components/layouts/Layout';
@@ -31,12 +32,12 @@ import { getShortAddress } from '../../helpers/addressHelper';
 import { Block, Withdrawal } from '../../types';
 
 const Slot = () => {
-    // Theme Mode Context
-    const { themeMode } = useContext(ThemeModeContext) ?? {};
-
     // Next router
     const router = useRouter();
     const { network, id } = router.query;
+
+    // Theme Mode Context
+    const { themeMode } = useContext(ThemeModeContext) ?? {};
 
     // Refs
     const slotRef = useRef(0);
@@ -48,12 +49,16 @@ const Slot = () => {
     // States
     const [block, setBlock] = useState<Block | null>(null);
     const [withdrawals, setWithdrawals] = useState<Array<Withdrawal>>([]);
-    const [existsBlock, setExistsBlock] = useState<boolean>(true);
-    const [countdownText, setCountdownText] = useState<string>('');
-    const [tabPageIndex, setTabPageIndex] = useState<number>(0);
-    const [loadingBlock, setLoadingBlock] = useState<boolean>(true);
-    const [loadingWithdrawals, setLoadingWithdrawals] = useState<boolean>(true);
+    const [existsBlock, setExistsBlock] = useState(true);
+    const [tabPageIndex, setTabPageIndex] = useState(0);
+    const [loadingBlock, setLoadingBlock] = useState(true);
+    const [loadingWithdrawals, setLoadingWithdrawals] = useState(true);
     const [blockGenesis, setBlockGenesis] = useState(0);
+
+    // Countdown Text Hook
+    const countdownText = useCountdownText(
+        !existsBlockRef.current ? (blockGenesis + slotRef.current * 12000) / 1000 : undefined
+    );
 
     useEffect(() => {
         if (id) {
@@ -67,20 +72,6 @@ const Slot = () => {
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [network, id]);
-
-    const shuffle = useCallback(() => {
-        const text: string = getCountdownText();
-        setCountdownText(text);
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    useEffect(() => {
-        const intervalID = setInterval(shuffle, 1000);
-        return () => clearInterval(intervalID);
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [shuffle, slotRef.current]);
 
     // Get blocks
     const getBlock = async () => {
@@ -176,44 +167,6 @@ const Slot = () => {
         return text + countdownText;
     };
 
-    // Get Countdown Text
-    const getCountdownText = () => {
-        let text = '';
-
-        if (!existsBlockRef.current) {
-            const expectedTimestamp = (blockGenesis + slotRef.current * 12000) / 1000;
-            const timeDifference = new Date(expectedTimestamp * 1000).getTime() - new Date().getTime();
-
-            const minutesMiliseconds = 1000 * 60;
-            const hoursMiliseconds = minutesMiliseconds * 60;
-            const daysMiliseconds = hoursMiliseconds * 24;
-            const yearsMiliseconds = daysMiliseconds * 365;
-
-            if (timeDifference > yearsMiliseconds) {
-                const years = Math.floor(timeDifference / yearsMiliseconds);
-                text = ` (in ${years} ${years > 1 ? 'years' : 'year'})`;
-            } else if (timeDifference > daysMiliseconds) {
-                const days = Math.floor(timeDifference / daysMiliseconds);
-                text = ` (in ${days} ${days > 1 ? 'days' : 'day'})`;
-            } else if (timeDifference > hoursMiliseconds) {
-                const hours = Math.floor(timeDifference / hoursMiliseconds);
-                text = ` (in ${hours} ${hours > 1 ? 'hours' : 'hour'})`;
-            } else if (timeDifference > minutesMiliseconds) {
-                const minutes = Math.floor(timeDifference / minutesMiliseconds);
-                text = ` (in ${minutes} ${minutes > 1 ? 'minutes' : 'minute'})`;
-            } else if (timeDifference > 1000) {
-                const seconds = Math.floor(timeDifference / 1000);
-                text = ` (in ${seconds} ${seconds > 1 ? 'seconds' : 'second'})`;
-            } else if (timeDifference < -10000) {
-                text = ' (data not saved)';
-            } else {
-                text = ' (updating...)';
-            }
-        }
-
-        return text;
-    };
-
     //TABS
     const getSelectedTab = () => {
         switch (tabPageIndex) {
@@ -254,7 +207,7 @@ const Slot = () => {
         >
             <div className='flex flex-col mx-auto gap-y-5 md:gap-y-8 '>
                 <Card title='Epoch' content={<LinkEpoch epoch={block?.f_epoch} />} />
-                <Card title='Block' content={<LinkBlock block={block?.f_el_block_number} />} />
+                {existsBlock && <Card title='Block' content={<LinkBlock block={block?.f_el_block_number} />} />}
                 <Card title='Slot' text={block?.f_slot?.toLocaleString()} />
 
                 {existsBlock && <Card title='Entity' content={<LinkEntity entity={block?.f_pool_name} />} />}
