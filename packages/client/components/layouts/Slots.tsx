@@ -120,43 +120,35 @@ const Slots = ({ slots, fetchingSlots }: Props) => {
                         />
 
                         <div className='flex flex-col'>
-                            <div className='flex flex-row items-center justify-between gap-x-14 py-1'>
+                            <div className='flex items-center justify-between py-1'>
+                                <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Slot:</p>
+                                <LinkSlot slot={slot.f_proposer_slot} />
+                            </div>
+
+                            <div className='flex items-center justify-between gap-x-14 py-1'>
                                 <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>
                                     Proposer:
                                 </p>
                                 <LinkValidator validator={slot.f_val_idx} />
                             </div>
 
-                            <div className='flex flex-row items-center justify-between py-1'>
-                                <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Slot:</p>
-                                <LinkSlot slot={slot.f_proposer_slot} />
-                            </div>
-
-                            <div className='flex flex-row items-center justify-between py-1'>
+                            <div className='flex items-center justify-between py-1'>
                                 <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Time:</p>
                                 <div className='flex flex-col text-end'>
                                     <p>
                                         {new Date(
                                             blockGenesis + Number(slot.f_proposer_slot) * 12000
-                                        ).toLocaleDateString('ja-JP', {
-                                            year: 'numeric',
-                                            month: 'numeric',
-                                            day: 'numeric',
-                                        })}
+                                        ).toLocaleDateString('ja-JP')}
                                     </p>
                                     <p>
                                         {new Date(
                                             blockGenesis + Number(slot.f_proposer_slot) * 12000
-                                        ).toLocaleTimeString('ja-JP', {
-                                            hour: 'numeric',
-                                            minute: 'numeric',
-                                            second: 'numeric',
-                                        })}
+                                        ).toLocaleTimeString('ja-JP')}
                                     </p>
                                 </div>
                             </div>
 
-                            <div className='flex flex-row items-center justify-between'>
+                            <div className='flex items-center justify-between'>
                                 <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>
                                     Withdrawals:
                                 </p>
