@@ -13,7 +13,7 @@ import useLargeView from '../../hooks/useLargeView';
 // Components
 import TooltipContainer from '../ui/TooltipContainer';
 import CustomImage from '../ui/CustomImage';
-import Animation from './Animation';
+import InfoBox from './InfoBox';
 import Loader from '../ui/Loader';
 import TooltipResponsive from '../ui/TooltipResponsive';
 import ViewMoreButton from '../ui/ViewMoreButton';
@@ -42,7 +42,7 @@ const Graffitis = () => {
     // States
     const [currentPage, setCurrentPage] = useState(0);
     const [disableViewMore, setDisableViewMore] = useState(true);
-    const [animation, setAnimation] = useState(false);
+    const [showInfoBox, setShowInfoBox] = useState(false);
     const [loading, setLoading] = useState(true);
     const [blocks, setBlocks] = useState<Block[]>([]);
     const [blockGenesis, setBlockGenesis] = useState(0);
@@ -76,10 +76,10 @@ const Graffitis = () => {
 
             setBlocks([...blocks, ...response.data.blocks]);
             setBlockGenesis(genesisBlock.data.block_genesis);
-            if (response.data.blocks.length == 0) {
-                setAnimation(true);
-            }
-            if (response.data.blocks.length < limit) {
+
+            if (response.data.blocks.length === 0) {
+                setShowInfoBox(true);
+            } else if (response.data.blocks.length < limit) {
                 setDisableViewMore(true);
             } else {
                 setDisableViewMore(false);
@@ -327,8 +327,6 @@ const Graffitis = () => {
                     <Loader />
                 </div>
             )}
-
-            {animation && <Animation text={`"${graffiti}" not found`} />}
         </div>
     );
 
@@ -341,7 +339,7 @@ const Graffitis = () => {
 
                 {blocks.length !== 0 && (isLargeView ? getDesktopView() : getPhoneView())}
 
-                {animation && <Animation text={`"${graffiti}" not found`} />}
+                {showInfoBox && <InfoBox text={`"${graffiti}" not found`} />}
             </div>
         </div>
     );

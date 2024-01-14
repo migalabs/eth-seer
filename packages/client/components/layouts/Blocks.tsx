@@ -99,7 +99,7 @@ const Blocks = ({ blocks, fetchingBlocks }: Props) => {
                     </div>
 
                     <div className='flex w-full items-center justify-between'>
-                        <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Time:</p>
+                        <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Time</p>
 
                         <div className='flex flex-col text-end'>
                             <span>{new Date(block.f_timestamp * 1000).toLocaleDateString('ja-JP')}</span>

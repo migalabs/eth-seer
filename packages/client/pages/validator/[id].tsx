@@ -15,7 +15,7 @@ import useLargeView from '../../hooks/useLargeView';
 import Layout from '../../components/layouts/Layout';
 import BlockImage from '../../components/ui/BlockImage';
 import TabHeader from '../../components/ui/TabHeader';
-import Animation from '../../components/layouts/Animation';
+import InfoBox from '../../components/layouts/InfoBox';
 import ProgressSmoothBar from '../../components/ui/ProgressSmoothBar';
 import Loader from '../../components/ui/Loader';
 import ValidatorStatus from '../../components/ui/ValidatorStatus';
@@ -49,7 +49,7 @@ const ValidatorComponent = () => {
     const [validatorWeek, setValidatorWeek] = useState<Validator | null>(null);
     const [proposedBlocks, setProposedBlocks] = useState<Slot[]>([]);
     const [withdrawals, setWithdrawals] = useState<Withdrawal[]>([]);
-    const [animation, setAnimation] = useState(false);
+    const [showInfoBox, setShowInfoBox] = useState(false);
     const [tabPageIndex, setTabPageIndex] = useState(0);
     const [tabPageIndexValidatorPerformance, setTabPageIndexValidatorPerformance] = useState(0);
     const [loadingValidator, setLoadingValidator] = useState(true);
@@ -112,13 +112,13 @@ const ValidatorComponent = () => {
             setValidatorWeek(responseWeek.data.validator);
 
             if (responseHour.data.validator) {
-                setAnimation(false);
+                setShowInfoBox(false);
             } else {
-                setAnimation(true);
+                setShowInfoBox(true);
             }
         } catch (error) {
             console.log(error);
-            setAnimation(true);
+            setShowInfoBox(true);
         } finally {
             setLoadingValidator(false);
         }
@@ -529,7 +529,7 @@ const ValidatorComponent = () => {
                     </div>
 
                     <div className='flex w-full items-center justify-between'>
-                        <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Datetime:</p>
+                        <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Time (Local):</p>
                         <p className='uppercase'>
                             {new Date(blockGenesis + Number(widthdrawal.f_slot) * 12000).toLocaleString('ja-JP')}
                         </p>
@@ -577,7 +577,7 @@ const ValidatorComponent = () => {
                 </div>
             )}
 
-            {animation && <Animation text="Validator doesn't exist yet" />}
+            {showInfoBox && <InfoBox text="Validator doesn't exist yet" />}
         </Layout>
     );
 };

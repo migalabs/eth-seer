@@ -13,7 +13,7 @@ import Layout from '../components/layouts/Layout';
 import EntityCard from '../components/ui/EntityCard';
 import CustomImage from '../components/ui/CustomImage';
 import Loader from '../components/ui/Loader';
-import Animation from '../components/layouts/Animation';
+import InfoBox from '../components/layouts/InfoBox';
 import Title from '../components/ui/Title';
 import PageDescription from '../components/ui/PageDescription';
 
@@ -87,9 +87,9 @@ const Entities = () => {
                 address analysis, among others. EthSeer also monitors their performance.
             </PageDescription>
 
-            <hr className='w-11/12 lg:w-10/12 mx-auto my-4 border-white' />
+            <hr className='w-11/12 xl:w-10/12 mx-auto my-4 border-white' />
 
-            <div className='w-11/12 lg:w-10/12 mx-auto mt-4'>
+            <div className='w-11/12 xl:w-10/12 mx-auto mt-4'>
                 <p className='text-[14px] md:text-[16px] text-center text-[var(--black)] dark:text-[var(--white)]'>
                     This is a card example with the entity information you&apos;ll find:
                 </p>
@@ -115,7 +115,7 @@ const Entities = () => {
                 </div>
             </div>
 
-            <hr className='w-11/12 lg:w-10/12 mx-auto my-4 border-white' />
+            <hr className='w-11/12 xl:w-10/12 mx-auto my-4 border-white' />
 
             {loading && (
                 <div className='my-6 justify-center'>
@@ -134,7 +134,7 @@ const Entities = () => {
                     ))}
             </div>
 
-            {!loading && entities.length === 0 && <Animation text='There are no entities' />}
+            {!loading && entities.length === 0 && <InfoBox text='There are no entities' />}
         </Layout>
     );
 };

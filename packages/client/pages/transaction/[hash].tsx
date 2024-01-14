@@ -103,7 +103,7 @@ const TransactionPage = () => {
                     />
                     <Card title='Block' content={<LinkBlock block={transaction?.f_el_block_number} />} />
                     <Card
-                        title='Datetime (Local)'
+                        title='Time (Local)'
                         text={new Date((transaction?.f_timestamp ?? 0) * 1000).toLocaleString('ja-JP')}
                     />
                     <Card

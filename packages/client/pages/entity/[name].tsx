@@ -9,7 +9,7 @@ import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
 // Components
 import Layout from '../../components/layouts/Layout';
-import Animation from '../../components/layouts/Animation';
+import InfoBox from '../../components/layouts/InfoBox';
 import Loader from '../../components/ui/Loader';
 import ProgressSmoothBar from '../../components/ui/ProgressSmoothBar';
 import TabHeader from '../../components/ui/TabHeader';
@@ -31,9 +31,9 @@ const EntityComponent = () => {
     const [entityHour, setEntityHour] = useState<Entity | null>(null);
     const [entityDay, setEntityDay] = useState<Entity | null>(null);
     const [entityWeek, setEntityWeek] = useState<Entity | null>(null);
-    const [showAnimation, setShowAnimation] = useState<boolean>(false);
+    const [showInfoBox, setShowInfoBox] = useState(false);
     const [tabPageIndexEntityPerformance, setTabPageIndexEntityPerformance] = useState(0);
-    const [loading, setLoading] = useState<boolean>(true);
+    const [loading, setLoading] = useState(true);
 
     // UseEffect
     useEffect(() => {
@@ -81,9 +81,9 @@ const EntityComponent = () => {
             // const response = await axiosClient.get(`/api/entities/${(name as string).toLowerCase()}`);
 
             if (responseHour.data.entity.aggregate_balance !== null) {
-                setShowAnimation(false);
+                setShowInfoBox(false);
             } else {
-                setShowAnimation(true);
+                setShowInfoBox(true);
             }
         } catch (error) {
             console.log(error);
@@ -229,7 +229,7 @@ const EntityComponent = () => {
                 </div>
             )}
 
-            {entityDay && !showAnimation && (
+            {entityDay && !showInfoBox && (
                 <div className='mx-auto w-11/12 md:w-10/12'>
                     <div
                         className='flex p-6 md:px-20 md:py-10 rounded-md gap-x-5  border-2 border-white text-[var(--darkGray)] dark:text-[var(--white)] bg-[var(--bgMainLightMode)] dark:bg-[var(--bgFairDarkMode)]'
@@ -350,7 +350,7 @@ const EntityComponent = () => {
                 </div>
             )}
 
-            {showAnimation && <Animation text={`We're not there yet`} />}
+            {showInfoBox && <InfoBox text="Entity doesn't exist yet" />}
         </Layout>
     );
 };

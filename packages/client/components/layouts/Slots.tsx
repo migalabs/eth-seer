@@ -133,9 +133,7 @@ const Slots = ({ slots, fetchingSlots }: Props) => {
                             </div>
 
                             <div className='flex flex-row items-center justify-between py-1'>
-                                <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>
-                                    Datetime:
-                                </p>
+                                <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Time:</p>
                                 <div className='flex flex-col text-end'>
                                     <p>
                                         {new Date(

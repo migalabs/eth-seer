@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useCallback, useContext } from 'react';
+import React, { useEffect, useState, useRef, useContext } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 
@@ -20,7 +20,6 @@ import LinkValidator from '../../components/ui/LinkValidator';
 import LinkEpoch from '../../components/ui/LinkEpoch';
 import LinkEntity from '../../components/ui/LinkEntity';
 import LinkBlock from '../../components/ui/LinkBlock';
-import EpochAnimation from '../../components/layouts/EpochAnimation';
 import Card from '../../components/ui/Card';
 import TitleWithArrows from '../../components/ui/TitleWithArrows';
 import { LargeTable, LargeTableHeader, LargeTableRow, SmallTable, SmallTableCard } from '../../components/ui/Table';
@@ -41,7 +40,6 @@ const Slot = () => {
 
     // Refs
     const slotRef = useRef(0);
-    const existsBlockRef = useRef(true);
 
     // Large View Hook
     const isLargeView = useLargeView();
@@ -49,16 +47,14 @@ const Slot = () => {
     // States
     const [block, setBlock] = useState<Block | null>(null);
     const [withdrawals, setWithdrawals] = useState<Array<Withdrawal>>([]);
-    const [existsBlock, setExistsBlock] = useState(true);
+    const [existsBlock, setExistsBlock] = useState(false);
     const [tabPageIndex, setTabPageIndex] = useState(0);
     const [loadingBlock, setLoadingBlock] = useState(true);
     const [loadingWithdrawals, setLoadingWithdrawals] = useState(true);
     const [blockGenesis, setBlockGenesis] = useState(0);
 
     // Countdown Text Hook
-    const countdownText = useCountdownText(
-        !existsBlockRef.current ? (blockGenesis + slotRef.current * 12000) / 1000 : undefined
-    );
+    const countdownText = useCountdownText((!block?.f_el_block_number && block?.f_timestamp) || undefined);
 
     useEffect(() => {
         if (id) {
@@ -105,7 +101,6 @@ const Slot = () => {
                 });
 
                 setExistsBlock(false);
-                existsBlockRef.current = false;
 
                 const timeDifference = new Date(expectedTimestamp * 1000).getTime() - new Date().getTime();
 
@@ -114,7 +109,7 @@ const Slot = () => {
                         if (Number(id) === slotRef.current) {
                             getBlock();
                         }
-                    }, timeDifference + 2000);
+                    }, timeDifference + 3000);
                 } else if (timeDifference > -10000) {
                     setTimeout(() => {
                         if (Number(id) === slotRef.current) {
@@ -124,7 +119,6 @@ const Slot = () => {
                 }
             } else {
                 setExistsBlock(true);
-                existsBlockRef.current = true;
             }
         } catch (error) {
             console.log(error);
@@ -207,10 +201,14 @@ const Slot = () => {
         >
             <div className='flex flex-col mx-auto gap-y-5 md:gap-y-8 '>
                 <Card title='Epoch' content={<LinkEpoch epoch={block?.f_epoch} />} />
+
                 {existsBlock && <Card title='Block' content={<LinkBlock block={block?.f_el_block_number} />} />}
-                <Card title='Slot' text={block?.f_slot?.toLocaleString()} />
 
                 {existsBlock && <Card title='Entity' content={<LinkEntity entity={block?.f_pool_name} />} />}
+
+                {existsBlock && (
+                    <Card title='Proposer' content={<LinkValidator validator={block?.f_proposer_index} />} />
+                )}
 
                 {existsBlock && network === 'mainnet' && <Card title='Client' text={block?.f_cl_client ?? 'Others'} />}
 
@@ -237,11 +235,7 @@ const Slot = () => {
                     />
                 )}
 
-                <Card title='Datetime (Local)' text={getTimeBlock()} />
-
-                {existsBlock && (
-                    <Card title='Proposer index' content={<LinkValidator validator={block?.f_proposer_index} />} />
-                )}
+                <Card title='Time (Local)' text={getTimeBlock()} />
 
                 {existsBlock && <Card title='Graffiti' text={block?.f_proposed ? block?.f_graffiti : '---'} />}
 
@@ -347,7 +341,6 @@ const Slot = () => {
             )}
 
             {block && !loadingBlock && getInformationView()}
-            {!block && !loadingBlock && <EpochAnimation notSlot />}
         </Layout>
     );
 };

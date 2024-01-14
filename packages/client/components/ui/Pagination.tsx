@@ -23,7 +23,7 @@ const Pagination = ({ currentPage, totalPages, onChangePage }: Props) => {
     };
 
     return (
-        <div className='flex items-center w-11/12 lg:w-10/12 mx-auto justify-center lg:justify-start gap-10 mt-4 '>
+        <div className='flex items-center w-11/12 xl:w-10/12 mx-auto justify-center lg:justify-start gap-10 mt-4 '>
             <IconButton
                 size='sm'
                 variant='outlined'
