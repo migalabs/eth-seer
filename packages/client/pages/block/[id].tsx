@@ -16,7 +16,7 @@ import LinkSlot from '../../components/ui/LinkSlot';
 import Transactions from '../../components/layouts/Transactions';
 import Card from '../../components/ui/Card';
 import TitleWithArrows from '../../components/ui/TitleWithArrows';
-import EpochAnimation from '../../components/layouts/EpochAnimation';
+import InfoBox from '../../components/layouts/InfoBox';
 
 // Helpers
 import { getShortAddress } from '../../helpers/addressHelper';
@@ -41,7 +41,7 @@ const BlockPage = () => {
     const [tabPageIndex, setTabPageIndex] = useState(0);
     const [loadingBlock, setLoadingBlock] = useState(true);
     const [loadingTransactions, setLoadingTransactions] = useState(true);
-    const [notBlock, setNotBlock] = useState(false);
+    const [infoBoxText, setInfoBoxText] = useState('');
 
     // UseEffect
     useEffect(() => {
@@ -76,7 +76,14 @@ const BlockPage = () => {
             ]);
 
             setBlock(blockResponse.data.block);
-            setNotBlock(Number(id) < latestBlockResponse.data.block.f_el_block_number);
+
+            if (blockResponse.data.block) {
+                setInfoBoxText('');
+            } else if (Number(id) < latestBlockResponse.data.block.f_el_block_number) {
+                setInfoBoxText('Block not saved yet');
+            } else {
+                setInfoBoxText("We're not there yet");
+            }
         } catch (error) {
             console.log(error);
         } finally {
@@ -111,9 +118,7 @@ const BlockPage = () => {
                 return getOverview();
 
             case 1:
-                return (
-                    <Transactions transactions={transactions} fullWidth fetchingTransactions={loadingTransactions} />
-                );
+                return <Transactions transactions={transactions} fetchingTransactions={loadingTransactions} />;
         }
     };
 
@@ -121,7 +126,7 @@ const BlockPage = () => {
     const getInformationView = () => {
         return (
             <div className='flex flex-col mx-auto'>
-                <div className='flex flex-col sm:flex-row gap-4 w-1/2 mx-auto'>
+                <div className='flex flex-col sm:flex-row gap-4 w-11/12 xl:w-1/2 mx-auto'>
                     <TabHeader header='Overview' isSelected={tabPageIndex === 0} onClick={() => setTabPageIndex(0)} />
                     <TabHeader
                         header='Transactions'
@@ -141,7 +146,7 @@ const BlockPage = () => {
     // Overview Tab
     const getOverview = () => (
         <div
-            className='rounded-md mt-4 p-8 w-full xl:w-1/2 mx-auto border-2 border-white text-[var(--black)] dark:text-[var(--white)] bg-[var(--bgMainLightMode)] dark:bg-[var(--bgFairDarkMode)]'
+            className='rounded-md mt-4 p-8 w-11/12 xl:w-1/2 mx-auto border-2 border-white text-[var(--black)] dark:text-[var(--white)] bg-[var(--bgMainLightMode)] dark:bg-[var(--bgFairDarkMode)]'
             style={{
                 boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
             }}
@@ -149,7 +154,7 @@ const BlockPage = () => {
             <div className='flex flex-col mx-auto gap-y-5 md:gap-y-8 '>
                 <Card title='Block hash' text={getShortAddress(block?.f_el_block_hash)} />
                 <Card title='Slot' content={<LinkSlot slot={block?.f_slot} />} />
-                <Card title='Datetime (Local)' text={new Date((block?.f_timestamp ?? 0) * 1000).toLocaleString('ja-JP')} />
+                <Card title='Time (Local)' text={new Date((block?.f_timestamp ?? 0) * 1000).toLocaleString('ja-JP')} />
                 <Card title='Transactions' text={String(block?.f_el_transactions)} />
                 <Card title='Fee recipient' text={getShortAddress(block?.f_el_fee_recp)} />
                 <Card title='Size' text={`${Number(block?.f_payload_size_bytes)?.toLocaleString()} bytes`} />
@@ -181,7 +186,7 @@ const BlockPage = () => {
             )}
 
             {block && !loadingBlock && getInformationView()}
-            {!block && !loadingBlock && <EpochAnimation notBlock={notBlock} />}
+            {!block && !loadingBlock && <InfoBox text={infoBoxText} />}
         </Layout>
     );
 };

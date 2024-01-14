@@ -11,7 +11,7 @@ import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 // Components
 import Layout from '../../components/layouts/Layout';
 import ProgressSmoothBar from '../../components/ui/ProgressSmoothBar';
-import EpochAnimation from '../../components/layouts/EpochAnimation';
+import InfoBox from '../../components/layouts/InfoBox';
 import Loader from '../../components/ui/Loader';
 import Slots from '../../components/layouts/Slots';
 import TitleWithArrows from '../../components/ui/TitleWithArrows';
@@ -35,8 +35,7 @@ const EpochComponent = () => {
     // States
     const [epoch, setEpoch] = useState<Epoch | null>(null);
     const [slots, setSlots] = useState<Slot[]>([]);
-    const [animation, setAnimation] = useState(false);
-    const [notEpoch, setNotEpoch] = useState<boolean>(false);
+    const [infoBoxText, setInfoBoxText] = useState('');
     const [loadingEpoch, setLoadingEpoch] = useState(true);
     const [loadingSlots, setLoadingSlots] = useState(true);
     const [blockGenesis, setBlockGenesis] = useState(0);
@@ -82,20 +81,18 @@ const EpochComponent = () => {
                         network,
                     },
                 }),
-                axiosClient.get(`/api/networks/block/genesis`, {
+                axiosClient.get('/api/networks/block/genesis', {
                     params: {
                         network,
                     },
                 }),
             ]);
 
-            setEpoch({
-                ...response.data.epoch,
-            });
+            setEpoch(response.data.epoch);
             setBlockGenesis(genesisBlock.data.block_genesis);
 
             if (Number(response.data.epoch.proposed_blocks) === 0) {
-                setAnimation(true);
+                setInfoBoxText("We're not there yet");
 
                 const expectedTimestamp =
                     (genesisBlock.data.block_genesis + Number(id) * 12000 * 32 + 12000 * 64) / 1000;
@@ -117,15 +114,14 @@ const EpochComponent = () => {
                         }
                     }, 1000);
                 } else if (timeDifference < -30000) {
-                    setNotEpoch(true);
+                    setInfoBoxText('Epoch not saved yet');
                 }
             } else {
-                setAnimation(false);
+                setInfoBoxText('');
                 existsEpochRef.current = true;
             }
         } catch (error) {
             console.log(error);
-            setAnimation(true);
         } finally {
             setLoadingEpoch(false);
         }
@@ -159,7 +155,7 @@ const EpochComponent = () => {
             }}
         >
             <div className='flex flex-row items-center gap-x-5'>
-                <p className='w-40 sm:w-60 text-[var(--black)] dark:text-[var(--white)]'>Datetime (Local):</p>
+                <p className='w-40 sm:w-60 text-[var(--black)] dark:text-[var(--white)]'>Time (Local):</p>
                 <p className='text-[var(--black)] dark:text-[var(--white)]'>
                     {new Date(blockGenesis + Number(id) * 32 * 12000).toLocaleString('ja-JP')}
                 </p>
@@ -294,7 +290,7 @@ const EpochComponent = () => {
 
             {!loadingEpoch && epoch && existsEpochRef.current && (
                 <>
-                    <div className='mx-auto w-11/12 lg:w-10/12'>
+                    <div className='mx-auto w-11/12 xl:w-10/12'>
                         <div>{getContentEpochStats()}</div>
                     </div>
 
@@ -302,7 +298,7 @@ const EpochComponent = () => {
                 </>
             )}
 
-            {!loadingEpoch && animation && <EpochAnimation notEpoch={notEpoch} />}
+            {!loadingEpoch && infoBoxText && <InfoBox text={infoBoxText} />}
         </Layout>
     );
 };

@@ -22,7 +22,7 @@ const TableContainer = ({ children, fullWidth, showNoRowsText, noRowsText, fetch
     const { themeMode } = useContext(ThemeModeContext) ?? {};
 
     return (
-        <div className={`${fullWidth ? 'w-full' : 'mx-auto w-11/12 lg:w-10/12'} mt-4`}>
+        <div className={`${fullWidth ? 'w-full' : 'mx-auto w-11/12 xl:w-10/12'} mt-4`}>
             {children}
 
             {showNoRowsText && !fetchingRows && (
