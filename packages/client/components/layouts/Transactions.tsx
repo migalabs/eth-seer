@@ -10,11 +10,10 @@ import useLargeView from '../../hooks/useLargeView';
 import TooltipResponsive from '../../components/ui/TooltipResponsive';
 import CustomImage from '../ui/CustomImage';
 import LinkTransaction from '../ui/LinkTransaction';
-import CopyIcon from '../ui/CopyIcon';
 import { LargeTable, LargeTableHeader, LargeTableRow, SmallTable, SmallTableCard } from '../ui/Table';
+import AddressCopy from '../ui/AddressCopy';
 
 // Helpers
-import { getShortAddress } from '../../helpers/addressHelper';
 import { getTimeAgo } from '../../helpers/timeHelper';
 
 // Types
@@ -116,18 +115,13 @@ const Transactions = ({ transactions, fullWidth, fetchingTransactions }: Props) 
 
             {transactions.map(transaction => (
                 <LargeTableRow key={transaction.f_hash}>
-                    <div className='flex gap-x-2 justify-center items-center w-[calc(16.667%-20px)]'>
-                        <CopyIcon value={transaction.f_hash} />
-
+                    <div className='flex justify-center w-[calc(16.667%-20px)]'>
                         <LinkTransaction hash={transaction.f_hash} />
                     </div>
 
                     <p className='w-[calc(16.667%-20px)] lowercase'>{getTimeAgo(transaction.f_timestamp * 1000)}</p>
 
-                    <div className='flex gap-x-2 justify-center items-center w-[calc(16.667%-20px)]'>
-                        <CopyIcon value={transaction.f_from} />
-                        <p>{getShortAddress(transaction.f_from)}</p>
-                    </div>
+                    <AddressCopy className='w-[calc(16.667%-20px)] justify-center' address={transaction.f_from} />
 
                     <div className='w-5'>
                         <CustomImage
@@ -138,10 +132,7 @@ const Transactions = ({ transactions, fullWidth, fetchingTransactions }: Props) 
                         />
                     </div>
 
-                    <div className='flex gap-x-2 justify-center items-center w-[calc(16.667%-20px)]'>
-                        <CopyIcon value={transaction.f_to} />
-                        <p>{getShortAddress(transaction.f_to)}</p>
-                    </div>
+                    <AddressCopy className='w-[calc(16.667%-20px)] justify-center' address={transaction.f_to} />
 
                     <p className='w-[calc(16.667%-20px)]'>{(transaction.f_value / 10 ** 18).toLocaleString()} ETH</p>
 
@@ -161,10 +152,7 @@ const Transactions = ({ transactions, fullWidth, fetchingTransactions }: Props) 
                     <div className='flex w-full items-center justify-between'>
                         <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Txn Hash</p>
 
-                        <div className='flex gap-x-2 items-center'>
-                            <CopyIcon value={transaction.f_hash} />
-                            <LinkTransaction hash={transaction.f_hash} />
-                        </div>
+                        <LinkTransaction hash={transaction.f_hash} />
                     </div>
 
                     <div className='flex w-full items-center justify-between'>
@@ -178,10 +166,7 @@ const Transactions = ({ transactions, fullWidth, fetchingTransactions }: Props) 
                     </div>
 
                     <div className='flex w-full justify-between items-center'>
-                        <div className='flex gap-x-2 items-center'>
-                            <CopyIcon value={transaction?.f_from} />
-                            <p>{getShortAddress(transaction?.f_from)}</p>
-                        </div>
+                        <AddressCopy address={transaction?.f_from} />
 
                         <CustomImage
                             src={`/static/images/icons/send_${themeMode?.darkMode ? 'dark' : 'light'}.webp`}
@@ -190,10 +175,7 @@ const Transactions = ({ transactions, fullWidth, fetchingTransactions }: Props) 
                             height={20}
                         />
 
-                        <div className='flex gap-x-2 items-center'>
-                            <CopyIcon value={transaction?.f_to} />
-                            <p>{getShortAddress(transaction?.f_to)}</p>
-                        </div>
+                        <AddressCopy address={transaction?.f_to} />
                     </div>
 
                     <div className='flex w-full items-center justify-between'>

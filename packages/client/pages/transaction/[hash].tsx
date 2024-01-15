@@ -13,29 +13,20 @@ import Layout from '../../components/layouts/Layout';
 import Loader from '../../components/ui/Loader';
 import LinkBlock from '../../components/ui/LinkBlock';
 import TabHeader from '../../components/ui/TabHeader';
-import CopyIcon from '../../components/ui/CopyIcon';
 import Card from '../../components/ui/Card';
 import Title from '../../components/ui/Title';
-
-// Helpers
-import { getShortAddress } from '../../helpers/addressHelper';
+import AddressCopy from '../../components/ui/AddressCopy';
 
 // Types
 import { Transaction } from '../../types';
 
-type CardProps = {
-    title: string;
-    text?: string;
-    content?: React.ReactNode;
-};
-
 const TransactionPage = () => {
-    // Theme Mode Context
-    const { themeMode } = useContext(ThemeModeContext) ?? {};
-
     // Next router
     const router = useRouter();
     const { network, hash } = router.query;
+
+    // Theme Mode Context
+    const { themeMode } = useContext(ThemeModeContext) ?? {};
 
     // States
     const [transaction, setTransaction] = useState<Transaction | null>(null);
@@ -90,44 +81,14 @@ const TransactionPage = () => {
                 }}
             >
                 <div className='flex flex-col gap-y-5 md:gap-y-8 '>
-                    <Card
-                        title='Transaction Hash'
-                        content={
-                            <div className='flex gap-x-2 justify-center items-center'>
-                                <CopyIcon value={hash as string} />
-                                <p className='text-[14px] md:text-[16px] font-medium'>
-                                    {getShortAddress(hash as string).toUpperCase()}
-                                </p>
-                            </div>
-                        }
-                    />
+                    <Card title='Transaction Hash' content={<AddressCopy address={hash as string} />} />
                     <Card title='Block' content={<LinkBlock block={transaction?.f_el_block_number} />} />
                     <Card
                         title='Time (Local)'
                         text={new Date((transaction?.f_timestamp ?? 0) * 1000).toLocaleString('ja-JP')}
                     />
-                    <Card
-                        title='From'
-                        content={
-                            <div className='flex gap-x-2 justify-center items-center'>
-                                <CopyIcon value={transaction?.f_from ?? ''} />
-                                <p className='text-[14px] md:text-[16px] font-medium'>
-                                    {getShortAddress(transaction?.f_from?.toUpperCase())}
-                                </p>
-                            </div>
-                        }
-                    />
-                    <Card
-                        title='To'
-                        content={
-                            <div className='flex gap-x-2 justify-center items-center'>
-                                <CopyIcon value={transaction?.f_to ?? ''} />
-                                <p className='text-[14px] md:text-[16px] font-medium'>
-                                    {getShortAddress(transaction?.f_to?.toUpperCase())}
-                                </p>
-                            </div>
-                        }
-                    />
+                    <Card title='From' content={<AddressCopy address={transaction?.f_from} />} />
+                    <Card title='To' content={<AddressCopy address={transaction?.f_to} />} />
                     <Card title='Value' text={`${((transaction?.f_value ?? 0) / 10 ** 18).toLocaleString()} ETH`} />
                     <Card
                         title='Transaction Fee'
@@ -159,7 +120,7 @@ const TransactionPage = () => {
                         content={
                             transaction?.f_data && (
                                 <textarea
-                                    className='flex-1 max-w-[60%] h-24 p-2 rounded-md border-2 border-white text-black text-[14px]'
+                                    className='flex-1 max-w-[60%] h-24 p-2 rounded-md border-2 border-white text-black text-[14px] font-normal'
                                     value={transaction?.f_data}
                                 />
                             )
