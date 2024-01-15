@@ -23,9 +23,7 @@ import LinkBlock from '../../components/ui/LinkBlock';
 import Card from '../../components/ui/Card';
 import TitleWithArrows from '../../components/ui/TitleWithArrows';
 import { LargeTable, LargeTableHeader, LargeTableRow, SmallTable, SmallTableCard } from '../../components/ui/Table';
-
-// Helpers
-import { getShortAddress } from '../../helpers/addressHelper';
+import AddressCopy from '../../components/ui/AddressCopy';
 
 // Types
 import { Block, Withdrawal } from '../../types';
@@ -291,9 +289,7 @@ const Slot = () => {
                         <LinkValidator validator={withdrawal.f_val_idx} mxAuto />
                     </div>
 
-                    <div className='w-1/3'>
-                        <p>{getShortAddress(withdrawal.f_address)}</p>
-                    </div>
+                    <AddressCopy className='w-1/3 justify-center' address={withdrawal.f_address} />
 
                     <p className='w-1/3'>{(withdrawal.f_amount / 10 ** 9).toLocaleString()} ETH</p>
                 </LargeTableRow>
@@ -313,7 +309,7 @@ const Slot = () => {
 
                     <div className='flex w-full items-center justify-between'>
                         <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Address</p>
-                        <p>{getShortAddress(withdrawal?.f_address)}</p>
+                        <AddressCopy address={withdrawal?.f_address} />
                     </div>
 
                     <div className='flex w-full items-center justify-between'>

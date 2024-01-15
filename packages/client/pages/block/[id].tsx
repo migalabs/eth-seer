@@ -17,9 +17,7 @@ import Transactions from '../../components/layouts/Transactions';
 import Card from '../../components/ui/Card';
 import TitleWithArrows from '../../components/ui/TitleWithArrows';
 import InfoBox from '../../components/layouts/InfoBox';
-
-// Helpers
-import { getShortAddress } from '../../helpers/addressHelper';
+import AddressCopy from '../../components/ui/AddressCopy';
 
 // Types
 import { BlockEL, Transaction } from '../../types';
@@ -152,11 +150,11 @@ const BlockPage = () => {
             }}
         >
             <div className='flex flex-col mx-auto gap-y-5 md:gap-y-8 '>
-                <Card title='Block hash' text={getShortAddress(block?.f_el_block_hash)} />
+                <Card title='Block hash' content={<AddressCopy address={block?.f_el_block_hash} />} />
                 <Card title='Slot' content={<LinkSlot slot={block?.f_slot} />} />
                 <Card title='Time (Local)' text={new Date((block?.f_timestamp ?? 0) * 1000).toLocaleString('ja-JP')} />
                 <Card title='Transactions' text={String(block?.f_el_transactions)} />
-                <Card title='Fee recipient' text={getShortAddress(block?.f_el_fee_recp)} />
+                <Card title='Fee recipient' content={<AddressCopy address={block?.f_el_fee_recp} />} />
                 <Card title='Size' text={`${Number(block?.f_payload_size_bytes)?.toLocaleString()} bytes`} />
                 <Card
                     title='Gas used'
