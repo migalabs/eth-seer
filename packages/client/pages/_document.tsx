@@ -2,8 +2,6 @@ import { Html, Head, Main, NextScript } from 'next/document';
 import { Global, css } from '@emotion/react';
 
 export default function Document() {
-    const assetPrefix = process.env.NEXT_PUBLIC_ASSET_PREFIX ?? '';
-
     return (
         <Html>
             <Global
@@ -41,7 +39,7 @@ export default function Document() {
                         --boxShadowCardLight: 0px 4px 4px 0px rgba(0, 0, 0, 0.15) inset;
 
                         //BACKGROUND:
-                        --background-light: linear-gradient(
+                        --backgroundLight: linear-gradient(
                             180deg,
                             rgba(192, 175, 238, 1) 0%,
                             rgba(215, 200, 255, 1) 24%,
@@ -49,7 +47,7 @@ export default function Document() {
                             rgba(235, 227, 255, 1) 74%,
                             rgba(253, 253, 255, 1) 100%
                         );
-                        --background-dark: linear-gradient(
+                        --backgroundDark: linear-gradient(
                             180deg,
                             rgba(169, 154, 207, 1) 0%,
                             rgba(121, 107, 156, 1) 16%,
@@ -78,7 +76,7 @@ export default function Document() {
                     }
 
                     body {
-                        background-image: var(--background-light);
+                        background-image: var(--backgroundLight);
                         background-repeat: no-repeat;
                         background-size: cover;
                         background-attachment: scroll;
@@ -94,7 +92,7 @@ export default function Document() {
             />
 
             <Head>
-                <link rel='shortcut icon' href={`${assetPrefix}/static/images/favicon.ico`} />
+                <link rel='shortcut icon' href='/static/images/favicon.ico' />
                 <link rel='preconnect' href='https://fonts.googleapis.com' />
                 <link rel='preconnect' href='https://fonts.gstatic.com' />
                 <link
@@ -112,7 +110,6 @@ export default function Document() {
                 <meta property='og:title' content='Ethereum Blockchain Explorer - EthSeer.io' />
                 <meta property='og:image' content='http://ethseer.io/static/images/ethseer_metadata.png' />
                 <meta httpEquiv='Content-Security-Policy' content='upgrade-insecure-requests' />
-                <link href={`${assetPrefix}/static/css/theme-mode-switch.css`} rel='stylesheet' />
             </Head>
 
             <body>

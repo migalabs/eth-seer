@@ -1,8 +1,5 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
-
-// Context
-import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
 type Props = {
     value: boolean;
@@ -12,15 +9,9 @@ type Props = {
 };
 
 const Toggle = ({ value, labelLeft, labelRight, onToggle }: Props) => {
-    // Theme Mode Context
-    const { themeMode } = useContext(ThemeModeContext) ?? {};
-
     return (
         <div className='flex justify-center items-center gap-2 font-medium'>
-            <span
-                className='text-[12px] md:text-[14px]'
-                style={{ color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)' }}
-            >
+            <span className='text-[12px] md:text-[14px] text-[var(--darkGray)] dark:text-[var(--white)]'>
                 {labelLeft}
             </span>
 
@@ -37,10 +28,7 @@ const Toggle = ({ value, labelLeft, labelRight, onToggle }: Props) => {
                 />
             </button>
 
-            <span
-                className='text-[12px] md:text-[14px]'
-                style={{ color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)' }}
-            >
+            <span className='text-[12px] md:text-[14px] text-[var(--darkGray)] dark:text-[var(--white)]'>
                 {labelRight}
             </span>
         </div>
