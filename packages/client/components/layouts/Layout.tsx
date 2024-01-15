@@ -1,6 +1,5 @@
 import React from 'react';
 import Head from 'next/head';
-import Image from 'next/image';
 
 // Components
 import Header from './Header';
@@ -8,21 +7,12 @@ import Consent from './Consent';
 import Background from './Background';
 import Footer from './Footer';
 
-// Contexts
-import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
-
-// Images
-import FooterHeartImage from '../../public/static/images/footer/footer_heart.webp';
-
-type PropsWithChildren = {
+type Props = {
     children?: React.ReactNode;
     hideMetaDescription?: boolean;
 };
 
-const Layout = ({ hideMetaDescription, children }: PropsWithChildren) => {
-    // Theme Mode Context
-    const { themeMode } = React.useContext(ThemeModeContext) ?? {};
-
+const Layout = ({ hideMetaDescription, children }: Props) => {
     return (
         <div className='flex flex-col min-h-screen'>
             <Head>
@@ -43,7 +33,7 @@ const Layout = ({ hideMetaDescription, children }: PropsWithChildren) => {
             <Background />
             <main className='my-6 flex-1'>{children}</main>
 
-            <Footer></Footer>
+            <Footer />
 
             <Consent />
         </div>

@@ -1,18 +1,16 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
 // Axios
 import axiosClient from '../config/axios';
 
-// Contexts
-import ThemeModeContext from '../contexts/theme-mode/ThemeModeContext';
-
 // Components
 import Layout from '../components/layouts/Layout';
 import EpochList from '../components/layouts/Epochs';
-import Loader from '../components/ui/Loader';
 import Pagination from '../components/ui/Pagination';
+import Title from '../components/ui/Title';
+import PageDescription from '../components/ui/PageDescription';
 
 const Epochs = () => {
     // Constants
@@ -21,9 +19,6 @@ const Epochs = () => {
     // Router
     const router = useRouter();
     const { network } = router.query;
-
-    // Theme Mode Context
-    const { themeMode } = useContext(ThemeModeContext) ?? {};
 
     // States
     const [loading, setLoading] = useState(true);
@@ -62,7 +57,6 @@ const Epochs = () => {
         }
     };
 
-    //OVERVIEW PAGE
     return (
         <Layout hideMetaDescription>
             <Head>
@@ -75,29 +69,12 @@ const Epochs = () => {
                 <link rel='canonical' href='https://ethseer.io/epochs' />
             </Head>
 
-            <h1
-                className='text-center mt-10 xl:mt-0 font-semibold text-[32px] md:text-[50px] capitalize'
-                style={{
-                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                }}
-            >
-                Ethereum Epochs
-            </h1>
+            <Title>Ethereum Epochs</Title>
 
-            <div
-                className='mx-auto py-4 px-6 border-2 border-[var(--purple)] rounded-md flex w-11/12 lg:w-10/12'
-                style={{ background: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--bgMainLightMode)' }}
-            >
-                <h2
-                    className='text-[14px] 2xl:text-[18px] text-center leading-6'
-                    style={{
-                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                    }}
-                >
-                    Epochs in Ethereum refer to a specific period of time in the Beacon Chain. Each epoch is composed of
-                    32 slots and has a duration of 6.4 minutes.
-                </h2>
-            </div>
+            <PageDescription>
+                Epochs in Ethereum refer to a specific period of time in the Beacon Chain. Each epoch is composed of 32
+                slots and has a duration of 6.4 minutes.
+            </PageDescription>
 
             {epochsCount > 0 && (
                 <Pagination
@@ -107,15 +84,7 @@ const Epochs = () => {
                 />
             )}
 
-            {loading ? (
-                <div className='my-6'>
-                    <Loader />
-                </div>
-            ) : (
-                <div className='my-4'>
-                    <EpochList epochs={epochs} />
-                </div>
-            )}
+            <EpochList epochs={epochs} fetchingEpochs={loading} />
         </Layout>
     );
 };

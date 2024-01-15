@@ -14,10 +14,7 @@ const Header = () => {
     const { themeMode } = React.useContext(ThemeModeContext) ?? {};
 
     return (
-        <div
-            className='flex justify-between items-center'
-            style={{ background: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--white)' }}
-        >
+        <div className='flex justify-between items-center bg-[var(--white)] dark:bg-[var(--bgDarkMode)]'>
             <div className='w-fit'>
                 <NetworkLink href='/' passHref>
                     <div className='flex flex-row justify-start items-center p-2'>
@@ -27,12 +24,7 @@ const Header = () => {
                             width={50}
                             height={50}
                         />
-                        <p
-                            className='uppercase text-[20px] md:text-[30px] mt-1 ml-2'
-                            style={{
-                                color: themeMode?.darkMode ? 'var(--white)' : 'var(--newOrange)',
-                            }}
-                        >
+                        <p className='uppercase text-[20px] md:text-[30px] mt-1 ml-2 text-[var(--newOrange)] dark:text-[var(--white)]'>
                             <b>Ethseer</b>.io
                         </p>
                     </div>

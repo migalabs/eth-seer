@@ -13,11 +13,9 @@ type Props = {
 };
 
 const CustomImage = ({ src, alt, width, height, className, priority, title, onClick }: Props) => {
-    const assetPrefix = process.env.NEXT_PUBLIC_ASSET_PREFIX ?? '';
-
     return (
         <Image
-            src={`${assetPrefix}${src}`}
+            src={src}
             alt={alt}
             width={width}
             height={height}
