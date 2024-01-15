@@ -101,7 +101,9 @@ const EpochComponent = () => {
 
                 const timeDifference = new Date(expectedTimestamp * 1000).getTime() - new Date().getTime();
 
-                if (timeDifference > 0) {
+                if (timeDifference > 2147483647) {
+                    return;
+                } else if (timeDifference > 0) {
                     setTimeout(() => {
                         if (Number(id) === epochRef.current) {
                             getEpoch();
