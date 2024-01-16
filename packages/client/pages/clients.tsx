@@ -1,21 +1,21 @@
 import React, { useContext } from 'react';
 import Head from 'next/head';
-import CustomImage from '../components/ui/CustomImage';
+
+// Contexts
+import ThemeModeContext from '../contexts/theme-mode/ThemeModeContext';
 
 // Components
 import Layout from '../components/layouts/Layout';
 import Title from '../components/ui/Title';
 import PageDescription from '../components/ui/PageDescription';
-
-// Contexts
-import ThemeModeContext from '../contexts/theme-mode/ThemeModeContext';
+import CustomImage from '../components/ui/CustomImage';
 
 const Clients = () => {
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
 
-    // Entities
-    const Entities = [
+    // Clients
+    const clients = [
         {
             name: 'Nimbus',
             imgUrl: '/static/images/blocks/cubes/clients/nimbus.webp',
@@ -85,8 +85,8 @@ const Clients = () => {
             </PageDescription>
 
             {/* Client Card */}
-            <div className='grid grid-cols-1 xl:grid-cols-2 w-11/12 md:w-10/12 gap-3 mx-auto'>
-                {Entities.map((card, index) => (
+            <div className='grid grid-cols-1 xl:grid-cols-2 w-11/12 xl:w-10/12 gap-3 mx-auto'>
+                {clients.map((card, index) => (
                     <div
                         className='flex flex-col gap-4 border-2 border-white rounded-md p-4 lg:p-6 bg-[var(--bgFairLightMode)]'
                         key={index}
@@ -108,12 +108,12 @@ const Clients = () => {
                                         {card.name}
                                     </span>
                                     <span className='text-xs lg:text-sm border border-black dark:border-white text-black dark:text-white rounded-full px-2 py-1'>
-                                        Consensus Clients
+                                        Consensus Client
                                     </span>
                                 </div>
                             </div>
                             <a
-                                className='flex flex-row items-center gap-2 p-2 xl:px-4 xl:py-2 bg-white rounded-md'
+                                className='flex items-center gap-2 p-2 xl:px-4 xl:py-2 bg-white rounded-md'
                                 target='_blank'
                                 href={card.link}
                                 rel='noreferrer'
@@ -127,7 +127,7 @@ const Clients = () => {
                                     viewBox='0 0 16 16'
                                 >
                                     <path
-                                        fill-rule='evenodd'
+                                        fillRule='evenodd'
                                         d='M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm5.854 8.803a.5.5 0 1 1-.708-.707L9.243 6H6.475a.5.5 0 1 1 0-1h3.975a.5.5 0 0 1 .5.5v3.975a.5.5 0 1 1-1 0V6.707z'
                                     />
                                 </svg>
