@@ -102,7 +102,9 @@ const Slot = () => {
 
                 const timeDifference = new Date(expectedTimestamp * 1000).getTime() - new Date().getTime();
 
-                if (timeDifference > 0) {
+                if (timeDifference > 2147483647) {
+                    return;
+                } else if (timeDifference > 0) {
                     setTimeout(() => {
                         if (Number(id) === slotRef.current) {
                             getBlock();
@@ -200,7 +202,11 @@ const Slot = () => {
             <div className='flex flex-col mx-auto gap-y-5 md:gap-y-8 '>
                 <Card title='Epoch' content={<LinkEpoch epoch={block?.f_epoch} />} />
 
-                {existsBlock && <Card title='Block' content={<LinkBlock block={block?.f_el_block_number} />} />}
+                {block?.f_el_block_number && block?.f_el_block_number > 0 ? (
+                    <Card title='Block' content={<LinkBlock block={block?.f_el_block_number} />} />
+                ) : (
+                    <Card title='Block' text='---' />
+                )}
 
                 {existsBlock && <Card title='Entity' content={<LinkEntity entity={block?.f_pool_name} />} />}
 
@@ -208,7 +214,7 @@ const Slot = () => {
                     <Card title='Proposer' content={<LinkValidator validator={block?.f_proposer_index} />} />
                 )}
 
-                {existsBlock && network === 'mainnet' && <Card title='Client' text={block?.f_cl_client ?? 'Others'} />}
+                {existsBlock && network === 'mainnet' && <Card title='Client' text={block?.f_cl_client || '---'} />}
 
                 {existsBlock && (
                     <Card
