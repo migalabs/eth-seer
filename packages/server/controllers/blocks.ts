@@ -19,6 +19,7 @@ export const getBlocks = async (req: Request, res: Response) => {
                     f_el_transactions, f_el_block_hash, f_payload_size_bytes,
                     f_el_block_number
                     FROM t_block_metrics
+                    WHERE f_el_block_number <> 0
                     ORDER BY f_el_block_number DESC
                     OFFSET ${skip}
                     LIMIT ${Number(limit)}
@@ -26,6 +27,7 @@ export const getBlocks = async (req: Request, res: Response) => {
                 pgPool.query(`
                     SELECT COUNT(*) AS count
                     FROM t_block_metrics
+                    WHERE f_el_block_number <> 0
                 `),
             ]);
 
@@ -57,6 +59,7 @@ export const getBlockById = async (req: Request, res: Response) => {
             f_el_transactions, f_el_block_hash, f_payload_size_bytes
             FROM t_block_metrics
             WHERE f_el_block_number = '${id}'
+            LIMIT 1
         `);
 
         res.json({
