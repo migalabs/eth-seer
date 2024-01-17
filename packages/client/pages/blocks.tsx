@@ -16,9 +16,6 @@ import PageDescription from '../components/ui/PageDescription';
 import { BlockEL } from '../types';
 
 const Blocks = () => {
-    // Constants
-    const LIMIT = 10;
-
     // Router
     const router = useRouter();
     const { network } = router.query;
@@ -28,26 +25,28 @@ const Blocks = () => {
     const [blocksCount, setBlocksCount] = useState(0);
     const [currentPage, setCurrentPage] = useState(0);
     const [loading, setLoading] = useState(true);
+    const [numRowsQuery, setNumRowsQuery] = useState(0);
 
     useEffect(() => {
         if (network && blocks.length === 0) {
-            getBlocks(0);
+            getBlocks(0, 10);
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [network]);
 
-    const getBlocks = async (page: number) => {
+    const getBlocks = async (page: number, limit: number) => {
         try {
             setLoading(true);
 
             setCurrentPage(page);
+            setNumRowsQuery(limit);
 
             const response = await axiosClient.get('/api/blocks', {
                 params: {
                     network,
                     page,
-                    limit: LIMIT,
+                    limit,
                 },
             });
 
@@ -82,8 +81,9 @@ const Blocks = () => {
             {blocksCount > 0 && (
                 <Pagination
                     currentPage={currentPage}
-                    totalPages={Math.ceil(blocksCount / LIMIT)}
-                    onChangePage={getBlocks}
+                    totalPages={Math.ceil(blocksCount / numRowsQuery)}
+                    onChangePage={page => getBlocks(page, numRowsQuery)}
+                    onChangeNumRows={numRows => getBlocks(0, numRows)}
                 />
             )}
 
