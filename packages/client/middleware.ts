@@ -16,7 +16,13 @@ export async function fetchNetworks(): Promise<{ networks: string[]; defaultNetw
 }
 
 export async function middleware(req: NextRequest) {
-    if (req.nextUrl.pathname.includes('_next') || req.nextUrl.pathname.includes('static')) return NextResponse.next();
+    if (
+        req.nextUrl.pathname.includes('_next') ||
+        req.nextUrl.pathname.includes('static') ||
+        req.nextUrl.pathname.includes('.')
+    ) {
+        return NextResponse.next();
+    }
 
     const { networks, defaultNetwork } = await fetchNetworks();
 
