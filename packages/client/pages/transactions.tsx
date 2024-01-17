@@ -17,7 +17,7 @@ import { Transaction } from '../types';
 
 const Transactions = () => {
     // Constants
-    const LIMIT = 10;
+    const MAX_TRANSACTIONS = 100000;
 
     // Router
     const router = useRouter();
@@ -28,25 +28,27 @@ const Transactions = () => {
     const [currentPage, setCurrentPage] = useState(0);
     const [loading, setLoading] = useState(true);
     const [firstQueryFetched, setFirstQueryFetched] = useState(false);
+    const [numRowsQuery, setNumRowsQuery] = useState(0);
 
     useEffect(() => {
         if (network && transactions.length === 0) {
-            getTransactions(0);
+            getTransactions(0, 10);
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [network]);
 
-    const getTransactions = async (page: number) => {
+    const getTransactions = async (page: number, limit: number) => {
         try {
             setLoading(true);
             setCurrentPage(page);
+            setNumRowsQuery(limit);
 
             const response = await axiosClient.get('/api/transactions', {
                 params: {
                     network,
                     page,
-                    limit: LIMIT,
+                    limit,
                 },
             });
 
@@ -77,8 +79,13 @@ const Transactions = () => {
                 Transactions are the atomic components that create the state of the Ethereum Virtual Machine.
             </PageDescription>
 
-            {firstQueryFetched && (
-                <Pagination currentPage={currentPage} totalPages={10000} onChangePage={getTransactions} />
+            {firstQueryFetched && transactions.length > 0 && (
+                <Pagination
+                    currentPage={currentPage}
+                    totalPages={MAX_TRANSACTIONS / numRowsQuery}
+                    onChangePage={page => getTransactions(page, numRowsQuery)}
+                    onChangeNumRows={numRows => getTransactions(0, numRows)}
+                />
             )}
 
             <TransactionList transactions={transactions} fetchingTransactions={loading} />

@@ -13,9 +13,6 @@ import Title from '../components/ui/Title';
 import PageDescription from '../components/ui/PageDescription';
 
 const Epochs = () => {
-    // Constants
-    const LIMIT = 10;
-
     // Router
     const router = useRouter();
     const { network } = router.query;
@@ -25,26 +22,28 @@ const Epochs = () => {
     const [epochs, setEpochs] = useState([]);
     const [epochsCount, setEpochsCount] = useState(0);
     const [currentPage, setCurrentPage] = useState(0);
+    const [numRowsQuery, setNumRowsQuery] = useState(0);
 
     useEffect(() => {
         if (network && epochs.length === 0) {
-            getEpochs(0);
+            getEpochs(0, 10);
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [network]);
 
-    const getEpochs = async (page: number) => {
+    const getEpochs = async (page: number, limit: number) => {
         try {
             setLoading(true);
 
             setCurrentPage(page);
+            setNumRowsQuery(limit);
 
             const response = await axiosClient.get('/api/epochs', {
                 params: {
                     network,
                     page,
-                    limit: LIMIT,
+                    limit,
                 },
             });
 
@@ -79,8 +78,9 @@ const Epochs = () => {
             {epochsCount > 0 && (
                 <Pagination
                     currentPage={currentPage}
-                    totalPages={Math.ceil(epochsCount / LIMIT)}
-                    onChangePage={getEpochs}
+                    totalPages={Math.ceil(epochsCount / numRowsQuery)}
+                    onChangePage={page => getEpochs(page, numRowsQuery)}
+                    onChangeNumRows={numRows => getEpochs(0, numRows)}
                 />
             )}
 
