@@ -20,7 +20,7 @@ const Clients = () => {
             name: 'Nimbus',
             imgUrl: '/static/images/blocks/cubes/clients/nimbus.webp',
             txtAlt: 'Nimbus',
-            text: 'Nimbus is a client implementation for both Ethereum’s consensus layer (eth2) and execution layer (eth1) that strives to be as lightweight as possible in terms of resources used. This allows it to perform well on embedded systems, embedded devices – including Raspberry Pis and mobile devices.',
+            text: "Nimbus is a client implementation for both Ethereum's consensus layer (eth2) and execution layer (eth1) that strives to be as lightweight as possible in terms of resources used. This allows it to perform well on embedded systems, embedded devices - including Raspberry Pis and mobile devices.",
             link: 'https://nimbus.team/',
             imgLng: '/static/images/blocks/cubes/languages/nim.webp',
             txtAltLng: 'Nimbus Programming Language',
