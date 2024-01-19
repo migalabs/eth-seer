@@ -56,6 +56,10 @@ const Menu = () => {
                 name: 'Transactions',
                 route: '/transactions',
             },
+            {
+                name: 'Clients',
+                route: '/clients',
+            },
         ],
         Networks:
             networks.length > 0
