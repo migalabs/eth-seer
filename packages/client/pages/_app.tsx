@@ -1,4 +1,5 @@
 import '../styles/globals.css';
+import '../styles/theme-mode-switch.css';
 import type { AppProps } from 'next/app';
 import Script from 'next/script';
 import { getCookie } from 'cookies-next';

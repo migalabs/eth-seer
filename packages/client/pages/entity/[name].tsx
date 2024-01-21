@@ -9,32 +9,15 @@ import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
 // Components
 import Layout from '../../components/layouts/Layout';
-import Animation from '../../components/layouts/Animation';
+import InfoBox from '../../components/layouts/InfoBox';
 import Loader from '../../components/ui/Loader';
 import ProgressSmoothBar from '../../components/ui/ProgressSmoothBar';
 import TabHeader from '../../components/ui/TabHeader';
+import Title from '../../components/ui/Title';
+import CardContent from '../../components/ui/CardContent';
 
 // Types
 import { Entity } from '../../types';
-
-type Props = {
-    content: string;
-    bg: string;
-    color: string;
-    boxShadow: string;
-};
-
-//Card style
-const CardContent = ({ content, bg, color, boxShadow }: Props) => {
-    return (
-        <span
-            className='block px-5 rounded-md font-medium capitalize py-2 text-center w-52'
-            style={{ background: bg, color: color, boxShadow: boxShadow }}
-        >
-            {content}
-        </span>
-    );
-};
 
 const EntityComponent = () => {
     // Theme Mode Context
@@ -48,9 +31,9 @@ const EntityComponent = () => {
     const [entityHour, setEntityHour] = useState<Entity | null>(null);
     const [entityDay, setEntityDay] = useState<Entity | null>(null);
     const [entityWeek, setEntityWeek] = useState<Entity | null>(null);
-    const [showAnimation, setShowAnimation] = useState<boolean>(false);
+    const [showInfoBox, setShowInfoBox] = useState(false);
     const [tabPageIndexEntityPerformance, setTabPageIndexEntityPerformance] = useState(0);
-    const [loading, setLoading] = useState<boolean>(true);
+    const [loading, setLoading] = useState(true);
 
     // UseEffect
     useEffect(() => {
@@ -98,9 +81,9 @@ const EntityComponent = () => {
             // const response = await axiosClient.get(`/api/entities/${(name as string).toLowerCase()}`);
 
             if (responseHour.data.entity.aggregate_balance !== null) {
-                setShowAnimation(false);
+                setShowInfoBox(false);
             } else {
-                setShowAnimation(true);
+                setShowInfoBox(true);
             }
         } catch (error) {
             console.log(error);
@@ -114,7 +97,7 @@ const EntityComponent = () => {
             <>
                 {/* Rewards */}
                 <div className='flex flex-col md:flex-row py-4 gap-y-2 md:gap-y-0 md:mb-0'>
-                    <p className={`md:w-52 lg:w-50 text-${themeMode?.darkMode ? 'white' : 'black'}`}>Rewards:</p>
+                    <p className='md:w-52 lg:w-50 text-[var(--black)] dark:text-[var(--white)]'>Rewards:</p>
                     <div className='w-[300px] text-center font-normal'>
                         {entity && (
                             <ProgressSmoothBar
@@ -136,27 +119,20 @@ const EntityComponent = () => {
                 </div>
 
                 <div className='flex flex-col md:flex-row py-4 gap-y-2 md:gap-y-0 md:mb-0'>
-                    <p className={`md:w-52 lg:w-50 text-${themeMode?.darkMode ? 'white' : 'black'}`}>
+                    <p className='md:w-52 lg:w-50 text-[var(--black)] dark:text-[var(--white)]'>
                         Sync committee participation:
                     </p>
-                    <p className={`capitalize text-${themeMode?.darkMode ? 'white' : 'black'}`}>
+                    <p className='capitalize text-[var(--black)] dark:text-[var(--white)]'>
                         {entity?.count_sync_committee} duties
                     </p>
                 </div>
 
                 {/* Attestation flags */}
                 <div className='flex flex-col lg:flex-row py-4 gap-y-2 md:gap-y-0 md:mb-0'>
-                    <p className={`md:w-52 lg:w-50 text-${themeMode?.darkMode ? 'white' : 'black'}`}>
-                        Attestation flags:
-                    </p>
+                    <p className='md:w-52 lg:w-50 text-[var(--black)] dark:text-[var(--white)]'>Attestation flags:</p>
 
                     {entity && (
-                        <div
-                            className='flex flex-col xl:flex-row items-center gap-x-4 gap-y-2 font-medium text-[12px] md:text-[14px]'
-                            style={{
-                                color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                            }}
-                        >
+                        <div className='flex flex-col xl:flex-row items-center gap-x-4 gap-y-2 font-medium text-[12px] md:text-[14px] text-[var(--black)] dark:text-[var(--white)]'>
                             <ProgressSmoothBar
                                 title='Target'
                                 color='var(--black)'
@@ -216,7 +192,7 @@ const EntityComponent = () => {
 
                 {/* Blocks Entity Performance */}
                 <div className='flex flex-col md:flex-row py-4 gap-y-2 md:gap-y-0 md:mb-0'>
-                    <p className={`md:w-52 lg:w-50 text-${themeMode?.darkMode ? 'white' : 'black'}`}>Blocks:</p>
+                    <p className='md:w-52 lg:w-50 text-[var(--black)] dark:text-[var(--white)]'>Blocks:</p>
 
                     <div className='flex justify-center'>
                         <div className='flex flex-col md:flex-row gap-x-4 gap-y-2'>
@@ -225,6 +201,7 @@ const EntityComponent = () => {
                                 bg='var(--proposedGreen)'
                                 color='var(--white)'
                                 boxShadow='var(--boxShadowGreen)'
+                                width={200}
                             />
 
                             <CardContent
@@ -232,6 +209,7 @@ const EntityComponent = () => {
                                 bg='var(--missedRed)'
                                 color='var(--white)'
                                 boxShadow='var(--boxShadowRed)'
+                                width={200}
                             />
                         </div>
                     </div>
@@ -243,16 +221,7 @@ const EntityComponent = () => {
     //OVERVIEW PAGE
     return (
         <Layout>
-            <div className='flex gap-x-3 justify-center items-center mt-14 xl:mt-0 mb-5'>
-                <h1
-                    className='uppercase text-center font-medium text-[32px] md:text-[50px]'
-                    style={{
-                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                    }}
-                >
-                    {name}
-                </h1>
-            </div>
+            <Title className='uppercase'>{name}</Title>
 
             {loading && (
                 <div className='mt-6'>
@@ -260,83 +229,76 @@ const EntityComponent = () => {
                 </div>
             )}
 
-            {entityDay && !showAnimation && (
+            {entityDay && !showInfoBox && (
                 <div className='mx-auto w-11/12 md:w-10/12'>
                     <div
-                        className='flex p-6 md:px-20 md:py-10 rounded-md gap-x-5  border-2 border-white'
+                        className='flex p-6 md:px-20 md:py-10 rounded-md gap-x-5  border-2 border-white text-[var(--darkGray)] dark:text-[var(--white)] bg-[var(--bgMainLightMode)] dark:bg-[var(--bgFairDarkMode)]'
                         style={{
-                            backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
                             boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
-                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
                         }}
                     >
-                        <div
-                            className='flex flex-col gap-y-8 text-[14px] md:text-[16px] font-medium mx-auto md:mx-0'
-                            style={{
-                                color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                            }}
-                        >
+                        <div className='flex flex-col gap-y-8 text-[14px] md:text-[16px] font-medium mx-auto md:mx-0 text-[var(--darkGray)] dark:text-[var(--white)]'>
                             <div className='flex flex-row flex-wrap items-center gap-x-5'>
-                                <p className={`w-60 mb-2 text-${themeMode?.darkMode ? 'white' : 'black'}`}>
+                                <p className='w-60 mb-2 text-[var(--black)] dark:text-[var(--white)]'>
                                     Aggregate Balance:
                                 </p>
-                                <p className={`text-${themeMode?.darkMode ? 'white' : 'black'}`}>
-                                    {entityDay && entityDay.aggregate_balance?.toLocaleString()} ETH
+                                <p className='text-[var(--black)] dark:text-[var(--white)]'>
+                                    {entityDay.aggregate_balance?.toLocaleString()} ETH
                                 </p>
                             </div>
                             {/* Blocks */}
                             <div className='flex flex-col lg:flex-row gap-x-5 gap-y-1'>
-                                <p className={`w-44 sm:w-60 text-${themeMode?.darkMode ? 'white' : 'black'}`}>
-                                    Blocks:
-                                </p>
+                                <p className='w-44 sm:w-60 text-[var(--black)] dark:text-[var(--white)]'>Blocks:</p>
                                 <div className='flex flex-col lg:flex-row items-center gap-x-4 gap-y-2'>
                                     <CardContent
-                                        content={`Proposed: ${
-                                            entityDay && entityDay.proposed_blocks.f_proposed?.toLocaleString()
-                                        }`}
+                                        content={`Proposed: ${entityDay.proposed_blocks.f_proposed?.toLocaleString()}`}
                                         bg='var(--proposedGreen)'
                                         color='var(--white)'
                                         boxShadow='var(--boxShadowGreen)'
+                                        width={200}
                                     />
                                     <CardContent
-                                        content={`Missed: ${
-                                            entityDay && entityDay.proposed_blocks.f_missed?.toLocaleString()
-                                        }`}
+                                        content={`Missed: ${entityDay.proposed_blocks.f_missed?.toLocaleString()}`}
                                         bg='var(--missedRed)'
                                         color='var(--white)'
                                         boxShadow='var(--boxShadowRed)'
+                                        width={200}
                                     />
                                 </div>
                             </div>
                             {/* Number of validators*/}
                             <div className='flex flex-col gap-y-1 xs:gap-y-5'>
-                                <p className={`w-44 sm:w-60 mb-2 text-${themeMode?.darkMode ? 'white' : 'black'}`}>
+                                <p className='w-44 sm:w-60 mb-2 text-[var(--black)] dark:text-[var(--white)]'>
                                     Number of Validators:
                                 </p>
                                 <div className='flex flex-col xl:flex-row items-center gap-x-4 gap-y-2'>
                                     <CardContent
-                                        content={`Deposited: ${entityDay && entityDay.deposited?.toLocaleString()}`}
+                                        content={`Deposited: ${entityDay.deposited?.toLocaleString()}`}
                                         bg='var(--depositedBlue)'
                                         color='var(--white)'
                                         boxShadow='var(--boxShadowBlue)'
+                                        width={200}
                                     />
                                     <CardContent
-                                        content={`Active: ${entityDay && entityDay.active?.toLocaleString()}`}
+                                        content={`Active: ${entityDay.active?.toLocaleString()}`}
                                         bg='var(--proposedGreen)'
                                         color='var(--white)'
                                         boxShadow='var(--boxShadowGreen)'
+                                        width={200}
                                     />
                                     <CardContent
-                                        content={`Slashed: ${entityDay && entityDay.slashed?.toLocaleString()}`}
+                                        content={`Slashed: ${entityDay.slashed?.toLocaleString()}`}
                                         bg='var(--missedRed)'
                                         color='var(--white)'
                                         boxShadow='var(--boxShadowRed)'
+                                        width={200}
                                     />
                                     <CardContent
-                                        content={`Exited: ${entityDay && entityDay.exited?.toLocaleString()}`}
+                                        content={`Exited: ${entityDay.exited?.toLocaleString()}`}
                                         bg='var(--exitedPurple)'
                                         color='var(--white)'
                                         boxShadow='var(--boxShadowPurple)'
+                                        width={200}
                                     />
                                 </div>
                             </div>
@@ -369,24 +331,15 @@ const EntityComponent = () => {
                     </div>
 
                     <div
-                        className='flex rounded-md  border-2 border-white '
+                        className='flex rounded-md  border-2 border-white text-[var(--darkGray)] dark:text-[var(--white)] bg-[var(--bgMainLightMode)] dark:bg-[var(--bgFairDarkMode)]'
                         style={{
-                            backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
                             boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
-                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
                         }}
                     >
-                        <div
-                            className='text-[14px] md:text-[16px] font-medium mx-auto'
-                            style={{
-                                color: themeMode?.darkMode ? 'var(--white)' : 'var(--darkGray)',
-                            }}
-                        >
+                        <div className='text-[14px] md:text-[16px] font-medium mx-auto text-[var(--darkGray)] dark:text-[var(--white)]'>
                             <div>
                                 <div className='text-[18px] uppercase font-medium py-4 text-center'>
-                                    <p className={`text-${themeMode?.darkMode ? 'white' : 'black'}`}>
-                                        Entity performance:
-                                    </p>
+                                    <p className='text-[var(--black)] dark:text-[var(--white)]'>Entity performance:</p>
                                 </div>
                                 {tabPageIndexEntityPerformance === 0 && getEntityPerformance(entityHour as Entity)}
                                 {tabPageIndexEntityPerformance === 1 && getEntityPerformance(entityDay as Entity)}
@@ -397,7 +350,7 @@ const EntityComponent = () => {
                 </div>
             )}
 
-            {showAnimation && <Animation text={`We're not there yet`} />}
+            {showInfoBox && <InfoBox text="Entity doesn't exist yet" />}
         </Layout>
     );
 };

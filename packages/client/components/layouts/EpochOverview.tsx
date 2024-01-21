@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 // Contexts
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
@@ -22,7 +22,7 @@ type Props = {
 
 const EpochOverview = ({ epoch, blocks, lastEpoch, showClient }: Props) => {
     // Theme Mode Context
-    const { themeMode } = React.useContext(ThemeModeContext) ?? {};
+    const { themeMode } = useContext(ThemeModeContext) ?? {};
 
     const getEntityName = (f_pool_name: string) => {
         if (f_pool_name) {
@@ -58,12 +58,7 @@ const EpochOverview = ({ epoch, blocks, lastEpoch, showClient }: Props) => {
 
     return (
         <div className='flex flex-col'>
-            <span
-                className='capitalize text-center text-[16px] md:text-[18px]'
-                style={{
-                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--newOrange)',
-                }}
-            >
+            <span className='capitalize text-center text-[16px] md:text-[18px] text-[var(--newOrange)] dark:text-[var(--white)]'>
                 Epoch {epoch?.toLocaleString()}
             </span>
 
@@ -74,9 +69,8 @@ const EpochOverview = ({ epoch, blocks, lastEpoch, showClient }: Props) => {
                 }}
             >
                 <div
-                    className='grid grid-cols-4 md:grid-cols-8 w-fit md:max-h-full border-2 border-[var(--white)] mx-auto gap-2 rounded-md p-6'
+                    className='grid grid-cols-4 md:grid-cols-8 w-fit md:max-h-full border-2 border-[var(--white)] mx-auto gap-2 rounded-md p-6 bg-[var(--bgMainLightMode)] dark:bg-[var(--bgFairDarkMode)]'
                     style={{
-                        backgroundColor: themeMode?.darkMode ? 'var(--bgFairDarkMode)' : 'var(--bgMainLightMode)',
                         boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
                     }}
                 >

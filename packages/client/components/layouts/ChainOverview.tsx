@@ -4,6 +4,9 @@ import { useRouter } from 'next/router';
 // Contexts
 import BlocksContext from '../../contexts/blocks/BlocksContext';
 
+// Hooks
+import useLargeView from '../../hooks/useLargeView';
+
 // Components
 import EpochOverview from './EpochOverview';
 import Arrow from '../ui/Arrow';
@@ -16,6 +19,9 @@ const ChainOverview = () => {
 
     // Blocks Context
     const { blocks, getBlocks } = useContext(BlocksContext) ?? {};
+
+    // Large View Hook
+    const isLargeView = useLargeView();
 
     // States
     const [lastEpoch, setLastEpoch] = useState(0);
@@ -39,12 +45,14 @@ const ChainOverview = () => {
             setLastEpoch(lastEpochAux || 0);
         }
 
-        if (window !== undefined && window.innerWidth > 768) {
+        if (isLargeView) {
             setNumberEpochsViewed(2);
+        } else {
+            setNumberEpochsViewed(1);
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [network, blocks]);
+    }, [network, blocks, isLargeView]);
 
     const handleLeft = () => {
         if (blocks && blocks.epochs && Object.entries(blocks.epochs).length - numberEpochsViewed - count === 5) {

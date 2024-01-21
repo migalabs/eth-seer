@@ -1,16 +1,11 @@
-import React, { useContext } from 'react';
-
-// Contexts
-import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
+import React from 'react';
 
 // Components
 import LinkIcon from './LinkIcon';
 import NetworkLink from './NetworkLink';
+import AddressCopy from './AddressCopy';
 
-// Helpers
-import { getShortAddress } from '../../helpers/addressHelper';
-
-// Types
+// Props
 type Props = {
     hash: string | undefined;
     children?: React.ReactNode;
@@ -18,25 +13,17 @@ type Props = {
 };
 
 const LinkTransaction = ({ hash, children, mxAuto }: Props) => {
-    // Theme Mode Context
-    const { themeMode } = useContext(ThemeModeContext) ?? {};
-
-    const baseStyle = {
-        color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)',
-    };
-
     return (
         <NetworkLink
             href={`/transaction/${hash}`}
             passHref
-            className={`flex gap-x-1 items-center text-[14px] md:text-[16px]  font-medium md:hover:underline underline-offset-4 decoration-2 w-fit ${
+            className={`flex gap-x-1 items-center text-[14px] md:text-[16px] font-medium md:hover:underline underline-offset-4 decoration-2 w-fit text-[var(--darkPurple)] dark:text-[var(--purple)] ${
                 mxAuto ? 'mx-auto' : ''
             }`}
-            style={baseStyle}
         >
             {children ?? (
                 <>
-                    <span>{getShortAddress(hash)}</span>
+                    <AddressCopy address={hash ?? ''} />
                     <LinkIcon />
                 </>
             )}
