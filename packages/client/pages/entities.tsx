@@ -13,7 +13,9 @@ import Layout from '../components/layouts/Layout';
 import EntityCard from '../components/ui/EntityCard';
 import CustomImage from '../components/ui/CustomImage';
 import Loader from '../components/ui/Loader';
-import Animation from '../components/layouts/Animation';
+import InfoBox from '../components/layouts/InfoBox';
+import Title from '../components/ui/Title';
+import PageDescription from '../components/ui/PageDescription';
 
 type Entity = {
     f_pool_name: string;
@@ -76,50 +78,26 @@ const Entities = () => {
                 <link rel='canonical' href='https://ethseer.io/entities' />
             </Head>
 
-            {/* Header */}
-            <h1
-                className='text-center font-semibold text-[32px] md:text-[50px] mt-10 xl:mt-0 capitalize m-2 md:m-0'
-                style={{
-                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                }}
-            >
-                Ethereum Staking Entities
-            </h1>
+            <Title>Ethereum Staking Entities</Title>
 
-            <div
-                className='mx-auto py-4 px-6 border-2 border-[var(--purple)] rounded-md flex w-11/12 lg:w-10/12'
-                style={{ background: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--bgMainLightMode)' }}
-            >
-                <h2
-                    className='text-white text-[14px] 2xl:text-[18px] text-center leading-6'
-                    style={{
-                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                    }}
-                >
-                    An entity can range from an individual running many validators to an institutional organization
-                    providing staking services. If it is running at least 100 validators, we catalog it as an entity.
-                    Ethseer obtains information about the entities to which validators belong to through graffiti,
-                    deposit address analysis, among others. EthSeer also monitors their performance.
-                </h2>
-            </div>
+            <PageDescription>
+                An entity can range from an individual running many validators to an institutional organization
+                providing staking services. If it is running at least 100 validators, we catalog it as an entity.
+                Ethseer obtains information about the entities to which validators belong to through graffiti, deposit
+                address analysis, among others. EthSeer also monitors their performance.
+            </PageDescription>
 
-            <hr className='w-11/12 lg:w-10/12 mx-auto my-4 border-white' />
+            <hr className='w-11/12 xl:w-10/12 mx-auto my-4 border-white' />
 
-            <div className='w-11/12 lg:w-10/12 mx-auto mt-4'>
-                <p
-                    className='text-[14px] md:text-[16px] text-center'
-                    style={{
-                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                    }}
-                >
+            <div className='w-11/12 xl:w-10/12 mx-auto mt-4'>
+                <p className='text-[14px] md:text-[16px] text-center text-[var(--black)] dark:text-[var(--white)]'>
                     This is a card example with the entity information you&apos;ll find:
                 </p>
 
                 <div
-                    className='flex flex-row w-[350px] justify-start mx-auto mt-4 items-center py-4 px-2 border-2 gap-2 rounded-md bg-[var(--bgFairLightMode)]'
+                    className='flex flex-row w-[350px] justify-start mx-auto mt-4 items-center py-4 px-2 border-2 gap-2 rounded-md bg-[var(--bgFairLightMode)] text-[var(--black)] dark:text-[var(--white)]'
                     style={{
                         boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
-                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
                     }}
                 >
                     <CustomImage
@@ -137,7 +115,7 @@ const Entities = () => {
                 </div>
             </div>
 
-            <hr className='w-11/12 lg:w-10/12 mx-auto my-4 border-white' />
+            <hr className='w-11/12 xl:w-10/12 mx-auto my-4 border-white' />
 
             {loading && (
                 <div className='my-6 justify-center'>
@@ -156,7 +134,7 @@ const Entities = () => {
                     ))}
             </div>
 
-            {!loading && entities.length === 0 && <Animation text='There are no entities' />}
+            {!loading && entities.length === 0 && <InfoBox text='There are no entities' />}
         </Layout>
     );
 };

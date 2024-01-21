@@ -1,29 +1,21 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
 // Axios
 import axiosClient from '../config/axios';
 
-// Contexts
-import ThemeModeContext from '../contexts/theme-mode/ThemeModeContext';
-
 // Components
 import Layout from '../components/layouts/Layout';
 import BlockList from '../components/layouts/Blocks';
-import Loader from '../components/ui/Loader';
 import Pagination from '../components/ui/Pagination';
+import Title from '../components/ui/Title';
+import PageDescription from '../components/ui/PageDescription';
 
 // Types
 import { BlockEL } from '../types';
 
 const Blocks = () => {
-    // Constants
-    const LIMIT = 32;
-
-    // Theme Mode Context
-    const { themeMode } = useContext(ThemeModeContext) ?? {};
-
     // Router
     const router = useRouter();
     const { network } = router.query;
@@ -33,26 +25,28 @@ const Blocks = () => {
     const [blocksCount, setBlocksCount] = useState(0);
     const [currentPage, setCurrentPage] = useState(0);
     const [loading, setLoading] = useState(true);
+    const [numRowsQuery, setNumRowsQuery] = useState(0);
 
     useEffect(() => {
         if (network && blocks.length === 0) {
-            getBlocks(0);
+            getBlocks(0, 10);
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [network]);
 
-    const getBlocks = async (page: number) => {
+    const getBlocks = async (page: number, limit: number) => {
         try {
             setLoading(true);
 
             setCurrentPage(page);
+            setNumRowsQuery(limit);
 
-            const response = await axiosClient.get(`/api/blocks`, {
+            const response = await axiosClient.get('/api/blocks', {
                 params: {
                     network,
                     page,
-                    limit: LIMIT,
+                    limit,
                 },
             });
 
@@ -77,45 +71,23 @@ const Blocks = () => {
                 <link rel='canonical' href='https://ethseer.io/blocks' />
             </Head>
 
-            <h1
-                className='text-center mt-10 xl:mt-0 font-semibold text-[32px] md:text-[50px] capitalize'
-                style={{
-                    color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                }}
-            >
-                Ethereum Blocks
-            </h1>
+            <Title>Ethereum Blocks</Title>
 
-            <div
-                className='mx-auto py-4 px-6 border-2 border-[var(--purple)] rounded-md flex w-11/12 lg:w-10/12'
-                style={{ background: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--bgMainLightMode)' }}
-            >
-                <h2
-                    className='text-white text-[14px] 2xl:text-[18px] text-center leading-6'
-                    style={{
-                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                    }}
-                >
-                    Blocks are the fundamental unit of consensus for blockchains. In it you will find a number of
-                    transactions and interactions with smart contracts.
-                </h2>
-            </div>
+            <PageDescription>
+                Blocks are the fundamental unit of consensus for blockchains. In it you will find a number of
+                transactions and interactions with smart contracts.
+            </PageDescription>
 
             {blocksCount > 0 && (
                 <Pagination
                     currentPage={currentPage}
-                    totalPages={Math.ceil(blocksCount / LIMIT)}
-                    onChangePage={getBlocks}
+                    totalPages={Math.ceil(blocksCount / numRowsQuery)}
+                    onChangePage={page => getBlocks(page, numRowsQuery)}
+                    onChangeNumRows={numRows => getBlocks(0, numRows)}
                 />
             )}
 
-            {loading ? (
-                <div className='my-6'>
-                    <Loader />
-                </div>
-            ) : (
-                <BlockList blocks={blocks} />
-            )}
+            <BlockList blocks={blocks} fetchingBlocks={loading} />
         </Layout>
     );
 };

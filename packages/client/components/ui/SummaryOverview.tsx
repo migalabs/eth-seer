@@ -5,7 +5,6 @@ import { useRouter } from 'next/router';
 import axiosClient from '../../config/axios';
 
 // Contexts
-import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 import BlocksContext from '../../contexts/blocks/BlocksContext';
 
 type Summary = {
@@ -15,20 +14,15 @@ type Summary = {
 };
 
 const SummaryOverview = () => {
-    const assetPrefix = process.env.NEXT_PUBLIC_ASSET_PREFIX ?? '';
-
     // Router
     const router = useRouter();
     const { network } = router.query;
-
-    // Theme Mode Context
-    const { themeMode } = React.useContext(ThemeModeContext) ?? {};
 
     // Blocks Context
     const { blocks } = React.useContext(BlocksContext) ?? {};
 
     // States
-    const [summary, setSummary] = useState<Summary>() ?? {};
+    const [summary, setSummary] = useState<Summary | null>(null);
     const [lastValidator, setLastValidator] = useState(null);
 
     useEffect(() => {
@@ -72,14 +66,7 @@ const SummaryOverview = () => {
         <>
             {summary && lastValidator !== 0 && (
                 <div className='mb-5'>
-                    <div
-                        className='grid mx-auto grid-row-5 xl:flex xl:flex-wrap justify-around items-center gap-1 xl:gap-10 text-center text-[14px] rounded-md py-4 px-8 xl:px-8 xl:py-3 w-11/12 md:w-9/12 border'
-                        style={{
-                            color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                            background: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--bgMainLightMode)',
-                            borderColor: themeMode?.darkMode ? 'var(--white)' : 'var(--lightGray)',
-                        }}
-                    >
+                    <div className='grid mx-auto grid-row-5 xl:flex xl:flex-wrap justify-around items-center gap-1 xl:gap-10 text-center text-[14px] rounded-md py-4 px-8 xl:px-8 xl:py-3 w-11/12 md:w-9/12 border text-[var(--black)] dark:text-[var(--white)] bg-[var(--bgMainLightMode)] dark:bg-[var(--bgDarkMode)] border-[var(--lightGray)] dark:border-[var(--white)]'>
                         <p>
                             <b className='font-semibold'>Network:</b>{' '}
                             {(network as string).charAt(0).toUpperCase() + (network as string).slice(1)}

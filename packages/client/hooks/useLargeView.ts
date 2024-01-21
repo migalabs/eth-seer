@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 
 const useLargeView = () => {
-    const [largeView, setLargeView] = useState(true);
+    const [isLargeView, setIsLargeView] = useState(true);
 
     useEffect(() => {
         const handleResize = () => {
-            setLargeView(window.innerWidth > 768);
+            setIsLargeView(window.innerWidth > 768);
         };
 
         handleResize();
@@ -14,7 +14,7 @@ const useLargeView = () => {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    return largeView;
+    return isLargeView;
 };
 
 export default useLargeView;

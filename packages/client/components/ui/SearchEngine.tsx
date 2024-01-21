@@ -1,10 +1,8 @@
-import React, { useState, Fragment, useContext, useRef } from 'react';
+import React, { useState, Fragment, useEffect, useRef } from 'react';
 import styled from '@emotion/styled';
 
 // Context
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
-import BlocksContext from '../../contexts/blocks/BlocksContext';
-import EpochsContext from '../../contexts/epochs/EpochsContext';
 
 // Hooks
 import useOutsideClick from '../../hooks/useOutsideClick';
@@ -48,19 +46,12 @@ type SearchEngineItem = {
 };
 
 const SearchEngine = () => {
+    // Router
     const router = useRouter();
     const { network } = router.query;
 
-    const assetPrefix = process.env.NEXT_PUBLIC_ASSET_PREFIX ?? '';
-
     // Theme Mode Context
     const { themeMode } = React.useContext(ThemeModeContext) ?? {};
-
-    // Blocks Context
-    const { blocks } = useContext(BlocksContext) ?? {};
-
-    // Epochs Context
-    const { epochs } = useContext(EpochsContext) ?? {};
 
     // Refs
     const popUpRef = useRef<HTMLDivElement>(null);
@@ -74,15 +65,23 @@ const SearchEngine = () => {
     const [showResults, setShowResults] = useState(true);
     const [entities, setEntities] = useState<string[]>([]);
 
+    useEffect(() => {
+        if (network && entities.length === 0) {
+            getEntities();
+        }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [network]);
+
     const getEntities = async () => {
         try {
-            const response = await axiosClient.get(`/api/entities`, {
+            const response = await axiosClient.get('/api/entities', {
                 params: {
                     network,
                 },
             });
-            const poolNames = response.data.entities.rows.map((pool: any) => pool.f_pool_name);
-            setEntities(poolNames);
+
+            setEntities(response.data.entities.map((pool: any) => pool.f_pool_name));
         } catch (error) {
             console.log(error);
         }
@@ -99,27 +98,25 @@ const SearchEngine = () => {
         if (!isNaN(Number(searchContent))) {
             const searchContentNumber = Number(searchContent);
 
-            const lastEpoch = getLastEpoch();
-
-            if (searchContentNumber >= 0 && searchContentNumber <= lastEpoch) {
+            if (searchContentNumber >= 0 && searchContentNumber <= 2147483647) {
                 // It can be an epoch
                 items.push({
                     label: `Epoch: ${searchContent}`,
                     link: `/epoch/${searchContent}`,
                 });
-            }
 
-            const lastBlock = getLastBlock();
-
-            if (searchContentNumber >= 0 && searchContentNumber <= lastBlock) {
                 // It can be a slot
                 items.push({
                     label: `Slot: ${searchContent}`,
                     link: `/slot/${searchContent}`,
                 });
-            }
 
-            if (searchContentNumber >= 0 && searchContentNumber <= 2147483647) {
+                // It can be a block
+                items.push({
+                    label: `Block: ${searchContent}`,
+                    link: `/block/${searchContent}`,
+                });
+
                 // It can be a validator
                 items.push({
                     label: `Validator: ${searchContent}`,
@@ -147,8 +144,6 @@ const SearchEngine = () => {
         // It can be an entity
         const expression = new RegExp(searchContent, 'i');
 
-        getEntities();
-
         items.push(
             ...entities
                 .sort((a, b) => (a > b ? 1 : -1))
@@ -160,27 +155,6 @@ const SearchEngine = () => {
         );
 
         setSearchResults(items);
-    };
-
-    const getLastBlock = () => {
-        if (!blocks || !blocks.epochs) {
-            return 0;
-        }
-
-        const lastEpoch: number = Math.max(...Object.keys(blocks.epochs).map(epoch => parseInt(epoch)));
-        const lastBlock: number = blocks.epochs[lastEpoch][blocks.epochs[lastEpoch].length - 1].f_slot;
-
-        return lastBlock;
-    };
-
-    const getLastEpoch = () => {
-        if (!epochs || !epochs.epochs) {
-            return 0;
-        }
-
-        const lastEpoch: number = Math.max(...epochs.epochs.map(epoch => epoch.f_epoch));
-
-        return lastEpoch;
     };
 
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -197,10 +171,7 @@ const SearchEngine = () => {
 
     return (
         <div
-            className='absolute z-40 flex top-20 xl:top-4 left-4 xl:left-[calc(50%-200px)] items-center w-[calc(100%-2rem)] xl:w-[400px] h-10 border-2 rounded-md py-1'
-            style={{
-                borderColor: themeMode?.darkMode ? 'var(--white)' : 'var(--bgDarkMode)',
-            }}
+            className='absolute z-40 flex top-20 xl:top-4 left-4 xl:left-[calc(50%-200px)] items-center w-[calc(100%-2rem)] xl:w-[400px] h-10 border-2 rounded-md py-1 border-[var(--bgDarkMode)] dark:border-[var(--white)]'
             ref={popUpRef}
         >
             <CustomImage
@@ -222,13 +193,7 @@ const SearchEngine = () => {
             />
 
             {searchResults.length > 0 && showResults && (
-                <div
-                    className='absolute top-full left-0 border-2 rounded-md p-1 z-[var(--zIndexSearchEngine)] w-full border-[var(--purple)]'
-                    style={{
-                        color: themeMode?.darkMode ? 'var(--white)' : 'var(--black)',
-                        background: themeMode?.darkMode ? 'var(--bgDarkMode)' : 'var(--white)',
-                    }}
-                >
+                <div className='absolute top-full left-0 border-2 rounded-md p-1 z-[var(--zIndexSearchEngine)] w-full border-[var(--purple)] text-[var(--black)] dark:text-[var(--white)] bg-[var(--white)] dark:bg-[var(--bgDarkMode)]'>
                     <div
                         className={`flex flex-col gap-y-2 w-full px-4 py-4 text-xs md:text-[14px] max-h-[400px] overflow-y-scroll scrollbar-thin
                         } scrollbar-thumb-rounded`}
@@ -236,11 +201,10 @@ const SearchEngine = () => {
                         {searchResults.map((item, index) => (
                             <Fragment key={index}>
                                 <NetworkLink
-                                    className={`transition-all pl-1 md:hover:bg-[var(--purple)] py-2 rounded-md md:hover:text-${
-                                        themeMode?.darkMode ? 'black' : 'white'
-                                    }`}
+                                    className='transition-all pl-1 md:hover:bg-[var(--purple)] py-2 rounded-md md:hover:text-[var(--white)] dark:md:hover:text-[var(--black)]'
                                     href={item.link}
                                     passHref
+                                    onClick={() => setShowResults(false)}
                                 >
                                     <span>{item.label}</span>
                                 </NetworkLink>

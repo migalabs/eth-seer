@@ -1,7 +1,4 @@
-import React, { useContext } from 'react';
-
-// Contexts
-import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
+import React from 'react';
 
 // Components
 import LinkIcon from './LinkIcon';
@@ -15,21 +12,13 @@ type Props = {
 };
 
 const LinkSlot = ({ slot, children, mxAuto }: Props) => {
-    // Theme Mode Context
-    const { themeMode } = useContext(ThemeModeContext) ?? {};
-
-    const baseStyle = {
-        color: themeMode?.darkMode ? 'var(--purple)' : 'var(--darkPurple)',
-    };
-
     return (
         <NetworkLink
             href={`/slot/${slot}`}
             passHref
-            className={`flex gap-x-1 items-center text-[14px] md:text-[16px]  font-medium md:hover:underline underline-offset-4 decoration-2 w-fit ${
+            className={`flex gap-x-1 items-center text-[14px] md:text-[16px] font-medium md:hover:underline underline-offset-4 decoration-2 w-fit text-[var(--darkPurple)] dark:text-[var(--purple)] ${
                 mxAuto ? 'mx-auto' : ''
             }`}
-            style={baseStyle}
         >
             {children ?? (
                 <>
