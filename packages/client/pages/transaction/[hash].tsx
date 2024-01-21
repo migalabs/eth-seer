@@ -19,6 +19,8 @@ import AddressCopy from '../../components/ui/AddressCopy';
 
 // Types
 import { Transaction } from '../../types';
+import CopyIcon from '../../components/ui/CopyIcon';
+import ShareIcon from '../../components/ui/ShareIcon';
 
 const TransactionPage = () => {
     // Next router
@@ -158,6 +160,9 @@ const TransactionPage = () => {
                             isSelected={tabPageIndex === 1}
                             onClick={() => setTabPageIndex(1)}
                         />
+                        <div className='flex flex-col ml-auto'>
+                            <ShareIcon value={`${process.env.NEXT_PUBLIC_URL_API}${router.asPath}`} />
+                        </div>                        
                     </div>
 
                     {getSelectedTab()}
