@@ -16,9 +16,6 @@ import PageDescription from '../components/ui/PageDescription';
 import { Slot } from '../types';
 
 const Slots = () => {
-    // Constants
-    const LIMIT = 10;
-
     // Router
     const router = useRouter();
     const { network } = router.query;
@@ -28,26 +25,28 @@ const Slots = () => {
     const [slotsCount, setSlotsCount] = useState(0);
     const [currentPage, setCurrentPage] = useState(0);
     const [loading, setLoading] = useState(true);
+    const [numRowsQuery, setNumRowsQuery] = useState(0);
 
     useEffect(() => {
         if (network && slots.length === 0) {
-            getSlots(0);
+            getSlots(0, 10);
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [network]);
 
-    const getSlots = async (page: number) => {
+    const getSlots = async (page: number, limit: number) => {
         try {
             setLoading(true);
 
             setCurrentPage(page);
+            setNumRowsQuery(limit);
 
             const response = await axiosClient.get('/api/slots', {
                 params: {
                     network,
                     page,
-                    limit: LIMIT,
+                    limit,
                 },
             });
 
@@ -82,8 +81,9 @@ const Slots = () => {
             {slotsCount > 0 && (
                 <Pagination
                     currentPage={currentPage}
-                    totalPages={Math.ceil(slotsCount / LIMIT)}
-                    onChangePage={getSlots}
+                    totalPages={Math.ceil(slotsCount / numRowsQuery)}
+                    onChangePage={page => getSlots(page, numRowsQuery)}
+                    onChangeNumRows={numRows => getSlots(0, numRows)}
                 />
             )}
 
