@@ -32,7 +32,7 @@ const Pagination = ({ currentPage, totalPages, onChangePage, onChangeNumRows }: 
     };
 
     return (
-        <div className='flex flex-col md:flex-row items-center w-11/12 xl:w-10/12 mx-auto justify-center lg:justify-start mt-4 gap-x-8'>
+        <div className='flex flex-col md:flex-row items-center w-11/12 xl:w-10/12 mx-auto justify-center lg:justify-start mt-4 gap-x-8 gap-y-4'>
             <div className='flex items-center border-2 border-[var(--black)] dark:border-[var(--white)] px-2 rounded-lg gap-x-2'>
                 <Typography className='font-normal text-[14px] md:text-[16px] text-[var(--black)] dark:text-[var(--white)] my-0.5'>
                     Show rows:
