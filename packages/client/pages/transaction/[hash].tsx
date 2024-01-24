@@ -148,21 +148,23 @@ const TransactionPage = () => {
             )}
 
             {transaction && (
-                <div className='flex flex-col w-11/12 md:w-1/2 mx-auto'>
-                    <div className='flex flex-col sm:flex-row gap-4'>
-                        <TabHeader
-                            header='Overview'
-                            isSelected={tabPageIndex === 0}
-                            onClick={() => setTabPageIndex(0)}
-                        />
-                        <TabHeader
-                            header='More Details'
-                            isSelected={tabPageIndex === 1}
-                            onClick={() => setTabPageIndex(1)}
-                        />
-                        <div className='flex flex-col ml-auto'>
-                            <ShareIcon value={`${process.env.NEXT_PUBLIC_URL_API}${router.asPath}`} />
-                        </div>                        
+                <div className='flex flex-col w-11/12 md:w-1/2 mx-auto '>
+                    <div className='flex flex-col sm:flex-row justify-between items-end w-full gap-4'>
+                        <div className='flex flex-col sm:flex-row gap-4 w-full'>
+                            <TabHeader
+                                header='Overview'
+                                isSelected={tabPageIndex === 0}
+                                onClick={() => setTabPageIndex(0)}
+                            />
+                            <TabHeader
+                                header='More Details'
+                                isSelected={tabPageIndex === 1}
+                                onClick={() => setTabPageIndex(1)}
+                            />
+                        </div>
+                        <div>
+                            <ShareIcon />
+                        </div>
                     </div>
 
                     {getSelectedTab()}
