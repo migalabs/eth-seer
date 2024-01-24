@@ -16,6 +16,7 @@ import TabHeader from '../../components/ui/TabHeader';
 import Card from '../../components/ui/Card';
 import Title from '../../components/ui/Title';
 import AddressCopy from '../../components/ui/AddressCopy';
+import InfoBox from '../../components/layouts/InfoBox';
 
 // Types
 import { Transaction } from '../../types';
@@ -124,6 +125,7 @@ const TransactionPage = () => {
                                 <textarea
                                     className='flex-1 max-w-[60%] h-24 p-2 rounded-md border-2 border-white text-black text-[14px] font-normal'
                                     value={transaction?.f_data}
+                                    readOnly
                                 />
                             )
                         }
@@ -170,6 +172,8 @@ const TransactionPage = () => {
                     {getSelectedTab()}
                 </div>
             )}
+
+            {!loading && !transaction && <InfoBox text="Transaction doesn't exist yet" />}
         </Layout>
     );
 };

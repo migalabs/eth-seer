@@ -22,9 +22,6 @@ import { LargeTable, LargeTableHeader, LargeTableRow, SmallTable, SmallTableCard
 import { Validator } from '../types';
 
 const Validators = () => {
-    // Constants
-    const LIMIT = 10;
-
     // Router
     const router = useRouter();
     const { network } = router.query;
@@ -37,27 +34,29 @@ const Validators = () => {
     const [validatorsCount, setValidatorsCount] = useState(0);
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(0);
+    const [numRowsQuery, setNumRowsQuery] = useState(0);
 
     // UseEffect
     useEffect(() => {
         if (network && validators.length === 0) {
-            getValidators(0);
+            getValidators(0, 10);
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [network]);
 
-    const getValidators = async (page: number) => {
+    const getValidators = async (page: number, limit: number) => {
         try {
             setLoading(true);
 
             setCurrentPage(page);
+            setNumRowsQuery(limit);
 
             const response = await axiosClient.get('/api/validators', {
                 params: {
                     network,
                     page,
-                    limit: LIMIT,
+                    limit,
                 },
             });
 
@@ -150,8 +149,9 @@ const Validators = () => {
             {validatorsCount > 0 && (
                 <Pagination
                     currentPage={currentPage}
-                    totalPages={Math.ceil(validatorsCount / LIMIT)}
-                    onChangePage={getValidators}
+                    totalPages={Math.ceil(validatorsCount / numRowsQuery)}
+                    onChangePage={page => getValidators(page, numRowsQuery)}
+                    onChangeNumRows={numRows => getValidators(0, numRows)}
                 />
             )}
 
