@@ -12,9 +12,9 @@ type Props = {
 const TooltipResponsive = ({ width, content, top, polygonLeft, polygonRight, tooltipAbove }: Props) => {
     const getParentLeftPosition = () => {
         if (polygonLeft) {
-            return '-25px';
+            return 'calc(50% - 35px)';
         } else if (polygonRight) {
-            return `-${width - 50}px`;
+            return `calc(50% - ${width - 35}px)`;
         } else {
             return `calc(50% - ${width / 2}px)`;
         }
@@ -56,11 +56,12 @@ const TooltipResponsive = ({ width, content, top, polygonLeft, polygonRight, too
 
     return (
         <div
-            className='absolute flex-col text-center rounded-md py-4 px-4 mt-2 mx-auto font-medium hidden z-[var(--zIndexTooltip)] text-[12px] leading-5 normal-case text-[var(--black)] dark:text-[var(--white)] bg-[var(--white)] dark:bg-[var(--darkGray)]'
+            className='absolute flex flex-col text-center rounded-md py-4 px-4 mt-2 mx-auto font-medium z-[var(--zIndexTooltip)] text-[12px] leading-5 normal-case text-[var(--black)] dark:text-[var(--white)] bg-[var(--white)] dark:bg-[var(--darkGray)] invisible opacity-0'
             style={{
                 width,
                 left: getParentLeftPosition(),
                 top: getParentTopPosition(),
+                transition: 'visibility 0.5s, opacity 0.5s ease-in-out',
             }}
         >
             {content}

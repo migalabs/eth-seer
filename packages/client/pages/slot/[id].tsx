@@ -24,6 +24,7 @@ import Card from '../../components/ui/Card';
 import TitleWithArrows from '../../components/ui/TitleWithArrows';
 import { LargeTable, LargeTableHeader, LargeTableRow, SmallTable, SmallTableCard } from '../../components/ui/Table';
 import AddressCopy from '../../components/ui/AddressCopy';
+import ShareMenu from '../../components/ui/ShareMenu';
 
 // Types
 import { Block, Withdrawal } from '../../types';
@@ -175,16 +176,20 @@ const Slot = () => {
     //TABS - Overview & withdrawals
     const getInformationView = () => (
         <div className='flex flex-col w-11/12 xl:w-1/2 mx-auto'>
-            <div className='flex flex-col sm:flex-row gap-4'>
-                <TabHeader header='Overview' isSelected={tabPageIndex === 0} onClick={() => setTabPageIndex(0)} />
+            <div className='flex flex-col sm:flex-row justify-between items-end w-full gap-4'>
+                <div className='flex flex-col sm:flex-row gap-4 w-full'>
+                    <TabHeader header='Overview' isSelected={tabPageIndex === 0} onClick={() => setTabPageIndex(0)} />
 
-                {existsBlock && (
-                    <TabHeader
-                        header='Withdrawals'
-                        isSelected={tabPageIndex === 1}
-                        onClick={() => setTabPageIndex(1)}
-                    />
-                )}
+                    {existsBlock && (
+                        <TabHeader
+                            header='Withdrawals'
+                            isSelected={tabPageIndex === 1}
+                            onClick={() => setTabPageIndex(1)}
+                        />
+                    )}
+                </div>
+
+                <ShareMenu type='slot' />
             </div>
 
             {getSelectedTab()}

@@ -4,7 +4,8 @@ const TooltipContainer = styled.div`
     position: relative;
 
     &:hover div {
-        display: flex;
+        visibility: visible;
+        opacity: 1;
     }
 `;
 
