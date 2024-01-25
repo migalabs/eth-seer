@@ -17,11 +17,10 @@ import Card from '../../components/ui/Card';
 import Title from '../../components/ui/Title';
 import AddressCopy from '../../components/ui/AddressCopy';
 import InfoBox from '../../components/layouts/InfoBox';
+import ShareMenu from '../../components/ui/ShareMenu';
 
 // Types
 import { Transaction } from '../../types';
-import CopyIcon from '../../components/ui/CopyIcon';
-import ShareIcon from '../../components/ui/ShareIcon';
 
 const TransactionPage = () => {
     // Next router
@@ -150,7 +149,7 @@ const TransactionPage = () => {
             )}
 
             {transaction && (
-                <div className='flex flex-col w-11/12 md:w-1/2 mx-auto '>
+                <div className='flex flex-col w-11/12 md:w-1/2 mx-auto'>
                     <div className='flex flex-col sm:flex-row justify-between items-end w-full gap-4'>
                         <div className='flex flex-col sm:flex-row gap-4 w-full'>
                             <TabHeader
@@ -164,9 +163,8 @@ const TransactionPage = () => {
                                 onClick={() => setTabPageIndex(1)}
                             />
                         </div>
-                        <div>
-                            <ShareIcon />
-                        </div>
+
+                        <ShareMenu type='transaction' />
                     </div>
 
                     {getSelectedTab()}

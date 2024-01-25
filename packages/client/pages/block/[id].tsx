@@ -18,6 +18,7 @@ import Card from '../../components/ui/Card';
 import TitleWithArrows from '../../components/ui/TitleWithArrows';
 import InfoBox from '../../components/layouts/InfoBox';
 import AddressCopy from '../../components/ui/AddressCopy';
+import ShareMenu from '../../components/ui/ShareMenu';
 
 // Types
 import { BlockEL, Transaction } from '../../types';
@@ -124,13 +125,21 @@ const BlockPage = () => {
     const getInformationView = () => {
         return (
             <div className='flex flex-col mx-auto'>
-                <div className='flex flex-col sm:flex-row gap-4 w-11/12 xl:w-1/2 mx-auto'>
-                    <TabHeader header='Overview' isSelected={tabPageIndex === 0} onClick={() => setTabPageIndex(0)} />
-                    <TabHeader
-                        header='Transactions'
-                        isSelected={tabPageIndex === 1}
-                        onClick={() => setTabPageIndex(1)}
-                    />
+                <div className='flex flex-col sm:flex-row justify-between items-end gap-4 w-11/12 xl:w-1/2 mx-auto'>
+                    <div className='flex flex-col sm:flex-row gap-4 w-full'>
+                        <TabHeader
+                            header='Overview'
+                            isSelected={tabPageIndex === 0}
+                            onClick={() => setTabPageIndex(0)}
+                        />
+                        <TabHeader
+                            header='Transactions'
+                            isSelected={tabPageIndex === 1}
+                            onClick={() => setTabPageIndex(1)}
+                        />
+                    </div>
+
+                    <ShareMenu type='block' />
                 </div>
 
                 {getSelectedTab()}

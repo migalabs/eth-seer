@@ -15,17 +15,18 @@ import ProgressSmoothBar from '../../components/ui/ProgressSmoothBar';
 import TabHeader from '../../components/ui/TabHeader';
 import Title from '../../components/ui/Title';
 import CardContent from '../../components/ui/CardContent';
+import ShareMenu from '../../components/ui/ShareMenu';
 
 // Types
 import { Entity } from '../../types';
 
 const EntityComponent = () => {
-    // Theme Mode Context
-    const { themeMode } = useContext(ThemeModeContext) ?? {};
-
     // Next router
     const router = useRouter();
     const { network, name } = router.query;
+
+    // Theme Mode Context
+    const { themeMode } = useContext(ThemeModeContext) ?? {};
 
     // States
     const [entityHour, setEntityHour] = useState<Entity | null>(null);
@@ -91,6 +92,7 @@ const EntityComponent = () => {
             setLoading(false);
         }
     };
+
     // Container Entity Performance
     const getEntityPerformance = (entity: Entity) => {
         return (
@@ -230,9 +232,13 @@ const EntityComponent = () => {
             )}
 
             {entityDay && !showInfoBox && (
-                <div className='mx-auto w-11/12 md:w-10/12'>
+                <div className='flex flex-col gap-y-4 mx-auto w-11/12 md:w-10/12'>
+                    <div className='flex justify-end'>
+                        <ShareMenu type='entity' />
+                    </div>
+
                     <div
-                        className='flex p-6 md:px-20 md:py-10 rounded-md gap-x-5  border-2 border-white text-[var(--darkGray)] dark:text-[var(--white)] bg-[var(--bgMainLightMode)] dark:bg-[var(--bgFairDarkMode)]'
+                        className='flex p-6 md:px-20 md:py-10 rounded-md gap-x-5 border-2 border-white text-[var(--darkGray)] dark:text-[var(--white)] bg-[var(--bgMainLightMode)] dark:bg-[var(--bgFairDarkMode)]'
                         style={{
                             boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
                         }}
@@ -246,6 +252,7 @@ const EntityComponent = () => {
                                     {entityDay.aggregate_balance?.toLocaleString()} ETH
                                 </p>
                             </div>
+
                             {/* Blocks */}
                             <div className='flex flex-col lg:flex-row gap-x-5 gap-y-1'>
                                 <p className='w-44 sm:w-60 text-[var(--black)] dark:text-[var(--white)]'>Blocks:</p>
@@ -306,7 +313,7 @@ const EntityComponent = () => {
                     </div>
 
                     {/* Time tabs */}
-                    <div className='flex flex-col md:flex-row gap-4 mb-5 mt-5'>
+                    <div className='flex flex-col md:flex-row gap-4'>
                         <TabHeader
                             header='1 Hour'
                             isSelected={tabPageIndexEntityPerformance === 0}
@@ -331,7 +338,7 @@ const EntityComponent = () => {
                     </div>
 
                     <div
-                        className='flex rounded-md  border-2 border-white text-[var(--darkGray)] dark:text-[var(--white)] bg-[var(--bgMainLightMode)] dark:bg-[var(--bgFairDarkMode)]'
+                        className='flex rounded-md border-2 border-white text-[var(--darkGray)] dark:text-[var(--white)] bg-[var(--bgMainLightMode)] dark:bg-[var(--bgFairDarkMode)]'
                         style={{
                             boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
                         }}
