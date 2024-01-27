@@ -56,7 +56,7 @@ const TooltipResponsive = ({ width, content, top, polygonLeft, polygonRight, too
 
     return (
         <div
-            className='absolute flex flex-col text-center rounded-md py-4 px-4 mt-2 mx-auto font-medium z-[var(--zIndexTooltip)] text-[12px] leading-5 normal-case text-[var(--black)] dark:text-[var(--white)] bg-[var(--white)] dark:bg-[var(--darkGray)] invisible opacity-0'
+            className='absolute flex flex-col text-center rounded-md py-4 px-4 mt-2 mx-auto font-medium z-[var(--zIndexTooltip)] text-[12px] leading-5 normal-case text-black dark:text-white bg-white dark:bg-[var(--bgDarkMode)] invisible opacity-0'
             style={{
                 width,
                 left: getParentLeftPosition(),
@@ -73,7 +73,7 @@ const TooltipResponsive = ({ width, content, top, polygonLeft, polygonRight, too
                 xmlSpace='preserve'
                 style={{ left: getPolygonLeftPosition(), top: getPolygonTopPosition() }}
             >
-                <polygon className='fill-[var(--white)] dark:fill-[var(--darkGray)]' points={getPoints()} />
+                <polygon className='fill-[var(--white)] dark:fill-[var(--bgDarkMode)]' points={getPoints()} />
             </svg>
         </div>
     );
