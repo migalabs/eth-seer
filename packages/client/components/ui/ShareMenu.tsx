@@ -5,8 +5,8 @@ import { useRouter } from 'next/router';
 // Components
 import TooltipContainer from './TooltipContainer';
 import TooltipResponsive from './TooltipResponsive';
-import CopyLinkIcon from './CopyLinkIcon';
 import ShareIcon from './ShareIcon';
+import LinkIcon from './LinkIcon';
 
 // Social Media
 const socialMedia = [
@@ -79,7 +79,7 @@ const ShareMenu = ({ type }: Props) => {
                             {socialMedia.map(item => (
                                 <a
                                     key={item.text}
-                                    className='p-1 border-2 border-transparent rounded-full hover:border-black transition-all duration-300 cursor-pointer'
+                                    className='p-1 border-2 border-transparent rounded-full hover:border-black dark:hover:border-white transition-all duration-300 cursor-pointer'
                                     href={getShareUrl(item.shareLink)}
                                     target='_blank'
                                     rel='noopener noreferrer'
@@ -92,11 +92,11 @@ const ShareMenu = ({ type }: Props) => {
                         <div className='text-sm md:text-base flex items-center gap-2'>
                             <span>Or</span>
                             <button
-                                className='flex gap-2 items-center px-4 py-2 bg-[var(--purple)] rounded-full cursor-pointer'
+                                className='flex gap-2 items-center px-4 py-2 bg-[var(--purple)] dark:bg-white rounded-full cursor-pointer'
                                 onClick={handleCopyClick}
                             >
-                                <span>copy the link</span>
-                                <CopyLinkIcon />
+                                <span className='text-white dark:text-black'>copy the link</span>
+                                <LinkIcon />
                             </button>
                         </div>
                     </div>
