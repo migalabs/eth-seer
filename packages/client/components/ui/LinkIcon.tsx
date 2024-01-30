@@ -7,18 +7,18 @@ import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 import CustomImage from './CustomImage';
 
 type Props = {
-    forceOrange?: boolean;
-    forceBlue?: boolean;
+    forceLight?: boolean;
+    forceDark?: boolean;
 };
 
-const LinkIcon = ({ forceOrange, forceBlue }: Props) => {
+const LinkIcon = ({ forceLight, forceDark }: Props) => {
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
 
     const getUrl = () => {
-        if (forceOrange) {
+        if (forceLight) {
             return '/static/images/icons/link_light.webp';
-        } else if (forceBlue) {
+        } else if (forceDark) {
             return '/static/images/icons/link_dark.webp';
         } else {
             return themeMode?.darkMode ? '/static/images/icons/link_dark.webp' : '/static/images/icons/link_light.webp';
