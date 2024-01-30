@@ -28,6 +28,7 @@ export default function Document() {
                         --depositedOrange: #f69a2e;
                         --depositedBlue: #4caee5;
                         --exitedPurple: #a966c1;
+                        --linkPurple: #d1d3ff;
 
                         //SHADOWS:
                         --boxShadowGreen: 0px 2px 4px 0px #3b503d inset;

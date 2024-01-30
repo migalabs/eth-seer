@@ -56,7 +56,7 @@ const ShareMenu = ({ type }: Props) => {
 
         setTimeout(() => {
             setCopied(false);
-        }, 250);
+        }, 750);
     };
 
     return (
@@ -79,7 +79,7 @@ const ShareMenu = ({ type }: Props) => {
                             {socialMedia.map(item => (
                                 <a
                                     key={item.text}
-                                    className='p-1 border-2 border-transparent rounded-full hover:border-black dark:hover:border-white transition-all duration-300 cursor-pointer'
+                                    className='p-1 border-2 border-transparent rounded-full hover:border-black dark:hover:border-white transition-all duration-300 cursor-pointer w-12 h-12'
                                     href={getShareUrl(item.shareLink)}
                                     target='_blank'
                                     rel='noopener noreferrer'
@@ -87,17 +87,30 @@ const ShareMenu = ({ type }: Props) => {
                                     <Image src={item.icon} width={50} height={50} alt={item.text} />
                                 </a>
                             ))}
-                        </div>
 
-                        <div className='text-sm md:text-base flex items-center gap-2'>
-                            <span>Or</span>
-                            <button
-                                className='flex gap-2 items-center px-4 py-2 bg-[var(--purple)] dark:bg-white rounded-full cursor-pointer'
-                                onClick={handleCopyClick}
-                            >
-                                <span className='text-white dark:text-black'>copy the link</span>
-                                <LinkIcon />
-                            </button>
+                            <TooltipContainer>
+                                <button
+                                    className='p-1 border-2 border-transparent rounded-full hover:border-black dark:hover:border-white transition-all duration-300 cursor-pointer w-12 h-12'
+                                    onClick={handleCopyClick}
+                                >
+                                    <div className='flex justify-center items-center bg-[var(--linkPurple)] rounded-full w-full h-full'>
+                                        <LinkIcon forceLight />
+                                    </div>
+                                </button>
+
+                                <TooltipResponsive
+                                    width={220}
+                                    content={
+                                        <span className='text-2xs md:text-xs'>
+                                            {copied ? 'Copied!' : 'Copy the link to your clipboard'}
+                                        </span>
+                                    }
+                                    top='-140%'
+                                    polygonRight
+                                    tooltipAbove
+                                    invertColors
+                                />
+                            </TooltipContainer>
                         </div>
                     </div>
                 }

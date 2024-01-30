@@ -49,7 +49,7 @@ const ProgressTileBar = ({ tooltipContent, totalBlocks, tooltipAbove }: Props) =
                         </div>
                     </div>
 
-                    <TooltipResponsive width={200} content={tooltipContent} top='35px' tooltipAbove={tooltipAbove} />
+                    <TooltipResponsive width={200} content={tooltipContent} tooltipAbove={tooltipAbove} />
                 </div>
             </TooltipContainer>
         </div>

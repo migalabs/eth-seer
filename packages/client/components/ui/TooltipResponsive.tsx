@@ -7,9 +7,10 @@ type Props = {
     polygonLeft?: boolean;
     polygonRight?: boolean;
     tooltipAbove?: boolean;
+    invertColors?: boolean;
 };
 
-const TooltipResponsive = ({ width, content, top, polygonLeft, polygonRight, tooltipAbove }: Props) => {
+const TooltipResponsive = ({ width, content, top, polygonLeft, polygonRight, tooltipAbove, invertColors }: Props) => {
     const getParentLeftPosition = () => {
         if (polygonLeft) {
             return 'calc(50% - 35px)';
@@ -22,7 +23,7 @@ const TooltipResponsive = ({ width, content, top, polygonLeft, polygonRight, too
 
     const getParentTopPosition = () => {
         if (tooltipAbove) {
-            return '-100px';
+            return top ?? '-100px';
         } else {
             return top ?? '30px';
         }
@@ -54,9 +55,17 @@ const TooltipResponsive = ({ width, content, top, polygonLeft, polygonRight, too
         }
     };
 
+    const parentClasses = invertColors
+        ? 'bg-[var(--darkGray)] dark:bg-white text-white dark:text-black'
+        : 'bg-white dark:bg-[var(--darkGray)] text-black dark:text-white';
+
+    const polygonClasses = invertColors
+        ? 'fill-[var(--darkGray)] dark:fill-[var(--white)]'
+        : 'fill-[var(--white)] dark:fill-[var(--darkGray)]';
+
     return (
         <div
-            className='absolute flex flex-col text-center rounded-md py-4 px-4 mt-2 mx-auto font-medium z-[var(--zIndexTooltip)] text-[12px] leading-5 normal-case text-black dark:text-white bg-white dark:bg-[var(--bgDarkMode)] invisible opacity-0'
+            className={`absolute flex flex-col text-center rounded-md py-4 px-4 mt-2 mx-auto font-medium z-[var(--zIndexTooltip)] text-[12px] leading-5 normal-case invisible opacity-0 ${parentClasses}`}
             style={{
                 width,
                 left: getParentLeftPosition(),
@@ -73,7 +82,7 @@ const TooltipResponsive = ({ width, content, top, polygonLeft, polygonRight, too
                 xmlSpace='preserve'
                 style={{ left: getPolygonLeftPosition(), top: getPolygonTopPosition() }}
             >
-                <polygon className='fill-[var(--white)] dark:fill-[var(--bgDarkMode)]' points={getPoints()} />
+                <polygon className={polygonClasses} points={getPoints()} />
             </svg>
         </div>
     );
