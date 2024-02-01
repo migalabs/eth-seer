@@ -100,16 +100,16 @@ export default function Document() {
                     href='https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap'
                     rel='stylesheet'
                 />
-                <meta
-                    name='keywords'
-                    content='Ethereum, Ethereum Blockchain Explorer, Ethereum Block Explorer, Search'
-                />
+                <meta name='viewport' content='width=device-width, initial-scale=1' />
+                <meta name='author' content='Miga Labs' />
+                <meta name='og:type' content='website' />
+                <meta name='og:site_name' content='EthSeer.io' />
+                <meta property='og:image' content='https://ethseer.io/static/images/ethseer_metadata.png' />
+                <meta property='og:image:url' content='https://ethseer.io/static/images/ethseer_metadata.png' />
+                <meta property='og:image:alt' content='Visit EthSeer.io' />
                 <meta name='twitter:card' content='summary' />
                 <meta name='twitter:site' content='@miga_labs' />
-                <meta name='twitter:image' content='http://ethseer.io/static/images/ethseer_metadata.png' />
-                <meta property='og:url' content='http://ethseer.io/' />
-                <meta property='og:title' content='Ethereum Blockchain Explorer - EthSeer.io' />
-                <meta property='og:image' content='http://ethseer.io/static/images/ethseer_metadata.png' />
+                <meta name='twitter:image' content='https://ethseer.io/static/images/ethseer_metadata.png' />
                 <meta httpEquiv='Content-Security-Policy' content='upgrade-insecure-requests' />
             </Head>
 

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Head from 'next/head';
 import { useRouter } from 'next/router';
 
 // Axios
@@ -57,17 +56,12 @@ const Epochs = () => {
     };
 
     return (
-        <Layout hideMetaDescription>
-            <Head>
-                <title>Epochs of the Ethereum Beacon Chain - EthSeer.io</title>
-                <meta
-                    name='description'
-                    content='Check the Ethereum chain epochs, how many blocks were proposed and missed, the attestation participation and the validators active rate.'
-                />
-                <meta name='keywords' content='Ethereum, Epochs, Timeframes, Security, Validators, Consensus' />
-                <link rel='canonical' href='https://ethseer.io/epochs' />
-            </Head>
-
+        <Layout
+            title='Epochs of the Ethereum Beacon Chain - EthSeer.io'
+            description='Check the Ethereum chain epochs, how many blocks were proposed and missed, the attestation participation and the validators active rate.'
+            keywords='Ethereum, Epochs, Timeframes, Security, Validators, Consensus'
+            canonical='https://ethseer.io/epochs'
+        >
             <Title>Ethereum Epochs</Title>
 
             <PageDescription>

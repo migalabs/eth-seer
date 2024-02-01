@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import Head from 'next/head';
 
 // Contexts
 import ThemeModeContext from '../contexts/theme-mode/ThemeModeContext';
@@ -64,20 +63,12 @@ const Clients = () => {
     ];
 
     return (
-        <Layout hideMetaDescription>
-            <Head>
-                <title>Clients used to run the Ethereum Chain - EthSeer.io</title>
-                <meta
-                    name='description'
-                    content='Here you can find information about all consensus layer clients used to run Ethereum nodes.'
-                />
-                <meta
-                    name='keywords'
-                    content='CL Clients, Ethereum, Software, Lighthouse, Prysm, Lodestar, Nimbus, Teku'
-                />
-                <link rel='canonical' href='https://ethseer.io/clients' />
-            </Head>
-
+        <Layout
+            title='Clients used to run the Ethereum Chain - EthSeer.io'
+            description='Here you can find information about all consensus layer clients used to run Ethereum nodes.'
+            keywords='CL Clients, Ethereum, Software, Lighthouse, Prysm, Lodestar, Nimbus, Teku'
+            canonical='https://ethseer.io/clients'
+        >
             <Title>Ethereum CL Clients</Title>
 
             <PageDescription>

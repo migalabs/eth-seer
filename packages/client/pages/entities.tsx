@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import Head from 'next/head';
 
 // Axios
 import axiosClient from '../config/axios';
@@ -67,17 +66,12 @@ const Entities = () => {
 
     //OVERVIEW PAGE
     return (
-        <Layout hideMetaDescription>
-            <Head>
-                <title>Staking Entities of the Ethereum Beacon Chain - EthSeer.io</title>
-                <meta
-                    name='description'
-                    content='Explore the larger Ethereum blockchain entities that run validators. You will find their number of validators and their performance over the last week.'
-                />
-                <meta name='keywords' content='Ethereum, Staking, Pool, Validators, Slashing, PoS' />
-                <link rel='canonical' href='https://ethseer.io/entities' />
-            </Head>
-
+        <Layout
+            title='Staking Entities of the Ethereum Beacon Chain - EthSeer.io'
+            description='Explore the larger Ethereum blockchain entities that run validators. You will find their number of validators and their performance over the last week.'
+            keywords='Ethereum, Staking, Pool, Validators, Slashing, PoS'
+            canonical='https://ethseer.io/entities'
+        >
             <Title>Ethereum Staking Entities</Title>
 
             <PageDescription>
