@@ -14,11 +14,12 @@ import PaginationIconButton from './PaginationIconButton';
 type Props = {
     currentPage: number;
     totalPages: number;
+    fullWidth?: boolean;
     onChangePage: (newPage: number) => void;
     onChangeNumRows: (numRows: number) => void;
 };
 
-const Pagination = ({ currentPage, totalPages, onChangePage, onChangeNumRows }: Props) => {
+const Pagination = ({ currentPage, totalPages, fullWidth, onChangePage, onChangeNumRows }: Props) => {
     const next = () => {
         if (currentPage < totalPages) {
             onChangePage(currentPage + 1);
@@ -32,7 +33,11 @@ const Pagination = ({ currentPage, totalPages, onChangePage, onChangeNumRows }: 
     };
 
     return (
-        <div className='flex flex-col md:flex-row items-center w-11/12 xl:w-10/12 mx-auto justify-center lg:justify-start mt-4 gap-x-8 gap-y-4'>
+        <div
+            className={`flex flex-col md:flex-row items-center mx-auto justify-center md:justify-start gap-x-8 gap-y-4 ${
+                fullWidth ? 'w-full' : 'w-11/12 xl:w-10/12'
+            }`}
+        >
             <div className='flex items-center border-2 border-[var(--black)] dark:border-[var(--white)] px-2 rounded-lg gap-x-2'>
                 <Typography className='font-normal text-[14px] md:text-[16px] text-[var(--black)] dark:text-[var(--white)] my-0.5'>
                     Show rows:
