@@ -60,7 +60,7 @@ const FilterNumericInput = ({ value, onChange }: Props) => {
             <ChevronLeftIcon strokeWidth={2} className='cursor-pointer h-4 w-4' onClick={handleLeftArrow} />
             <input
                 type='text'
-                className='naked-number-input w-[70px] text-center'
+                className='naked-number-input w-[70px] text-center bg-white dark:bg-[var(--darkGray)]'
                 value={inputValue.toLocaleString()}
                 onKeyDown={handleKeyDown}
                 onChange={handleChange}
