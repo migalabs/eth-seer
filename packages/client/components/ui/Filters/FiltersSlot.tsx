@@ -4,6 +4,7 @@ import React from 'react';
 import FiltersContainer from './FiltersContainer';
 import FilterSection from './FilterSection';
 import FilterOptionChipGroup from './FilterOptionChipGroup';
+import FilterNumericRangeSelector from './FilterNumericRangeSelector';
 
 const FiltersSlot = () => {
     return (
@@ -13,11 +14,11 @@ const FiltersSlot = () => {
             </FilterSection>
 
             <FilterSection header='Epoch'>
-                <div>Filter Epoch</div>
+                <FilterNumericRangeSelector allowRangeSelection />
             </FilterSection>
 
             <FilterSection header='Proposer'>
-                <div>Filter Proposer</div>
+                <FilterNumericRangeSelector />
             </FilterSection>
 
             <FilterSection header='Date'>

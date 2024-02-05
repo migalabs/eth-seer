@@ -20,7 +20,7 @@ const FilterSection = ({ header, removeSeparator, children }: Props) => {
         <div className='flex flex-col bg-[var(--bgFilterSectionLight)] dark:bg-[var(--lightGray)]'>
             <div className='flex flex-col px-4 py-2'>
                 <button className='flex justify-between cursor-pointer' onClick={handleClick}>
-                    <span>{header}</span>
+                    <span className='font-bold'>{header}</span>
 
                     {showSection ? (
                         <MinusIcon strokeWidth={2} className='h-5 w-5' />
