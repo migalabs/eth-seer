@@ -14,6 +14,7 @@ import PageDescription from '../components/ui/PageDescription';
 
 // Types
 import { Slot } from '../types';
+import FiltersSlot from '../components/ui/Filters/FiltersSlot';
 
 const Slots = () => {
     // Router
@@ -79,12 +80,17 @@ const Slots = () => {
             </PageDescription>
 
             {slotsCount > 0 && (
-                <Pagination
-                    currentPage={currentPage}
-                    totalPages={Math.ceil(slotsCount / numRowsQuery)}
-                    onChangePage={page => getSlots(page, numRowsQuery)}
-                    onChangeNumRows={numRows => getSlots(0, numRows)}
-                />
+                <div className='flex flex-col md:flex-row justify-between items-center gap-x-8 gap-y-4 w-11/12 xl:w-10/12 mx-auto'>
+                    <Pagination
+                        currentPage={currentPage}
+                        totalPages={Math.ceil(slotsCount / numRowsQuery)}
+                        fullWidth
+                        onChangePage={page => getSlots(page, numRowsQuery)}
+                        onChangeNumRows={numRows => getSlots(0, numRows)}
+                    />
+
+                    <FiltersSlot />
+                </div>
             )}
 
             <SlotsList slots={slots} fetchingSlots={loading} />
