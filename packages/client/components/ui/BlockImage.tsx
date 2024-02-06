@@ -23,6 +23,8 @@ const BlockImage = ({ poolName, clientName, proposed = true, width, height, show
     // Theme Mode Context
     const { themeMode } = React.useContext(ThemeModeContext) ?? {};
 
+    const clientNames = CLIENTS.map(client => client.name);
+
     const getUrlEntity = () => {
         if (poolName && POOLS.includes(poolName.toUpperCase())) {
             return `/static/images/blocks/cubes/${poolName.toLowerCase()}.webp`;
@@ -36,7 +38,7 @@ const BlockImage = ({ poolName, clientName, proposed = true, width, height, show
     };
 
     const getUrlClient = () => {
-        if (clientName && CLIENTS.includes(clientName.toUpperCase())) {
+        if (clientName && clientNames.includes(clientName.toUpperCase())) {
             return `/static/images/blocks/cubes/clients/${clientName.toLowerCase()}.webp`;
         } else {
             return '/static/images/blocks/cubes/unknown-ethereum-entity.webp';
