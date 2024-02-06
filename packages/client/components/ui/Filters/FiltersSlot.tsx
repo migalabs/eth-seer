@@ -5,6 +5,7 @@ import FiltersContainer from './FiltersContainer';
 import FilterSection from './FilterSection';
 import FilterOptionChipGroup from './FilterOptionChipGroup';
 import FilterNumericRangeSelector from './FilterNumericRangeSelector';
+import FilterDateRangeSelector from './FilterDateRangeSelector';
 
 const FiltersSlot = () => {
     return (
@@ -22,7 +23,7 @@ const FiltersSlot = () => {
             </FilterSection>
 
             <FilterSection header='Date'>
-                <div>Filter Date</div>
+                <FilterDateRangeSelector allowRangeSelection />
             </FilterSection>
 
             <FilterSection header='Entity'>

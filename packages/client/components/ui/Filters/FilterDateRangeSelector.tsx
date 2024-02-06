@@ -2,29 +2,29 @@ import React, { useState } from 'react';
 import { MinusIcon } from '@heroicons/react/24/outline';
 
 // Components
-import FilterNumericInput from './FilterNumericInput';
 import FilterSelectRangeCheckbox from './FilterSelectRangeCheckbox';
+import FilterDateInput from './FilterDateInput';
 
 // Props
 type Props = {
     allowRangeSelection?: boolean;
-    onValueChange?: (value: number) => void;
-    onRangeChange?: (from: number, to: number) => void;
+    onValueChange?: (value: Date) => void;
+    onRangeChange?: (from: Date, to: Date) => void;
 };
 
-const FilterNumericRangeSelector = ({ allowRangeSelection, onValueChange, onRangeChange }: Props) => {
+const FilterDateRangeSelector = ({ allowRangeSelection, onValueChange, onRangeChange }: Props) => {
     // States
-    const [singleValue, setSingleValue] = useState(0);
-    const [lowerBound, setLowerBound] = useState(0);
-    const [upperBound, setUpperBound] = useState(0);
+    const [singleValue, setSingleValue] = useState(new Date());
+    const [lowerBound, setLowerBound] = useState(new Date());
+    const [upperBound, setUpperBound] = useState(new Date());
     const [showRangeSelector, setShowRangeSelector] = useState(false);
 
-    const handleSingleValueChange = (value: number) => {
+    const handleSingleValueChange = (value: Date) => {
         setSingleValue(value);
         onValueChange?.(value);
     };
 
-    const handleLowerBoundChange = (value: number) => {
+    const handleLowerBoundChange = (value: Date) => {
         setLowerBound(value);
         if (upperBound < value) {
             setUpperBound(value);
@@ -34,7 +34,7 @@ const FilterNumericRangeSelector = ({ allowRangeSelection, onValueChange, onRang
         }
     };
 
-    const handleUpperBoundChange = (value: number) => {
+    const handleUpperBoundChange = (value: Date) => {
         setUpperBound(value);
         if (value < lowerBound) {
             setLowerBound(value);
@@ -52,19 +52,19 @@ const FilterNumericRangeSelector = ({ allowRangeSelection, onValueChange, onRang
                 <div className='flex gap-x-2'>
                     <div className='flex flex-col gap-y-1 items-center'>
                         <span className='select-none'>From</span>
-                        <FilterNumericInput value={lowerBound} onChange={handleLowerBoundChange} />
+                        <FilterDateInput value={lowerBound} onChange={handleLowerBoundChange} />
                     </div>
                     <MinusIcon className='h-5 w-5 self-end mb-1.5' />
                     <div className='flex flex-col gap-y-1 items-center'>
                         <span className='select-none'>To</span>
-                        <FilterNumericInput value={upperBound} onChange={handleUpperBoundChange} />
+                        <FilterDateInput value={upperBound} onChange={handleUpperBoundChange} />
                     </div>
                 </div>
             ) : (
-                <FilterNumericInput value={singleValue} onChange={handleSingleValueChange} />
+                <FilterDateInput value={singleValue} onChange={handleSingleValueChange} />
             )}
         </div>
     );
 };
 
-export default FilterNumericRangeSelector;
+export default FilterDateRangeSelector;
