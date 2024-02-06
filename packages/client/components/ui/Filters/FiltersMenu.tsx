@@ -13,7 +13,7 @@ const FiltersMenu = ({ isVisible, children, onClose }: Props) => {
         <div
             className={`absolute top-[calc(100%+0.5rem)] right-0 ${
                 isVisible ? 'flex' : 'hidden'
-            } flex-col bg-[var(--white)] dark:bg-[var(--bgDarkMode)] border-2 border-[var(--black)] dark:border-[var(--white)] rounded-lg p-4 text-[var(--black)] dark:text-[var(--white)] text-[14px] dark:text-[16px] gap-y-4 w-[350px]`}
+            } flex-col bg-[var(--white)] dark:bg-[var(--bgDarkMode)] border-2 border-[var(--black)] dark:border-[var(--white)] rounded-lg p-4 text-[var(--black)] dark:text-[var(--white)] text-[14px] md:text-[16px] gap-y-4 w-[350px]`}
         >
             <div className='flex justify-between items-center gap-x-8'>
                 <span className='text-[18px] md:text-[20px]'>Filters</span>
