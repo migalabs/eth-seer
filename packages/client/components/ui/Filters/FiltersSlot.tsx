@@ -6,8 +6,18 @@ import FilterSection from './FilterSection';
 import FilterOptionChipGroup from './FilterOptionChipGroup';
 import FilterNumericRangeSelector from './FilterNumericRangeSelector';
 import FilterDateRangeSelector from './FilterDateRangeSelector';
+import FilterOptionCardGroup from './FilterOptionCardGroup';
+
+// Constants
+import { CLIENTS } from '../../../constants';
 
 const FiltersSlot = () => {
+    const clientCardItems = CLIENTS.map(client => ({
+        name: client.name,
+        imageUrl: client.imageUrl,
+        imageAlt: client.imageAlt,
+    }));
+
     return (
         <FiltersContainer>
             <FilterSection header='Status'>
@@ -31,7 +41,7 @@ const FiltersSlot = () => {
             </FilterSection>
 
             <FilterSection header='CL Client' removeSeparator>
-                <div>Filter CL Client</div>
+                <FilterOptionCardGroup options={clientCardItems} multipleChoice />
             </FilterSection>
         </FiltersContainer>
     );
