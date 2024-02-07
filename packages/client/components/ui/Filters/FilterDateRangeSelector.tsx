@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { MinusIcon } from '@heroicons/react/24/outline';
 
 // Components
-import FilterSelectRangeCheckbox from './FilterSelectRangeCheckbox';
+import FilterSelectRangeCheckbox from './FilterCheckbox';
 import FilterDateInput from './FilterDateInput';
 
 // Props
@@ -46,7 +46,9 @@ const FilterDateRangeSelector = ({ allowRangeSelection, onValueChange, onRangeCh
 
     return (
         <div className='flex flex-col gap-y-2'>
-            {allowRangeSelection && <FilterSelectRangeCheckbox onSelectRangeChange={setShowRangeSelector} />}
+            {allowRangeSelection && (
+                <FilterSelectRangeCheckbox label='Select Range' onSelectRangeChange={setShowRangeSelector} />
+            )}
 
             {showRangeSelector ? (
                 <div className='flex gap-x-2'>

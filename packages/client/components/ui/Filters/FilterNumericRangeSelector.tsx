@@ -3,7 +3,7 @@ import { MinusIcon } from '@heroicons/react/24/outline';
 
 // Components
 import FilterNumericInput from './FilterNumericInput';
-import FilterSelectRangeCheckbox from './FilterSelectRangeCheckbox';
+import FilterSelectRangeCheckbox from './FilterCheckbox';
 
 // Props
 type Props = {
@@ -46,7 +46,9 @@ const FilterNumericRangeSelector = ({ allowRangeSelection, onValueChange, onRang
 
     return (
         <div className='flex flex-col gap-y-2'>
-            {allowRangeSelection && <FilterSelectRangeCheckbox onSelectRangeChange={setShowRangeSelector} />}
+            {allowRangeSelection && (
+                <FilterSelectRangeCheckbox label='Select Range' onSelectRangeChange={setShowRangeSelector} />
+            )}
 
             {showRangeSelector ? (
                 <div className='flex gap-x-2'>

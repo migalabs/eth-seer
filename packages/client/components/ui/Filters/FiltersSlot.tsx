@@ -7,15 +7,30 @@ import FilterOptionChipGroup from './FilterOptionChipGroup';
 import FilterNumericRangeSelector from './FilterNumericRangeSelector';
 import FilterDateRangeSelector from './FilterDateRangeSelector';
 import FilterOptionCardGroup from './FilterOptionCardGroup';
+import FilterCheckList from './FilterCheckList';
+
+// Helpers
+import {
+    getImageUrlEntity,
+    getImageAltEntity,
+    getImageUrlClient,
+    getImageAltClient,
+} from '../../../helpers/imageUrlsHelper';
 
 // Constants
-import { CLIENTS } from '../../../constants';
+import { POOLS, CLIENTS } from '../../../constants';
 
 const FiltersSlot = () => {
+    const poolsCardItems = POOLS.map(pool => ({
+        name: pool,
+        imageUrl: getImageUrlEntity(pool),
+        imageAlt: getImageAltEntity(pool),
+    }));
+
     const clientCardItems = CLIENTS.map(client => ({
         name: client.name,
-        imageUrl: client.imageUrl,
-        imageAlt: client.imageAlt,
+        imageUrl: getImageUrlClient(client.name),
+        imageAlt: getImageAltClient(client.name),
     }));
 
     return (
@@ -37,7 +52,7 @@ const FiltersSlot = () => {
             </FilterSection>
 
             <FilterSection header='Entity'>
-                <div>Filter Entity</div>
+                <FilterCheckList options={poolsCardItems} />
             </FilterSection>
 
             <FilterSection header='CL Client' removeSeparator>
