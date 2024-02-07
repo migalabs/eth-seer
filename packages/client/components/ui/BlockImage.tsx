@@ -1,14 +1,15 @@
-import React from 'react';
-
-// Components
-import CustomImage from './CustomImage';
+import React, { useContext } from 'react';
 
 // Contexts
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
+// Components
+import CustomImage from './CustomImage';
+
 // Constants
 import { CLIENTS, POOLS } from '../../constants';
 
+// Props
 type Props = {
     poolName: string;
     clientName?: string;
@@ -21,9 +22,9 @@ type Props = {
 
 const BlockImage = ({ poolName, clientName, proposed = true, width, height, showCheck, showClient }: Props) => {
     // Theme Mode Context
-    const { themeMode } = React.useContext(ThemeModeContext) ?? {};
+    const { themeMode } = useContext(ThemeModeContext) ?? {};
 
-    const clientNames = CLIENTS.map(client => client.name);
+    const clientNames = CLIENTS.map(client => client.name.toUpperCase());
 
     const getUrlEntity = () => {
         if (poolName && POOLS.includes(poolName.toUpperCase())) {
