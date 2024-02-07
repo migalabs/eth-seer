@@ -49,11 +49,11 @@ const EpochOverview = ({ epoch, blocks, lastEpoch, showClient }: Props) => {
     };
 
     const getEntityText = (f_pool_name: string) => {
-        return `Entity: ${getEntityName(f_pool_name)}`;
+        return `Entity: ${getEntityName(f_pool_name).toUpperCase()}`;
     };
 
     const getClientText = (f_client_name: string) => {
-        return `Client: ${getClientName(f_client_name)}`;
+        return `Client: ${getClientName(f_client_name).toUpperCase()}`;
     };
 
     return (
@@ -80,7 +80,7 @@ const EpochOverview = ({ epoch, blocks, lastEpoch, showClient }: Props) => {
                                 <TooltipContainer>
                                     <BlockImage
                                         poolName={block.f_pool_name ?? 'others'}
-                                        clientName={block.f_cl_client?.toLowerCase() ?? 'others'}
+                                        clientName={block.f_cl_client ?? 'others'}
                                         proposed={block.f_proposed}
                                         height={55}
                                         width={55}
@@ -93,8 +93,8 @@ const EpochOverview = ({ epoch, blocks, lastEpoch, showClient }: Props) => {
                                             <div className='flex flex-col gap-y-1 items-center'>
                                                 <span>
                                                     {showClient
-                                                        ? getClientText(block.f_cl_client as string)
-                                                        : getEntityText(block.f_pool_name as string)}
+                                                        ? getClientText(block.f_cl_client ?? 'others')
+                                                        : getEntityText(block.f_pool_name ?? 'others')}
                                                 </span>
                                                 <span>
                                                     Proposer: {Number(block.f_proposer_index)?.toLocaleString()}
