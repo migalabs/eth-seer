@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import CustomImage from '../CustomImage';
 
 // Types
-export type FilterOptionCard = {
+type FilterOptionCard = {
     name: string;
     imageUrl: string;
     imageAlt: string;
@@ -55,7 +55,7 @@ const FilterOptionCardGroup = ({ options, multipleChoice }: Props) => {
                         alt={option.imageAlt}
                         width={30}
                         height={30}
-                        className='w-[10px] h-[10px] lg:w-[30px] lg:h-[30px]'
+                        className='w-[20px] h-[20px] md:w-[30px] md:h-[30px]'
                     />
                     <span>{option.name.toUpperCase()}</span>
                 </button>

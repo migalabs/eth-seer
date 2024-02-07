@@ -10,6 +10,14 @@ import Title from '../components/ui/Title';
 import PageDescription from '../components/ui/PageDescription';
 import CustomImage from '../components/ui/CustomImage';
 
+// Helpers
+import {
+    getImageUrlClient,
+    getImageAltClient,
+    getImageUrlLanguage,
+    getImageAltLanguage,
+} from '../helpers/imageUrlsHelper';
+
 // Constants
 import { CLIENTS } from '../constants';
 
@@ -51,8 +59,8 @@ const Clients = () => {
                         <div className='flex flex-row items-start gap-2 xl:gap-4 justify-between'>
                             <div className='flex flex-row items-center gap-2 xl:gap-4'>
                                 <CustomImage
-                                    src={card.imageUrl}
-                                    alt={card.imageAlt}
+                                    src={getImageUrlClient(card.name)}
+                                    alt={getImageAltClient(card.name)}
                                     width={90}
                                     height={90}
                                     className='w-[60px] h-[60px] lg:w-[90px] lg:h-[90px]'
@@ -94,8 +102,8 @@ const Clients = () => {
                                     Programming language:
                                 </span>
                                 <CustomImage
-                                    src={card.imageLanguageUrl}
-                                    alt={card.imageLanguageAlt}
+                                    src={getImageUrlLanguage(card.language)}
+                                    alt={getImageAltLanguage(card.language)}
                                     width={90}
                                     height={90}
                                 />

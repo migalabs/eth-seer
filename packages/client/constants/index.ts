@@ -80,53 +80,38 @@ export const POOLS = [
 export const CLIENTS = [
     {
         name: 'Nimbus',
-        imageUrl: '/static/images/blocks/cubes/clients/nimbus.webp',
-        imageAlt: 'Nimbus',
         description:
             "Nimbus is a client implementation for both Ethereum's consensus layer (eth2) and execution layer (eth1) that strives to be as lightweight as possible in terms of resources used. This allows it to perform well on embedded systems, embedded devices - including Raspberry Pis and mobile devices.",
         link: 'https://nimbus.team/',
-        imageLanguageUrl: '/static/images/blocks/cubes/languages/nim.webp',
-        imageLanguageAlt: 'Nimbus Programming Language',
+        language: 'nim',
     },
     {
         name: 'Teku',
-        imageUrl: '/static/images/blocks/cubes/clients/teku.webp',
-        imageAlt: 'Teku',
         description:
             'Teku is an open source Ethereum consensus client (previously called an Ethereum 2.0 client) written in Java. Teku contains a full beacon node implementation and a validator client for participating in proof of stake consensus. Written in Java and maintained by the same team behind Besu, Teku is equipped to bring staking services to businesses.',
         link: 'https://consensys.io/teku',
-        imageLanguageUrl: '/static/images/blocks/cubes/languages/java.webp',
-        imageLanguageAlt: 'Teku Programming Language',
+        language: 'java',
     },
     {
         name: 'Lighthouse',
-        imageUrl: '/static/images/blocks/cubes/clients/lighthouse.webp',
-        imageAlt: 'Lighthouse',
         description:
             'Lighthouse is an Ethereum consensus client that connects to other Ethereum consensus clients to form a resilient and decentralized proof-of-stake blockchain. They implement the specification as defined in the ethereum/consensus-specs repository.',
         link: 'https://lighthouse.sigmaprime.io/',
-        imageLanguageUrl: '/static/images/blocks/cubes/languages/rust.webp',
-        imageLanguageAlt: 'Lighthouse Programming Language',
+        language: 'rust',
     },
     {
         name: 'Prysm',
-        imageUrl: '/static/images/blocks/cubes/clients/prysm.webp',
-        imageAlt: 'Prysm',
         description:
             "Prysm is an Ethereum proof-of-stake client written in Go. You can use Prysm to participate in Ethereum's decentralized economy by running a node and, if you have 32 ETH to stake, a validator client.",
         link: 'https://docs.prylabs.network/docs/getting-started',
-        imageLanguageUrl: '/static/images/blocks/cubes/languages/go.webp',
-        imageLanguageAlt: 'Prysm Programming Language',
+        language: 'go',
     },
     {
         name: 'Lodestar',
-        imageUrl: '/static/images/blocks/cubes/clients/lodestar.webp',
-        imageAlt: 'Lodestar',
         description:
             "Lodestar is a consensus beacon node and validator client for the Ethereum blockchain. Lodestar's tools and libraries enable Ethereum protocol development for the JavaScript ecosystem.",
         link: 'https://lodestar.chainsafe.io/',
-        imageLanguageUrl: '/static/images/blocks/cubes/languages/javascript.webp',
-        imageLanguageAlt: 'Lodestar Programming Language',
+        language: 'javascript',
     },
 ];
 
