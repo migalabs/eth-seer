@@ -74,7 +74,12 @@ const FilterCheckList = ({ options }: Props) => {
             <div className='flex flex-col items-start gap-y-3 max-h-40 px-2 overflow-y-auto'>
                 {options.map(option => (
                     <button key={option.name} className='flex items-center gap-x-2' onClick={() => handleClick(option)}>
-                        <input type='checkbox' checked={selectedOptions.includes(option)} className='cursor-pointer' />
+                        <input
+                            type='checkbox'
+                            checked={selectedOptions.includes(option)}
+                            className='cursor-pointer'
+                            readOnly
+                        />
 
                         <CustomImage
                             src={option.imageUrl}
