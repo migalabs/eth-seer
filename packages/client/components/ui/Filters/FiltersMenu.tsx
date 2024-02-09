@@ -5,10 +5,12 @@ import { XCircleIcon } from '@heroicons/react/24/outline';
 type Props = {
     isVisible: boolean;
     children: React.ReactNode;
-    onClose: () => void;
+    onApply?: () => void;
+    onClearAll?: () => void;
+    onClose?: () => void;
 };
 
-const FiltersMenu = ({ isVisible, children, onClose }: Props) => {
+const FiltersMenu = ({ isVisible, children, onApply, onClearAll, onClose }: Props) => {
     return (
         <div
             className={`absolute top-[calc(100%+0.5rem)] right-0 ${
@@ -24,8 +26,12 @@ const FiltersMenu = ({ isVisible, children, onClose }: Props) => {
             <div>{children}</div>
 
             <div className='flex gap-x-4 w-full justify-end'>
-                <button className='whitespace-nowrap text-[var(--darkGray)] underline'>Clear all</button>
-                <button className='text-sm px-4 py-1 bg-black text-white rounded-lg'>Apply</button>
+                <button className='whitespace-nowrap text-[var(--darkGray)] underline' onClick={onClearAll}>
+                    Clear all
+                </button>
+                <button className='text-sm px-4 py-1 bg-black text-white rounded-lg' onClick={onApply}>
+                    Apply
+                </button>
             </div>
         </div>
     );

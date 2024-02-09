@@ -119,3 +119,33 @@ export type Entity = {
     proposed_blocks_performance: number;
     missed_blocks_performance: number;
 };
+
+export type Range<T> = {
+    lower: T;
+    upper: T;
+};
+
+export type FilterCheckListCard = {
+    name: string;
+    imageUrl: string;
+    imageAlt: string;
+};
+
+export type FilterOptionCard = {
+    name: string;
+    imageUrl: string;
+    imageAlt: string;
+};
+
+export type FiltersSlot = {
+    status?: string;
+    epoch?: number;
+    lowerEpoch?: number;
+    upperEpoch?: number;
+    validator?: number;
+    date?: Date;
+    lowerDate?: Date;
+    upperDate?: Date;
+    entities?: string[];
+    clients?: string[];
+};

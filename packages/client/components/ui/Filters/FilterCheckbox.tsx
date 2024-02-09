@@ -3,10 +3,11 @@ import React, { useState, useEffect } from 'react';
 // Props
 type Props = {
     label: string;
+    checked?: boolean;
     onSelectRangeChange?: (value: boolean) => void;
 };
 
-const FilterCheckbox = ({ label, onSelectRangeChange }: Props) => {
+const FilterCheckbox = ({ label, checked, onSelectRangeChange }: Props) => {
     // States
     const [checkboxName, setCheckboxName] = useState('');
 
@@ -20,7 +21,12 @@ const FilterCheckbox = ({ label, onSelectRangeChange }: Props) => {
 
     return (
         <div className='flex item-center gap-x-1'>
-            <input id={checkboxName} type='checkbox' onChange={e => onSelectRangeChange?.(e.target.checked)} />
+            <input
+                id={checkboxName}
+                type='checkbox'
+                checked={checked}
+                onChange={e => onSelectRangeChange?.(e.target.checked)}
+            />
             <label htmlFor={checkboxName} className='select-none'>
                 {label}
             </label>

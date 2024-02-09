@@ -1,31 +1,43 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // Props
 type Props = {
+    selectedOptions?: string[];
     options: string[];
     multipleChoice?: boolean;
+    onSelectionChange?: (selectedOptions: string[]) => void;
 };
 
-const FilterOptionChipGroup = ({ options, multipleChoice }: Props) => {
+const FilterOptionChipGroup = ({ selectedOptions, options, multipleChoice, onSelectionChange }: Props) => {
     // States
-    const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+    const [currentSelectedOptions, setCurrentSelectedOptions] = useState<string[]>([]);
+
+    useEffect(() => {
+        if (selectedOptions) {
+            const selectedOptionsNorm = selectedOptions.map(option => option.toLowerCase());
+            setCurrentSelectedOptions(options.filter(option => selectedOptionsNorm.includes(option.toLowerCase())));
+        } else {
+            setCurrentSelectedOptions([]);
+        }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [selectedOptions]);
 
     const handleClick = (option: string) => {
-        if (!multipleChoice) {
-            if (selectedOptions.includes(option)) {
-                setSelectedOptions([]);
+        let newSelectedOptions: string[] = [];
+
+        if (multipleChoice) {
+            if (currentSelectedOptions.includes(option)) {
+                newSelectedOptions = currentSelectedOptions.filter(selectedOption => selectedOption !== option);
             } else {
-                setSelectedOptions([option]);
+                newSelectedOptions = [...currentSelectedOptions, option];
             }
-
-            return;
+        } else if (!currentSelectedOptions.includes(option)) {
+            newSelectedOptions = [option];
         }
 
-        if (selectedOptions.includes(option)) {
-            setSelectedOptions(selectedOptions.filter(selectedOption => selectedOption !== option));
-        } else {
-            setSelectedOptions([...selectedOptions, option]);
-        }
+        setCurrentSelectedOptions(newSelectedOptions);
+        onSelectionChange?.(newSelectedOptions);
     };
 
     return (
@@ -34,7 +46,7 @@ const FilterOptionChipGroup = ({ options, multipleChoice }: Props) => {
                 <button
                     key={option}
                     className={`px-4 py-1 border-2 ${
-                        selectedOptions.includes(option)
+                        currentSelectedOptions.includes(option)
                             ? 'border-black text-black dark:bg-[var(--bgStrongDarkMode)]'
                             : 'border-[var(--darkGray)] text-[var(--darkGray)] dark:bg-[var(--darkGray)]'
                     } rounded-2xl text-[10px] md:text-[12px] bg-white dark:border-white dark:text-white`}
