@@ -1,65 +1,85 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MinusIcon } from '@heroicons/react/24/outline';
 
 // Components
 import FilterSelectRangeCheckbox from './FilterCheckbox';
 import FilterDateInput from './FilterDateInput';
 
+// Types
+import { Range } from '../../../types';
+
 // Props
 type Props = {
+    value?: Date | Range<Date>;
     allowRangeSelection?: boolean;
-    onValueChange?: (value: Date) => void;
-    onRangeChange?: (from: Date, to: Date) => void;
+    onValueChange?: (value: Date | Range<Date>) => void;
 };
 
-const FilterDateRangeSelector = ({ allowRangeSelection, onValueChange, onRangeChange }: Props) => {
+const FilterDateRangeSelector = ({ value, allowRangeSelection, onValueChange }: Props) => {
     // States
     const [singleValue, setSingleValue] = useState(new Date());
-    const [lowerBound, setLowerBound] = useState(new Date());
-    const [upperBound, setUpperBound] = useState(new Date());
+    const [rangeValue, setRangeValue] = useState<Range<Date>>({ lower: new Date(), upper: new Date() });
     const [showRangeSelector, setShowRangeSelector] = useState(false);
 
-    const handleSingleValueChange = (value: Date) => {
-        setSingleValue(value);
-        onValueChange?.(value);
+    useEffect(() => {
+        if (value instanceof Date) {
+            setSingleValue(value);
+            setShowRangeSelector(false);
+        } else if (value) {
+            setRangeValue(value);
+            setShowRangeSelector(true);
+        }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [value]);
+
+    const handleSingleValueChange = (newValue: Date) => {
+        setSingleValue(newValue);
+        onValueChange?.(newValue);
     };
 
-    const handleLowerBoundChange = (value: Date) => {
-        setLowerBound(value);
-        if (upperBound < value) {
-            setUpperBound(value);
-            onRangeChange?.(value, value);
-        } else {
-            onRangeChange?.(value, upperBound);
-        }
+    const handleLowerBoundChange = (newValue: Date) => {
+        const newRangeValue = { lower: newValue, upper: rangeValue.upper < newValue ? newValue : rangeValue.upper };
+        setRangeValue(newRangeValue);
+        onValueChange?.(newRangeValue);
     };
 
-    const handleUpperBoundChange = (value: Date) => {
-        setUpperBound(value);
-        if (value < lowerBound) {
-            setLowerBound(value);
-            onRangeChange?.(value, value);
+    const handleUpperBoundChange = (newValue: Date) => {
+        const newRangeValue = { lower: rangeValue.lower > newValue ? newValue : rangeValue.lower, upper: newValue };
+        setRangeValue(newRangeValue);
+        onValueChange?.(newRangeValue);
+    };
+
+    const handleSelectRangeChange = (value: boolean) => {
+        if (value) {
+            onValueChange?.(rangeValue);
         } else {
-            onRangeChange?.(lowerBound, value);
+            onValueChange?.(singleValue);
         }
+
+        setShowRangeSelector(value);
     };
 
     return (
         <div className='flex flex-col gap-y-2'>
             {allowRangeSelection && (
-                <FilterSelectRangeCheckbox label='Select Range' onSelectRangeChange={setShowRangeSelector} />
+                <FilterSelectRangeCheckbox
+                    label='Select Range'
+                    checked={showRangeSelector}
+                    onSelectRangeChange={handleSelectRangeChange}
+                />
             )}
 
             {showRangeSelector ? (
                 <div className='flex gap-x-2'>
                     <div className='flex flex-col gap-y-1 items-center'>
                         <span className='select-none'>From</span>
-                        <FilterDateInput value={lowerBound} onChange={handleLowerBoundChange} />
+                        <FilterDateInput value={rangeValue.lower} onChange={handleLowerBoundChange} />
                     </div>
                     <MinusIcon className='h-5 w-5 self-end mb-1.5' />
                     <div className='flex flex-col gap-y-1 items-center'>
                         <span className='select-none'>To</span>
-                        <FilterDateInput value={upperBound} onChange={handleUpperBoundChange} />
+                        <FilterDateInput value={rangeValue.upper} onChange={handleUpperBoundChange} />
                     </div>
                 </div>
             ) : (

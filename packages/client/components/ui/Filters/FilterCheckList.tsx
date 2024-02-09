@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 
 // Components
@@ -6,51 +6,63 @@ import CustomImage from '../CustomImage';
 import FilterCheckbox from './FilterCheckbox';
 
 // Types
-type FilterCheckListCard = {
-    name: string;
-    imageUrl: string;
-    imageAlt: string;
-};
+import { FilterCheckListCard } from '../../../types';
 
 // Props
 type Props = {
+    selectedOptions?: FilterCheckListCard[];
     options: FilterCheckListCard[];
+    onSelectionChange?: (selectedOptions: FilterCheckListCard[]) => void;
 };
 
-const FilterCheckList = ({ options }: Props) => {
+const FilterCheckList = ({ selectedOptions, options, onSelectionChange }: Props) => {
     // States
-    const [selectedOptions, setSelectedOptions] = useState<FilterCheckListCard[]>([]);
+    const [currentSelectedOptions, setCurrentSelectedOptions] = useState<FilterCheckListCard[]>([]);
+
+    useEffect(() => {
+        setCurrentSelectedOptions(
+            selectedOptions ? options.filter(option => isOptionSelected(selectedOptions, option)) : []
+        );
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [selectedOptions]);
+
+    const isOptionSelected = (source: FilterCheckListCard[], item: FilterCheckListCard) =>
+        source.filter(x => x.name === item.name).length > 0;
 
     const handleClick = (option: FilterCheckListCard) => {
-        if (selectedOptions.includes(option)) {
-            setSelectedOptions(selectedOptions.filter(selectedOption => selectedOption !== option));
-        } else {
-            setSelectedOptions([...selectedOptions, option]);
-        }
+        const newSelectedOptions = currentSelectedOptions.includes(option)
+            ? currentSelectedOptions.filter(selectedOption => selectedOption !== option)
+            : [...currentSelectedOptions, option];
+
+        handleSelectionChange(newSelectedOptions);
     };
 
     const handleRemoveOption = (option: FilterCheckListCard) => {
-        setSelectedOptions(selectedOptions.filter(selectedOption => selectedOption !== option));
+        const newSelectedOptions = currentSelectedOptions.filter(selectedOption => selectedOption !== option);
+        handleSelectionChange(newSelectedOptions);
     };
 
     const handleSelectAll = (value: boolean) => {
-        if (value) {
-            setSelectedOptions(options);
-        } else {
-            setSelectedOptions([]);
-        }
+        const newSelectedOptions = value ? options : [];
+        handleSelectionChange(newSelectedOptions);
+    };
+
+    const handleSelectionChange = (newSelectedOptions: FilterCheckListCard[]) => {
+        setCurrentSelectedOptions(newSelectedOptions);
+        onSelectionChange?.(newSelectedOptions);
     };
 
     const getItemsCountText = () => {
-        const itemsText = selectedOptions.length > 1 ? 'items' : 'item';
+        const itemsText = currentSelectedOptions.length > 1 ? 'items' : 'item';
 
-        return `${selectedOptions.length} ${itemsText} selected`;
+        return `${currentSelectedOptions.length} ${itemsText} selected`;
     };
 
     return (
         <div className='flex flex-col gap-y-2 bg-white dark:bg-[var(--darkGray)] py-2 w-full'>
             <div className='flex flex-wrap gap-2 px-2 min-h-[24px] max-h-40 overflow-y-auto'>
-                {selectedOptions.map(option => (
+                {currentSelectedOptions.map(option => (
                     <button
                         key={option.name}
                         className='flex items-center gap-x-1 px-2 py-1 border-2 border-[var(--darkGray)] text-[var(--darkGray)] dark:bg-[var(--darkGray)] rounded-2xl text-sm text-[10px] md:text-[12px] bg-white dark:border-white dark:text-white'
@@ -76,7 +88,7 @@ const FilterCheckList = ({ options }: Props) => {
                     <button key={option.name} className='flex items-center gap-x-2' onClick={() => handleClick(option)}>
                         <input
                             type='checkbox'
-                            checked={selectedOptions.includes(option)}
+                            checked={isOptionSelected(currentSelectedOptions, option)}
                             className='cursor-pointer'
                             readOnly
                         />

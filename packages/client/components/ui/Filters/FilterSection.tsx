@@ -6,14 +6,16 @@ type Props = {
     header: string;
     removeSeparator?: boolean;
     children: React.ReactNode;
+    onShowSectionChange?: (showSection: boolean) => void;
 };
 
-const FilterSection = ({ header, removeSeparator, children }: Props) => {
+const FilterSection = ({ header, removeSeparator, children, onShowSectionChange }: Props) => {
     // States
     const [showSection, setShowSection] = useState(false);
 
     const handleClick = () => {
         setShowSection(!showSection);
+        onShowSectionChange?.(!showSection);
     };
 
     return (

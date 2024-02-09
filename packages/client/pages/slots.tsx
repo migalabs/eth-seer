@@ -11,10 +11,10 @@ import SlotsList from '../components/layouts/Slots';
 import Pagination from '../components/ui/Pagination';
 import Title from '../components/ui/Title';
 import PageDescription from '../components/ui/PageDescription';
+import FiltersSlot from '../components/ui/Filters/FiltersSlot';
 
 // Types
-import { Slot } from '../types';
-import FiltersSlot from '../components/ui/Filters/FiltersSlot';
+import { Slot, FiltersSlot as FiltersSlotType } from '../types';
 
 const Slots = () => {
     // Router
@@ -27,27 +27,32 @@ const Slots = () => {
     const [currentPage, setCurrentPage] = useState(0);
     const [loading, setLoading] = useState(true);
     const [numRowsQuery, setNumRowsQuery] = useState(0);
+    const [currentFilters, setCurrentFilters] = useState<FiltersSlotType>({});
 
     useEffect(() => {
         if (network && slots.length === 0) {
-            getSlots(0, 10);
+            getSlots(0, 10, {});
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [network]);
 
-    const getSlots = async (page: number, limit: number) => {
+    const getSlots = async (page: number, limit: number, filters: FiltersSlotType) => {
         try {
             setLoading(true);
 
             setCurrentPage(page);
             setNumRowsQuery(limit);
+            setCurrentFilters(filters);
+
+            console.log('Filters', filters);
 
             const response = await axiosClient.get('/api/slots', {
                 params: {
                     network,
                     page,
                     limit,
+                    ...filters,
                 },
             });
 
@@ -85,11 +90,11 @@ const Slots = () => {
                         currentPage={currentPage}
                         totalPages={Math.ceil(slotsCount / numRowsQuery)}
                         fullWidth
-                        onChangePage={page => getSlots(page, numRowsQuery)}
-                        onChangeNumRows={numRows => getSlots(0, numRows)}
+                        onChangePage={page => getSlots(page, numRowsQuery, currentFilters)}
+                        onChangeNumRows={numRows => getSlots(0, numRows, currentFilters)}
                     />
 
-                    <FiltersSlot />
+                    <FiltersSlot onChangeFilters={filters => getSlots(0, numRowsQuery, filters)} />
                 </div>
             )}
 
