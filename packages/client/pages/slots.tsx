@@ -45,8 +45,6 @@ const Slots = () => {
             setNumRowsQuery(limit);
             setCurrentFilters(filters);
 
-            console.log('Filters', filters);
-
             const response = await axiosClient.get('/api/slots', {
                 params: {
                     network,

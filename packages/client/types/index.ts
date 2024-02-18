@@ -143,9 +143,8 @@ export type FiltersSlot = {
     lowerEpoch?: number;
     upperEpoch?: number;
     validator?: number;
-    date?: Date;
-    lowerDate?: Date;
-    upperDate?: Date;
+    lowerDate?: string;
+    upperDate?: string;
     entities?: string[];
     clients?: string[];
 };
