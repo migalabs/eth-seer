@@ -19,6 +19,11 @@ const FiltersContainer = ({ children, onApply, onClearAll }: Props) => {
         setShowMenu(!showMenu);
     };
 
+    const handleApply = () => {
+        setShowMenu(false);
+        onApply?.();
+    };
+
     const handleClose = () => {
         setShowMenu(false);
     };
@@ -27,7 +32,7 @@ const FiltersContainer = ({ children, onApply, onClearAll }: Props) => {
         <div className='relative'>
             <FiltersButton onClick={handleClick} />
 
-            <FiltersMenu isVisible={showMenu} onApply={onApply} onClearAll={onClearAll} onClose={handleClose}>
+            <FiltersMenu isVisible={showMenu} onApply={handleApply} onClearAll={onClearAll} onClose={handleClose}>
                 {children}
             </FiltersMenu>
         </div>

@@ -25,6 +25,16 @@ router.get('/stats', [
 router.get('/', [
     query('network').not().isEmpty(),
     query('network').custom(existsNetwork),
+    query('page').optional().isInt({ min: 0, max: 2147483647 }),
+    query('limit').optional().isInt({ min: 0, max: 100 }),
+    query('epoch').optional().isInt({ min: 0, max: 2147483647 }),
+    query('lowerEpoch').optional().isInt({ min: 0, max: 2147483647 }),
+    query('upperEpoch').optional().isInt({ min: 0, max: 2147483647 }),
+    query('validator').optional().isInt({ min: 0, max: 2147483647 }),
+    query('lowerDate').optional().isISO8601(),
+    query('upperDate').optional().isISO8601(),
+    query('entities').optional().isArray(),
+    query('clients').optional().isArray(),
     checkFields,
 ], getSlots);
 

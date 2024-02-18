@@ -97,10 +97,23 @@ const FiltersSlot = ({ onChangeFilters }: Props) => {
         // Date
         if (filterDate) {
             if (date instanceof Date) {
-                filters.date = date;
+                const minDate = new Date(date);
+                minDate.setHours(0, 0, 0, 0);
+
+                const maxDate = new Date(date);
+                maxDate.setHours(23, 59, 59, 999);
+
+                filters.lowerDate = minDate.toISOString();
+                filters.upperDate = maxDate.toISOString();
             } else {
-                filters.lowerDate = date.lower;
-                filters.upperDate = date.upper;
+                const minDate = new Date(date.lower);
+                minDate.setHours(0, 0, 0, 0);
+
+                const maxDate = new Date(date.upper);
+                maxDate.setHours(23, 59, 59, 999);
+
+                filters.lowerDate = minDate.toISOString();
+                filters.upperDate = maxDate.toISOString();
             }
         }
 
