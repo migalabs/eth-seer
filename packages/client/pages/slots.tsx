@@ -82,8 +82,8 @@ const Slots = () => {
                 one validator can propose a block, and the other validators need to attest on the canonical chain.
             </PageDescription>
 
-            {slotsCount > 0 && (
-                <div className='flex flex-col md:flex-row justify-between items-center gap-x-8 gap-y-4 w-11/12 xl:w-10/12 mx-auto'>
+            <div className='flex flex-col md:flex-row justify-between items-center gap-x-8 gap-y-4 w-11/12 xl:w-10/12 mx-auto'>
+                {slotsCount > 0 && (
                     <Pagination
                         currentPage={currentPage}
                         totalPages={Math.ceil(slotsCount / numRowsQuery)}
@@ -91,10 +91,12 @@ const Slots = () => {
                         onChangePage={page => getSlots(page, numRowsQuery, currentFilters)}
                         onChangeNumRows={numRows => getSlots(0, numRows, currentFilters)}
                     />
+                )}
 
+                <div className='md:ml-auto'>
                     <FiltersSlot onChangeFilters={filters => getSlots(0, numRowsQuery, filters)} />
                 </div>
-            )}
+            </div>
 
             <SlotsList slots={slots} fetchingSlots={loading} />
         </Layout>

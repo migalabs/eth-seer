@@ -28,42 +28,44 @@ export const getSlots = async (req: Request, res: Response) => {
 
         if (status && typeof status === 'string') {
             if (status.toLowerCase() === 'proposed') {
-                where.push(`pd.f_proposed = true`);
+                where.push('(pd.f_proposed = true) AND (o.f_slot IS NULL)');
             } else if (status.toLowerCase() === 'missed') {
-                where.push(`pd.f_proposed = false`);
+                where.push('(pd.f_proposed = false) AND (o.f_slot IS NULL)');
+            } else if (status.toLowerCase() === 'orphan') {
+                where.push('(o.f_slot IS NOT NULL)');
             }
         }
 
         if (epoch) {
             where.push(`(pd.f_proposer_slot >= ${Number(epoch) * 32}) AND 
-            (pd.f_proposer_slot < ${(Number(epoch) + 1) * 32})`);
+                        (pd.f_proposer_slot < ${(Number(epoch) + 1) * 32})`);
         }
 
         if (lowerEpoch) {
-            where.push(`pd.f_proposer_slot >= ${Number(lowerEpoch) * 32}`);
+            where.push(`(pd.f_proposer_slot >= ${Number(lowerEpoch) * 32})`);
         }
 
         if (upperEpoch) {
-            where.push(`pd.f_proposer_slot < ${(Number(upperEpoch) + 1) * 32}`);
+            where.push(`(pd.f_proposer_slot < ${(Number(upperEpoch) + 1) * 32})`);
         }
 
         if (validator) {
-            where.push(`pd.f_val_idx = ${Number(validator)}`);
+            where.push(`(pd.f_val_idx = ${Number(validator)})`);
         }
 
         if (lowerDate) {
             const minTime = new Date(lowerDate as string).getTime();
-            where.push(`(g.f_genesis_time + pd.f_proposer_slot * 12) * 1000 >= ${minTime}`);
+            where.push(`((g.f_genesis_time + pd.f_proposer_slot * 12) * 1000 >= ${minTime})`);
         }
 
         if (upperDate) {
             const maxTime = new Date(upperDate as string).getTime();
-            where.push(`(g.f_genesis_time + pd.f_proposer_slot * 12) * 1000 < ${maxTime}`);
+            where.push(`((g.f_genesis_time + pd.f_proposer_slot * 12) * 1000 < ${maxTime})`);
         }
 
         if (entities && Array.isArray(entities) && entities.length > 0) {
             const entitiesArray = entities.map(x => typeof x === 'string' ? `'${x.toLowerCase()}'` : '').filter(x => x !== '');
-            where.push(`pk.f_pool_name IN (${entitiesArray.join(',')})`);
+            where.push(`(pk.f_pool_name IN (${entitiesArray.join(',')}))`);
         }
 
         let joinClient = '';
@@ -72,7 +74,7 @@ export const getSlots = async (req: Request, res: Response) => {
             joinClient = 'LEFT OUTER JOIN t_slot_client_guesses scg ON pd.f_proposer_slot = scg.f_slot';
 
             const clientsArray = clients.map(x => typeof x === 'string' ? `'${x.toLowerCase()}'` : '').filter(x => x !== '');
-            where.push(`LOWER(scg.f_best_guess_single) IN (${clientsArray.join(',')})`);
+            where.push(`(LOWER(scg.f_best_guess_single) IN (${clientsArray.join(',')}))`);
         }
 
         const [ slots, count ] = 
@@ -90,6 +92,8 @@ export const getSlots = async (req: Request, res: Response) => {
                         t_eth2_pubkeys pk ON pd.f_val_idx = pk.f_val_idx
                     LEFT OUTER JOIN
                         t_withdrawals w ON pd.f_proposer_slot = w.f_slot
+                    LEFT OUTER JOIN
+                        t_orphans o ON pd.f_proposer_slot = o.f_slot
                     CROSS JOIN
                         t_genesis g
                     ${joinClient}
@@ -108,6 +112,8 @@ export const getSlots = async (req: Request, res: Response) => {
                         t_proposer_duties pd
                     LEFT OUTER JOIN 
                         t_eth2_pubkeys pk ON pd.f_val_idx = pk.f_val_idx
+                    LEFT OUTER JOIN
+                        t_orphans o ON pd.f_proposer_slot = o.f_slot
                     CROSS JOIN
                         t_genesis g
                     ${joinClient}
