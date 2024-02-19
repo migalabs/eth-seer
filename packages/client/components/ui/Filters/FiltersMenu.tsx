@@ -13,7 +13,7 @@ type Props = {
 const FiltersMenu = ({ isVisible, children, onApply, onClearAll, onClose }: Props) => {
     return (
         <div
-            className={`absolute top-[calc(100%+0.5rem)] right-0 ${
+            className={`absolute top-[calc(100%+0.5rem)] right-0 z-10 ${
                 isVisible ? 'flex' : 'hidden'
             } flex-col bg-[var(--white)] dark:bg-[var(--bgDarkMode)] border-2 border-[var(--black)] dark:border-[var(--white)] rounded-lg p-4 text-[var(--black)] dark:text-[var(--white)] text-[14px] md:text-[16px] gap-y-4 w-[370px]`}
         >
