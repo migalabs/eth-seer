@@ -82,7 +82,7 @@ const Slots = () => {
                 one validator can propose a block, and the other validators need to attest on the canonical chain.
             </PageDescription>
 
-            <div className='flex flex-col md:flex-row justify-between items-center gap-x-8 gap-y-4 w-11/12 xl:w-10/12 mx-auto'>
+            <div className='flex flex-row justify-between items-center gap-x-2 md:gap-x-8 gap-y-4 w-11/12 xl:w-10/12 mx-auto'>
                 {slotsCount > 0 && (
                     <Pagination
                         currentPage={currentPage}
@@ -93,7 +93,7 @@ const Slots = () => {
                     />
                 )}
 
-                <div className='md:ml-auto'>
+                <div className='sm:ml-auto'>
                     <FiltersSlot onChangeFilters={filters => getSlots(0, numRowsQuery, filters)} />
                 </div>
             </div>
