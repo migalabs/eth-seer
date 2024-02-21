@@ -12,7 +12,7 @@ const FiltersButton = ({ onClick }: Props) => {
             className='flex items-center gap-x-2 bg-[var(--white)] dark:bg-[var(--bgDarkMode)] hover:bg-[var(--lightGray)] hover:dark:bg-[var(--lightGray)] border-2 border-[var(--black)] dark:border-[var(--white)] hover:border-[var(--white)] px-2 py-1 rounded-lg font-normal text-[14px] md:text-[16px] text-[var(--black)] dark:text-[var(--white)] hover:text-[var(--white)]'
             onClick={onClick}
         >
-            Filters
+            <span className='hidden sm:block'>Filters</span>
             <AdjustmentsHorizontalIcon strokeWidth={2} className='h-5 w-5' />
         </button>
     );
