@@ -33,7 +33,7 @@ const FiltersMenu = ({ isVisible, children, onApply, onClearAll, onClose }: Prop
                     Clear all
                 </button>
                 <button
-                    className='px-6 py-1 bg-black dark:bg-white dark:text-black text-white rounded-md'
+                    className='px-6 py-1 bg-black dark:bg-white dark:text-black hover:bg-[var(--darkGray)] hover:dark:bg-[var(--lightGray)] text-white rounded-md'
                     onClick={onApply}
                 >
                     Apply

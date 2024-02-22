@@ -19,7 +19,7 @@ const FilterSection = ({ header, removeSeparator, children, onShowSectionChange 
     };
 
     return (
-        <div className='flex flex-col bg-[var(--bgFilterSectionLight)] dark:bg-[var(--lightGray)]'>
+        <div className='flex flex-col bg-[var(--bgFilterSectionLight)] dark:bg-[var(--lightGray)] hover:bg-white hover:dark:bg-[var(--darkGray)]'>
             <div className='flex flex-col px-4 py-2'>
                 <button className='flex justify-between cursor-pointer' onClick={handleClick}>
                     <span className='font-semibold'>{header}</span>
