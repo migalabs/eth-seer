@@ -22,12 +22,13 @@ export default function Document() {
                         --bgStrongLightMode: #bdbdbd50;
                         --bgDarkMode: #343434;
                         --bgFairDarkMode: #5b5b5b65;
-                        --bgStrongDarkMode: #30303080;
+                        --bgStrongDarkMode: #303030;
                         --proposedGreen: #53945a;
                         --missedRed: #e86666;
                         --depositedOrange: #f69a2e;
                         --depositedBlue: #4caee5;
                         --exitedPurple: #a966c1;
+                        --bgFilterSectionLight: #f4f0ff;
 
                         //SHADOWS:
                         --boxShadowGreen: 0px 2px 4px 0px #3b503d inset;

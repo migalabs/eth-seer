@@ -5,44 +5,124 @@ export const getSlots = async (req: Request, res: Response) => {
 
     try {
 
-        const { network, page = 0, limit = 128 } = req.query;
+        const {
+            network,
+            page = 0,
+            limit = 128,
+            status,
+            epoch,
+            lowerEpoch,
+            upperEpoch,
+            validator,
+            lowerDate,
+            upperDate,
+            entities,
+            clients,
+        } = req.query;
 
         const pgPool = pgPools[network as string];
 
         const skip = Number(page) * Number(limit);
 
-        const [ slotsEpoch, withdrawals, count ] = 
+        const where: string[] = [];
+
+        if (status && typeof status === 'string') {
+            if (status.toLowerCase() === 'proposed') {
+                where.push('(pd.f_proposed = true) AND (o.f_slot IS NULL)');
+            } else if (status.toLowerCase() === 'missed') {
+                where.push('(pd.f_proposed = false) AND (o.f_slot IS NULL)');
+            } else if (status.toLowerCase() === 'orphan') {
+                where.push('(o.f_slot IS NOT NULL)');
+            }
+        }
+
+        if (epoch) {
+            where.push(`(pd.f_proposer_slot >= ${Number(epoch) * 32}) AND 
+                        (pd.f_proposer_slot < ${(Number(epoch) + 1) * 32})`);
+        }
+
+        if (lowerEpoch) {
+            where.push(`(pd.f_proposer_slot >= ${Number(lowerEpoch) * 32})`);
+        }
+
+        if (upperEpoch) {
+            where.push(`(pd.f_proposer_slot < ${(Number(upperEpoch) + 1) * 32})`);
+        }
+
+        if (validator) {
+            where.push(`(pd.f_val_idx = ${Number(validator)})`);
+        }
+
+        if (lowerDate) {
+            const minTime = new Date(lowerDate as string).getTime();
+            where.push(`((g.f_genesis_time + pd.f_proposer_slot * 12) * 1000 >= ${minTime})`);
+        }
+
+        if (upperDate) {
+            const maxTime = new Date(upperDate as string).getTime();
+            where.push(`((g.f_genesis_time + pd.f_proposer_slot * 12) * 1000 < ${maxTime})`);
+        }
+
+        if (entities && Array.isArray(entities) && entities.length > 0) {
+            const entitiesArray = entities.map(x => typeof x === 'string' ? `'${x.toLowerCase()}'` : '').filter(x => x !== '');
+            where.push(`(pk.f_pool_name IN (${entitiesArray.join(',')}))`);
+        }
+
+        let joinClient = '';
+
+        if (network === 'mainnet' && clients && Array.isArray(clients) && clients.length > 0) {
+            joinClient = 'LEFT OUTER JOIN t_slot_client_guesses scg ON pd.f_proposer_slot = scg.f_slot';
+
+            const clientsArray = clients.map(x => typeof x === 'string' ? `'${x.toLowerCase()}'` : '').filter(x => x !== '');
+            where.push(`(LOWER(scg.f_best_guess_single) IN (${clientsArray.join(',')}))`);
+        }
+
+        const [ slots, count ] = 
             await Promise.all([
                 pgPool.query(`
-                    SELECT t_proposer_duties.*, t_eth2_pubkeys.f_pool_name
-                    FROM t_proposer_duties
-                    LEFT OUTER JOIN t_eth2_pubkeys ON t_proposer_duties.f_val_idx = t_eth2_pubkeys.f_val_idx
-                    ORDER BY f_proposer_slot DESC
+                    SELECT 
+                        pd.f_proposer_slot, 
+                        pd.f_val_idx, 
+                        pd.f_proposed, 
+                        pk.f_pool_name,
+                        COALESCE(SUM(w.f_amount), 0) AS withdrawals
+                    FROM 
+                        t_proposer_duties pd
+                    LEFT OUTER JOIN 
+                        t_eth2_pubkeys pk ON pd.f_val_idx = pk.f_val_idx
+                    LEFT OUTER JOIN
+                        t_withdrawals w ON pd.f_proposer_slot = w.f_slot
+                    LEFT OUTER JOIN
+                        t_orphans o ON pd.f_proposer_slot = o.f_slot
+                    CROSS JOIN
+                        t_genesis g
+                    ${joinClient}
+                    ${where.length > 0 ? `WHERE ${where.join(' AND ')}` : ''}
+                    GROUP BY
+                        pd.f_proposer_slot, pd.f_val_idx, pd.f_proposed, pk.f_pool_name
+                    ORDER BY 
+                        pd.f_proposer_slot DESC
                     OFFSET ${skip}
                     LIMIT ${Number(limit)}
                 `),
                 pgPool.query(`
-                    SELECT f_slot, f_amount
-                    FROM t_withdrawals
-                    OFFSET ${skip}
-                    LIMIT ${Number(limit)}
-                `),
-                pgPool.query(`
-                    SELECT COUNT(*) AS count
-                    FROM t_proposer_duties
+                    SELECT
+                        COUNT(*) AS count
+                    FROM
+                        t_proposer_duties pd
+                    LEFT OUTER JOIN 
+                        t_eth2_pubkeys pk ON pd.f_val_idx = pk.f_val_idx
+                    LEFT OUTER JOIN
+                        t_orphans o ON pd.f_proposer_slot = o.f_slot
+                    CROSS JOIN
+                        t_genesis g
+                    ${joinClient}
+                    ${where.length > 0 ? `WHERE ${where.join(' AND ')}` : ''}
                 `)
             ]);
 
-        const slots = slotsEpoch.rows.map((slot: any) => ({
-            ...slot,
-            withdrawals: 
-                withdrawals.rows
-                    .filter((withdrawal: any) => withdrawal.f_slot === slot.f_proposer_slot)
-                    .reduce((acc: number, withdrawal: any) => acc + Number(withdrawal.f_amount), 0),
-        }));
-
         res.json({
-            slots,
+            slots: slots.rows,
             totalCount: Number(count.rows[0].count),
         }); 
     
