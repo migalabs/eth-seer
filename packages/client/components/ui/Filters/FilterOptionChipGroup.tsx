@@ -45,11 +45,11 @@ const FilterOptionChipGroup = ({ selectedOptions, options, multipleChoice, onSel
             {options.map(option => (
                 <button
                     key={option}
-                    className={`px-4 py-1 border-2 ${
+                    className={`px-5 py-0.5 border-2 ${
                         currentSelectedOptions.includes(option)
                             ? 'border-black text-black dark:bg-[var(--bgStrongDarkMode)]'
                             : 'border-[var(--darkGray)] text-[var(--darkGray)] dark:bg-[var(--darkGray)]'
-                    } rounded-2xl text-[10px] md:text-[12px] bg-white dark:border-white dark:text-white`}
+                    } rounded-full text-[10px] md:text-[12px] bg-white dark:border-white dark:text-white`}
                     onClick={() => handleClick(option)}
                 >
                     {option}

@@ -51,7 +51,7 @@ const FilterOptionCardGroup = ({ selectedOptions, options, multipleChoice, onSel
             {options.map(option => (
                 <button
                     key={option.name}
-                    className={`flex items-center gap-x-2 px-2 py-1 border-2 ${
+                    className={`flex items-center gap-x-2 px-3 py-1 border-2 rounded-md ${
                         isOptionSelected(currentSelectedOptions, option)
                             ? 'border-black text-black dark:bg-[var(--bgStrongDarkMode)]'
                             : 'border-[var(--darkGray)] text-[var(--darkGray)] dark:bg-[var(--darkGray)]'
