@@ -10,9 +10,10 @@ import SlotsList from '../components/layouts/Slots';
 import Pagination from '../components/ui/Pagination';
 import Title from '../components/ui/Title';
 import PageDescription from '../components/ui/PageDescription';
+import FiltersSlot from '../components/ui/Filters/FiltersSlot';
 
 // Types
-import { Slot } from '../types';
+import { Slot, FiltersSlot as FiltersSlotType } from '../types';
 
 const Slots = () => {
     // Router
@@ -25,27 +26,30 @@ const Slots = () => {
     const [currentPage, setCurrentPage] = useState(0);
     const [loading, setLoading] = useState(true);
     const [numRowsQuery, setNumRowsQuery] = useState(0);
+    const [currentFilters, setCurrentFilters] = useState<FiltersSlotType>({});
 
     useEffect(() => {
         if (network && slots.length === 0) {
-            getSlots(0, 10);
+            getSlots(0, 10, {});
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [network]);
 
-    const getSlots = async (page: number, limit: number) => {
+    const getSlots = async (page: number, limit: number, filters: FiltersSlotType) => {
         try {
             setLoading(true);
 
             setCurrentPage(page);
             setNumRowsQuery(limit);
+            setCurrentFilters(filters);
 
             const response = await axiosClient.get('/api/slots', {
                 params: {
                     network,
                     page,
                     limit,
+                    ...filters,
                 },
             });
 
@@ -72,14 +76,21 @@ const Slots = () => {
                 one validator can propose a block, and the other validators need to attest on the canonical chain.
             </PageDescription>
 
-            {slotsCount > 0 && (
-                <Pagination
-                    currentPage={currentPage}
-                    totalPages={Math.ceil(slotsCount / numRowsQuery)}
-                    onChangePage={page => getSlots(page, numRowsQuery)}
-                    onChangeNumRows={numRows => getSlots(0, numRows)}
-                />
-            )}
+            <div className='flex flex-row justify-between items-center gap-x-2 md:gap-x-8 gap-y-4 w-11/12 xl:w-10/12 mx-auto'>
+                {slotsCount > 0 && (
+                    <Pagination
+                        currentPage={currentPage}
+                        totalPages={Math.ceil(slotsCount / numRowsQuery)}
+                        fullWidth
+                        onChangePage={page => getSlots(page, numRowsQuery, currentFilters)}
+                        onChangeNumRows={numRows => getSlots(0, numRows, currentFilters)}
+                    />
+                )}
+
+                <div className='sm:ml-auto'>
+                    <FiltersSlot onChangeFilters={filters => getSlots(0, numRowsQuery, filters)} />
+                </div>
+            </div>
 
             <SlotsList slots={slots} fetchingSlots={loading} />
         </Layout>
