@@ -73,7 +73,7 @@ const Pagination = ({ currentPage, totalPages, fullWidth, onChangePage, onChange
                     </PaginationIconButton>
                 </div>
             </div>
-            <div className='flex items-center xs:border-2 xs:border-[var(--black)] xs:dark:border-[var(--white)] xs:px-2 rounded-lg gap-x-2'>
+            <div className='flex items-center xs:border-2 xs:border-[var(--black)] xs:dark:border-[var(--white)] xs:px-2 rounded-md gap-x-2'>
                 <Typography className='hidden xs:block font-normal text-[14px] md:text-[16px] text-[var(--black)] dark:text-[var(--white)] my-0.5'>
                     Show rows:
                 </Typography>
@@ -81,7 +81,7 @@ const Pagination = ({ currentPage, totalPages, fullWidth, onChangePage, onChange
                 <div className='hidden xs:block h-8 w-0.5 bg-[var(--black)] dark:bg-[var(--white)]'></div>
 
                 <select
-                    className='h-6 text-[14px] md:text-[16px] rounded-md px-1 my-0.5'
+                    className='h-6 text-[14px] md:text-[16px] rounded-sm px-1 my-0.5'
                     onChange={e => onChangeNumRows(Number(e.target.value))}
                 >
                     <option value={10}>10</option>
