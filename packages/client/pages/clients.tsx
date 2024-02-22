@@ -10,58 +10,20 @@ import Title from '../components/ui/Title';
 import PageDescription from '../components/ui/PageDescription';
 import CustomImage from '../components/ui/CustomImage';
 
+// Helpers
+import {
+    getImageUrlClient,
+    getImageAltClient,
+    getImageUrlLanguage,
+    getImageAltLanguage,
+} from '../helpers/imageUrlsHelper';
+
+// Constants
+import { CLIENTS } from '../constants';
+
 const Clients = () => {
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
-
-    // Clients
-    const clients = [
-        {
-            name: 'Nimbus',
-            imgUrl: '/static/images/blocks/cubes/clients/nimbus.webp',
-            txtAlt: 'Nimbus',
-            text: "Nimbus is a client implementation for both Ethereum's consensus layer (eth2) and execution layer (eth1) that strives to be as lightweight as possible in terms of resources used. This allows it to perform well on embedded systems, embedded devices - including Raspberry Pis and mobile devices.",
-            link: 'https://nimbus.team/',
-            imgLng: '/static/images/blocks/cubes/languages/nim.webp',
-            txtAltLng: 'Nimbus Programming Language',
-        },
-        {
-            name: 'Teku',
-            imgUrl: '/static/images/blocks/cubes/clients/teku.webp',
-            txtAlt: 'Teku',
-            text: 'Teku is an open source Ethereum consensus client (previously called an Ethereum 2.0 client) written in Java. Teku contains a full beacon node implementation and a validator client for participating in proof of stake consensus. Written in Java and maintained by the same team behind Besu, Teku is equipped to bring staking services to businesses.',
-            link: 'https://consensys.io/teku',
-            imgLng: '/static/images/blocks/cubes/languages/java.webp',
-            txtAltLng: 'Teku Programming Language',
-        },
-        {
-            name: 'Lighthouse',
-            imgUrl: '/static/images/blocks/cubes/clients/lighthouse.webp',
-            txtAlt: 'Lighthouse',
-            text: 'Lighthouse is an Ethereum consensus client that connects to other Ethereum consensus clients to form a resilient and decentralized proof-of-stake blockchain. They implement the specification as defined in the ethereum/consensus-specs repository.',
-            link: 'https://lighthouse.sigmaprime.io/',
-            imgLng: '/static/images/blocks/cubes/languages/rust.webp',
-            txtAltLng: 'Lighthouse Programming Language',
-        },
-        {
-            name: 'Prysm',
-            imgUrl: '/static/images/blocks/cubes/clients/prysm.webp',
-            txtAlt: 'Prysm',
-            text: "Prysm is an Ethereum proof-of-stake client written in Go. You can use Prysm to participate in Ethereum's decentralized economy by running a node and, if you have 32 ETH to stake, a validator client.",
-            link: 'https://docs.prylabs.network/docs/getting-started',
-            imgLng: '/static/images/blocks/cubes/languages/go.webp',
-            txtAltLng: 'Prysm Programming Language',
-        },
-        {
-            name: 'Lodestar',
-            imgUrl: '/static/images/blocks/cubes/clients/lodestar.webp',
-            txtAlt: 'Lodestar',
-            text: "Lodestar is a consensus beacon node and validator client for the Ethereum blockchain. Lodestar's tools and libraries enable Ethereum protocol development for the JavaScript ecosystem.",
-            link: 'https://lodestar.chainsafe.io/',
-            imgLng: '/static/images/blocks/cubes/languages/javascript.webp',
-            txtAltLng: 'Lodestar Programming Language',
-        },
-    ];
 
     return (
         <Layout hideMetaDescription>
@@ -86,7 +48,7 @@ const Clients = () => {
 
             {/* Client Card */}
             <div className='grid grid-cols-1 xl:grid-cols-2 w-11/12 xl:w-10/12 gap-3 mx-auto'>
-                {clients.map((card, index) => (
+                {CLIENTS.map((card, index) => (
                     <div
                         className='flex flex-col gap-4 border-2 border-white rounded-md p-4 lg:p-6 bg-[var(--bgFairLightMode)]'
                         key={index}
@@ -97,15 +59,15 @@ const Clients = () => {
                         <div className='flex flex-row items-start gap-2 xl:gap-4 justify-between'>
                             <div className='flex flex-row items-center gap-2 xl:gap-4'>
                                 <CustomImage
-                                    src={card.imgUrl}
-                                    alt={card.txtAlt}
+                                    src={getImageUrlClient(card.name)}
+                                    alt={getImageAltClient(card.name)}
                                     width={90}
                                     height={90}
                                     className='w-[60px] h-[60px] lg:w-[90px] lg:h-[90px]'
                                 />
                                 <div className='flex flex-col gap-1 xl:gap-2 uppercase'>
                                     <span className='text-lg lg:text-2xl text-black dark:text-white font-semibold '>
-                                        {card.name}
+                                        {card.name.toUpperCase()}
                                     </span>
                                     <span className='text-xs lg:text-sm border border-black dark:border-white text-black dark:text-white rounded-full px-2 py-1'>
                                         Consensus Client
@@ -134,12 +96,17 @@ const Clients = () => {
                             </a>
                         </div>
                         <div className='flex flex-col items-start gap-5'>
-                            <p className='text-sm xl:text-base dark:text-white'>{card.text}</p>
+                            <p className='text-sm xl:text-base dark:text-white'>{card.description}</p>
                             <div className='flex flex-col items-start gap-2'>
                                 <span className='uppercase text-xs xl:text-sm font-medium text-[var(--darkGray)] dark:text-white'>
                                     Programming language:
                                 </span>
-                                <CustomImage src={card.imgLng} alt={card.txtAltLng} width={90} height={90} />
+                                <CustomImage
+                                    src={getImageUrlLanguage(card.language)}
+                                    alt={getImageAltLanguage(card.language)}
+                                    width={90}
+                                    height={90}
+                                />
                             </div>
                         </div>
                     </div>

@@ -125,4 +125,21 @@
     .cube-left {
         transform: translateX(-1em) rotateY(90deg) rotateY(180deg);
     }
+
+    /* Naked Number Input */
+    .naked-number-input::-webkit-inner-spin-button,
+    .naked-number-input::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    .naked-number-input {
+        -moz-appearance: textfield;
+        appearance: textfield;
+        border: none;
+    }
+
+    .naked-number-input:focus {
+        outline: none;
+    }
 }
