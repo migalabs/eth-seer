@@ -142,4 +142,27 @@
     .naked-number-input:focus {
         outline: none;
     }
+
+    /* Countdown Banner */
+    .countdown-banner {
+        position: relative;
+        width: 100%;
+        background: transparent;
+        z-index: 1;
+    }
+
+    .countdown-banner::before {
+        content: '';
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: url('/static/images/banner/background_banner.webp');
+        background-size: cover;
+        background-repeat: no-repeat;
+        opacity: 0.3;
+        z-index: -1;
+    }
 }
