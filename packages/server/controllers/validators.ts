@@ -125,32 +125,6 @@ export const getValidatorById = async (req: Request, res: Response) => {
     }
 };
 
-export const getValidatorStats = async (req: Request, res: Response) => {
-
-    try {
-
-        const { network } = req.query;
-
-        const pgPool = pgPools[network as string];
-        
-        const stats = 
-            await pgPool.query(`
-                SELECT MIN(f_val_idx) AS first, MAX(f_val_idx) AS last, COUNT(DISTINCT(f_val_idx)) AS count
-                FROM t_validator_last_status
-            `);
-
-        res.json({
-            stats: stats.rows[0]
-        });
-
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json({
-            msg: 'An error occurred on the server'
-        });
-    }
-};
-
 export const getLastValidator = async (req: Request, res: Response) => {
     
     try {
