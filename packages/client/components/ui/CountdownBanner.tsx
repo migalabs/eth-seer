@@ -12,6 +12,7 @@ const CountdownBanner = ({ title, countdownTime }: Props) => {
     const [hours, setHours] = useState('00');
     const [minutes, setMinutes] = useState('00');
     const [seconds, setSeconds] = useState('00');
+    const [showCountdown, setShowCountdown] = useState(false);
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -19,13 +20,24 @@ const CountdownBanner = ({ title, countdownTime }: Props) => {
             const diff = countdownTime - now;
 
             if (diff < 0) {
-                clearInterval(interval);
                 setDays('00');
                 setHours('00');
                 setMinutes('00');
                 setSeconds('00');
+
+                const days = Math.abs(diff / (1000 * 60 * 60 * 24));
+
+                if (days < 2) {
+                    setShowCountdown(true);
+                } else {
+                    setShowCountdown(false);
+                    clearInterval(interval);
+                }
+
                 return;
             }
+
+            setShowCountdown(true);
 
             const days = Math.floor(diff / (1000 * 60 * 60 * 24));
             const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -44,7 +56,7 @@ const CountdownBanner = ({ title, countdownTime }: Props) => {
     }, []);
 
     return (
-        <div className='bg-[var(--white50)] dark:bg-[var(--bgDarkMode)]'>
+        <div className={`${!showCountdown ? 'hidden' : ''} bg-[var(--white50)] dark:bg-[var(--bgDarkMode)]`}>
             <div className='countdown-banner flex flex-col gap-y-4 items-center mt-12 xl:mt-0 xl:mb-10 px-6 py-4'>
                 <span className='bg-white px-8 py-1 text-2xs md:text-xs rounded-sm'>Countdown to</span>
 
