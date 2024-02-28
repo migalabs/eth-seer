@@ -14,7 +14,7 @@ export const getBlocks = async (req: Request, res: Response) => {
         const [ blocks, count ] = 
             await Promise.all([
                 pgPool.query(`
-                    SELECT f_timestamp, f_slot, f_epoch
+                    SELECT f_timestamp, f_slot, f_epoch,
                     f_el_fee_recp, f_el_gas_limit, f_el_gas_used,
                     f_el_transactions, f_el_block_hash, f_payload_size_bytes,
                     f_el_block_number
