@@ -88,7 +88,7 @@ const Slots = () => {
                 )}
 
                 <div className='sm:ml-auto'>
-                    <FiltersSlot onChangeFilters={filters => getSlots(0, numRowsQuery, filters)} />
+                    {/* <FiltersSlot onChangeFilters={filters => getSlots(0, numRowsQuery, filters)} /> */}
                 </div>
             </div>
 
