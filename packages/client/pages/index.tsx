@@ -74,7 +74,7 @@ export default function Home() {
                 <Layout>
                     <CountdownBanner
                         title='Ethereum Deneb-Cancun EIP-4844 hard fork upgrade'
-                        countdownTime={1710284400000}
+                        countdownTime={1710338135000}
                     />
 
                     <Title>Ethereum Blockchain Explorer</Title>
