@@ -135,7 +135,10 @@ const TransactionPage = () => {
     };
 
     return (
-        <Layout>
+        <Layout
+            title='Transaction Details - Ethereum | EthSeer.io'
+            description='Examine the Ethereum transaction details, including sender, receiver, value, and gas fees. Explore comprehensive transaction analytics with EthSeer.io.'
+        >
             <Head>
                 <meta name='robots' property='noindex' />
             </Head>

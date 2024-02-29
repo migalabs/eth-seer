@@ -179,7 +179,12 @@ const BlockPage = () => {
 
     //OVERVIEW BLOCK PAGE
     return (
-        <Layout>
+        <Layout
+            title={`Block ${id ?? ''} Analysis - Ethereum Blockchain | EthSeer.io`}
+            description={`Detailed insights into Block ${
+                id ?? ''
+            } on the Ethereum blockchain, including transactions, gas used, and proposer. Understand block dynamics with EthSeer.io.`}
+        >
             <Head>
                 <meta name='robots' property='noindex' />
             </Head>

@@ -548,7 +548,12 @@ const ValidatorComponent = () => {
     //OVERVIEW PAGE
     //Overview validator page
     return (
-        <Layout>
+        <Layout
+            title={`Validator ${id ?? ''} Overview - Ethereum Beacon Chain | EthSeer.io`}
+            description={`Get the latest on Validator ${
+                id ?? ''
+            }: performance metrics, proposed blocks, and rewards on the Ethereum Beacon Chain. EthSeer.io provides comprehensive validator analytics.`}
+        >
             <Head>
                 <meta name='robots' property='noindex' />
             </Head>

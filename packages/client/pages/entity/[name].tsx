@@ -222,7 +222,12 @@ const EntityComponent = () => {
 
     //OVERVIEW PAGE
     return (
-        <Layout>
+        <Layout
+            title={`Entity Profile: ${name ?? ''} - Ethereum Staking | EthSeer.io`}
+            description={`Explore the staking profile of ${
+                name ?? ''
+            } on the Ethereum blockchain. View validator performance, total stakes, and more. Uncover staking insights with EthSeer.io.`}
+        >
             <Title className='uppercase'>{name}</Title>
 
             {loading && (

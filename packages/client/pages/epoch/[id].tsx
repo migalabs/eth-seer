@@ -278,7 +278,12 @@ const EpochComponent = () => {
     );
 
     return (
-        <Layout>
+        <Layout
+            title={`Epoch ${id ?? ''} Details - Ethereum Beacon Chain | EthSeer.io`}
+            description={`Explore comprehensive data for Epoch ${
+                id ?? ''
+            } on the Ethereum Beacon Chain. Get insights into blocks proposed, attestations, validator performance, and more. Stay updated with EthSeer.io.`}
+        >
             <Head>
                 <meta name='robots' property='noindex' />
             </Head>
