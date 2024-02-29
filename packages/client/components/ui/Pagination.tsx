@@ -14,11 +14,12 @@ import PaginationIconButton from './PaginationIconButton';
 type Props = {
     currentPage: number;
     totalPages: number;
+    fullWidth?: boolean;
     onChangePage: (newPage: number) => void;
     onChangeNumRows: (numRows: number) => void;
 };
 
-const Pagination = ({ currentPage, totalPages, onChangePage, onChangeNumRows }: Props) => {
+const Pagination = ({ currentPage, totalPages, fullWidth, onChangePage, onChangeNumRows }: Props) => {
     const next = () => {
         if (currentPage < totalPages) {
             onChangePage(currentPage + 1);
@@ -32,37 +33,24 @@ const Pagination = ({ currentPage, totalPages, onChangePage, onChangeNumRows }: 
     };
 
     return (
-        <div className='flex flex-col md:flex-row items-center w-11/12 xl:w-10/12 mx-auto justify-center lg:justify-start mt-4 gap-x-8 gap-y-4'>
-            <div className='flex items-center border-2 border-[var(--black)] dark:border-[var(--white)] px-2 rounded-lg gap-x-2'>
-                <Typography className='font-normal text-[14px] md:text-[16px] text-[var(--black)] dark:text-[var(--white)] my-0.5'>
-                    Show rows:
-                </Typography>
-
-                <div className='h-8 w-0.5 bg-[var(--black)] dark:bg-[var(--white)]'></div>
-
-                <select
-                    className='h-6 text-[14px] md:text-[16px] rounded-md px-1 my-0.5'
-                    onChange={e => onChangeNumRows(Number(e.target.value))}
-                >
-                    <option value={10}>10</option>
-                    <option value={20}>20</option>
-                    <option value={50}>50</option>
-                    <option value={100}>100</option>
-                </select>
-            </div>
-            <div className='flex items-center gap-x-4'>
+        <div
+            className={`flex flex-row sm:flex-row-reverse items-center mx-auto justify-start sm:justify-end gap-x-2 md:gap-x-8 gap-y-4 ${
+                fullWidth ? 'w-full' : 'w-11/12 xl:w-10/12'
+            }`}
+        >
+            <div className='flex items-center gap-x-2 sm:gap-x-4'>
                 <div className='flex gap-x-2'>
                     <PaginationIconButton onClick={() => onChangePage(0)} disabled={currentPage === 0}>
-                        <ChevronDoubleLeftIcon strokeWidth={2} className='h-4 w-4' />
+                        <ChevronDoubleLeftIcon strokeWidth={2} className='h-3 w-3 sm:h-4 sm:w-4' />
                     </PaginationIconButton>
 
                     <PaginationIconButton onClick={prev} disabled={currentPage === 0}>
-                        <ArrowLeftIcon strokeWidth={2} className='h-4 w-4' />
+                        <ArrowLeftIcon strokeWidth={2} className='h-3 w-3 sm:h-4 sm:w-4' />
                     </PaginationIconButton>
                 </div>
 
-                <Typography className='font-normal text-[14px] md:text-[16px] text-[var(--black)] dark:text-[var(--white)] text-center'>
-                    Page{' '}
+                <Typography className='flex gap-x-1 font-normal text-[14px] md:text-[16px] text-[var(--black)] dark:text-[var(--white)] text-center'>
+                    <span className='hidden sm:block'>Page</span>{' '}
                     <strong className='text-[var(--black)] dark:text-[var(--white)]'>
                         {(currentPage + 1).toLocaleString()}
                     </strong>{' '}
@@ -74,16 +62,33 @@ const Pagination = ({ currentPage, totalPages, onChangePage, onChangeNumRows }: 
 
                 <div className='flex gap-x-2'>
                     <PaginationIconButton onClick={next} disabled={currentPage === totalPages - 1}>
-                        <ArrowRightIcon strokeWidth={2} className='h-4 w-4' />
+                        <ArrowRightIcon strokeWidth={2} className='h-3 w-3 sm:h-4 sm:w-4' />
                     </PaginationIconButton>
 
                     <PaginationIconButton
                         onClick={() => onChangePage(totalPages - 1)}
                         disabled={currentPage === totalPages - 1}
                     >
-                        <ChevronDoubleRightIcon strokeWidth={2} className='h-4 w-4' />
+                        <ChevronDoubleRightIcon strokeWidth={2} className='h-3 w-3 sm:h-4 sm:w-4' />
                     </PaginationIconButton>
                 </div>
+            </div>
+            <div className='flex items-center xs:border-2 xs:border-[var(--black)] xs:dark:border-[var(--white)] xs:px-2 rounded-md gap-x-2'>
+                <Typography className='hidden xs:block font-normal text-[14px] md:text-[16px] text-[var(--black)] dark:text-[var(--white)] my-0.5'>
+                    Show rows:
+                </Typography>
+
+                <div className='hidden xs:block h-8 w-0.5 bg-[var(--black)] dark:bg-[var(--white)]'></div>
+
+                <select
+                    className='h-6 text-[14px] md:text-[16px] rounded-sm px-1 my-0.5'
+                    onChange={e => onChangeNumRows(Number(e.target.value))}
+                >
+                    <option value={10}>10</option>
+                    <option value={20}>20</option>
+                    <option value={50}>50</option>
+                    <option value={100}>100</option>
+                </select>
             </div>
         </div>
     );

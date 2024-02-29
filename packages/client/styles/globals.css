@@ -125,4 +125,44 @@
     .cube-left {
         transform: translateX(-1em) rotateY(90deg) rotateY(180deg);
     }
+
+    /* Naked Number Input */
+    .naked-number-input::-webkit-inner-spin-button,
+    .naked-number-input::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    .naked-number-input {
+        -moz-appearance: textfield;
+        appearance: textfield;
+        border: none;
+    }
+
+    .naked-number-input:focus {
+        outline: none;
+    }
+
+    /* Countdown Banner */
+    .countdown-banner {
+        position: relative;
+        width: 100%;
+        background: transparent;
+        z-index: 1;
+    }
+
+    .countdown-banner::before {
+        content: '';
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: url('/static/images/banner/background_banner.webp');
+        background-size: cover;
+        background-repeat: no-repeat;
+        opacity: 0.3;
+        z-index: -1;
+    }
 }

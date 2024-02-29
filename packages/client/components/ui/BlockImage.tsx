@@ -1,14 +1,20 @@
-import React from 'react';
-
-// Components
-import CustomImage from './CustomImage';
+import React, { useContext } from 'react';
 
 // Contexts
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
-// Constants
-import { CLIENTS, POOLS } from '../../constants';
+// Components
+import CustomImage from './CustomImage';
 
+// Helpers
+import {
+    getImageUrlEntity,
+    getImageAltEntity,
+    getImageUrlClient,
+    getImageAltClient,
+} from '../../helpers/imageUrlsHelper';
+
+// Props
 type Props = {
     poolName: string;
     clientName?: string;
@@ -21,33 +27,13 @@ type Props = {
 
 const BlockImage = ({ poolName, clientName, proposed = true, width, height, showCheck, showClient }: Props) => {
     // Theme Mode Context
-    const { themeMode } = React.useContext(ThemeModeContext) ?? {};
-
-    const getUrlEntity = () => {
-        if (poolName && POOLS.includes(poolName.toUpperCase())) {
-            return `/static/images/blocks/cubes/${poolName.toLowerCase()}.webp`;
-        } else if (poolName && poolName.toLowerCase().includes('lido')) {
-            return '/static/images/blocks/cubes/lido.webp';
-        } else if (poolName && poolName.toLowerCase().includes('whale')) {
-            return '/static/images/blocks/cubes/whale-ethereum-entity.webp';
-        } else {
-            return '/static/images/blocks/cubes/unknown-ethereum-entity.webp';
-        }
-    };
-
-    const getUrlClient = () => {
-        if (clientName && CLIENTS.includes(clientName.toUpperCase())) {
-            return `/static/images/blocks/cubes/clients/${clientName.toLowerCase()}.webp`;
-        } else {
-            return '/static/images/blocks/cubes/unknown-ethereum-entity.webp';
-        }
-    };
+    const { themeMode } = useContext(ThemeModeContext) ?? {};
 
     return (
         <div className='relative'>
             <CustomImage
-                src={showClient ? getUrlClient() : getUrlEntity()}
-                alt='Logo'
+                src={showClient ? getImageUrlClient(clientName) : getImageUrlEntity(poolName)}
+                alt={showClient ? getImageAltEntity(clientName) : getImageAltClient(poolName)}
                 width={width}
                 height={height}
                 className={`${proposed ? '' : 'brightness-75'}`}
@@ -57,7 +43,7 @@ const BlockImage = ({ poolName, clientName, proposed = true, width, height, show
                 <CustomImage
                     className='absolute z-[var(--zIndexBlockImageMissed)] top-0'
                     src={`/static/images/blocks/cubes/missed_block_${themeMode?.darkMode ? 'dark' : 'light'}.webp`}
-                    alt='Missed Logo'
+                    alt='Missed cross'
                     width={width}
                     height={width}
                 />
