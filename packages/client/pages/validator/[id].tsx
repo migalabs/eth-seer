@@ -25,6 +25,7 @@ import LinkEntity from '../../components/ui/LinkEntity';
 import TitleWithArrows from '../../components/ui/TitleWithArrows';
 import CardContent from '../../components/ui/CardContent';
 import { LargeTable, LargeTableHeader, LargeTableRow, SmallTable, SmallTableCard } from '../../components/ui/Table';
+import ShareMenu from '../../components/ui/ShareMenu';
 
 // Types
 import { Validator, Slot, Withdrawal } from '../../types';
@@ -237,7 +238,7 @@ const ValidatorComponent = () => {
             </div>
 
             <div
-                className='flex items-center p-8 justify-center mx-auto rounded-md border-2 border-white text-[var(--black)] dark:text-[var(--white)] bg-[var(--bgMainLightMode)] dark:bg-[var(--bgFairDarkMode)]'
+                className='flex items-center p-8 justify-center mx-auto rounded-md border-2 border-white text-[var(--black)] dark:text-[var(--white)] bg-[var(--bgMainLightMode)] dark:bg-[var(--bgFairDarkMode)] w-full'
                 style={{
                     boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
                 }}
@@ -547,7 +548,12 @@ const ValidatorComponent = () => {
     //OVERVIEW PAGE
     //Overview validator page
     return (
-        <Layout>
+        <Layout
+            title={`Validator ${id ?? ''} Overview - Ethereum Beacon Chain | EthSeer.io`}
+            description={`Get the latest on Validator ${
+                id ?? ''
+            }: performance metrics, proposed blocks, and rewards on the Ethereum Beacon Chain. EthSeer.io provides comprehensive validator analytics.`}
+        >
             <Head>
                 <meta name='robots' property='noindex' />
             </Head>
@@ -562,7 +568,11 @@ const ValidatorComponent = () => {
 
             {!loadingValidator && validatorHour && (
                 <div className='flex flex-col gap-4 mx-auto w-11/12 md:w-10/12'>
-                    <div>{getContentValidator()}</div>
+                    <div className='flex justify-end'>
+                        <ShareMenu type='validator' />
+                    </div>
+
+                    {getContentValidator()}
 
                     <div className='flex flex-col md:flex-row gap-4'>
                         <TabHeader header='Blocks' isSelected={tabPageIndex === 0} onClick={() => setTabPageIndex(0)} />

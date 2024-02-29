@@ -16,6 +16,7 @@ import Loader from '../../components/ui/Loader';
 import Slots from '../../components/layouts/Slots';
 import TitleWithArrows from '../../components/ui/TitleWithArrows';
 import CardContent from '../../components/ui/CardContent';
+import ShareMenu from '../../components/ui/ShareMenu';
 
 // Types
 import { Epoch, Slot } from '../../types';
@@ -277,7 +278,12 @@ const EpochComponent = () => {
     );
 
     return (
-        <Layout>
+        <Layout
+            title={`Epoch ${id ?? ''} Details - Ethereum Beacon Chain | EthSeer.io`}
+            description={`Explore comprehensive data for Epoch ${
+                id ?? ''
+            } on the Ethereum Beacon Chain. Get insights into blocks proposed, attestations, validator performance, and more. Stay updated with EthSeer.io.`}
+        >
             <Head>
                 <meta name='robots' property='noindex' />
             </Head>
@@ -291,13 +297,17 @@ const EpochComponent = () => {
             )}
 
             {!loadingEpoch && epoch && existsEpochRef.current && (
-                <>
-                    <div className='mx-auto w-11/12 xl:w-10/12'>
-                        <div>{getContentEpochStats()}</div>
+                <div className='flex flex-col gap-y-4'>
+                    <div className='flex flex-col gap-y-4 mx-auto w-11/12 xl:w-10/12'>
+                        <div className='flex justify-end'>
+                            <ShareMenu type='epoch' />
+                        </div>
+
+                        {getContentEpochStats()}
                     </div>
 
                     <Slots slots={slots} fetchingSlots={loadingSlots} />
-                </>
+                </div>
             )}
 
             {!loadingEpoch && infoBoxText && <InfoBox text={infoBoxText} />}
