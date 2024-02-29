@@ -334,7 +334,12 @@ const Slot = () => {
 
     //OVERVIEW SLOT PAGE
     return (
-        <Layout>
+        <Layout
+            title={`Slot ${id ?? ''} Details - Ethereum Beacon Chain | EthSeer.io`}
+            description={`Discover detailed information on Slot ${
+                id ?? ''
+            } of the Ethereum Beacon Chain, including the block proposer, attestations, and transactions. Dive deeper into blockchain dynamics with EthSeer.io.`}
+        >
             <Head>
                 <meta name='robots' property='noindex' />
             </Head>
