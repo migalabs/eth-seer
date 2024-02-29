@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Head from 'next/head';
 import { useRouter } from 'next/router';
 
 // Axios
@@ -64,17 +63,12 @@ const Slots = () => {
     };
 
     return (
-        <Layout hideMetaDescription>
-            <Head>
-                <title>Slots of the Ethereum Beacon Chain - EthSeer.io</title>
-                <meta
-                    name='description'
-                    content='Check the Ethereum chain slots, to find the block proposer, the number of attestations, the gas used, number of transactions and withdrawals.'
-                />
-                <meta name='keywords' content='Ethereum, Slots, State, Block, Validator, Proposer, Attestations' />
-                <link rel='canonical' href='https://ethseer.io/slots' />
-            </Head>
-
+        <Layout
+            title='Slots of the Ethereum Beacon Chain - EthSeer.io'
+            description='Check the Ethereum chain slots, to find the block proposer, the number of attestations, the gas used, number of transactions and withdrawals.'
+            keywords='Ethereum, Slots, State, Block, Validator, Proposer, Attestations'
+            canonical='https://ethseer.io/slots'
+        >
             <Title>Ethereum Slots</Title>
 
             <PageDescription>

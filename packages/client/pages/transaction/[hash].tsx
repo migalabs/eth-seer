@@ -17,6 +17,7 @@ import Card from '../../components/ui/Card';
 import Title from '../../components/ui/Title';
 import AddressCopy from '../../components/ui/AddressCopy';
 import InfoBox from '../../components/layouts/InfoBox';
+import ShareMenu from '../../components/ui/ShareMenu';
 
 // Types
 import { Transaction } from '../../types';
@@ -134,7 +135,10 @@ const TransactionPage = () => {
     };
 
     return (
-        <Layout>
+        <Layout
+            title='Transaction Details - Ethereum | EthSeer.io'
+            description='Examine the Ethereum transaction details, including sender, receiver, value, and gas fees. Explore comprehensive transaction analytics with EthSeer.io.'
+        >
             <Head>
                 <meta name='robots' property='noindex' />
             </Head>
@@ -149,17 +153,21 @@ const TransactionPage = () => {
 
             {transaction && (
                 <div className='flex flex-col w-11/12 md:w-1/2 mx-auto'>
-                    <div className='flex flex-col sm:flex-row gap-4'>
-                        <TabHeader
-                            header='Overview'
-                            isSelected={tabPageIndex === 0}
-                            onClick={() => setTabPageIndex(0)}
-                        />
-                        <TabHeader
-                            header='More Details'
-                            isSelected={tabPageIndex === 1}
-                            onClick={() => setTabPageIndex(1)}
-                        />
+                    <div className='flex flex-col sm:flex-row justify-between items-end w-full gap-4'>
+                        <div className='flex flex-col sm:flex-row gap-4 w-full'>
+                            <TabHeader
+                                header='Overview'
+                                isSelected={tabPageIndex === 0}
+                                onClick={() => setTabPageIndex(0)}
+                            />
+                            <TabHeader
+                                header='More Details'
+                                isSelected={tabPageIndex === 1}
+                                onClick={() => setTabPageIndex(1)}
+                            />
+                        </div>
+
+                        <ShareMenu type='transaction' />
                     </div>
 
                     {getSelectedTab()}
