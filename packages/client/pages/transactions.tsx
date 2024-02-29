@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Head from 'next/head';
 import { useRouter } from 'next/router';
 
 // Axios
@@ -62,17 +61,12 @@ const Transactions = () => {
     };
 
     return (
-        <Layout hideMetaDescription>
-            <Head>
-                <title>Transactions of the Ethereum Chain - EthSeer.io</title>
-                <meta
-                    name='description'
-                    content='You can find all Ethereum transactions here, with their source, target, value transferred and cost.'
-                />
-                <meta name='keywords' content='Ethereum, Transactions, Execution Layer, Blocks, EVM' />
-                <link rel='canonical' href='https://ethseer.io/transactions' />
-            </Head>
-
+        <Layout
+            title='Transactions of the Ethereum Chain - EthSeer.io'
+            description='You can find all Ethereum transactions here, with their source, target, value transferred and cost.'
+            keywords='Ethereum, Transactions, Execution Layer, Blocks, EVM'
+            canonical='https://ethseer.io/transactions'
+        >
             <Title>Ethereum Transactions</Title>
 
             <PageDescription>

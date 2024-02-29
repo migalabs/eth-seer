@@ -14,6 +14,7 @@ import Problems from '../components/layouts/Problems';
 import SummaryOverview from '../components/ui/SummaryOverview';
 import Title from '../components/ui/Title';
 import PageDescription from '../components/ui/PageDescription';
+import CountdownBanner from '../components/ui/CountdownBanner';
 
 export default function Home() {
     // Router
@@ -71,6 +72,11 @@ export default function Home() {
         <>
             {status && status.working ? (
                 <Layout>
+                    <CountdownBanner
+                        title='Ethereum Deneb-Cancun EIP-4844 hard fork upgrade'
+                        countdownTime={1710338135000}
+                    />
+
                     <Title>Ethereum Blockchain Explorer</Title>
 
                     <PageDescription>

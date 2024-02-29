@@ -11,6 +11,7 @@ export default function Document() {
 
                         //COLORS:
                         --white: #ffffff;
+                        --white50: #ffffff7f;
                         --black: #000000;
                         --purple: #c9b6f8;
                         --darkPurple: #40467d;
@@ -22,12 +23,15 @@ export default function Document() {
                         --bgStrongLightMode: #bdbdbd50;
                         --bgDarkMode: #343434;
                         --bgFairDarkMode: #5b5b5b65;
-                        --bgStrongDarkMode: #30303080;
+                        --bgStrongDarkMode: #303030;
                         --proposedGreen: #53945a;
                         --missedRed: #e86666;
                         --depositedOrange: #f69a2e;
                         --depositedBlue: #4caee5;
                         --exitedPurple: #a966c1;
+                        --linkPurple: #d1d3ff;
+                        --bgFilterSectionLight: #f4f0ff;
+                        --purpleDark: #8c91ff;
 
                         //SHADOWS:
                         --boxShadowGreen: 0px 2px 4px 0px #3b503d inset;
@@ -37,6 +41,7 @@ export default function Document() {
                         --boxShadowPurple: 0px 2px 4px 0px #512b5f inset;
                         --boxShadowCardDark: 0px 4px 4px 0px rgba(0, 0, 0, 0.5) inset;
                         --boxShadowCardLight: 0px 4px 4px 0px rgba(0, 0, 0, 0.15) inset;
+                        --boxShadowCountdown: 3px 3px 0px 0px rgba(0, 0, 0, 0.75);
 
                         //BACKGROUND:
                         --backgroundLight: linear-gradient(
@@ -99,16 +104,16 @@ export default function Document() {
                     href='https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap'
                     rel='stylesheet'
                 />
-                <meta
-                    name='keywords'
-                    content='Ethereum, Ethereum Blockchain Explorer, Ethereum Block Explorer, Search'
-                />
+                <meta name='viewport' content='width=device-width, initial-scale=1' />
+                <meta name='author' content='Miga Labs' />
+                <meta name='og:type' content='website' />
+                <meta name='og:site_name' content='EthSeer.io' />
+                <meta property='og:image' content='https://ethseer.io/static/images/ethseer_metadata.png' />
+                <meta property='og:image:url' content='https://ethseer.io/static/images/ethseer_metadata.png' />
+                <meta property='og:image:alt' content='Visit EthSeer.io' />
                 <meta name='twitter:card' content='summary' />
                 <meta name='twitter:site' content='@miga_labs' />
-                <meta name='twitter:image' content='http://ethseer.io/static/images/ethseer_metadata.png' />
-                <meta property='og:url' content='http://ethseer.io/' />
-                <meta property='og:title' content='Ethereum Blockchain Explorer - EthSeer.io' />
-                <meta property='og:image' content='http://ethseer.io/static/images/ethseer_metadata.png' />
+                <meta name='twitter:image' content='https://ethseer.io/static/images/ethseer_metadata.png' />
                 <meta httpEquiv='Content-Security-Policy' content='upgrade-insecure-requests' />
             </Head>
 

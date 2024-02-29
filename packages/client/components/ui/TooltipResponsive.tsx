@@ -7,14 +7,15 @@ type Props = {
     polygonLeft?: boolean;
     polygonRight?: boolean;
     tooltipAbove?: boolean;
+    invertColors?: boolean;
 };
 
-const TooltipResponsive = ({ width, content, top, polygonLeft, polygonRight, tooltipAbove }: Props) => {
+const TooltipResponsive = ({ width, content, top, polygonLeft, polygonRight, tooltipAbove, invertColors }: Props) => {
     const getParentLeftPosition = () => {
         if (polygonLeft) {
-            return '-25px';
+            return 'calc(50% - 35px)';
         } else if (polygonRight) {
-            return `-${width - 50}px`;
+            return `calc(50% - ${width - 35}px)`;
         } else {
             return `calc(50% - ${width / 2}px)`;
         }
@@ -22,7 +23,7 @@ const TooltipResponsive = ({ width, content, top, polygonLeft, polygonRight, too
 
     const getParentTopPosition = () => {
         if (tooltipAbove) {
-            return '-100px';
+            return top ?? '-100px';
         } else {
             return top ?? '30px';
         }
@@ -54,13 +55,22 @@ const TooltipResponsive = ({ width, content, top, polygonLeft, polygonRight, too
         }
     };
 
+    const parentClasses = invertColors
+        ? 'bg-[var(--darkGray)] dark:bg-white text-white dark:text-black'
+        : 'bg-white dark:bg-[var(--darkGray)] text-black dark:text-white';
+
+    const polygonClasses = invertColors
+        ? 'fill-[var(--darkGray)] dark:fill-[var(--white)]'
+        : 'fill-[var(--white)] dark:fill-[var(--darkGray)]';
+
     return (
         <div
-            className='absolute flex-col text-center rounded-md py-4 px-4 mt-2 mx-auto font-medium hidden z-[var(--zIndexTooltip)] text-[12px] leading-5 normal-case text-[var(--black)] dark:text-[var(--white)] bg-[var(--white)] dark:bg-[var(--darkGray)]'
+            className={`absolute flex flex-col text-center rounded-md py-4 px-4 mt-2 mx-auto font-medium z-[var(--zIndexTooltip)] text-[12px] leading-5 normal-case invisible opacity-0 ${parentClasses}`}
             style={{
                 width,
                 left: getParentLeftPosition(),
                 top: getParentTopPosition(),
+                transition: 'visibility 0.5s, opacity 0.5s ease-in-out',
             }}
         >
             {content}
@@ -72,7 +82,7 @@ const TooltipResponsive = ({ width, content, top, polygonLeft, polygonRight, too
                 xmlSpace='preserve'
                 style={{ left: getPolygonLeftPosition(), top: getPolygonTopPosition() }}
             >
-                <polygon className='fill-[var(--white)] dark:fill-[var(--darkGray)]' points={getPoints()} />
+                <polygon className={polygonClasses} points={getPoints()} />
             </svg>
         </div>
     );
