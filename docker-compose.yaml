@@ -4,8 +4,8 @@ services:
     ethseer-client:
         image: ethseer-client-image:1.0.0
         build:
-        context: ./
-        dockerfile: Dockerfile-client
+            context: ./
+            dockerfile: Dockerfile-client
         container_name: ethseer-client-container
         init: true
         restart: unless-stopped
