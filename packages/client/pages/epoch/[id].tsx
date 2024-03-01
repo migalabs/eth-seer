@@ -1,5 +1,5 @@
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
-import { useRouter } from 'next/router';
+import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 
 // Axios
@@ -21,13 +21,29 @@ import ShareMenu from '../../components/ui/ShareMenu';
 // Types
 import { Epoch, Slot } from '../../types';
 
-const EpochComponent = () => {
+// Props
+interface Props {
+    id: number;
+    network: string;
+}
+
+// Server Side Props
+export const getServerSideProps: GetServerSideProps = async context => {
+    const id = context.params?.id;
+    const network = context.query?.network;
+
+    if (isNaN(Number(id)) || !network) {
+        return {
+            notFound: true,
+        };
+    }
+
+    return { props: { id: Number(id), network } };
+};
+
+const EpochComponent = ({ id, network }: Props) => {
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
-
-    // Next router
-    const router = useRouter();
-    const { network, id } = router.query;
 
     // Refs
     const epochRef = useRef(0);
@@ -44,17 +60,15 @@ const EpochComponent = () => {
 
     // UseEffect
     useEffect(() => {
-        if (id) {
-            epochRef.current = Number(id);
-        }
+        epochRef.current = id;
 
-        if (network && ((id && !epoch) || (epoch && epoch.f_epoch !== Number(id)))) {
+        if (!epoch || epoch.f_epoch !== id) {
             getEpoch();
             getSlots();
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [network, id]);
+    }, [id]);
 
     const shuffle = useCallback(() => {
         setCalculatingText(prevState => {
@@ -95,8 +109,7 @@ const EpochComponent = () => {
             if (Number(response.data.epoch.proposed_blocks) === 0) {
                 setInfoBoxText("We're not there yet");
 
-                const expectedTimestamp =
-                    (genesisBlock.data.block_genesis + Number(id) * 12000 * 32 + 12000 * 64) / 1000;
+                const expectedTimestamp = (genesisBlock.data.block_genesis + id * 12000 * 32 + 12000 * 64) / 1000;
 
                 existsEpochRef.current = false;
 
@@ -106,13 +119,13 @@ const EpochComponent = () => {
                     return;
                 } else if (timeDifference > 0) {
                     setTimeout(() => {
-                        if (Number(id) === epochRef.current) {
+                        if (id === epochRef.current) {
                             getEpoch();
                         }
                     }, timeDifference + 2000);
                 } else if (timeDifference > -30000) {
                     setTimeout(() => {
-                        if (Number(id) === epochRef.current) {
+                        if (id === epochRef.current) {
                             getEpoch();
                         }
                     }, 1000);
@@ -160,7 +173,7 @@ const EpochComponent = () => {
             <div className='flex flex-row items-center gap-x-5'>
                 <p className='w-40 sm:w-60 text-[var(--black)] dark:text-[var(--white)]'>Time (Local):</p>
                 <p className='text-[var(--black)] dark:text-[var(--white)]'>
-                    {new Date(blockGenesis + Number(id) * 32 * 12000).toLocaleString('ja-JP')}
+                    {new Date(blockGenesis + id * 32 * 12000).toLocaleString('ja-JP')}
                 </p>
             </div>
 
@@ -279,16 +292,14 @@ const EpochComponent = () => {
 
     return (
         <Layout
-            title={`Epoch ${id ?? ''} Details - Ethereum Beacon Chain | EthSeer.io`}
-            description={`Explore comprehensive data for Epoch ${
-                id ?? ''
-            } on the Ethereum Beacon Chain. Get insights into blocks proposed, attestations, validator performance, and more. Stay updated with EthSeer.io.`}
+            title={`Epoch ${id} Details - Ethereum Beacon Chain | EthSeer.io`}
+            description={`Explore comprehensive data for Epoch ${id} on the Ethereum Beacon Chain. Get insights into blocks proposed, attestations, validator performance, and more. Stay updated with EthSeer.io.`}
         >
             <Head>
                 <meta name='robots' property='noindex' />
             </Head>
 
-            <TitleWithArrows type='epoch' value={Number(id)} />
+            <TitleWithArrows type='epoch' value={id} />
 
             {loadingEpoch && (
                 <div className='mt-6'>

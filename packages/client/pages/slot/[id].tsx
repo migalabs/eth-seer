@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useContext } from 'react';
-import { useRouter } from 'next/router';
+import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 
 // Axios
@@ -29,11 +29,27 @@ import ShareMenu from '../../components/ui/ShareMenu';
 // Types
 import { Block, Withdrawal } from '../../types';
 
-const Slot = () => {
-    // Next router
-    const router = useRouter();
-    const { network, id } = router.query;
+// Props
+interface Props {
+    id: number;
+    network: string;
+}
 
+// Server Side Props
+export const getServerSideProps: GetServerSideProps = async context => {
+    const id = context.params?.id;
+    const network = context.query?.network;
+
+    if (isNaN(Number(id)) || !network) {
+        return {
+            notFound: true,
+        };
+    }
+
+    return { props: { id: Number(id), network } };
+};
+
+const Slot = ({ id, network }: Props) => {
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
 
@@ -56,17 +72,15 @@ const Slot = () => {
     const countdownText = useCountdownText((!block?.f_el_block_number && block?.f_timestamp) || undefined);
 
     useEffect(() => {
-        if (id) {
-            slotRef.current = Number(id);
-        }
+        slotRef.current = id;
 
-        if (network && ((id && !block) || (block && block.f_slot !== Number(id)))) {
+        if (!block || block.f_slot !== id) {
             getBlock();
             getWithdrawals();
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [network, id]);
+    }, [id]);
 
     // Get blocks
     const getBlock = async () => {
@@ -91,11 +105,11 @@ const Slot = () => {
             setBlockGenesis(genesisBlock.data.block_genesis);
 
             if (!blockResponse) {
-                const expectedTimestamp = (genesisBlock.data.block_genesis + Number(id) * 12000) / 1000;
+                const expectedTimestamp = (genesisBlock.data.block_genesis + id * 12000) / 1000;
 
                 setBlock({
-                    f_epoch: Math.floor(Number(id) / 32),
-                    f_slot: Number(id),
+                    f_epoch: Math.floor(id / 32),
+                    f_slot: id,
                     f_timestamp: expectedTimestamp,
                 });
 
@@ -107,13 +121,13 @@ const Slot = () => {
                     return;
                 } else if (timeDifference > 0) {
                     setTimeout(() => {
-                        if (Number(id) === slotRef.current) {
+                        if (id === slotRef.current) {
                             getBlock();
                         }
                     }, timeDifference + 3000);
                 } else if (timeDifference > -10000) {
                     setTimeout(() => {
-                        if (Number(id) === slotRef.current) {
+                        if (id === slotRef.current) {
                             getBlock();
                         }
                     }, 1000);
@@ -155,7 +169,7 @@ const Slot = () => {
             if (block.f_timestamp) {
                 text = new Date(block.f_timestamp * 1000).toLocaleString('ja-JP');
             } else {
-                text = new Date(blockGenesis + Number(id) * 12000).toLocaleString('ja-JP');
+                text = new Date(blockGenesis + id * 12000).toLocaleString('ja-JP');
             }
         }
 
@@ -335,16 +349,14 @@ const Slot = () => {
     //OVERVIEW SLOT PAGE
     return (
         <Layout
-            title={`Slot ${id ?? ''} Details - Ethereum Beacon Chain | EthSeer.io`}
-            description={`Discover detailed information on Slot ${
-                id ?? ''
-            } of the Ethereum Beacon Chain, including the block proposer, attestations, and transactions. Dive deeper into blockchain dynamics with EthSeer.io.`}
+            title={`Slot ${id} Details - Ethereum Beacon Chain | EthSeer.io`}
+            description={`Discover detailed information on Slot ${id} of the Ethereum Beacon Chain, including the block proposer, attestations, and transactions. Dive deeper into blockchain dynamics with EthSeer.io.`}
         >
             <Head>
                 <meta name='robots' property='noindex' />
             </Head>
 
-            <TitleWithArrows type='slot' value={Number(id)} />
+            <TitleWithArrows type='slot' value={id} />
 
             {loadingBlock && (
                 <div className='mt-6'>

@@ -1,5 +1,5 @@
 import { useContext, useEffect, useRef, useState } from 'react';
-import { useRouter } from 'next/router';
+import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 
 // Axios
@@ -30,13 +30,29 @@ import ShareMenu from '../../components/ui/ShareMenu';
 // Types
 import { Validator, Slot, Withdrawal } from '../../types';
 
-const ValidatorComponent = () => {
+// Props
+interface Props {
+    id: number;
+    network: string;
+}
+
+// Server Side Props
+export const getServerSideProps: GetServerSideProps = async context => {
+    const id = context.params?.id;
+    const network = context.query?.network;
+
+    if (isNaN(Number(id)) || !network) {
+        return {
+            notFound: true,
+        };
+    }
+
+    return { props: { id: Number(id), network } };
+};
+
+const ValidatorComponent = ({ id, network }: Props) => {
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
-
-    // Next router
-    const router = useRouter();
-    const { network, id } = router.query;
 
     // Refs
     const validatorRef = useRef(0);
@@ -60,18 +76,16 @@ const ValidatorComponent = () => {
 
     // UseEffect
     useEffect(() => {
-        if (id) {
-            validatorRef.current = Number(id);
-        }
+        validatorRef.current = id;
 
-        if (network && ((id && !validatorHour) || (validatorHour && validatorHour.f_val_idx !== Number(id)))) {
+        if (!validatorHour || validatorHour.f_val_idx !== id) {
             getValidator();
             getProposedBlocks();
             getWithdrawals();
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [network, id]);
+    }, [id]);
 
     const getValidator = async () => {
         try {
@@ -549,16 +563,14 @@ const ValidatorComponent = () => {
     //Overview validator page
     return (
         <Layout
-            title={`Validator ${id ?? ''} Overview - Ethereum Beacon Chain | EthSeer.io`}
-            description={`Get the latest on Validator ${
-                id ?? ''
-            }: performance metrics, proposed blocks, and rewards on the Ethereum Beacon Chain. EthSeer.io provides comprehensive validator analytics.`}
+            title={`Validator ${id} Overview - Ethereum Beacon Chain | EthSeer.io`}
+            description={`Get the latest on Validator ${id}: performance metrics, proposed blocks, and rewards on the Ethereum Beacon Chain. EthSeer.io provides comprehensive validator analytics.`}
         >
             <Head>
                 <meta name='robots' property='noindex' />
             </Head>
 
-            <TitleWithArrows type='validator' value={Number(id)} />
+            <TitleWithArrows type='validator' value={id} />
 
             {loadingValidator && (
                 <div className='mb-4'>
