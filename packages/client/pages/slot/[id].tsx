@@ -54,7 +54,7 @@ const Slot = ({ id, network }: Props) => {
     const { themeMode } = useContext(ThemeModeContext) ?? {};
 
     // Refs
-    const slotRef = useRef(0);
+    const idRef = useRef(0);
 
     // Large View Hook
     const isLargeView = useLargeView();
@@ -72,9 +72,8 @@ const Slot = ({ id, network }: Props) => {
     const countdownText = useCountdownText((!block?.f_el_block_number && block?.f_timestamp) || undefined);
 
     useEffect(() => {
-        slotRef.current = id;
-
-        if (!block || block.f_slot !== id) {
+        if (!block || idRef.current !== id) {
+            idRef.current = id;
             getBlock();
             getWithdrawals();
         }
@@ -121,13 +120,13 @@ const Slot = ({ id, network }: Props) => {
                     return;
                 } else if (timeDifference > 0) {
                     setTimeout(() => {
-                        if (id === slotRef.current) {
+                        if (id === idRef.current) {
                             getBlock();
                         }
                     }, timeDifference + 3000);
                 } else if (timeDifference > -10000) {
                     setTimeout(() => {
-                        if (id === slotRef.current) {
+                        if (id === idRef.current) {
                             getBlock();
                         }
                     }, 1000);

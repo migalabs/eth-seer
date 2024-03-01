@@ -55,7 +55,7 @@ const ValidatorComponent = ({ id, network }: Props) => {
     const { themeMode } = useContext(ThemeModeContext) ?? {};
 
     // Refs
-    const validatorRef = useRef(0);
+    const idRef = useRef(0);
 
     // Large View Hook
     const isLargeView = useLargeView();
@@ -76,9 +76,8 @@ const ValidatorComponent = ({ id, network }: Props) => {
 
     // UseEffect
     useEffect(() => {
-        validatorRef.current = id;
-
-        if (!validatorHour || validatorHour.f_val_idx !== id) {
+        if (!validatorHour || idRef.current !== id) {
+            idRef.current = id;
             getValidator();
             getProposedBlocks();
             getWithdrawals();

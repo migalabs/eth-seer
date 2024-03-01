@@ -48,7 +48,7 @@ const BlockPage = ({ id, network }: Props) => {
     const { themeMode } = useContext(ThemeModeContext) ?? {};
 
     // Refs
-    const blockRef = useRef(0);
+    const idRef = useRef(0);
 
     // States
     const [block, setBlock] = useState<BlockEL | null>(null);
@@ -60,9 +60,8 @@ const BlockPage = ({ id, network }: Props) => {
 
     // UseEffect
     useEffect(() => {
-        blockRef.current = Number(id);
-
-        if (!block || block.f_el_block_number !== id) {
+        if (!block || idRef.current !== id) {
+            idRef.current = id;
             getBlock();
             getTransactions();
         }

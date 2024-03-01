@@ -46,7 +46,7 @@ const EpochComponent = ({ id, network }: Props) => {
     const { themeMode } = useContext(ThemeModeContext) ?? {};
 
     // Refs
-    const epochRef = useRef(0);
+    const idRef = useRef(0);
     const existsEpochRef = useRef(true);
 
     // States
@@ -60,9 +60,8 @@ const EpochComponent = ({ id, network }: Props) => {
 
     // UseEffect
     useEffect(() => {
-        epochRef.current = id;
-
-        if (!epoch || epoch.f_epoch !== id) {
+        if (!epoch || idRef.current !== id) {
+            idRef.current = id;
             getEpoch();
             getSlots();
         }
@@ -119,13 +118,13 @@ const EpochComponent = ({ id, network }: Props) => {
                     return;
                 } else if (timeDifference > 0) {
                     setTimeout(() => {
-                        if (id === epochRef.current) {
+                        if (id === idRef.current) {
                             getEpoch();
                         }
                     }, timeDifference + 2000);
                 } else if (timeDifference > -30000) {
                     setTimeout(() => {
-                        if (id === epochRef.current) {
+                        if (id === idRef.current) {
                             getEpoch();
                         }
                     }, 1000);
