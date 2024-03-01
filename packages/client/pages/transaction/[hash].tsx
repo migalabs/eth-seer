@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, useRef } from 'react';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 
@@ -46,6 +46,9 @@ const TransactionPage = ({ hash, network }: Props) => {
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
 
+    // Refs
+    const hashRef = useRef('');
+
     // States
     const [transaction, setTransaction] = useState<Transaction | null>(null);
     const [tabPageIndex, setTabPageIndex] = useState(0);
@@ -53,12 +56,13 @@ const TransactionPage = ({ hash, network }: Props) => {
 
     // UseEffect
     useEffect(() => {
-        if (!transaction) {
+        if (!transaction || hashRef.current !== hash) {
+            hashRef.current = hash;
             getTransaction();
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [hash]);
 
     // Get Transaction
     const getTransaction = async () => {

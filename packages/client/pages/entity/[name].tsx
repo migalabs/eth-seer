@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useRef } from 'react';
 import { GetServerSideProps } from 'next';
 
 // Axios
@@ -44,6 +44,9 @@ const EntityComponent = ({ name, network }: Props) => {
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
 
+    // Refs
+    const entityRef = useRef('');
+
     // States
     const [entityHour, setEntityHour] = useState<Entity | null>(null);
     const [entityDay, setEntityDay] = useState<Entity | null>(null);
@@ -54,12 +57,13 @@ const EntityComponent = ({ name, network }: Props) => {
 
     // UseEffect
     useEffect(() => {
-        if (!entityHour && !entityDay && !entityWeek) {
+        if ((!entityHour && !entityDay && !entityWeek) || entityRef.current !== name) {
+            entityRef.current = name;
             getEntity();
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [name]);
 
     //Entity
     const getEntity = async () => {
