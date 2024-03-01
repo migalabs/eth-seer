@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { GetServerSideProps } from 'next';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
 
 // Axios
 import axiosClient from '../../../config/axios';
@@ -21,11 +21,27 @@ import { LargeTable, LargeTableHeader, LargeTableRow, SmallTable, SmallTableCard
 // Types
 import { Block } from '../../../types';
 
-const GraffitiSearch = () => {
-    // Router
-    const router = useRouter();
-    const { network, graffiti } = router.query;
+// Props
+interface Props {
+    graffiti: string;
+    network: string;
+}
 
+// Server Side Props
+export const getServerSideProps: GetServerSideProps = async context => {
+    const graffiti = context.params?.graffiti;
+    const network = context.query?.network;
+
+    if (!graffiti || !network) {
+        return {
+            notFound: true,
+        };
+    }
+
+    return { props: { graffiti, network } };
+};
+
+const GraffitiSearch = ({ graffiti, network }: Props) => {
     // Large View Hook
     const isLargeView = useLargeView();
 
@@ -38,12 +54,12 @@ const GraffitiSearch = () => {
     const [blockGenesis, setBlockGenesis] = useState(0);
 
     useEffect(() => {
-        if (network && graffiti && blocks.length === 0) {
+        if (blocks.length === 0) {
             getGraffities(0);
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [network, graffiti]);
+    }, []);
 
     const getGraffities = async (page: number, limit: number = 10) => {
         try {
@@ -178,10 +194,8 @@ const GraffitiSearch = () => {
 
     return (
         <Layout
-            title={`Find Slots by Graffiti '${graffiti ?? ''}' - Ethereum Beacon Chain | EthSeer.io`}
-            description={`Explore slots on the Ethereum Beacon Chain with graffiti '${
-                graffiti ?? ''
-            }'. Discover blocks marked with unique identifiers and messages. Dive into Ethereum's graffiti insights with EthSeer.io.`}
+            title={`Find Slots by Graffiti '${graffiti}' - Ethereum Beacon Chain | EthSeer.io`}
+            description={`Explore slots on the Ethereum Beacon Chain with graffiti '${graffiti}'. Discover blocks marked with unique identifiers and messages. Dive into Ethereum's graffiti insights with EthSeer.io.`}
         >
             <Head>
                 <meta name='robots' property='noindex' />
