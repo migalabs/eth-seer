@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 
@@ -42,8 +42,14 @@ export const getServerSideProps: GetServerSideProps = async context => {
 };
 
 const GraffitiSearch = ({ graffiti, network }: Props) => {
+    // Constants
+    const LIMIT = 20;
+
     // Large View Hook
     const isLargeView = useLargeView();
+
+    // Refs
+    const graffitiRef = useRef('');
 
     // States
     const [currentPage, setCurrentPage] = useState(0);
@@ -54,14 +60,15 @@ const GraffitiSearch = ({ graffiti, network }: Props) => {
     const [blockGenesis, setBlockGenesis] = useState(0);
 
     useEffect(() => {
-        if (blocks.length === 0) {
+        if (blocks.length === 0 || graffitiRef.current !== graffiti) {
+            graffitiRef.current = graffiti;
             getGraffities(0);
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [graffiti]);
 
-    const getGraffities = async (page: number, limit: number = 10) => {
+    const getGraffities = async (page: number, keepRows: boolean = false) => {
         try {
             setLoading(true);
             setCurrentPage(page);
@@ -70,7 +77,7 @@ const GraffitiSearch = ({ graffiti, network }: Props) => {
                 axiosClient.get(`/api/slots/graffiti/${graffiti}`, {
                     params: {
                         network,
-                        limit,
+                        limit: LIMIT,
                         page,
                     },
                 }),
@@ -81,15 +88,18 @@ const GraffitiSearch = ({ graffiti, network }: Props) => {
                 }),
             ]);
 
-            setBlocks([...blocks, ...response.data.blocks]);
+            if (keepRows) {
+                setBlocks([...blocks, ...response.data.blocks]);
+            } else {
+                setBlocks(response.data.blocks);
+            }
+
             setBlockGenesis(genesisBlock.data.block_genesis);
 
-            if (response.data.blocks.length === 0) {
-                setShowInfoBox(true);
-            } else if (response.data.blocks.length < limit) {
-                setDisableViewMore(true);
-            } else {
-                setDisableViewMore(false);
+            setShowInfoBox(response.data.blocks.length === 0 && page === 0);
+
+            if (response.data.blocks.length > 0) {
+                setDisableViewMore(response.data.blocks.length < LIMIT);
             }
         } catch (error) {
             console.log(error);
@@ -207,7 +217,7 @@ const GraffitiSearch = ({ graffiti, network }: Props) => {
 
             {!disableViewMore && (
                 <div className='mt-6'>
-                    <ViewMoreButton onClick={() => getGraffities(currentPage + 1)} />
+                    <ViewMoreButton onClick={() => getGraffities(currentPage + 1, true)} />
                 </div>
             )}
 
