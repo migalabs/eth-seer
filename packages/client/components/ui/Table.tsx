@@ -104,7 +104,7 @@ export const LargeTable = ({
         >
             <div
                 ref={containerRef}
-                className='flex flex-col overflow-x-scroll overflow-y-hidden scrollbar-thin'
+                className='flex flex-col overflow-x-scroll overflow-y-hidden scrollbar-none'
                 onMouseMove={handleMouseMove}
             >
                 <div

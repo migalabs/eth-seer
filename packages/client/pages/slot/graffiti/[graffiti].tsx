@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { GetServerSideProps } from 'next';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
 
 // Axios
 import axiosClient from '../../../config/axios';
@@ -21,13 +21,35 @@ import { LargeTable, LargeTableHeader, LargeTableRow, SmallTable, SmallTableCard
 // Types
 import { Block } from '../../../types';
 
-const GraffitiSearch = () => {
-    // Router
-    const router = useRouter();
-    const { network, graffiti } = router.query;
+// Props
+interface Props {
+    graffiti: string;
+    network: string;
+}
+
+// Server Side Props
+export const getServerSideProps: GetServerSideProps = async context => {
+    const graffiti = context.params?.graffiti;
+    const network = context.query?.network;
+
+    if (!graffiti || !network) {
+        return {
+            notFound: true,
+        };
+    }
+
+    return { props: { graffiti, network } };
+};
+
+const GraffitiSearch = ({ graffiti, network }: Props) => {
+    // Constants
+    const LIMIT = 20;
 
     // Large View Hook
     const isLargeView = useLargeView();
+
+    // Refs
+    const graffitiRef = useRef('');
 
     // States
     const [currentPage, setCurrentPage] = useState(0);
@@ -38,14 +60,15 @@ const GraffitiSearch = () => {
     const [blockGenesis, setBlockGenesis] = useState(0);
 
     useEffect(() => {
-        if (network && graffiti && blocks.length === 0) {
+        if (blocks.length === 0 || graffitiRef.current !== graffiti) {
+            graffitiRef.current = graffiti;
             getGraffities(0);
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [network, graffiti]);
+    }, [graffiti]);
 
-    const getGraffities = async (page: number, limit: number = 10) => {
+    const getGraffities = async (page: number, keepRows: boolean = false) => {
         try {
             setLoading(true);
             setCurrentPage(page);
@@ -54,7 +77,7 @@ const GraffitiSearch = () => {
                 axiosClient.get(`/api/slots/graffiti/${graffiti}`, {
                     params: {
                         network,
-                        limit,
+                        limit: LIMIT,
                         page,
                     },
                 }),
@@ -65,15 +88,18 @@ const GraffitiSearch = () => {
                 }),
             ]);
 
-            setBlocks([...blocks, ...response.data.blocks]);
+            if (keepRows) {
+                setBlocks([...blocks, ...response.data.blocks]);
+            } else {
+                setBlocks(response.data.blocks);
+            }
+
             setBlockGenesis(genesisBlock.data.block_genesis);
 
-            if (response.data.blocks.length === 0) {
-                setShowInfoBox(true);
-            } else if (response.data.blocks.length < limit) {
-                setDisableViewMore(true);
-            } else {
-                setDisableViewMore(false);
+            setShowInfoBox(response.data.blocks.length === 0 && page === 0);
+
+            if (response.data.blocks.length > 0) {
+                setDisableViewMore(response.data.blocks.length < LIMIT);
             }
         } catch (error) {
             console.log(error);
@@ -178,10 +204,8 @@ const GraffitiSearch = () => {
 
     return (
         <Layout
-            title={`Find Slots by Graffiti '${graffiti ?? ''}' - Ethereum Beacon Chain | EthSeer.io`}
-            description={`Explore slots on the Ethereum Beacon Chain with graffiti '${
-                graffiti ?? ''
-            }'. Discover blocks marked with unique identifiers and messages. Dive into Ethereum's graffiti insights with EthSeer.io.`}
+            title={`Find Slots by Graffiti '${graffiti}' - Ethereum Beacon Chain | EthSeer.io`}
+            description={`Explore slots on the Ethereum Beacon Chain with graffiti '${graffiti}'. Discover blocks marked with unique identifiers and messages. Dive into Ethereum's graffiti insights with EthSeer.io.`}
         >
             <Head>
                 <meta name='robots' property='noindex' />
@@ -193,7 +217,7 @@ const GraffitiSearch = () => {
 
             {!disableViewMore && (
                 <div className='mt-6'>
-                    <ViewMoreButton onClick={() => getGraffities(currentPage + 1)} />
+                    <ViewMoreButton onClick={() => getGraffities(currentPage + 1, true)} />
                 </div>
             )}
 
