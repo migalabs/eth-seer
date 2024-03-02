@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
 
 // Components
 import TooltipContainer from './TooltipContainer';
@@ -33,14 +32,11 @@ type Props = {
 };
 
 const ShareMenu = ({ type }: Props) => {
-    // Router
-    const router = useRouter();
-
     // States
     const [copied, setCopied] = useState(false);
 
     const getShareUrl = (shareLink: string) => {
-        const encodedUrl = `${process.env.NEXT_PUBLIC_URL_API}${router.asPath}`;
+        const encodedUrl = window.location.href;
         const encodedTitle = `Check out this ${type} on Ethseer!`;
 
         const url = shareLink.replace('${encodedUrl}', encodedUrl).replace('${encodedTitle}', encodedTitle);
@@ -49,7 +45,7 @@ const ShareMenu = ({ type }: Props) => {
     };
 
     const handleCopyClick = async () => {
-        const encodedUrl = `${process.env.NEXT_PUBLIC_URL_API}${router.asPath}`;
+        const encodedUrl = window.location.href;
 
         await navigator.clipboard.writeText(encodedUrl);
         setCopied(true);

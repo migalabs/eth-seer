@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { useRouter } from 'next/router';
+import React, { useEffect, useState, useContext, useRef } from 'react';
+import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 
 // Axios
@@ -22,13 +22,32 @@ import ShareMenu from '../../components/ui/ShareMenu';
 // Types
 import { Transaction } from '../../types';
 
-const TransactionPage = () => {
-    // Next router
-    const router = useRouter();
-    const { network, hash } = router.query;
+// Props
+interface Props {
+    hash: string;
+    network: string;
+}
 
+// Server Side Props
+export const getServerSideProps: GetServerSideProps = async context => {
+    const hash = context.params?.hash;
+    const network = context.query?.network;
+
+    if (!hash || !network) {
+        return {
+            notFound: true,
+        };
+    }
+
+    return { props: { hash, network } };
+};
+
+const TransactionPage = ({ hash, network }: Props) => {
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
+
+    // Refs
+    const hashRef = useRef('');
 
     // States
     const [transaction, setTransaction] = useState<Transaction | null>(null);
@@ -37,12 +56,13 @@ const TransactionPage = () => {
 
     // UseEffect
     useEffect(() => {
-        if (network && hash && !transaction) {
+        if (!transaction || hashRef.current !== hash) {
+            hashRef.current = hash;
             getTransaction();
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [network, hash]);
+    }, [hash]);
 
     // Get Transaction
     const getTransaction = async () => {
@@ -83,7 +103,7 @@ const TransactionPage = () => {
                 }}
             >
                 <div className='flex flex-col gap-y-5 md:gap-y-8 '>
-                    <Card title='Transaction Hash' content={<AddressCopy address={hash as string} />} />
+                    <Card title='Transaction Hash' content={<AddressCopy address={hash} />} />
                     <Card title='Block' content={<LinkBlock block={transaction?.f_el_block_number} />} />
                     <Card
                         title='Time (Local)'
