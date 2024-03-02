@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
+import React, { useContext, useEffect, useState, useRef } from 'react';
+import { GetServerSideProps } from 'next';
 
 // Axios
 import axiosClient from '../../config/axios';
@@ -20,13 +20,32 @@ import ShareMenu from '../../components/ui/ShareMenu';
 // Types
 import { Entity } from '../../types';
 
-const EntityComponent = () => {
-    // Next router
-    const router = useRouter();
-    const { network, name } = router.query;
+// Props
+interface Props {
+    name: string;
+    network: string;
+}
 
+// Server Side Props
+export const getServerSideProps: GetServerSideProps = async context => {
+    const name = context.params?.name;
+    const network = context.query?.network;
+
+    if (!name || !network) {
+        return {
+            notFound: true,
+        };
+    }
+
+    return { props: { name, network } };
+};
+
+const EntityComponent = ({ name, network }: Props) => {
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
+
+    // Refs
+    const entityRef = useRef('');
 
     // States
     const [entityHour, setEntityHour] = useState<Entity | null>(null);
@@ -38,7 +57,8 @@ const EntityComponent = () => {
 
     // UseEffect
     useEffect(() => {
-        if (name && !entityHour && !entityDay && !entityWeek) {
+        if ((!entityHour && !entityDay && !entityWeek) || entityRef.current !== name) {
+            entityRef.current = name;
             getEntity();
         }
 
@@ -55,19 +75,19 @@ const EntityComponent = () => {
             const week = 1575;
 
             const [responseHour, responseDay, responseWeek] = await Promise.all([
-                axiosClient.get(`/api/entities/${(name as string).toLowerCase()}`, {
+                axiosClient.get(`/api/entities/${name.toLowerCase()}`, {
                     params: {
                         network,
                         numberEpochs: hour,
                     },
                 }),
-                axiosClient.get(`/api/entities/${(name as string).toLowerCase()}`, {
+                axiosClient.get(`/api/entities/${name.toLowerCase()}`, {
                     params: {
                         network,
                         numberEpochs: day,
                     },
                 }),
-                axiosClient.get(`/api/entities/${(name as string).toLowerCase()}`, {
+                axiosClient.get(`/api/entities/${name.toLowerCase()}`, {
                     params: {
                         network,
                         numberEpochs: week,
@@ -78,8 +98,6 @@ const EntityComponent = () => {
             setEntityHour(responseHour.data.entity);
             setEntityDay(responseDay.data.entity);
             setEntityWeek(responseWeek.data.entity);
-
-            // const response = await axiosClient.get(`/api/entities/${(name as string).toLowerCase()}`);
 
             if (responseHour.data.entity.aggregate_balance !== null) {
                 setShowInfoBox(false);
@@ -223,10 +241,8 @@ const EntityComponent = () => {
     //OVERVIEW PAGE
     return (
         <Layout
-            title={`Entity Profile: ${name ?? ''} - Ethereum Staking | EthSeer.io`}
-            description={`Explore the staking profile of ${
-                name ?? ''
-            } on the Ethereum blockchain. View validator performance, total stakes, and more. Uncover staking insights with EthSeer.io.`}
+            title={`Entity Profile: ${name} - Ethereum Staking | EthSeer.io`}
+            description={`Explore the staking profile of ${name} on the Ethereum blockchain. View validator performance, total stakes, and more. Uncover staking insights with EthSeer.io.`}
         >
             <Title className='uppercase'>{name}</Title>
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useContext } from 'react';
-import { useRouter } from 'next/router';
+import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 
 // Axios
@@ -23,16 +23,32 @@ import ShareMenu from '../../components/ui/ShareMenu';
 // Types
 import { BlockEL, Transaction } from '../../types';
 
-const BlockPage = () => {
-    // Next router
-    const router = useRouter();
-    const { network, id } = router.query;
+// Props
+interface Props {
+    id: number;
+    network: string;
+}
 
+// Server Side Props
+export const getServerSideProps: GetServerSideProps = async context => {
+    const id = context.params?.id;
+    const network = context.query?.network;
+
+    if (isNaN(Number(id)) || !network) {
+        return {
+            notFound: true,
+        };
+    }
+
+    return { props: { id: Number(id), network } };
+};
+
+const BlockPage = ({ id, network }: Props) => {
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
 
     // Refs
-    const blockRef = useRef(0);
+    const idRef = useRef(0);
 
     // States
     const [block, setBlock] = useState<BlockEL | null>(null);
@@ -44,17 +60,14 @@ const BlockPage = () => {
 
     // UseEffect
     useEffect(() => {
-        if (id) {
-            blockRef.current = Number(id);
-        }
-
-        if (network && ((id && !block) || (block && block.f_el_block_number !== Number(id)))) {
+        if (!block || idRef.current !== id) {
+            idRef.current = id;
             getBlock();
             getTransactions();
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [network, id]);
+    }, [id]);
 
     // Get blocks
     const getBlock = async () => {
@@ -78,7 +91,7 @@ const BlockPage = () => {
 
             if (blockResponse.data.block) {
                 setInfoBoxText('');
-            } else if (Number(id) < latestBlockResponse.data.block.f_el_block_number) {
+            } else if (id < latestBlockResponse.data.block.f_el_block_number) {
                 setInfoBoxText('Block not saved yet');
             } else {
                 setInfoBoxText("We're not there yet");
@@ -180,16 +193,14 @@ const BlockPage = () => {
     //OVERVIEW BLOCK PAGE
     return (
         <Layout
-            title={`Block ${id ?? ''} Analysis - Ethereum Blockchain | EthSeer.io`}
-            description={`Detailed insights into Block ${
-                id ?? ''
-            } on the Ethereum blockchain, including transactions, gas used, and proposer. Understand block dynamics with EthSeer.io.`}
+            title={`Block ${id} Analysis - Ethereum Blockchain | EthSeer.io`}
+            description={`Detailed insights into Block ${id} on the Ethereum blockchain, including transactions, gas used, and proposer. Understand block dynamics with EthSeer.io.`}
         >
             <Head>
                 <meta name='robots' property='noindex' />
             </Head>
 
-            <TitleWithArrows type='block' value={Number(id)} />
+            <TitleWithArrows type='block' value={id} />
 
             {loadingBlock && (
                 <div className='mt-6'>
