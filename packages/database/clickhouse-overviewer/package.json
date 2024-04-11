@@ -1,0 +1,22 @@
+{
+    "name": "clickhouse-overviewer",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "build": "npx tsc",
+        "start": "node dist/app.js",
+        "launch": "npm run build && npm start"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "@types/node": "^20.12.7",
+        "typescript": "^5.4.5"
+    },
+    "dependencies": {
+        "@clickhouse/client": "^0.2.10",
+        "dotenv": "^16.4.5"
+    }
+}
