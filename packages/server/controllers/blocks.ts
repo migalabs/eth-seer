@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { pgPools } from '../config/db';
+import { clickhouseClients } from '../config/db';
 
 export const getBlocks = async (req: Request, res: Response) => {
 
@@ -7,33 +7,49 @@ export const getBlocks = async (req: Request, res: Response) => {
 
         const { network, page = 0, limit = 32 } = req.query;
 
-        const pgPool = pgPools[network as string];
+        const chClient = clickhouseClients[network as string];
 
         const skip = Number(page) * Number(limit);
 
-        const [ blocks, count ] = 
+        const [blocksResultSet, countResultSet] =
             await Promise.all([
-                pgPool.query(`
-                    SELECT f_timestamp, f_slot, f_epoch
-                    f_el_fee_recp, f_el_gas_limit, f_el_gas_used,
-                    f_el_transactions, f_el_block_hash, f_payload_size_bytes,
-                    f_el_block_number
-                    FROM t_block_metrics
-                    WHERE f_el_block_number <> 0
-                    ORDER BY f_el_block_number DESC
-                    OFFSET ${skip}
-                    LIMIT ${Number(limit)}
-                `),
-                pgPool.query(`
-                    SELECT COUNT(*) AS count
-                    FROM t_block_metrics
-                    WHERE f_el_block_number <> 0
-                `),
+                chClient.query({
+                    query: `
+                        SELECT
+                            f_el_block_number,
+                            f_el_block_hash,
+                            f_timestamp,
+                            f_slot,
+                            f_epoch,
+                            f_el_fee_recp,
+                            f_el_gas_limit,
+                            f_el_gas_used,
+                            f_el_transactions,
+                            f_payload_size_bytes
+                        FROM t_block_metrics
+                        WHERE f_el_block_number <> 0
+                        ORDER BY f_el_block_number DESC
+                        LIMIT ${Number(limit)}
+                        OFFSET ${skip}
+                    `,
+                    format: 'JSONEachRow',
+                }),
+                chClient.query({
+                    query: `
+                        SELECT COUNT(*) AS count
+                        FROM t_block_metrics
+                        WHERE f_el_block_number <> 0
+                    `,
+                    format: 'JSONEachRow',
+                }),
             ]);
 
+        const blocksResult = await blocksResultSet.json();
+        const countResult = await countResultSet.json();
+
         res.json({
-            blocks: blocks.rows,
-            totalCount: Number(count.rows[0].count),
+            blocks: blocksResult,
+            totalCount: Number(countResult[0].count),
         }); 
     
     } catch (error) {
@@ -51,19 +67,33 @@ export const getBlockById = async (req: Request, res: Response) => {
         const { id } = req.params;
         const { network } = req.query;
 
-        const pgPool = pgPools[network as string];
+        const chClient = clickhouseClients[network as string];
 
-        const block = await pgPool.query(`
-            SELECT f_el_block_number, f_timestamp, f_slot, f_epoch,
-            f_el_fee_recp, f_el_gas_limit, f_el_gas_used,
-            f_el_transactions, f_el_block_hash, f_payload_size_bytes
-            FROM t_block_metrics
-            WHERE f_el_block_number = '${id}'
-            LIMIT 1
-        `);
+        const blockResultSet =
+            await chClient.query({
+                query: `
+                    SELECT
+                        f_el_block_number,
+                        f_el_block_hash,
+                        f_timestamp,
+                        f_slot,
+                        f_epoch,
+                        f_el_fee_recp,
+                        f_el_gas_limit,
+                        f_el_gas_used,
+                        f_el_transactions,
+                        f_payload_size_bytes
+                    FROM t_block_metrics
+                    WHERE f_el_block_number = ${id}
+                    LIMIT 1
+                `,
+                format: 'JSONEachRow',
+            });
+
+        const blockResult = await blockResultSet.json();
 
         res.json({
-            block: block.rows[0],
+            block: blockResult[0],
         });
 
     } catch (error) {
@@ -80,19 +110,34 @@ export const getLatestBlock = async (req: Request, res: Response) => {
 
         const { network } = req.query;
 
-        const pgPool = pgPools[network as string];
+        const chClient = clickhouseClients[network as string];
 
-        const block = await pgPool.query(`
-            SELECT f_el_block_number, f_timestamp, f_slot, f_epoch,
-            f_el_fee_recp, f_el_gas_limit, f_el_gas_used,
-            f_el_transactions, f_el_block_hash, f_payload_size_bytes
-            FROM t_block_metrics
-            ORDER BY f_el_block_number DESC
-            LIMIT 1
-        `);
+        const blockResultSet =
+            await chClient.query({
+                query: `
+                    SELECT
+                        f_el_block_number,
+                        f_el_block_hash,
+                        f_timestamp,
+                        f_slot,
+                        f_epoch,
+                        f_el_fee_recp,
+                        f_el_gas_limit,
+                        f_el_gas_used,
+                        f_el_transactions,
+                        f_payload_size_bytes
+                    FROM t_block_metrics
+                    WHERE f_el_block_number <> 0
+                    ORDER BY f_el_block_number DESC
+                    LIMIT 1
+                `,
+                format: 'JSONEachRow',
+            });
+
+        const blockResult = await blockResultSet.json();
 
         res.json({
-            block: block.rows[0],
+            block: blockResult[0],
         });
 
     } catch (error) {
@@ -110,23 +155,29 @@ export const getTransactionsByBlock = async (req: Request, res: Response) => {
         const { id } = req.params;
         const { network } = req.query;
 
-        const pgPool = pgPools[network as string];
+        const chClient = clickhouseClients[network as string];
 
-        const transactions = 
-            await pgPool.query(`
-                SELECT f_tx_type,
-                    f_value,
-                    f_gas_fee_cap,
-                    f_to,
-                    f_hash,
-                    f_timestamp, 
-                    f_from
-                FROM t_transactions
-                WHERE f_el_block_number = '${id}'
-            `);
+        const transactionsResultSet =
+            await chClient.query({
+                query: `
+                    SELECT
+                        f_tx_type,
+                        f_value,
+                        f_gas_fee_cap,
+                        f_to,
+                        f_hash,
+                        f_timestamp,
+                        f_from
+                    FROM t_transactions
+                    WHERE f_el_block_number = ${id}
+                `,
+                format: 'JSONEachRow',
+            });
+
+        const transactionsResult = await transactionsResultSet.json();
 
         res.json({
-            transactions: transactions.rows,
+            transactions: transactionsResult,
         });
 
     } catch (error) {

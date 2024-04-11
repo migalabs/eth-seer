@@ -1,12 +1,10 @@
 import { Request, Response } from 'express';
-import { pgPools } from '../config/db';
-
-
+import { clickhouseClients } from '../config/db';
 
 export const getNetworks = async (req: Request, res: Response) => {
 
     try {
-        const networksEnv = process.env.NETWORKS;
+        const networksEnv = process.env.NETWORKS_CLICKHOUSE;
 
         if (!networksEnv) {
             throw new Error("NETWORKS environment variable not set");
@@ -35,19 +33,23 @@ export const getBlockGenesis = async (req: Request, res: Response) => {
 
         const { network } = req.query;
 
-        const pgPool = pgPools[network as string];
+        const chClient = clickhouseClients[network as string];
 
-        const block_genesis  = 
-            await pgPool.query(`
-                    SELECT f_genesis_time
-                    FROM t_genesis;
-                `)
+        const blockGenesisResultSet = await chClient.query({
+            query: `
+                SELECT f_genesis_time
+                FROM t_genesis
+                LIMIT 1
+            `,
+            format: 'JSONEachRow',
+        });
+
+        const blockGenesisResult = await blockGenesisResultSet.json();
         
         res.json({
-            block_genesis: Number(block_genesis.rows[0].f_genesis_time) * 1000
+            block_genesis: Number(blockGenesisResult[0].f_genesis_time) * 1000
         });
         
-
     } catch (error) {
         console.log(error);
         return res.status(500).json({

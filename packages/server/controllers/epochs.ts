@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { pgPools, pgListeners } from '../config/db';
+import { clickhouseClients, pgListeners } from '../config/db';
 
 export const getEpochsStatistics = async (req: Request, res: Response) => {
 
@@ -7,40 +7,66 @@ export const getEpochsStatistics = async (req: Request, res: Response) => {
 
         const { network, page = 0, limit = 10 } = req.query;
 
-        const pgPool = pgPools[network as string];
+        const clickhouseClient = clickhouseClients[network as string];
         
         const skip = Number(page) * Number(limit);
 
-        const [ epochsStats, blocksStats, epochsCount ] =
-         await Promise.all([
-            pgPool.query(`
-                SELECT f_epoch, f_slot, f_num_att_vals, f_num_active_vals, 
-                f_att_effective_balance_eth, f_total_effective_balance_eth,
-                f_missing_source, f_missing_target, f_missing_head
-                FROM t_epoch_metrics_summary
-                ORDER BY f_epoch DESC
-                OFFSET ${skip}
-                LIMIT ${Number(limit)}
-            `),
-            pgPool.query(`
-                SELECT (f_proposer_slot/32) AS epoch, 
-                ARRAY_AGG(CASE WHEN f_proposed = true THEN 1 ELSE 0 END ORDER BY f_proposer_slot ASC) AS proposed_blocks
-                FROM t_proposer_duties
-                GROUP BY epoch
-                ORDER BY epoch DESC
-                OFFSET ${skip}
-                LIMIT ${Number(limit) + 1}
-            `),
-            pgPool.query(`
-                SELECT COUNT(*) AS count
-                FROM t_epoch_metrics_summary
-            `),
-        ]);
+        const [ epochsStatsResultSet, blocksStatsResultSet, epochsCountResultSet ] =
+            await Promise.all([
+                clickhouseClient.query({
+                    query: `
+                        SELECT
+                            f_epoch,
+                            f_slot,
+                            f_num_att_vals,
+                            f_num_active_vals,
+                            f_att_effective_balance_eth,
+                            f_total_effective_balance_eth,
+                            f_missing_source,
+                            f_missing_target,
+                            f_missing_head
+                        FROM
+                            t_epoch_metrics_summary
+                        ORDER BY
+                            f_epoch DESC
+                        LIMIT ${Number(limit)}
+                        OFFSET ${skip}
+                    `,
+                    format: 'JSONEachRow',
+                }),
+                clickhouseClient.query({
+                    query: `
+                        SELECT
+                            CAST((f_proposer_slot / 32) AS INT) AS epoch,
+                            groupArray(f_proposed) AS proposed_blocks
+                        FROM
+                            t_proposer_duties
+                        GROUP BY
+                            epoch
+                        ORDER BY
+                            epoch DESC
+                        LIMIT ${Number(limit) + 1}
+                        OFFSET ${skip}
+                    `,
+                    format: 'JSONEachRow',
+                }),
+                clickhouseClient.query({
+                    query: `
+                        SELECT COUNT(*) AS count
+                        FROM t_epoch_metrics_summary
+                    `,
+                    format: 'JSONEachRow',
+                }),
+            ]);
+
+        const epochsStatsResult: any[] = await epochsStatsResultSet.json();
+        const blocksStatsResult: any[] = await blocksStatsResultSet.json();
+        const epochsCountResult = await epochsCountResultSet.json();
 
         let arrayEpochs = [];
 
-        epochsStats.rows.forEach((epoch: any) => { 
-            const aux = blocksStats.rows.find((blocks: any) => blocks.epoch === epoch.f_epoch);
+        epochsStatsResult.forEach((epoch: any) => { 
+            const aux = blocksStatsResult.find((blocks: any) => blocks.epoch === epoch.f_epoch);
             arrayEpochs.push({  
                 ...epoch, 
                 ...aux,
@@ -49,7 +75,7 @@ export const getEpochsStatistics = async (req: Request, res: Response) => {
         
         res.json({
             epochsStats: arrayEpochs,
-            totalCount: Number(epochsCount.rows[0].count),
+            totalCount: Number(epochsCountResult[0].count),
         });
 
     } catch (error) {
@@ -67,61 +93,63 @@ export const getEpochById = async (req: Request, res: Response) => {
         const { id } = req.params;
         const { network } = req.query;
 
-        const pgPool = pgPools[network as string];
-        
-        const [ epochStats, blocksProposed, withdrawals ] = 
+        const clickhouseClient = clickhouseClients[network as string];
+
+        const [ epochStatsResultSet, blocksProposedResultSet, withdrawalsResultSet ] =
             await Promise.all([
-                pgPool.query(`
-                    SELECT f_epoch, f_slot, f_num_att_vals, f_num_active_vals, 
-                    f_att_effective_balance_eth, f_total_effective_balance_eth,
-                    f_missing_source, f_missing_target, f_missing_head
-                    FROM t_epoch_metrics_summary
-                    WHERE f_epoch = '${id}'
-                `),
-                pgPool.query(`
-                    SELECT COUNT(*) AS proposed_blocks
-                    FROM t_proposer_duties
-                    WHERE f_proposer_slot/32 = '${id}' AND f_proposed = true
-                `),
-                pgPool.query(`
-                    SELECT SUM(f_amount) AS total_withdrawals
-                    FROM t_withdrawals
-                    WHERE f_slot/32 = '${id}'
-                `),
+                clickhouseClient.query({
+                    query: `
+                        SELECT
+                            f_epoch,
+                            f_slot,
+                            f_num_att_vals,
+                            f_num_active_vals,
+                            f_att_effective_balance_eth,
+                            f_total_effective_balance_eth,
+                            f_missing_source,
+                            f_missing_target,
+                            f_missing_head
+                        FROM
+                            t_epoch_metrics_summary
+                        WHERE
+                            f_epoch = ${id}
+                    `,
+                    format: 'JSONEachRow',
+                }),
+                clickhouseClient.query({
+                    query: `
+                        SELECT
+                            COUNT(*) AS proposed_blocks
+                        FROM
+                            t_proposer_duties
+                        WHERE
+                            CAST((f_proposer_slot / 32) AS INT) = ${id} AND f_proposed = 1
+                    `,
+                    format: 'JSONEachRow',
+                }),
+                clickhouseClient.query({
+                    query: `
+                        SELECT
+                            SUM(f_amount) AS total_withdrawals
+                        FROM
+                            t_withdrawals
+                        WHERE
+                            CAST((f_slot / 32) AS INT) = ${id}
+                    `,
+                    format: 'JSONEachRow',
+                }),
             ]);
+
+        const epochStatsResult = await epochStatsResultSet.json();
+        const blocksProposedResult = await blocksProposedResultSet.json();
+        const withdrawalsResult = await withdrawalsResultSet.json();
 
         res.json({
             epoch: {
-                ...epochStats.rows[0],
-                ...blocksProposed.rows[0],
-                withdrawals: withdrawals.rows[0].total_withdrawals,
+                ...epochStatsResult[0],
+                ...blocksProposedResult[0],
+                withdrawals: withdrawalsResult[0].total_withdrawals,
             }
-        });
-
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json({
-            msg: 'An error occurred on the server'
-        });
-    }
-};
-
-export const getEpochStats = async (req: Request, res: Response) => {
-
-    try {
-
-        const { network } = req.query;
-
-        const pgPool = pgPools[network as string];
-        
-        const stats = 
-            await pgPool.query(`
-                SELECT MIN(f_epoch) AS first, MAX(f_epoch) AS last, COUNT(DISTINCT(f_epoch)) AS count
-                FROM t_epoch_metrics_summary
-            `);
-
-        res.json({
-            stats: stats.rows[0]
         });
 
     } catch (error) {
@@ -139,28 +167,49 @@ export const getSlotsByEpoch = async (req: Request, res: Response) => {
         const { id } = req.params;
         const { network } = req.query;
 
-        const pgPool = pgPools[network as string];
-        
-        const [ slotsEpoch, withdrawals ] = 
+        const clickhouseClient = clickhouseClients[network as string];
+
+        const [ slotsEpochResultSet, withdrawalsResultSet ] =
             await Promise.all([
-                pgPool.query(`
-                    SELECT t_proposer_duties.*, t_eth2_pubkeys.f_pool_name
-                    FROM t_proposer_duties
-                    LEFT OUTER JOIN t_eth2_pubkeys ON t_proposer_duties.f_val_idx = t_eth2_pubkeys.f_val_idx
-                    WHERE f_proposer_slot/32 = '${id}'
-                    ORDER BY f_proposer_slot DESC
-                `),
-                pgPool.query(`
-                    SELECT f_slot, f_amount
-                    FROM t_withdrawals
-                    WHERE f_slot/32 = '${id}'
-                `)
+                clickhouseClient.query({
+                    query: `
+                        SELECT
+                            pd.f_val_idx,
+                            pd.f_proposer_slot,
+                            pd.f_proposed,
+                            pk.f_pool_name
+                        FROM
+                            t_proposer_duties pd
+                        LEFT OUTER JOIN
+                            t_eth2_pubkeys pk ON pd.f_val_idx = pk.f_val_idx
+                        WHERE
+                            CAST((pd.f_proposer_slot / 32) AS INT) = ${id}
+                        ORDER BY
+                            pd.f_proposer_slot DESC
+                    `,
+                    format: 'JSONEachRow',
+                }),
+                clickhouseClient.query({
+                    query: `
+                        SELECT
+                            f_slot,
+                            f_amount
+                        FROM
+                            t_withdrawals
+                        WHERE
+                            CAST((f_slot / 32) AS INT) = ${id}
+                    `,
+                    format: 'JSONEachRow',
+                }),
             ]);
 
-        const slots = slotsEpoch.rows.map((slot: any) => ({
+        const slotsEpochResult: any[] = await slotsEpochResultSet.json();
+        const withdrawalsResult: any[] = await withdrawalsResultSet.json();
+
+        const slots = slotsEpochResult.map((slot: any) => ({
             ...slot,
             withdrawals: 
-                withdrawals.rows
+                withdrawalsResult
                     .filter((withdrawal: any) => withdrawal.f_slot === slot.f_proposer_slot)
                     .reduce((acc: number, withdrawal: any) => acc + Number(withdrawal.f_amount), 0),
         }));

@@ -4,8 +4,7 @@ import { check, query } from 'express-validator';
 import {
     getValidators,
     getValidatorById,
-    getValidatorStats,
-    getLastValidator,
+    getCountActiveValidators,
     getProposedBlocksByValidator,
     getWithdrawalsByValidator,
 } from '../controllers/validators';
@@ -15,17 +14,11 @@ import { existsNetwork } from '../helpers/network-validator';
 
 const router = Router();
 
-router.get('/stats', [
+router.get('/count-active-validators', [
     query('network').not().isEmpty(),
     query('network').custom(existsNetwork),
     checkFields,
-], getValidatorStats);
-
-router.get('/last', [
-    query('network').not().isEmpty(),
-    query('network').custom(existsNetwork),
-    checkFields,
-], getLastValidator);
+], getCountActiveValidators);
 
 router.get('/', [
     query('network').not().isEmpty(),
