@@ -38,7 +38,7 @@ export const getEpochsStatistics = async (req: Request, res: Response) => {
                     query: `
                         SELECT
                             CAST((f_proposer_slot / 32) AS INT) AS epoch,
-                            groupArray(f_proposed) AS proposed_blocks
+                            groupArray(CASE WHEN f_proposed = 1 THEN 1 ELSE 0 END) AS proposed_blocks
                         FROM
                             t_proposer_duties
                         GROUP BY
@@ -66,7 +66,7 @@ export const getEpochsStatistics = async (req: Request, res: Response) => {
         let arrayEpochs = [];
 
         epochsStatsResult.forEach((epoch: any) => { 
-            const aux = blocksStatsResult.find((blocks: any) => blocks.epoch === epoch.f_epoch);
+            const aux = blocksStatsResult.find((blocks: any) => Number(blocks.epoch) === Number(epoch.f_epoch));
             arrayEpochs.push({  
                 ...epoch, 
                 ...aux,
