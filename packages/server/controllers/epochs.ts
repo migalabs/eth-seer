@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { clickhouseClients, pgListeners } from '../config/db';
+import { clickhouseClients } from '../config/db';
 
 export const getEpochsStatistics = async (req: Request, res: Response) => {
 
@@ -232,7 +232,7 @@ export const listenEpochNotification = async (req: Request, res: Response) => {
 
         const { network } = req.query;
 
-        const pgListener = pgListeners[network as string];
+        const chClient = clickhouseClients[network as string];
         
         res.writeHead(200, {
             'Content-Type': 'text/event-stream',
@@ -240,12 +240,58 @@ export const listenEpochNotification = async (req: Request, res: Response) => {
             'Connection': 'keep-alive'
         });
 
-        pgListener?.once('new_epoch_finalized', msg => {
-            res.write('event: new_epoch\n');
-            res.write(`data: ${msg.payload}`);
-            res.write('\n\n');
-            res.end();
+        const blockGenesisResultSet = await chClient.query({
+            query: `
+                SELECT f_genesis_time
+                FROM t_genesis
+                LIMIT 1
+            `,
+            format: 'JSONEachRow',
         });
+
+        const blockGenesisResult = await blockGenesisResultSet.json();
+        
+        const genesisTime = Number(blockGenesisResult[0].f_genesis_time) * 1000;
+        
+        const nextEpoch = Math.floor((Date.now() - genesisTime) / 12000 / 32) - 1;
+
+        const newEpochEstimatedTime = genesisTime + ((nextEpoch + 2) * 12000 * 32) + 4000;
+
+        await new Promise((resolve) => setTimeout(resolve, newEpochEstimatedTime - Date.now()));
+
+        let latestEpochInserted = 0;
+        let currentTimeout = 1000;
+
+        do {
+
+            if (latestEpochInserted > 0) {
+                await new Promise(resolve => setTimeout(resolve, currentTimeout));
+                currentTimeout *= 1.5;
+            }
+
+            const latestEpochResultSet = await chClient.query({
+                query: `
+                    SELECT
+                        f_epoch
+                    FROM
+                        t_epoch_metrics_summary
+                    ORDER BY
+                        f_epoch DESC
+                    LIMIT 1
+                `,
+                format: 'JSONEachRow',
+            });
+
+            const latestEpochResult = await latestEpochResultSet.json();
+
+            latestEpochInserted = latestEpochResult[0]?.f_epoch ?? 0;
+
+        } while (latestEpochInserted < nextEpoch);
+
+        res.write('event: new_epoch\n');
+        res.write(`data: Epoch ${nextEpoch}`);
+        res.write('\n\n');
+        res.end();
 
     } catch (error) {
         console.log(error);

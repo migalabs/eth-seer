@@ -4,7 +4,7 @@ import { clickhouseClients } from '../config/db';
 export const getNetworks = async (req: Request, res: Response) => {
 
     try {
-        const networksEnv = process.env.NETWORKS_CLICKHOUSE;
+        const networksEnv = process.env.NETWORKS;
 
         if (!networksEnv) {
             throw new Error("NETWORKS environment variable not set");

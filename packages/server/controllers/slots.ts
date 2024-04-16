@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { clickhouseClients, pgListeners } from '../config/db';
+import { clickhouseClients } from '../config/db';
 
 export const getSlots = async (req: Request, res: Response) => {
 
@@ -446,20 +446,63 @@ export const listenSlotNotification = async (req: Request, res: Response) => {
 
         const { network } = req.query;
 
-        const pgListener = pgListeners[network as string];
-
+        const chClient = clickhouseClients[network as string];
+        
         res.writeHead(200, {
             'Content-Type': 'text/event-stream',
             'Cache-Control': 'no-cache',
             'Connection': 'keep-alive'
         });
 
-        pgListener?.once('new_head', msg => {
-            res.write('event: new_slot\n');
-            res.write(`data: ${msg.payload}`);
-            res.write('\n\n');
-            res.end();
+        const blockGenesisResultSet = await chClient.query({
+            query: `
+                SELECT f_genesis_time
+                FROM t_genesis
+                LIMIT 1
+            `,
+            format: 'JSONEachRow',
         });
+
+        const blockGenesisResult = await blockGenesisResultSet.json();
+        
+        const genesisTime = Number(blockGenesisResult[0].f_genesis_time) * 1000;
+        
+        const nextSlot = Math.floor((Date.now() - genesisTime) / 12000) + 1;
+
+        let latestSlotInserted = 0;
+        let currentTimeout = 1000;
+
+        do {
+
+            if (latestSlotInserted > 0) {
+                await new Promise(resolve => setTimeout(resolve, currentTimeout));
+                currentTimeout *= 1.5;
+            }
+
+            const latestBlockResultSet = 
+                await chClient.query({
+                    query: `
+                        SELECT
+                            f_slot
+                        FROM 
+                            t_block_metrics
+                        ORDER BY 
+                            f_slot DESC
+                        LIMIT 1
+                    `,
+                    format: 'JSONEachRow',
+                });
+
+            const latestBlockResult: any[] = await latestBlockResultSet.json();
+
+            latestSlotInserted = latestBlockResult.length > 0 ? latestBlockResult[0].f_slot : 0;
+            
+        } while (latestSlotInserted < nextSlot);
+
+        res.write('event: new_slot\n');
+        res.write(`data: Slot = ${latestSlotInserted}`);
+        res.write('\n\n');
+        res.end();
 
     } catch (error) {
         console.log(error);
