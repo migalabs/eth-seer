@@ -68,11 +68,7 @@ export const getSlots = async (req: Request, res: Response) => {
             where.push(`(pk.f_pool_name IN (${entitiesArray.join(',')}))`);
         }
 
-        let joinClient = '';
-
-        if (network === 'mainnet' && clients && Array.isArray(clients) && clients.length > 0) {
-            joinClient = 'LEFT OUTER JOIN t_slot_client_guesses scg ON pd.f_proposer_slot = scg.f_slot';
-
+        if (clients && Array.isArray(clients) && clients.length > 0) {
             const clientsArray = clients.map(x => typeof x === 'string' ? `'${x.toLowerCase()}'` : '').filter(x => x !== '');
             where.push(`(LOWER(scg.f_best_guess_single) IN (${clientsArray.join(',')}))`);
         }
@@ -97,7 +93,8 @@ export const getSlots = async (req: Request, res: Response) => {
                             t_orphans o ON pd.f_proposer_slot = o.f_slot
                         CROSS JOIN
                             t_genesis g
-                        ${joinClient}
+                        LEFT OUTER JOIN
+                            t_slot_client_guesses scg ON pd.f_proposer_slot = scg.f_slot
                         ${where.length > 0 ? `WHERE ${where.join(' AND ')}` : ''}
                         GROUP BY
                             pd.f_proposer_slot, pd.f_val_idx, pd.f_proposed, pk.f_pool_name
@@ -120,7 +117,8 @@ export const getSlots = async (req: Request, res: Response) => {
                             t_orphans o ON pd.f_proposer_slot = o.f_slot
                         CROSS JOIN
                             t_genesis g
-                        ${joinClient}
+                        LEFT OUTER JOIN
+                            t_slot_client_guesses scg ON pd.f_proposer_slot = scg.f_slot
                         ${where.length > 0 ? `WHERE ${where.join(' AND ')}` : ''}
                     `,
                     format: 'JSONEachRow',
@@ -153,14 +151,6 @@ export const getBlocks = async (req: Request, res: Response) => {
 
         const skip = Number(page) * Number(limit);
 
-        const select = network === 'mainnet' 
-            ? ', scg.f_best_guess_single AS f_cl_client' 
-            : '';
-            
-        const joinDuties = network === 'mainnet' 
-            ? 'LEFT OUTER JOIN t_slot_client_guesses scg ON pd.f_proposer_slot = scg.f_slot' 
-            : '';
-
         if (Number(page) > 0) {
 
             const blocksResultSet = await chClient.query({
@@ -170,13 +160,14 @@ export const getBlocks = async (req: Request, res: Response) => {
                         pd.f_proposer_slot AS f_slot,
                         pd.f_proposed,
                         pk.f_pool_name,
-                        pd.f_val_idx AS f_proposer_index
-                        ${select}
+                        pd.f_val_idx AS f_proposer_index,
+                        scg.f_best_guess_single AS f_cl_client
                     FROM 
                         t_proposer_duties pd
                     LEFT OUTER JOIN 
                         t_eth2_pubkeys pk ON pd.f_val_idx = pk.f_val_idx
-                    ${joinDuties}
+                    LEFT OUTER JOIN
+                        t_slot_client_guesses scg ON pd.f_proposer_slot = scg.f_slot
                     ORDER BY 
                         pd.f_proposer_slot DESC
                     LIMIT ${Number(limit)}
@@ -193,10 +184,6 @@ export const getBlocks = async (req: Request, res: Response) => {
 
         } else {
 
-            const joinMetrics = network === 'mainnet'
-                ? 'LEFT OUTER JOIN t_slot_client_guesses scg ON bm.f_slot = scg.f_slot'
-                : '';
-
             const [actualBlocksResultSet, finalBlocksResultSet] = 
                 await Promise.all([
                     chClient.query({
@@ -206,13 +193,14 @@ export const getBlocks = async (req: Request, res: Response) => {
                                 pd.f_proposer_slot AS f_slot,
                                 pd.f_proposed,
                                 pk.f_pool_name,
-                                pd.f_val_idx AS f_proposer_index
-                                ${select}
+                                pd.f_val_idx AS f_proposer_index,
+                                scg.f_best_guess_single AS f_cl_client
                             FROM 
                                 t_proposer_duties pd
                             LEFT OUTER JOIN 
                                 t_eth2_pubkeys pk ON pd.f_val_idx = pk.f_val_idx
-                            ${joinDuties}
+                            LEFT OUTER JOIN
+                                t_slot_client_guesses scg ON pd.f_proposer_slot = scg.f_slot
                             ORDER BY 
                                 pd.f_proposer_slot DESC
                             LIMIT ${Number(limit)}
@@ -229,13 +217,14 @@ export const getBlocks = async (req: Request, res: Response) => {
                                 bm.f_proposed,
                                 bm.f_proposer_index AS f_proposer_index,
                                 bm.f_graffiti,
-                                bm.f_el_block_number
-                                ${select}
+                                bm.f_el_block_number,
+                                scg.f_best_guess_single AS f_cl_client
                             FROM 
                                 t_block_metrics bm
                             LEFT OUTER JOIN 
                                 t_eth2_pubkeys pk ON bm.f_proposer_index = pk.f_val_idx
-                            ${joinMetrics}
+                            LEFT OUTER JOIN
+                                t_slot_client_guesses scg ON bm.f_slot = scg.f_slot
                             WHERE bm.f_epoch IN (
                                 SELECT DISTINCT(f_epoch)
                                 FROM t_block_metrics
@@ -276,14 +265,6 @@ export const getSlotById = async (req: Request, res: Response) => {
 
         const chClient = clickhouseClients[network as string];
 
-        const select = network === 'mainnet' 
-            ? ', scg.f_best_guess_single AS f_cl_client' 
-            : '';
-            
-        const join = network === 'mainnet' 
-            ? 'LEFT OUTER JOIN t_slot_client_guesses scg ON bm.f_slot = scg.f_slot' 
-            : '';
-
         const [ blockResultSet, proposerDutiesResultSet ] =
             await Promise.all([
                 chClient.query({
@@ -307,13 +288,14 @@ export const getSlotById = async (req: Request, res: Response) => {
                             bm.f_el_block_hash,
                             bm.f_el_block_number,
                             bm.f_attester_slashings AS f_att_slashings,
-                            pk.f_pool_name
-                            ${select}
+                            pk.f_pool_name,
+                            scg.f_best_guess_single AS f_cl_client
                         FROM 
                             t_block_metrics bm
                         LEFT OUTER JOIN 
                             t_eth2_pubkeys pk ON bm.f_proposer_index = pk.f_val_idx
-                        ${join}
+                        LEFT OUTER JOIN
+                            t_slot_client_guesses scg ON bm.f_slot = scg.f_slot
                         WHERE
                             bm.f_slot = ${id}
                     `,
