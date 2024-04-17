@@ -116,13 +116,13 @@ export const getValidatorById = async (req: Request, res: Response) => {
                                 SELECT COUNT(CASE WHEN t_proposer_duties.f_proposed = TRUE THEN 1 ELSE null END)
                                 FROM t_proposer_duties
                                 WHERE t_proposer_duties.f_val_idx = '${id}'
-                                AND CAST((t_proposer_duties.f_proposer_slot / 32) AS INT) BETWEEN (SELECT start_epoch FROM Last225Epochs) AND (SELECT end_epoch FROM Last225Epochs)
+                                AND CAST((t_proposer_duties.f_proposer_slot / 32) AS UInt64) BETWEEN (SELECT start_epoch FROM Last225Epochs) AND (SELECT end_epoch FROM Last225Epochs)
                             ) as proposed_blocks_performance,
                             (
                                 SELECT COUNT(CASE WHEN t_proposer_duties.f_proposed = FALSE THEN 1 ELSE null END)
                                 FROM t_proposer_duties
                                 WHERE t_proposer_duties.f_val_idx = '${id}'
-                                AND CAST((t_proposer_duties.f_proposer_slot / 32) AS INT) BETWEEN (SELECT start_epoch FROM Last225Epochs) AND (SELECT end_epoch FROM Last225Epochs)
+                                AND CAST((t_proposer_duties.f_proposer_slot / 32) AS UInt64) BETWEEN (SELECT start_epoch FROM Last225Epochs) AND (SELECT end_epoch FROM Last225Epochs)
                             ) as missed_blocks_performance
                         FROM t_validator_rewards_summary
                         LEFT JOIN t_proposer_duties 
@@ -254,7 +254,7 @@ export const getWithdrawalsByValidator = async (req: Request, res: Response) => 
                 query: `
                     SELECT
                         f_val_idx,
-                        CAST((f_slot / 32) AS INT) AS f_epoch,
+                        CAST((f_slot / 32) AS UInt64) AS f_epoch,
                         f_slot,
                         f_address,
                         f_amount

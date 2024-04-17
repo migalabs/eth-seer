@@ -37,7 +37,7 @@ export const getEpochsStatistics = async (req: Request, res: Response) => {
                 clickhouseClient.query({
                     query: `
                         SELECT
-                            CAST((f_proposer_slot / 32) AS INT) AS epoch,
+                            CAST((f_proposer_slot / 32) AS UInt64) AS epoch,
                             groupArray(CASE WHEN f_proposed = 1 THEN 1 ELSE 0 END) AS proposed_blocks
                         FROM
                             t_proposer_duties
@@ -68,8 +68,8 @@ export const getEpochsStatistics = async (req: Request, res: Response) => {
         epochsStatsResult.forEach((epoch: any) => { 
             const aux = blocksStatsResult.find((blocks: any) => Number(blocks.epoch) === Number(epoch.f_epoch));
             arrayEpochs.push({  
-                ...epoch, 
-                ...aux,
+                ...epoch,
+                proposed_blocks: aux?.proposed_blocks,
             });
         });    
         
@@ -123,7 +123,7 @@ export const getEpochById = async (req: Request, res: Response) => {
                         FROM
                             t_proposer_duties
                         WHERE
-                            CAST((f_proposer_slot / 32) AS INT) = ${id} AND f_proposed = 1
+                            CAST((f_proposer_slot / 32) AS UInt64) = ${id} AND f_proposed = 1
                     `,
                     format: 'JSONEachRow',
                 }),
@@ -134,7 +134,7 @@ export const getEpochById = async (req: Request, res: Response) => {
                         FROM
                             t_withdrawals
                         WHERE
-                            CAST((f_slot / 32) AS INT) = ${id}
+                            CAST((f_slot / 32) AS UInt64) = ${id}
                     `,
                     format: 'JSONEachRow',
                 }),
@@ -183,7 +183,7 @@ export const getSlotsByEpoch = async (req: Request, res: Response) => {
                         LEFT OUTER JOIN
                             t_eth2_pubkeys pk ON pd.f_val_idx = pk.f_val_idx
                         WHERE
-                            CAST((pd.f_proposer_slot / 32) AS INT) = ${id}
+                            CAST((pd.f_proposer_slot / 32) AS UInt64) = ${id}
                         ORDER BY
                             pd.f_proposer_slot DESC
                     `,
@@ -197,7 +197,7 @@ export const getSlotsByEpoch = async (req: Request, res: Response) => {
                         FROM
                             t_withdrawals
                         WHERE
-                            CAST((f_slot / 32) AS INT) = ${id}
+                            CAST((f_slot / 32) AS UInt64) = ${id}
                     `,
                     format: 'JSONEachRow',
                 }),

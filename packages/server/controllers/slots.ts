@@ -166,7 +166,7 @@ export const getBlocks = async (req: Request, res: Response) => {
             const blocksResultSet = await chClient.query({
                 query: `
                     SELECT
-                        CAST((pd.f_proposer_slot / 32) AS INT) AS f_epoch,
+                        CAST((pd.f_proposer_slot / 32) AS UInt64) AS f_epoch,
                         pd.f_proposer_slot AS f_slot,
                         pd.f_proposed,
                         pk.f_pool_name,
@@ -202,7 +202,7 @@ export const getBlocks = async (req: Request, res: Response) => {
                     chClient.query({
                         query: `
                             SELECT
-                                CAST((pd.f_proposer_slot / 32) AS INT) AS f_epoch,
+                                CAST((pd.f_proposer_slot / 32) AS UInt64) AS f_epoch,
                                 pd.f_proposer_slot AS f_slot,
                                 pd.f_proposed,
                                 pk.f_pool_name,
@@ -291,9 +291,9 @@ export const getSlotById = async (req: Request, res: Response) => {
                         SELECT
                             bm.f_timestamp,
                             bm.f_epoch,
-                            bm.f_slot,
+                            bm.f_slot AS f_slot,
                             bm.f_graffiti,
-                            bm.f_proposer_index,
+                            bm.f_proposer_index AS f_proposer_index,
                             bm.f_proposed,
                             bm.f_attestations,
                             bm.f_deposits,

@@ -21,6 +21,9 @@ export const dbConnection = async () => {
                 username: network.user,
                 password: network.password,
                 database: network.name,
+                clickhouse_settings: {
+                    output_format_json_quote_64bit_integers: 0,
+                },
             });
         }
 
