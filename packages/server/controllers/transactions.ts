@@ -30,7 +30,7 @@ export const getTransactions = async (req: Request, res: Response) => {
                 FROM
                     t_transactions
                 ORDER BY
-                    f_el_block_number DESC,
+                    f_slot DESC,
                     f_tx_idx DESC,
                     f_timestamp DESC
                 LIMIT ${Number(limit)}
