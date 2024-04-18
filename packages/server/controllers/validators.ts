@@ -45,8 +45,6 @@ export const getValidators = async (req: Request, res: Response) => {
         const validatorsResult = await validatorsResultSet.json();
         const countResult = await countResultSet.json();
 
-        console.log(validatorsResult);
-
         res.json({
             validators: validatorsResult,
             totalCount: Number(countResult[0].count),
@@ -139,8 +137,6 @@ export const getValidatorById = async (req: Request, res: Response) => {
         const validatorStatsResult = await validatorStatsResultSet.json();
         const validatorPerformanceResult = await validatorPerformanceResultSet.json();
         
-        console.log(validatorStatsResult);
-
         let validator = null;
 
         if (validatorStatsResult[0]) {
