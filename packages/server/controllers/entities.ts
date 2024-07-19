@@ -38,7 +38,7 @@ export const getEntity = async (req: Request, res: Response) => {
             chClient.query({
                 query: `
                         SELECT
-                            SUM(aggregated_rewards) AS aggregated_rewards,
+                            SUM(toInt64(aggregated_rewards)) AS aggregated_rewards,
                             SUM(aggregated_max_rewards) AS aggregated_max_rewards,
                             SUM(count_sync_committee) AS count_sync_committee,
                             SUM(count_missing_source) AS count_missing_source,

@@ -1,12 +1,11 @@
-import React from 'react';
-
 // Components
 import TooltipContainer from './TooltipContainer';
 import TooltipResponsive from './TooltipResponsive';
 
 type Props = {
     title?: string;
-    percent: number;
+    percent?: number;
+    text?: string;
     color: string;
     backgroundColor: string;
     tooltipColor?: string;
@@ -19,6 +18,7 @@ type Props = {
 const ProgressSmoothBar = ({
     title,
     percent,
+    text,
     color,
     backgroundColor,
     tooltipColor,
@@ -27,7 +27,13 @@ const ProgressSmoothBar = ({
     widthTooltip,
     tooltipAbove,
 }: Props) => {
-    const widthInnerDiv = percent > 0 ? Math.min(Number(percent * 100), 100).toFixed(0) : 100;
+    const shouldDisplayPercent = percent !== undefined;
+
+    const widthInnerDiv = shouldDisplayPercent
+        ? percent > 0
+            ? Math.min(Number(percent * 100), 100).toFixed(0)
+            : 100
+        : 100;
 
     return (
         <div className='text-center'>
@@ -38,7 +44,9 @@ const ProgressSmoothBar = ({
                     {tooltipColor && tooltipContent ? (
                         <TooltipContainer>
                             <p className='font-medium' style={{ color, cursor: 'default' }}>
-                                {Number(Number(percent * 100).toFixed(2)).toLocaleString()}%
+                                {shouldDisplayPercent
+                                    ? `${Number(Number(percent * 100).toFixed(2)).toLocaleString()}%`
+                                    : text}
                             </p>
 
                             <TooltipResponsive
@@ -49,7 +57,9 @@ const ProgressSmoothBar = ({
                         </TooltipContainer>
                     ) : (
                         <p className='font-medium' style={{ color, cursor: 'default' }}>
-                            {Number(Number(percent * 100).toFixed(2)).toLocaleString()}%
+                            {shouldDisplayPercent
+                                ? `${Number(Number(percent * 100).toFixed(2)).toLocaleString()}%`
+                                : text}
                         </p>
                     )}
                 </div>

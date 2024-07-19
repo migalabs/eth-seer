@@ -124,7 +124,12 @@ const EntityComponent = ({ name, network }: Props) => {
                                 title=''
                                 color='var(--black)'
                                 backgroundColor='var(--white)'
-                                percent={entity.aggregated_rewards / entity.aggregated_max_rewards || 0}
+                                percent={
+                                    entity.aggregated_rewards >= 0
+                                        ? entity.aggregated_rewards / entity.aggregated_max_rewards || 0
+                                        : undefined
+                                }
+                                text={entity.aggregated_rewards < 0 ? `${entity.aggregated_rewards} GWEI` : undefined}
                                 tooltipColor='blue'
                                 tooltipContent={
                                     <>
@@ -154,24 +159,6 @@ const EntityComponent = ({ name, network }: Props) => {
                     {entity && (
                         <div className='flex flex-col xl:flex-row items-center gap-x-4 gap-y-2 font-medium text-[12px] md:text-[14px] text-[var(--black)] dark:text-[var(--white)]'>
                             <ProgressSmoothBar
-                                title='Target'
-                                color='var(--black)'
-                                backgroundColor='var(--white)'
-                                percent={1 - entity.count_missing_target / entity.count_expected_attestations}
-                                width={300}
-                                tooltipColor='orange'
-                                tooltipContent={
-                                    <>
-                                        <span>Missing Target: {entity.count_missing_target?.toLocaleString()}</span>
-                                        <span>
-                                            Attestations: {entity.count_expected_attestations?.toLocaleString()}
-                                        </span>
-                                    </>
-                                }
-                                widthTooltip={220}
-                            />
-
-                            <ProgressSmoothBar
                                 title='Source'
                                 color='var(--black)'
                                 backgroundColor='var(--white)'
@@ -181,6 +168,24 @@ const EntityComponent = ({ name, network }: Props) => {
                                 tooltipContent={
                                     <>
                                         <span>Missing Source: {entity.count_missing_source?.toLocaleString()}</span>
+                                        <span>
+                                            Attestations: {entity.count_expected_attestations?.toLocaleString()}
+                                        </span>
+                                    </>
+                                }
+                                widthTooltip={220}
+                            />
+
+                            <ProgressSmoothBar
+                                title='Target'
+                                color='var(--black)'
+                                backgroundColor='var(--white)'
+                                percent={1 - entity.count_missing_target / entity.count_expected_attestations || 0}
+                                width={300}
+                                tooltipColor='orange'
+                                tooltipContent={
+                                    <>
+                                        <span>Missing Target: {entity.count_missing_target?.toLocaleString()}</span>
                                         <span>
                                             Attestations: {entity.count_expected_attestations?.toLocaleString()}
                                         </span>
