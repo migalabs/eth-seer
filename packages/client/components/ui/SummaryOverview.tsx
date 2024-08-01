@@ -23,7 +23,7 @@ const SummaryOverview = () => {
 
     // States
     const [summary, setSummary] = useState<Summary | null>(null);
-    const [lastValidator, setLastValidator] = useState(null);
+    const [countActiveValidators, setCountActiveValidators] = useState(0);
 
     useEffect(() => {
         if (blocks && blocks.epochs) {
@@ -41,7 +41,7 @@ const SummaryOverview = () => {
             setSummary({ epoch: lastEpochAux, slot: lastSlotAux, block_height: lastBlockAux });
         }
 
-        if (network && !lastValidator) {
+        if (network && !countActiveValidators) {
             getLastValidator();
         }
 
@@ -50,13 +50,13 @@ const SummaryOverview = () => {
 
     const getLastValidator = async () => {
         try {
-            const response = await axiosClient.get('/api/validators/last', {
+            const response = await axiosClient.get('/api/validators/count-active-validators', {
                 params: {
                     network,
                 },
             });
 
-            setLastValidator(response.data.number_active_validators);
+            setCountActiveValidators(response.data.count_active_validators);
         } catch (error) {
             console.log(error);
         }
@@ -64,7 +64,7 @@ const SummaryOverview = () => {
 
     return (
         <>
-            {summary && lastValidator !== 0 && (
+            {summary && countActiveValidators !== 0 && (
                 <div className='mb-5'>
                     <div className='grid mx-auto grid-row-5 xl:flex xl:flex-wrap justify-around items-center gap-1 xl:gap-10 text-center text-[14px] rounded-md py-4 px-8 xl:px-8 xl:py-3 w-11/12 md:w-9/12 border text-[var(--black)] dark:text-[var(--white)] bg-[var(--bgMainLightMode)] dark:bg-[var(--bgDarkMode)] border-[var(--lightGray)] dark:border-[var(--white)]'>
                         <p>
@@ -85,7 +85,7 @@ const SummaryOverview = () => {
                         </p>
                         <span className='lg:w-[1px] lg:h-6 lg:bg-gray-400'></span>
                         <p className=''>
-                            <b className='font-semibold'>Active Validators:</b> {lastValidator ?? 0}
+                            <b className='font-semibold'>Active Validators:</b> {countActiveValidators ?? 0}
                         </p>
                     </div>
                 </div>

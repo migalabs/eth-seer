@@ -4,7 +4,6 @@ import { check, query } from 'express-validator';
 import {
     getEpochsStatistics,
     getEpochById,
-    getEpochStats,
     getSlotsByEpoch,
     listenEpochNotification,
 } from '../controllers/epochs';
@@ -13,12 +12,6 @@ import { checkFields } from '../middlewares/check-fields';
 import { existsNetwork } from '../helpers/network-validator';
 
 const router = Router();
-
-router.get('/stats', [
-    query('network').not().isEmpty(),
-    query('network').custom(existsNetwork),
-    checkFields,
-], getEpochStats);
 
 router.get('/', [
     query('network').not().isEmpty(),

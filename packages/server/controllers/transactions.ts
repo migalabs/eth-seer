@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { pgPools } from '../config/db';
+import { clickhouseClients } from '../config/db';
 import { ADDRESS_ZERO_SHORT } from '../helpers/address';
 
 export const getTransactions = async (req: Request, res: Response) => {
@@ -8,24 +8,43 @@ export const getTransactions = async (req: Request, res: Response) => {
         
         const { network, page = 0, limit = 10 } = req.query;
 
-        const pgPool = pgPools[network as string];
+        const clickhouseClient = clickhouseClients[network as string];
 
         const skip = Number(page) * Number(limit);
 
-        const transactions = 
-            await pgPool.query(`
-                SELECT f_tx_idx, f_gas_fee_cap, f_value, f_to, f_hash, f_timestamp, f_from, f_el_block_number,
-                f_gas_price, f_gas, f_tx_type, f_data
-                FROM t_transactions
-                ORDER by f_el_block_number DESC, f_tx_idx DESC, f_timestamp DESC
-                OFFSET ${skip}
+        const transactionsResultSet = await clickhouseClient.query({
+            query: `
+                SELECT
+                    f_tx_idx,
+                    f_gas_fee_cap,
+                    f_value,
+                    f_to,
+                    f_hash,
+                    f_timestamp,
+                    f_from,
+                    f_el_block_number,
+                    f_gas_price,
+                    f_gas,
+                    f_tx_type,
+                    f_data
+                FROM
+                    t_transactions
+                ORDER BY
+                    f_slot DESC,
+                    f_tx_idx DESC,
+                    f_timestamp DESC
                 LIMIT ${Number(limit)}
-            `);
+                OFFSET ${skip}
+            `,
+            format: 'JSONEachRow',
+        });
+
+        const transactionsResult: any[] = await transactionsResultSet.json();
 
         res.json({
-            transactions: transactions.rows.map((tx: any) => ({
+            transactions: transactionsResult.map((tx: any) => ({
                 ...tx,
-                f_to: tx.f_to ? tx.f_to : ADDRESS_ZERO_SHORT,
+                f_to: tx.f_to ?? ADDRESS_ZERO_SHORT,
             }))
         });
 
@@ -45,24 +64,43 @@ export const getTransactionByHash = async (req: Request, res: Response) => {
 
         const { network } = req.query;
 
-        const pgPool = pgPools[network as string];
+        const clickhouseClient = clickhouseClients[network as string];
 
-        const transaction = 
-            await pgPool.query(`
-                SELECT f_tx_idx, f_gas_fee_cap, f_value, f_to, f_hash, f_timestamp, f_from, f_el_block_number,
-                f_gas_price, f_gas, f_tx_type, f_data, f_nonce
-                FROM t_transactions
-                WHERE f_hash = '${hash}'
-            `);
+        const transactionResultSet = await clickhouseClient.query({
+            query: `
+                SELECT
+                    f_tx_idx,
+                    f_gas_fee_cap,
+                    f_value,
+                    f_to,
+                    f_hash,
+                    f_timestamp,
+                    f_from,
+                    f_el_block_number,
+                    f_gas_price,
+                    f_gas,
+                    f_tx_type,
+                    f_data,
+                    f_nonce
+                FROM
+                    t_transactions
+                WHERE
+                    f_hash = '${hash}'
+                LIMIT 1
+            `,
+            format: 'JSONEachRow',
+        });
 
-        if (!transaction.rows.length) {
+        const transactionResult = await transactionResultSet.json();
+
+        if (!transactionResult[0]) {
             return res.json();
         }
 
         res.json({
             transaction: {
-                ...transaction.rows[0],
-                f_to: transaction.rows[0].f_to ? transaction.rows[0].f_to : ADDRESS_ZERO_SHORT,
+                ...transactionResult[0],
+                f_to: transactionResult[0].f_to ?? ADDRESS_ZERO_SHORT,
             }
         });
 
