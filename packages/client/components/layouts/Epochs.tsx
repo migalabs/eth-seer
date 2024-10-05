@@ -417,25 +417,7 @@ const Epochs = ({ epochs, blocksPerEpoch, showCalculatingEpochs, fetchingEpochs,
                     </div>
 
                     <div className='w-[32%] mb-2'>
-                        <div className='flex gap-x-1 justify-center '>
-                            <div className='flex-1'>
-                                <ProgressSmoothBar
-                                    title='Target'
-                                    color='#343434'
-                                    backgroundColor='#f5f5f5'
-                                    percent={1 - epoch.f_missing_target / epoch.f_num_active_vals}
-                                    tooltipColor='orange'
-                                    tooltipContent={
-                                        <>
-                                            <span>Missing Target: {epoch.f_missing_target?.toLocaleString()}</span>
-                                            <span>Attestations: {epoch.f_num_active_vals?.toLocaleString()}</span>
-                                        </>
-                                    }
-                                    widthTooltip={220}
-                                    tooltipAbove={idx === epochs.length - 1}
-                                />
-                            </div>
-
+                        <div className='flex gap-x-1 justify-center'>
                             <div className='flex-1'>
                                 <ProgressSmoothBar
                                     title='Source'
@@ -446,6 +428,24 @@ const Epochs = ({ epochs, blocksPerEpoch, showCalculatingEpochs, fetchingEpochs,
                                     tooltipContent={
                                         <>
                                             <span>Missing Source: {epoch.f_missing_source?.toLocaleString()}</span>
+                                            <span>Attestations: {epoch.f_num_active_vals?.toLocaleString()}</span>
+                                        </>
+                                    }
+                                    widthTooltip={220}
+                                    tooltipAbove={idx === epochs.length - 1}
+                                />
+                            </div>
+
+                            <div className='flex-1'>
+                                <ProgressSmoothBar
+                                    title='Target'
+                                    color='#343434'
+                                    backgroundColor='#f5f5f5'
+                                    percent={1 - epoch.f_missing_target / epoch.f_num_active_vals}
+                                    tooltipColor='orange'
+                                    tooltipContent={
+                                        <>
+                                            <span>Missing Target: {epoch.f_missing_target?.toLocaleString()}</span>
                                             <span>Attestations: {epoch.f_num_active_vals?.toLocaleString()}</span>
                                         </>
                                     }
@@ -610,20 +610,6 @@ const Epochs = ({ epochs, blocksPerEpoch, showCalculatingEpochs, fetchingEpochs,
                                 />
                             </TooltipContainer>
                         </div>
-                        <ProgressSmoothBar
-                            title='Target'
-                            color='#343434'
-                            backgroundColor='#f5f5f5'
-                            percent={1 - epoch.f_missing_target / epoch.f_num_active_vals}
-                            tooltipColor='orange'
-                            tooltipContent={
-                                <>
-                                    <span>Missing Target: {epoch.f_missing_target?.toLocaleString()}</span>
-                                    <span>Attestations: {epoch.f_num_active_vals?.toLocaleString()}</span>
-                                </>
-                            }
-                            widthTooltip={220}
-                        />
 
                         <ProgressSmoothBar
                             title='Source'
@@ -634,6 +620,21 @@ const Epochs = ({ epochs, blocksPerEpoch, showCalculatingEpochs, fetchingEpochs,
                             tooltipContent={
                                 <>
                                     <span>Missing Source: {epoch.f_missing_source?.toLocaleString()}</span>
+                                    <span>Attestations: {epoch.f_num_active_vals?.toLocaleString()}</span>
+                                </>
+                            }
+                            widthTooltip={220}
+                        />
+
+                        <ProgressSmoothBar
+                            title='Target'
+                            color='#343434'
+                            backgroundColor='#f5f5f5'
+                            percent={1 - epoch.f_missing_target / epoch.f_num_active_vals}
+                            tooltipColor='orange'
+                            tooltipContent={
+                                <>
+                                    <span>Missing Target: {epoch.f_missing_target?.toLocaleString()}</span>
                                     <span>Attestations: {epoch.f_num_active_vals?.toLocaleString()}</span>
                                 </>
                             }

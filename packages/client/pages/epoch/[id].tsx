@@ -204,22 +204,6 @@ const EpochComponent = ({ id, network }: Props) => {
                 {epoch && epoch.f_epoch !== undefined && (
                     <div className='flex flex-col xl:flex-row font-medium items-center gap-2 md:gap-4 text-[12px] md:text-[14px] text-[var(--black)] dark:text-[var(--white)]'>
                         <ProgressSmoothBar
-                            title='Target'
-                            color='#343434'
-                            backgroundColor='#f5f5f5'
-                            percent={1 - epoch.f_missing_target / epoch.f_num_att_vals}
-                            width={300}
-                            tooltipColor='orange'
-                            tooltipContent={
-                                <>
-                                    <span>Missing Target: {epoch.f_missing_target?.toLocaleString()}</span>
-                                    <span>Attestations: {epoch.f_num_att_vals?.toLocaleString()}</span>
-                                </>
-                            }
-                            widthTooltip={220}
-                        />
-
-                        <ProgressSmoothBar
                             title='Source'
                             color='#343434'
                             backgroundColor='#f5f5f5'
@@ -229,6 +213,22 @@ const EpochComponent = ({ id, network }: Props) => {
                             tooltipContent={
                                 <>
                                     <span>Missing Source: {epoch.f_missing_source?.toLocaleString()}</span>
+                                    <span>Attestations: {epoch.f_num_att_vals?.toLocaleString()}</span>
+                                </>
+                            }
+                            widthTooltip={220}
+                        />
+
+                        <ProgressSmoothBar
+                            title='Target'
+                            color='#343434'
+                            backgroundColor='#f5f5f5'
+                            percent={1 - epoch.f_missing_target / epoch.f_num_att_vals}
+                            width={300}
+                            tooltipColor='orange'
+                            tooltipContent={
+                                <>
+                                    <span>Missing Target: {epoch.f_missing_target?.toLocaleString()}</span>
                                     <span>Attestations: {epoch.f_num_att_vals?.toLocaleString()}</span>
                                 </>
                             }
