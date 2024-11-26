@@ -270,8 +270,8 @@ const EpochComponent = ({ id, network }: Props) => {
                             tooltipColor='blue'
                             tooltipContent={
                                 <>
-                                    <span>Agg. Rewards: {epoch?.f_att_effective_balance_eth}</span>
-                                    <span>Max. Rewards: {epoch?.f_total_effective_balance_eth}</span>
+                                    <span>Att. Balance: {epoch?.f_att_effective_balance_eth.toLocaleString()} ETH</span>
+                                    <span>Max. Balance: {epoch?.f_total_effective_balance_eth.toLocaleString()} ETH</span>
                                 </>
                             }
                             widthTooltip={220}
