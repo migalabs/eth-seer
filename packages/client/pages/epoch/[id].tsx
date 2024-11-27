@@ -160,7 +160,8 @@ const EpochComponent = ({ id, network }: Props) => {
             setLoadingSlots(false);
         }
     };
-
+    console.log(id);
+    console.log(epoch);
     // Epoch stats card
     const getContentEpochStats = () => (
         <div
@@ -175,6 +176,21 @@ const EpochComponent = ({ id, network }: Props) => {
                     {new Date(blockGenesis + id * 32 * 12000).toLocaleString('ja-JP')}
                 </p>
             </div>
+
+            <div className='flex flex-row items-center gap-x-5'>
+                    <p className='w-40 sm:w-60 text-[var(--black)] dark:text-[var(--white)]'>Attestations:</p>
+                    <p className='text-[var(--black)] dark:text-[var(--white)]'>
+                        {epoch?.f_num_att.toLocaleString()}
+                    </p>
+            </div>
+
+            <div className='flex flex-row items-center gap-x-5'>
+                <p className='w-40 sm:w-60 text-[var(--black)] dark:text-[var(--white)]'>Withdrawals:</p>
+                <p className='text-[var(--black)] dark:text-[var(--white)]'>
+                    {epoch?.f_withdrawals_num} ({((epoch?.withdrawals ?? 0) / 10 ** 9).toLocaleString()} ETH)
+                </p>
+            </div>
+
 
             <div className='flex flex-col sm:flex-row gap-x-5'>
                 <p className='w-40 sm:w-60 text-[var(--black)] dark:text-[var(--white)]'>Blocks (out of 32):</p>
@@ -271,7 +287,7 @@ const EpochComponent = ({ id, network }: Props) => {
                             tooltipContent={
                                 <>
                                     <span>Att. Balance: {epoch?.f_att_effective_balance_eth.toLocaleString()} ETH</span>
-                                    <span>Max. Balance: {epoch?.f_total_effective_balance_eth.toLocaleString()} ETH</span>
+                                    <span>Act. Balance: {epoch?.f_total_effective_balance_eth.toLocaleString()} ETH</span>
                                 </>
                             }
                             widthTooltip={220}
@@ -281,10 +297,38 @@ const EpochComponent = ({ id, network }: Props) => {
             </div>
 
             <div className='flex flex-row items-center gap-x-5'>
-                <p className='w-40 sm:w-60 text-[var(--black)] dark:text-[var(--white)]'>Withdrawals:</p>
-                <p className='text-[var(--black)] dark:text-[var(--white)]'>
-                    {((epoch?.withdrawals ?? 0) / 10 ** 9).toLocaleString()} ETH
-                </p>
+                    <p className='w-40 sm:w-60 text-[var(--black)] dark:text-[var(--white)]'>Validators:</p>
+                    <p className='text-[var(--black)] dark:text-[var(--white)]'>
+                        {epoch?.f_num_active_vals.toLocaleString()}
+                    </p>
+            </div>
+
+            <div className='flex flex-row items-center gap-x-5'>
+                    <p className='w-40 sm:w-60 text-[var(--black)] dark:text-[var(--white)]'>Pending validators:</p>
+                    <p className='text-[var(--black)] dark:text-[var(--white)]'>
+                        {epoch?.f_num_in_activation_vals.toLocaleString()}
+                    </p>
+            </div>
+
+            <div className='flex flex-row items-center gap-x-5'>
+                    <p className='w-40 sm:w-60 text-[var(--black)] dark:text-[var(--white)]'>Slashed Validators:</p>
+                    <p className='text-[var(--black)] dark:text-[var(--white)]'>
+                        {epoch?.f_num_slashed_vals.toLocaleString()}
+                    </p>
+            </div>
+
+            <div className='flex flex-row items-center gap-x-5'>
+                    <p className='w-40 sm:w-60 text-[var(--black)] dark:text-[var(--white)]'>Exited Validators:</p>
+                    <p className='text-[var(--black)] dark:text-[var(--white)]'>
+                        {epoch?.f_num_exited_vals.toLocaleString()}
+                    </p>
+            </div>
+
+            <div className='flex flex-row items-center gap-x-5'>
+                    <p className='w-40 sm:w-60 text-[var(--black)] dark:text-[var(--white)]'>Avg. Validator Balance:</p>
+                    <p className='text-[var(--black)] dark:text-[var(--white)]'>
+                        {(epoch.f_total_balance_eth / epoch?.f_num_active_vals).toFixed(2)} ETH
+                    </p>
             </div>
         </div>
     );
