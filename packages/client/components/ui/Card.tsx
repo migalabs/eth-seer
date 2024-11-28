@@ -9,8 +9,8 @@ type CardProps = {
 
 const Card = ({ title, text, content }: CardProps) => {
     return (
-        <div className='flex flex-row items-center justify-between gap-5 md:gap-20 text-[14px] md:text-[16px] font-medium text-[var(--black)] dark:text-[var(--white)]'>
-            <span>{title}:</span>
+        <div className='flex flex-row items-center gap-30 md:gap-30 sm:gap-x-5 text-[14px] md:text-[16px] font-medium text-[var(--black)] dark:text-[var(--white)]'>
+            <span className="w-40 sm:w-40">{title}:</span>
 
             {text && <span className='uppercase text-end'>{text}</span>}
 

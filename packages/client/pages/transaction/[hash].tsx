@@ -91,7 +91,7 @@ const TransactionPage = ({ hash, network }: Props) => {
                     boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
                 }}
             >
-                <div className='flex flex-col gap-y-5 md:gap-y-8 '>
+                <div className='flex flex-col gap-y-4'>
                     <Card title='Transaction Hash' content={<AddressCopy address={hash} />} />
                     <Card title='Block' content={<LinkBlock block={transaction?.f_el_block_number} />} />
                     <Card
