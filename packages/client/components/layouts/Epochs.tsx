@@ -187,6 +187,63 @@ const Epochs = ({ epochs, blocksPerEpoch, showCalculatingEpochs, fetchingEpochs,
                 </div>
 
                 <div className='flex flex-col w-full'>
+                    <div className='flex gap-x-1 items-center justify-center mb-1'>
+                        <p className='mt-1 font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Attestations</p>
+                        <TooltipContainer>
+                            <CustomImage
+                                src='/static/images/icons/information_icon.webp'
+                                alt='Attestation Accuracy information'
+                                width={24}
+                                height={24}
+                            />
+
+                            <TooltipResponsive
+                                width={200}
+                                content={
+                                    <>
+                                        <span>Number of attestations included in blocks in the epochs</span>
+                                    </>
+                                }
+                                top='34px'
+                                polygonRight
+                            />
+                        </TooltipContainer>
+                    </div>
+
+                    <div>
+                        <p className='w-32 uppercase mx-auto text-center'>{calculatingText}</p>
+                    </div>
+                </div>
+
+                <div className='flex flex-col w-full'>
+                    <div className='flex gap-x-1 items-center justify-center mb-1'>
+                        <p className='mt-1 font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Withdrawals</p>
+                        <TooltipContainer>
+                            <CustomImage
+                                src='/static/images/icons/information_icon.webp'
+                                alt='Attestation Accuracy information'
+                                width={24}
+                                height={24}
+                            />
+
+                            <TooltipResponsive
+                                width={200}
+                                content={
+                                    <>
+                                        <span>Number of withdrawals included in the epoch</span>
+                                    </>
+                                }
+                                top='34px'
+                                polygonRight
+                            />
+                        </TooltipContainer>
+                    </div>
+                    <div>
+                        <p className='w-32 uppercase mx-auto text-center'>{calculatingText}</p>
+                    </div>
+                </div>
+
+                <div className='flex flex-col w-full'>
                     <div className='flex gap-x-1 justify-center mb-1'>
                         <p className='mt-1 font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Blocks</p>
                         <TooltipContainer>
@@ -545,6 +602,7 @@ const Epochs = ({ epochs, blocksPerEpoch, showCalculatingEpochs, fetchingEpochs,
                             <LinkIcon />
                         </LinkEpoch>
                     </div>
+
                     <div className='flex flex-col gap-x-4 w-full'>
                         <div className='flex gap-x-1 justify-center mb-1'>
                             <p className='mt-1 font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Time</p>
@@ -572,6 +630,60 @@ const Epochs = ({ epochs, blocksPerEpoch, showCalculatingEpochs, fetchingEpochs,
                         <div className='text-center'>
                             <p>{new Date(blockGenesis + epoch.f_epoch * 32 * 12000).toLocaleDateString('ja-JP')}</p>
                             <p>{new Date(blockGenesis + epoch.f_epoch * 32 * 12000).toLocaleTimeString('ja-JP')}</p>
+                        </div>
+                    </div>
+
+                    <div className='flex flex-col gap-x-4 w-full'>
+                        <div className='flex gap-x-1 justify-center mb-1'>
+                            <p className='mt-1 font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Attestations</p>
+                            <TooltipContainer>
+                                <CustomImage
+                                    src='/static/images/icons/information_icon.webp'
+                                    alt='Time information'
+                                    width={24}
+                                    height={24}
+                                />
+
+                                <TooltipResponsive
+                                    width={220}
+                                    content={
+                                        <>
+                                            <span>Number of attestations included in blocks in the epochs</span>
+                                        </>
+                                    }
+                                    top='34px'
+                                />
+                            </TooltipContainer>
+                        </div>
+                        <div className='text-center'>
+                            <p>{epoch?.f_num_att}</p>
+                        </div>
+                    </div>
+
+                    <div className='flex flex-col gap-x-4 w-full'>
+                        <div className='flex gap-x-1 justify-center mb-1'>
+                            <p className='mt-1 font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Withdrawals</p>
+                            <TooltipContainer>
+                                <CustomImage
+                                    src='/static/images/icons/information_icon.webp'
+                                    alt='Time information'
+                                    width={24}
+                                    height={24}
+                                />
+
+                                <TooltipResponsive
+                                    width={220}
+                                    content={
+                                        <>
+                                            <span>Number of withdrawals included in the epoch</span>
+                                        </>
+                                    }
+                                    top='34px'
+                                />
+                            </TooltipContainer>
+                        </div>
+                        <div className='text-center'>
+                            <p>{epoch?.f_withdrawals_num}</p>
                         </div>
                     </div>
 
