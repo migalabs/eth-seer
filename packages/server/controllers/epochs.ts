@@ -16,13 +16,15 @@ export const getEpochsStatistics = async (req: Request, res: Response) => {
                         SELECT
                             f_epoch,
                             f_slot,
+                            f_num_att,
                             f_num_att_vals,
                             f_num_active_vals,
                             f_att_effective_balance_eth,
                             f_total_effective_balance_eth,
                             f_missing_source,
                             f_missing_target,
-                            f_missing_head
+                            f_missing_head,
+                            f_withdrawals_num
                         FROM
                             t_epoch_metrics_summary
                         ORDER BY
@@ -116,14 +118,7 @@ export const getEpochById = async (req: Request, res: Response) => {
                             f_total_effective_balance_eth,
                             f_missing_source,
                             f_missing_target,
-                            f_missing_head,
-                            f_num_att,
-                            f_num_slashed_vals,
-                            f_num_exited_vals,
-                            f_num_active_vals,
-                            f_num_in_activation_vals,
-                            f_total_balance_eth,
-                            f_withdrawals_num,
+                            f_missing_head
                         FROM
                             t_epoch_metrics_summary
                         WHERE

@@ -99,6 +99,14 @@ const Epochs = ({ epochs, blocksPerEpoch, showCalculatingEpochs, fetchingEpochs,
                     <LinkEpoch epoch={f_epoch} mxAuto />
                 </div>
 
+                <div className='w-[13%]'>
+                    <p className='w-13 uppercase mx-auto text-center'>{calculatingText}</p>
+                </div>
+
+                <div className='w-[13%]'>
+                    <p className='w-13 uppercase mx-auto text-center'>{calculatingText}</p>
+                </div>
+
                 <div className='w-[15%] pt-3.5 mb-5'>
                     <p className='uppercase text-center'>Blocks</p>
 
@@ -329,6 +337,19 @@ const Epochs = ({ epochs, blocksPerEpoch, showCalculatingEpochs, fetchingEpochs,
             />
 
             <LargeTableHeader
+                text='Attestations'
+                width='13%'
+                tooltipContent={<TooltipResponsive width={220} content={<span>Number of attestations included in blocks in the epochs</span>} top='34px' />}
+            />
+
+            <LargeTableHeader
+                text='Withdrawals'
+                width='13%'
+                tooltipContent={<TooltipResponsive width={150} content={<span>Number of withdrawals included in the epoch</span>} top='34px' />}
+            />
+
+
+            <LargeTableHeader
                 text='Blocks'
                 width='15%'
                 tooltipContent={
@@ -399,6 +420,14 @@ const Epochs = ({ epochs, blocksPerEpoch, showCalculatingEpochs, fetchingEpochs,
 
                     <div className='w-[11%] font-medium md:hover:underline underline-offset-4 decoration-2 text-[var(--darkPurple)] dark:text-[var(--purple)]'>
                         <LinkEpoch epoch={epoch.f_epoch} mxAuto />
+                    </div>
+
+                    <div className='w-[13%] flex flex-col text-center'>
+                        <p>{epoch.f_num_att}</p>
+                    </div>
+
+                    <div className='w-[13%] flex flex-col text-center'>
+                        <p>{epoch.f_withdrawals_num}</p>
                     </div>
 
                     <div className='w-[15%] pt-3.5 mb-5'>
