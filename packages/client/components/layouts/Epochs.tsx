@@ -99,11 +99,15 @@ const Epochs = ({ epochs, blocksPerEpoch, showCalculatingEpochs, fetchingEpochs,
                     <LinkEpoch epoch={f_epoch} mxAuto />
                 </div>
 
-                <div className='w-[13%]'>
+                <div className='w-[15%]'>
                     <p className='w-13 uppercase mx-auto text-center'>{calculatingText}</p>
                 </div>
 
-                <div className='w-[13%]'>
+                <div className='w-[25%]'>
+                    <p className='w-13 uppercase mx-auto text-center'>{calculatingText}</p>
+                </div>
+
+                <div className='w-[18%]'>
                     <p className='w-13 uppercase mx-auto text-center'>{calculatingText}</p>
                 </div>
 
@@ -217,7 +221,7 @@ const Epochs = ({ epochs, blocksPerEpoch, showCalculatingEpochs, fetchingEpochs,
 
                 <div className='flex flex-col w-full'>
                     <div className='flex gap-x-1 items-center justify-center mb-1'>
-                        <p className='mt-1 font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Withdrawals</p>
+                    <p className='mt-1 font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Deposits/Withdrawals</p>
                         <TooltipContainer>
                             <CustomImage
                                 src='/static/images/icons/information_icon.webp'
@@ -230,7 +234,35 @@ const Epochs = ({ epochs, blocksPerEpoch, showCalculatingEpochs, fetchingEpochs,
                                 width={200}
                                 content={
                                     <>
-                                        <span>Number of withdrawals included in the epoch</span>
+                                        <span>Number of eth2 deposits and withdrawals included in the epoch</span>
+                                    </>
+                                }
+                                top='34px'
+                                polygonRight
+                            />
+                        </TooltipContainer>
+                    </div>
+                    <div>
+                        <p className='w-32 uppercase mx-auto text-center'>{calculatingText}</p>
+                    </div>
+                </div>
+
+                <div className='flex flex-col w-full'>
+                    <div className='flex gap-x-1 items-center justify-center mb-1'>
+                    <p className='mt-1 font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Slashing P / A</p>
+                        <TooltipContainer>
+                            <CustomImage
+                                src='/static/images/icons/information_icon.webp'
+                                alt='Attestation Accuracy information'
+                                width={24}
+                                height={24}
+                            />
+
+                            <TooltipResponsive
+                                width={200}
+                                content={
+                                    <>
+                                        <span>Number of new proposer and attester slashings included in the epoch</span>
                                     </>
                                 }
                                 top='34px'
@@ -395,16 +427,21 @@ const Epochs = ({ epochs, blocksPerEpoch, showCalculatingEpochs, fetchingEpochs,
 
             <LargeTableHeader
                 text='Attestations'
-                width='13%'
+                width='15%'
                 tooltipContent={<TooltipResponsive width={220} content={<span>Number of attestations included in blocks in the epochs</span>} top='34px' />}
             />
 
             <LargeTableHeader
-                text='Withdrawals'
-                width='13%'
+                text='Deposits/Withdrawals'
+                width='25%'
                 tooltipContent={<TooltipResponsive width={150} content={<span>Number of withdrawals included in the epoch</span>} top='34px' />}
             />
 
+            <LargeTableHeader
+                text='Slashing P / A'
+                width='18%'
+                tooltipContent={<TooltipResponsive width={150} content={<span>Number of new proposer and attester slashings included in the epoch</span>} top='34px' />}
+            />
 
             <LargeTableHeader
                 text='Blocks'
@@ -479,12 +516,16 @@ const Epochs = ({ epochs, blocksPerEpoch, showCalculatingEpochs, fetchingEpochs,
                         <LinkEpoch epoch={epoch.f_epoch} mxAuto />
                     </div>
 
-                    <div className='w-[13%] flex flex-col text-center'>
-                        <p>{epoch.f_num_att}</p>
+                    <div className='w-[15%] flex flex-col text-center'>
+                        <p>{epoch?.f_num_att}</p>
                     </div>
 
-                    <div className='w-[13%] flex flex-col text-center'>
-                        <p>{epoch.f_withdrawals_num}</p>
+                    <div className='w-[25%] flex flex-col text-center'>
+                        <p>{epoch?.f_deposits_num}/{epoch?.f_withdrawals_num}</p>
+                    </div>
+
+                    <div className='w-[18%] flex flex-col text-center'>
+                        <p>{epoch?.f_new_proposer_slashings}/{epoch?.f_new_attester_slashings}</p>
                     </div>
 
                     <div className='w-[15%] pt-3.5 mb-5'>
@@ -662,7 +703,7 @@ const Epochs = ({ epochs, blocksPerEpoch, showCalculatingEpochs, fetchingEpochs,
 
                     <div className='flex flex-col gap-x-4 w-full'>
                         <div className='flex gap-x-1 justify-center mb-1'>
-                            <p className='mt-1 font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Withdrawals</p>
+                            <p className='mt-1 font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Deposits/Withdrawals</p>
                             <TooltipContainer>
                                 <CustomImage
                                     src='/static/images/icons/information_icon.webp'
@@ -675,7 +716,7 @@ const Epochs = ({ epochs, blocksPerEpoch, showCalculatingEpochs, fetchingEpochs,
                                     width={220}
                                     content={
                                         <>
-                                            <span>Number of withdrawals included in the epoch</span>
+                                            <span>Number of eth2 deposits and withdrawals included in the epoch</span>
                                         </>
                                     }
                                     top='34px'
@@ -683,9 +724,37 @@ const Epochs = ({ epochs, blocksPerEpoch, showCalculatingEpochs, fetchingEpochs,
                             </TooltipContainer>
                         </div>
                         <div className='text-center'>
-                            <p>{epoch?.f_withdrawals_num}</p>
+                            <p>{epoch?.f_deposits_num}/{epoch?.f_withdrawals_num}</p>
                         </div>
                     </div>
+
+                    <div className='flex flex-col gap-x-4 w-full'>
+                        <div className='flex gap-x-1 justify-center mb-1'>
+                            <p className='mt-1 font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Slashing P / A</p>
+                            <TooltipContainer>
+                                <CustomImage
+                                    src='/static/images/icons/information_icon.webp'
+                                    alt='Time information'
+                                    width={24}
+                                    height={24}
+                                />
+
+                                <TooltipResponsive
+                                    width={220}
+                                    content={
+                                        <>
+                                            <span>Number of new proposer and attester slashings included in the epoch</span>
+                                        </>
+                                    }
+                                    top='34px'
+                                />
+                            </TooltipContainer>
+                        </div>
+                        <div className='text-center'>
+                            <p>{epoch?.f_new_proposer_slashings}/{epoch?.f_new_attester_slashings}</p>
+                        </div>
+                    </div>
+
 
                     <div className='flex flex-col w-full'>
                         <div className='flex gap-x-1 justify-center mb-1'>
