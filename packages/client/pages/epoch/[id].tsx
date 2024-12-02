@@ -160,8 +160,7 @@ const EpochComponent = ({ id, network }: Props) => {
             setLoadingSlots(false);
         }
     };
-    console.log(id);
-    console.log(epoch);
+
     // Epoch stats card
     const getContentEpochStats = () => (
         <div
@@ -334,7 +333,7 @@ const EpochComponent = ({ id, network }: Props) => {
             <div className='flex flex-row items-center gap-x-5'>
                     <p className='w-40 sm:w-60 text-[var(--black)] dark:text-[var(--white)]'>Avg. Validator Balance:</p>
                     <p className='text-[var(--black)] dark:text-[var(--white)]'>
-                        {(epoch.f_total_balance_eth / epoch?.f_num_active_vals).toFixed(2)} ETH
+                        {((epoch?.f_total_balance_eth ?? 0) / (epoch?.f_num_active_vals ?? 0)).toFixed(2)} ETH
                     </p>
             </div>
         </div>
