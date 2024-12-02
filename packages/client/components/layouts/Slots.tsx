@@ -16,6 +16,7 @@ import { LargeTable, LargeTableHeader, LargeTableRow, SmallTable, SmallTableCard
 
 // Types
 import { Slot } from '../../types';
+import { getShortAddress } from '../../helpers/addressHelper';
 
 // Props
 type Props = {
@@ -55,7 +56,7 @@ const Slots = ({ slots, fetchingSlots }: Props) => {
             console.log(error);
         }
     };
-
+    console.log(slots);
     // Slots Large View
     const getContentSlotsLargeView = () => (
         <LargeTable minWidth={850} noRowsText='No Slots' fetchingRows={fetchingSlots}>
@@ -64,6 +65,13 @@ const Slots = ({ slots, fetchingSlots }: Props) => {
             <LargeTableHeader text='Proposer' width='15%' />
             <LargeTableHeader text='Slot' width='15%' />
             <LargeTableHeader text='Time' width='10%' />
+            <LargeTableHeader text='Root Hash' width='15%' />
+            <LargeTableHeader text='Att' width='10%' />
+            <LargeTableHeader text='Sync Agg %' width='12%' />
+
+            <LargeTableHeader text='Deposits' width='10%' />
+            <LargeTableHeader text='S- P / A' width='10%' />
+            <LargeTableHeader text='Exits' width='10%' />
             <LargeTableHeader text='Withdrawals' width='15%' />
 
             {slots.map(slot => (
@@ -83,7 +91,7 @@ const Slots = ({ slots, fetchingSlots }: Props) => {
                     </div>
 
                     <div className='w-[15%] md:hover:underline underline-offset-4 decoration-2 text-[var(--darkPurple)] dark:text-[var(--purple)]'>
-                        <LinkValidator validator={slot.f_val_idx} mxAuto />
+                        <LinkValidator validator={slot["pd.f_val_idx"]} mxAuto />
                     </div>
 
                     <div className='w-[15%] md:hover:underline underline-offset-4 decoration-2 text-[var(--darkPurple)] dark:text-[var(--purple)]'>
@@ -98,6 +106,18 @@ const Slots = ({ slots, fetchingSlots }: Props) => {
                             {new Date(blockGenesis + Number(slot.f_proposer_slot) * 12000).toLocaleTimeString('ja-JP')}
                         </span>
                     </div>
+
+                    <p className='w-[15%] text-center'>{(slot.f_block) ? getShortAddress(slot.f_block) : "N/A"}</p>
+
+                    <p className='w-[10%] text-center'>{slot.f_attestations}</p>
+
+                    <p className='w-[10%] text-center'>{(slot.f_sync_bits * 100 / 512).toFixed(2)}%</p>
+
+                    <p className='w-[10%] text-center'>{slot.f_deposits}</p>
+
+                    <p className='w-[10%] text-center'>{slot.f_proposer_slashings}/{slot.f_attester_slashings}</p>
+
+                    <p className='w-[10%] text-center'>{slot.f_voluntary_exits}</p>
 
                     <p className='w-[15%] text-center'>{(slot.withdrawals / 10 ** 9).toLocaleString()} ETH</p>
                 </LargeTableRow>

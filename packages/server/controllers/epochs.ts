@@ -24,7 +24,10 @@ export const getEpochsStatistics = async (req: Request, res: Response) => {
                             f_missing_source,
                             f_missing_target,
                             f_missing_head,
-                            f_withdrawals_num
+                            f_withdrawals_num,
+                            f_deposits_num,
+                            f_new_proposer_slashings,
+                            f_new_attester_slashings
                         FROM
                             t_epoch_metrics_summary
                         ORDER BY
@@ -112,13 +115,22 @@ export const getEpochById = async (req: Request, res: Response) => {
                         SELECT
                             f_epoch,
                             f_slot,
+                            f_num_att,
+                            f_deposits_num,
+                            f_withdrawals_num,
                             f_num_att_vals,
                             f_num_active_vals,
                             f_att_effective_balance_eth,
                             f_total_effective_balance_eth,
                             f_missing_source,
                             f_missing_target,
-                            f_missing_head
+                            f_missing_head,
+                            f_num_slashed_vals,
+                            f_num_active_vals,
+                            f_num_exited_vals,
+                            f_num_in_activation_vals,
+                            f_total_balance_eth
+
                         FROM
                             t_epoch_metrics_summary
                         WHERE
@@ -183,11 +195,22 @@ export const getSlotsByEpoch = async (req: Request, res: Response) => {
                             pd.f_val_idx,
                             pd.f_proposer_slot,
                             pd.f_proposed,
-                            pk.f_pool_name
+                            pk.f_pool_name,
+                            hd.f_block,
+                            bm.f_attestations,
+                            bm.f_sync_bits,
+                            bm.f_deposits,
+                            bm.f_attester_slashings,
+                            bm.f_proposer_slashings,
+                            bm.f_voluntary_exits
                         FROM
                             t_proposer_duties pd
                         LEFT OUTER JOIN
                             t_eth2_pubkeys pk ON pd.f_val_idx = pk.f_val_idx
+                        LEFT OUTER JOIN
+                            t_head_events hd ON CAST(pd.f_proposer_slot AS String) = CAST(hd.f_slot AS String)
+                        LEFT OUTER JOIN
+                            t_block_metrics bm ON CAST(pd.f_proposer_slot AS String) = CAST(bm.f_slot AS String)
                         WHERE
                             CAST((pd.f_proposer_slot / 32) AS UInt64) = ${id}
                         ORDER BY

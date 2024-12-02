@@ -185,6 +185,13 @@ const EpochComponent = ({ id, network }: Props) => {
             </div>
 
             <div className='flex flex-row items-center gap-x-5'>
+                    <p className='w-40 sm:w-60 text-[var(--black)] dark:text-[var(--white)]'>Deposits:</p>
+                    <p className='text-[var(--black)] dark:text-[var(--white)]'>
+                        {epoch?.f_deposits_num.toLocaleString()}
+                    </p>
+            </div>
+
+            <div className='flex flex-row items-center gap-x-5'>
                 <p className='w-40 sm:w-60 text-[var(--black)] dark:text-[var(--white)]'>Withdrawals:</p>
                 <p className='text-[var(--black)] dark:text-[var(--white)]'>
                     {epoch?.f_withdrawals_num} ({((epoch?.withdrawals ?? 0) / 10 ** 9).toLocaleString()} ETH)
