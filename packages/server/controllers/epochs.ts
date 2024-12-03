@@ -192,17 +192,17 @@ export const getSlotsByEpoch = async (req: Request, res: Response) => {
             clickhouseClient.query({
                 query: `
                         SELECT
-                            pd.f_val_idx,
-                            pd.f_proposer_slot,
-                            pd.f_proposed,
-                            pk.f_pool_name,
-                            hd.f_block,
-                            bm.f_attestations,
-                            bm.f_sync_bits,
-                            bm.f_deposits,
-                            bm.f_attester_slashings,
-                            bm.f_proposer_slashings,
-                            bm.f_voluntary_exits
+                            pd.f_val_idx AS f_val_idx,
+                            pd.f_proposer_slot AS f_proposer_slot,
+                            pd.f_proposed AS f_proposed,
+                            pk.f_pool_name AS f_pool_name,
+                            hd.f_block AS f_block,
+                            bm.f_attestations AS f_attestations,
+                            bm.f_sync_bits AS f_sync_bits,
+                            bm.f_deposits AS f_deposits,
+                            bm.f_attester_slashings AS f_attester_slashings,
+                            bm.f_proposer_slashings AS f_proposer_slashings,
+                            bm.f_voluntary_exits AS f_voluntary_exits
                         FROM
                             t_proposer_duties pd
                         LEFT OUTER JOIN
