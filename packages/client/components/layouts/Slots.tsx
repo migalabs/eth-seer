@@ -56,7 +56,7 @@ const Slots = ({ slots, fetchingSlots }: Props) => {
             console.log(error);
         }
     };
-    console.log(slots);
+
     // Slots Large View
     const getContentSlotsLargeView = () => (
         <LargeTable minWidth={850} noRowsText='No Slots' fetchingRows={fetchingSlots}>

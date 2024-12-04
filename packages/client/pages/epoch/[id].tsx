@@ -301,9 +301,10 @@ const EpochComponent = ({ id, network }: Props) => {
                     )}
                 </div>
             </div>
-
+            <p className="text-xl font-semibold">Validator Overview</p>
+            <hr className="h-2"></hr>
             <div className='flex flex-row items-center gap-x-5'>
-                    <p className='w-40 sm:w-60 text-[var(--black)] dark:text-[var(--white)]'>Validators:</p>
+                    <p className='w-40 sm:w-60 text-[var(--black)] dark:text-[var(--white)]'>Active Validators:</p>
                     <p className='text-[var(--black)] dark:text-[var(--white)]'>
                         {epoch?.f_num_active_vals.toLocaleString()}
                     </p>
