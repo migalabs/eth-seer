@@ -160,7 +160,7 @@ const EpochComponent = ({ id, network }: Props) => {
             setLoadingSlots(false);
         }
     };
-    console.log(id > 74239);
+
     // Epoch stats card
     const getContentEpochStats = () => (
         <div
