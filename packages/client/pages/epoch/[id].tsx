@@ -196,7 +196,7 @@ const EpochComponent = ({ id, network }: Props) => {
                 </div>
             </div>
 
-            {id && Number(id) > 74239 && (
+            {id && (Number(id) > 74239 || network !== "mainnet") && (
                 <div className='flex flex-col'>
                     <p className='w-40 sm:w-60 text-[var(--black)] dark:text-[var(--white)]'>Attestation Accuracy:</p>
                     {epoch && epoch.f_epoch === undefined && (
@@ -256,7 +256,7 @@ const EpochComponent = ({ id, network }: Props) => {
                 </div>
             )}
             
-            {id && Number(id) > 74239 && (
+            {id && (Number(id) > 74239 || network !== "mainnet")  && (
                 <div className='flex flex-col'>
                     <p className='w-40 sm:w-60 text-[var(--black)] dark:text-[var(--white)]'>Voting Participation:</p>
                     {epoch && epoch.f_epoch === undefined && (
