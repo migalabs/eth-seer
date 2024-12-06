@@ -83,17 +83,6 @@ const TransactionPage = ({ hash, network }: Props) => {
         }
     };
 
-    // Tabs
-    const getSelectedTab = () => {
-        switch (tabPageIndex) {
-            case 0:
-                return getOverview();
-
-            case 1:
-                return getMoreDetails();
-        }
-    };
-
     const getOverview = () => {
         return (
             <div
@@ -102,7 +91,7 @@ const TransactionPage = ({ hash, network }: Props) => {
                     boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
                 }}
             >
-                <div className='flex flex-col gap-y-5 md:gap-y-8 '>
+                <div className='flex flex-col gap-y-4'>
                     <Card title='Transaction Hash' content={<AddressCopy address={hash} />} />
                     <Card title='Block' content={<LinkBlock block={transaction?.f_el_block_number} />} />
                     <Card
@@ -120,35 +109,26 @@ const TransactionPage = ({ hash, network }: Props) => {
                         title='Gas Price'
                         text={`${((transaction?.f_gas_price ?? 0) / 10 ** 9).toLocaleString()} GWEI`}
                     />
-                </div>
-            </div>
-        );
-    };
-
-    const getMoreDetails = () => {
-        return (
-            <div
-                className='rounded-md mt-4 p-8 border-2 border-white text-[var(--black)] dark:text-[var(--white)] bg-[var(--bgMainLightMode)] dark:bg-[var(--bgFairDarkMode)]'
-                style={{
-                    boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
-                }}
-            >
-                <div className='flex flex-col mx-auto gap-y-5 md:gap-y-8 '>
-                    <Card title='Usage Gas' text={Number(transaction?.f_gas).toLocaleString() ?? ''} />
-                    <Card title='Nonce' text={transaction?.f_nonce.toString() ?? '0'} />
-                    <Card title='Txn Type' text={transaction?.f_tx_type.toString() ?? ''} />
-                    <Card
-                        title='Input Data'
-                        content={
-                            transaction?.f_data && (
-                                <textarea
-                                    className='flex-1 max-w-[60%] h-24 p-2 rounded-md border-2 border-white text-black text-[14px] font-normal'
-                                    value={transaction?.f_data}
-                                    readOnly
-                                />
-                            )
-                        }
-                    />
+                    <details>
+                        <summary className="text-lg text-purple-400 cursor-pointer hover:text-purple-600">More Details</summary>
+                        <div className="flex flex-col gap-y-5 md:gap-y-8 mt-8">
+                            <Card title='Usage Gas' text={Number(transaction?.f_gas).toLocaleString() ?? ''} />
+                            <Card title='Nonce' text={transaction?.f_nonce.toString() ?? '0'} />
+                            <Card title='Txn Type' text={transaction?.f_tx_type.toString() ?? ''} />
+                            <Card
+                                title='Input Data'
+                                content={
+                                    transaction?.f_data && (
+                                        <textarea
+                                            className='flex-1 max-w-[60%] h-24 p-2 rounded-md border-2 border-white text-black text-[14px] font-normal'
+                                            value={transaction?.f_data}
+                                            readOnly
+                                        />
+                                    )
+                                }
+                            />
+                        </div>
+                    </details>
                 </div>
             </div>
         );
@@ -180,17 +160,12 @@ const TransactionPage = ({ hash, network }: Props) => {
                                 isSelected={tabPageIndex === 0}
                                 onClick={() => setTabPageIndex(0)}
                             />
-                            <TabHeader
-                                header='More Details'
-                                isSelected={tabPageIndex === 1}
-                                onClick={() => setTabPageIndex(1)}
-                            />
                         </div>
 
                         <ShareMenu type='transaction' />
                     </div>
 
-                    {getSelectedTab()}
+                    {getOverview()}
                 </div>
             )}
 
