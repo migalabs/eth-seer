@@ -85,7 +85,6 @@ export type Slot = {
     f_attester_slashings: number;
     f_proposer_slashings: number;
     f_voluntary_exits: number;
-    "pd.f_val_idx": number;
     f_epoch?: number;
     withdrawals: number;
 };
@@ -172,5 +171,6 @@ export type SlashedVal = {
     f_slashing_reason: string;
     f_slot: number;
     f_epoch: number;
-    f_pool_name: string;
+    f_slashed_validator_pool_name: string;
+    f_slashed_by_validator_pool_name: string;
 };
