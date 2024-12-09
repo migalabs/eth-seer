@@ -13,6 +13,8 @@ import LinkSlot from '../../components/ui/LinkSlot';
 import LinkEntity from '../../components/ui/LinkEntity';
 import BlockState from '../ui/BlockState';
 import { LargeTable, LargeTableHeader, LargeTableRow, SmallTable, SmallTableCard } from '../ui/Table';
+import TooltipResponsive from '../ui/TooltipResponsive';
+
 
 // Types
 import { Slot } from '../../types';
@@ -60,23 +62,53 @@ const Slots = ({ slots, fetchingSlots }: Props) => {
     // Slots Large View
     const getContentSlotsLargeView = () => (
         <LargeTable minWidth={850} noRowsText='No Slots' fetchingRows={fetchingSlots}>
-            <LargeTableHeader text='Block' width='17%' />
-            <LargeTableHeader text='Entity' width='28%' />
-            <LargeTableHeader text='Proposer' width='15%' />
-            <LargeTableHeader text='Slot' width='15%' />
+            <LargeTableHeader text='Block' width='11%' />
+            <LargeTableHeader text='Entity' width='25%' />
+            <LargeTableHeader text='Proposer' width='12%' />
+            <LargeTableHeader text='Slot' width='12%' />
             <LargeTableHeader text='Time' width='10%' />
             <LargeTableHeader text='Root Hash' width='15%' />
-            <LargeTableHeader text='Att' width='10%' />
-            <LargeTableHeader text='Sync Agg %' width='12%' />
+            <LargeTableHeader text='Att' width='10%' tooltipContent={
+                    <TooltipResponsive
+                        width={220}
+                        content={
+                            <>
+                                <span>Attestations included in slot</span>
+                            </>
+                        }
+                        top='34px'
+                    />
+                }/>
+            <LargeTableHeader text='Sync Agg %' width='15%' tooltipContent={
+                    <TooltipResponsive
+                        width={220}
+                        content={
+                            <>
+                                <span>Sync Aggregate Participation</span>
+                            </>
+                        }
+                        top='34px'
+                    />
+                }/>
 
             <LargeTableHeader text='Deposits' width='10%' />
-            <LargeTableHeader text='S- P / A' width='10%' />
+            <LargeTableHeader text='S- P / A' width='10%' tooltipContent={
+                    <TooltipResponsive
+                        width={220}
+                        content={
+                            <>
+                                <span>Slashings Proposer / Attester</span>
+                            </>
+                        }
+                        top='34px'
+                    />
+                }/>
             <LargeTableHeader text='Exits' width='10%' />
             <LargeTableHeader text='Withdrawals' width='15%' />
 
             {slots.map(slot => (
                 <LargeTableRow key={slot.f_proposer_slot}>
-                    <div className='w-[17%] flex items-center justify-center'>
+                    <div className='w-[11%] flex items-center justify-center'>
                         <BlockState
                             poolName={slot.f_pool_name}
                             proposed={slot.f_proposed}
@@ -86,15 +118,15 @@ const Slots = ({ slots, fetchingSlots }: Props) => {
                         />
                     </div>
 
-                    <div className='w-[28%] uppercase md:hover:underline underline-offset-4 decoration-2 text-[var(--darkPurple)] dark:text-[var(--purple)]'>
+                    <div className='w-[25%] uppercase md:hover:underline underline-offset-4 decoration-2 text-[var(--darkPurple)] dark:text-[var(--purple)]'>
                         <LinkEntity entity={slot.f_pool_name} mxAuto />
                     </div>
 
-                    <div className='w-[15%] md:hover:underline underline-offset-4 decoration-2 text-[var(--darkPurple)] dark:text-[var(--purple)]'>
+                    <div className='w-[12%] md:hover:underline underline-offset-4 decoration-2 text-[var(--darkPurple)] dark:text-[var(--purple)]'>
                         <LinkValidator validator={slot.f_val_idx} mxAuto />
                     </div>
 
-                    <div className='w-[15%] md:hover:underline underline-offset-4 decoration-2 text-[var(--darkPurple)] dark:text-[var(--purple)]'>
+                    <div className='w-[12%] md:hover:underline underline-offset-4 decoration-2 text-[var(--darkPurple)] dark:text-[var(--purple)]'>
                         <LinkSlot slot={slot.f_proposer_slot} mxAuto />
                     </div>
 
@@ -111,7 +143,7 @@ const Slots = ({ slots, fetchingSlots }: Props) => {
 
                     <p className='w-[10%] text-center'>{slot.f_attestations}</p>
 
-                    <p className='w-[12%] text-center'>{(slot.f_sync_bits * 100 / 512).toFixed(2)}%</p>
+                    <p className='w-[15%] text-center'>{(slot.f_sync_bits * 100 / 512).toFixed(2)}%</p>
 
                     <p className='w-[10%] text-center'>{slot.f_deposits}</p>
 
@@ -119,7 +151,7 @@ const Slots = ({ slots, fetchingSlots }: Props) => {
 
                     <p className='w-[10%] text-center'>{slot.f_voluntary_exits}</p>
 
-                    <p className='w-[15%] text-center'>{(slot.withdrawals / 10 ** 9).toLocaleString()} ETH</p>
+                    <p className='w-[15%] text-center'>{slot.withdrawals}({(slot.withdrawals / 10 ** 9).toLocaleString()}) ETH</p>
                 </LargeTableRow>
             ))}
         </LargeTable>
