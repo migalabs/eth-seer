@@ -87,6 +87,7 @@ export type Slot = {
     f_voluntary_exits: number;
     f_epoch?: number;
     withdrawals: number;
+    num_withdrawals: number;
 };
 
 export type Withdrawal = {

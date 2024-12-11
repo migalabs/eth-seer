@@ -234,12 +234,22 @@ export const getSlotsByEpoch = async (req: Request, res: Response) => {
 
         const slotsEpochResult: any[] = await slotsEpochResultSet.json();
         const withdrawalsResult: any[] = await withdrawalsResultSet.json();
+        const withdrawalsCounts:any[] = withdrawalsResult.reduce((acc, withdrawal) => {
+            if (!acc[withdrawal.f_slot]) {
+                acc[withdrawal.f_slot] = { count: 0 }; 
+            } 
+            acc[withdrawal.f_slot].count += 1;
+            return acc;
+        }, {});
+        const slotCount:any[] = Object.entries(withdrawalsCounts).map(([slot, data]) => ({ slot: parseInt(slot), count: data.count}));
 
         const slots = slotsEpochResult.map((slot: any) => ({
             ...slot,
             withdrawals: withdrawalsResult
                 .filter((withdrawal: any) => withdrawal.f_slot === slot.f_proposer_slot)
                 .reduce((acc: number, withdrawal: any) => acc + Number(withdrawal.f_amount), 0),
+            num_withdrawals: slotCount
+                .find(result => result.slot === slot.f_proposer_slot)?.count || 0,
         }));
 
         res.json({
