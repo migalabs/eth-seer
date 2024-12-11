@@ -1,8 +1,11 @@
 import React from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
+
+import axiosClient from '../../config/axios';
 
 // Hooks
 import useLargeView from '../../hooks/useLargeView';
-
 // Components
 import LinkValidator from '../ui/LinkValidator';
 import LinkSlot from '../ui/LinkSlot';
@@ -12,7 +15,6 @@ import { LargeTable, LargeTableHeader, LargeTableRow, SmallTable, SmallTableCard
 
 // Types
 import { SlashedVal } from '../../types';
-import Link from 'next/link';
 
 // Props
 type Props = {
@@ -21,7 +23,32 @@ type Props = {
 
 const SlashedVals = ({slashedVals}: Props) => {
     // Large View Hook
+    const router = useRouter();
+    const { network } = router.query;
+
     const isLargeView = useLargeView();
+    const [blockGenesis, setBlockGenesis] = useState(0);
+
+    useEffect(() => {
+        if (network && blockGenesis === 0) {
+            getBlockGenesis(network as string);
+        }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [network]);
+
+    const getBlockGenesis = async (network: string) => {
+        try {
+            const genesisBlock = await axiosClient.get('/api/networks/block/genesis', {
+                params: {
+                    network,
+                },
+            });
+            setBlockGenesis(genesisBlock.data.block_genesis);
+        } catch (error) {
+            console.log(error);
+        }
+    };
     // SLashed Validators Large View
     const getContentSlashedValsLargeView = () => (
         <LargeTable
@@ -31,6 +58,7 @@ const SlashedVals = ({slashedVals}: Props) => {
         showRowsWhileFetching={false}>
             <LargeTableHeader text='Slashed Validators' width='25%' />
             <LargeTableHeader text='Slashed by' width='25%' />
+            <LargeTableHeader text='Time' width='25%' />
             <LargeTableHeader text='Reason' width='15%' />
             <LargeTableHeader text='Slot' width='15%' />
             <LargeTableHeader text='Epoch' width='15%' />
@@ -64,6 +92,10 @@ const SlashedVals = ({slashedVals}: Props) => {
                         </div>
                     </div>
 
+                    <div className='w-[10%] flex flex-col pt-2.5 pb-2.5'>
+                        <p>{new Date(blockGenesis + slashedVals.f_slot * 12000).toLocaleDateString('ja-JP')}</p>
+                        <p>{new Date(blockGenesis + slashedVals.f_slot * 12000).toLocaleTimeString('ja-JP')}</p>
+                    </div>
                     <p className='w-[15%] text-center'>{slashedVals.f_slashing_reason.split(/(?=[A-Z])/).join(" ")}</p>
 
                     <div className='w-[15%] md:hover:underline underline-offset-4 decoration-2 text-[var(--darkPurple)] dark:text-[var(--purple)]'>
@@ -107,6 +139,22 @@ const SlashedVals = ({slashedVals}: Props) => {
                                 </div>
                             </div>
                         </div>
+
+                        <div className='flex items-center justify-between py-1'>
+                                <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Time:</p>
+                                <div className='flex flex-col text-end'>
+                                    <p>
+                                        {new Date(
+                                            blockGenesis + Number(slashedVals.f_slot) * 12000
+                                        ).toLocaleDateString('ja-JP')}
+                                    </p>
+                                    <p>
+                                        {new Date(
+                                            blockGenesis + Number(slashedVals.f_slot) * 12000
+                                        ).toLocaleTimeString('ja-JP')}
+                                    </p>
+                                </div>
+                            </div>
 
                         <div className='flex flex-col'>
                             <div className='flex items-center justify-between py-1 gap-2'>
