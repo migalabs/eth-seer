@@ -90,7 +90,8 @@ export const getSlots = async (req: Request, res: Response) => {
                             bm.f_attester_slashings AS f_attester_slashings,
                             bm.f_proposer_slashings AS f_proposer_slashings,
                             bm.f_voluntary_exits AS f_voluntary_exits,
-                            COALESCE(SUM(w.f_amount), 0) AS withdrawals
+                            COALESCE(SUM(w.f_amount), 0) AS withdrawals,
+                            COALESCE(COUNT(w.f_slot), 0) AS num_withdrawals
                         FROM
                             t_proposer_duties pd
                         LEFT OUTER JOIN
