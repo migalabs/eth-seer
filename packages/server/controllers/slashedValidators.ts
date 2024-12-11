@@ -36,11 +36,9 @@ export const getSlashedVals = async (req: Request, res: Response) => {
             chClient.query({
                 query: `
                         SELECT
-                            f_num_slashed_vals
+                            COUNT(*) AS count
                         FROM
-                            t_epoch_metrics_summary
-                        ORDER BY f_timestamp DESC
-                        LIMIT 1
+                            t_slashings
                     `,
                 format: 'JSONEachRow',
             }),
@@ -51,7 +49,7 @@ export const getSlashedVals = async (req: Request, res: Response) => {
 
         res.json({
             slashedValidator: slashedValidatorResult,
-            totalCount: Number(countResult[0].f_num_slashed_vals),
+            totalCount: Number(countResult[0].count),
         });
     } catch (error) {
         console.log(error);
