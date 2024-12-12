@@ -6,12 +6,15 @@ import axiosClient from '../../config/axios';
 
 // Hooks
 import useLargeView from '../../hooks/useLargeView';
+
 // Components
 import LinkValidator from '../ui/LinkValidator';
 import LinkSlot from '../ui/LinkSlot';
 import LinkEntity from '../ui/LinkEntity';
 import LinkEpoch from '../ui/LinkEpoch';
 import { LargeTable, LargeTableHeader, LargeTableRow, SmallTable, SmallTableCard } from '../ui/Table';
+import TooltipContainer from '../ui/TooltipContainer';
+import TooltipResponsive from '../ui/TooltipResponsive';
 
 // Types
 import { SlashedVal } from '../../types';
@@ -20,6 +23,18 @@ import { SlashedVal } from '../../types';
 type Props = {
     slashedVals: SlashedVal[];
 };
+
+const Age = (timestampDay: any) => {
+    const slashedDate: any = new Date(timestampDay);
+    const todaysDate:any = new Date();
+    const difference = todaysDate - slashedDate;
+    const Hours = Math.floor(difference / (1000 * 60 * 60));
+    const Days = Math.floor(Hours / 24);
+    const remainingHours = Hours % 24;
+
+    const age = `${Days} days ${remainingHours} hours ago`;
+    return age;
+}
 
 const SlashedVals = ({slashedVals}: Props) => {
     // Large View Hook
@@ -56,9 +71,9 @@ const SlashedVals = ({slashedVals}: Props) => {
         noRowsText='No Slashed Validators'
         fetchingRows={false}
         showRowsWhileFetching={false}>
-            <LargeTableHeader text='Slashed Validators' width='25%' />
-            <LargeTableHeader text='Slashed by' width='25%' />
-            <LargeTableHeader text='Time' width='25%' />
+            <LargeTableHeader text='Slashed Validators' width='20%' />
+            <LargeTableHeader text='Slashed by' width='20%' />
+            <LargeTableHeader text='Time' width='10%' />
             <LargeTableHeader text='Reason' width='15%' />
             <LargeTableHeader text='Slot' width='15%' />
             <LargeTableHeader text='Epoch' width='15%' />
@@ -66,7 +81,7 @@ const SlashedVals = ({slashedVals}: Props) => {
             {slashedVals.map(slashedVals => (
                 <LargeTableRow key={slashedVals.f_slashed_validator_index}>
 
-                    <div className='w-[25%] flex justify-center items-center gap-3'>
+                    <div className='w-[20%] flex justify-center items-center gap-3'>
                         <div className=' md:hover:underline underline-offset-4 decoration-2 text-[var(--darkPurple)] dark:text-[var(--purple)]'>
                             <LinkValidator validator={slashedVals.f_slashed_validator_index} mxAuto />
                         </div>
@@ -79,7 +94,7 @@ const SlashedVals = ({slashedVals}: Props) => {
                         </div>
                     </div>
                     
-                    <div className='w-[25%] flex justify-center items-center gap-3'>
+                    <div className='w-[20%] flex justify-center items-center gap-3'>
                         <div className=' md:hover:underline underline-offset-4 decoration-2 text-[var(--darkPurple)] dark:text-[var(--purple)]'>
                             <LinkValidator validator={slashedVals.f_slashed_by_validator_index} mxAuto />
                         </div>
@@ -93,9 +108,24 @@ const SlashedVals = ({slashedVals}: Props) => {
                     </div>
 
                     <div className='w-[10%] flex flex-col pt-2.5 pb-2.5'>
-                        <p>{new Date(blockGenesis + slashedVals.f_slot * 12000).toLocaleDateString('ja-JP')}</p>
-                        <p>{new Date(blockGenesis + slashedVals.f_slot * 12000).toLocaleTimeString('ja-JP')}</p>
+                        <TooltipContainer>
+                            <div>
+                                <p>{Age(blockGenesis + slashedVals.f_slot * 12000)}</p>
+                            </div>
+                            <TooltipResponsive
+                            width={120}
+                            content={
+                                <>
+                                    <p>{new Date(blockGenesis + slashedVals.f_slot * 12000).toLocaleDateString('ja-JP')}</p>
+                                    <p>{new Date(blockGenesis + slashedVals.f_slot * 12000).toLocaleTimeString('ja-JP')}</p>
+                                </>
+                            }
+                            top='34px'
+                            polygonCenter
+                            />
+                        </TooltipContainer>
                     </div>
+
                     <p className='w-[15%] text-center'>{slashedVals.f_slashing_reason.split(/(?=[A-Z])/).join(" ")}</p>
 
                     <div className='w-[15%] md:hover:underline underline-offset-4 decoration-2 text-[var(--darkPurple)] dark:text-[var(--purple)]'>
@@ -140,19 +170,25 @@ const SlashedVals = ({slashedVals}: Props) => {
                             </div>
                         </div>
 
-                        <div className='flex items-center justify-between py-1'>
+                        <div className='flex items-center justify-between py-1 gap-2'>
                                 <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Time:</p>
                                 <div className='flex flex-col text-end'>
-                                    <p>
-                                        {new Date(
-                                            blockGenesis + Number(slashedVals.f_slot) * 12000
-                                        ).toLocaleDateString('ja-JP')}
-                                    </p>
-                                    <p>
-                                        {new Date(
-                                            blockGenesis + Number(slashedVals.f_slot) * 12000
-                                        ).toLocaleTimeString('ja-JP')}
-                                    </p>
+                                    <TooltipContainer>
+                                        <div>
+                                            <p>{Age(blockGenesis + slashedVals.f_slot * 12000)}</p>
+                                        </div>
+                                        <TooltipResponsive
+                                        width={120}
+                                        content={
+                                            <>
+                                                <p>{new Date(blockGenesis + slashedVals.f_slot * 12000).toLocaleDateString('ja-JP')}</p>
+                                                <p>{new Date(blockGenesis + slashedVals.f_slot * 12000).toLocaleTimeString('ja-JP')}</p>
+                                            </>
+                                        }
+                                        top='34px'
+                                        polygonCenter
+                                        />
+                                    </TooltipContainer>
                                 </div>
                             </div>
 
