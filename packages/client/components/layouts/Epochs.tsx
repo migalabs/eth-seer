@@ -434,13 +434,13 @@ const Epochs = ({ epochs, blocksPerEpoch, showCalculatingEpochs, fetchingEpochs,
             <LargeTableHeader
                 text='Deposits/Withdrawals'
                 width='25%'
-                tooltipContent={<TooltipResponsive width={150} content={<span>Number of withdrawals included in the epoch</span>} top='34px' />}
+                tooltipContent={<TooltipResponsive width={200} content={<span>Number of eth2 deposits and withdrawals included in the epoch</span>} top='34px' />}
             />
 
             <LargeTableHeader
                 text='Slashing P / A'
                 width='18%'
-                tooltipContent={<TooltipResponsive width={150} content={<span>Number of new proposer and attester slashings included in the epoch</span>} top='34px' />}
+                tooltipContent={<TooltipResponsive width={200} content={<span>Number of new proposer and attester slashings included in the epoch</span>} top='34px' />}
             />
 
             <LargeTableHeader

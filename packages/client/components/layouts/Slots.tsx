@@ -151,7 +151,7 @@ const Slots = ({ slots, fetchingSlots }: Props) => {
 
                     <p className='w-[10%] text-center'>{slot.f_voluntary_exits}</p>
 
-                    <p className='w-[15%] text-center'>{slot.num_withdrawals}({(slot.withdrawals / 10 ** 9).toLocaleString()} ETH)</p>
+                    <p className='w-[15%] text-center'>{slot.num_withdrawals} ({(slot.withdrawals / 10 ** 9).toLocaleString()} ETH)</p>
                 </LargeTableRow>
             ))}
         </LargeTable>
