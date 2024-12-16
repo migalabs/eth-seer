@@ -439,13 +439,13 @@ const Epochs = ({ epochs, blocksPerEpoch, showCalculatingEpochs, fetchingEpochs,
 
             <LargeTableHeader
                 text='Slashing P / A'
-                width='18%'
+                width='19%'
                 tooltipContent={<TooltipResponsive width={200} content={<span>Number of new proposer and attester slashings included in the epoch</span>} top='34px' />}
             />
 
             <LargeTableHeader
                 text='Blocks'
-                width='15%'
+                width='11%'
                 tooltipContent={
                     <TooltipResponsive
                         width={220}
@@ -463,7 +463,7 @@ const Epochs = ({ epochs, blocksPerEpoch, showCalculatingEpochs, fetchingEpochs,
 
             <LargeTableHeader
                 text='Attestation Accuracy'
-                width='32%'
+                width='34%'
                 tooltipContent={
                     <TooltipResponsive
                         width={240}
@@ -481,7 +481,7 @@ const Epochs = ({ epochs, blocksPerEpoch, showCalculatingEpochs, fetchingEpochs,
 
             <LargeTableHeader
                 text='Voting Participation'
-                width='32%'
+                width='22%'
                 tooltipContent={
                     <TooltipResponsive
                         width={180}
@@ -528,8 +528,8 @@ const Epochs = ({ epochs, blocksPerEpoch, showCalculatingEpochs, fetchingEpochs,
                         <p>{epoch?.f_new_proposer_slashings}/{epoch?.f_new_attester_slashings}</p>
                     </div>
 
-                    <div className='w-[15%] pt-3.5 mb-5'>
-                        <p className='uppercase text-center'>Blocks</p>
+                    <div className='w-[14%] pt-3.5 mb-5 m-1'>
+                        <p className='uppercase text-center mb-2'>Blocks</p>
 
                         <ProgressTileBar
                             totalBlocks={epoch.proposed_blocks}
@@ -543,7 +543,7 @@ const Epochs = ({ epochs, blocksPerEpoch, showCalculatingEpochs, fetchingEpochs,
                         />
                     </div>
 
-                    <div className='w-[32%] mb-2'>
+                    <div className='w-[32%] m-2'>
                         <div className='flex gap-x-1 justify-center'>
                             <div className='flex-1'>
                                 <ProgressSmoothBar
@@ -601,7 +601,7 @@ const Epochs = ({ epochs, blocksPerEpoch, showCalculatingEpochs, fetchingEpochs,
                         </div>
                     </div>
 
-                    <div className='w-[32%] mb-2'>
+                    <div className='w-[20%] m-2'>
                         <ProgressSmoothBar
                             title='Attesting/Total active'
                             color='#343434'
