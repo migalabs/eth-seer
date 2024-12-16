@@ -141,17 +141,17 @@ const Slots = ({ slots, fetchingSlots }: Props) => {
 
                     <p className='w-[15%] text-center'>{(slot.f_block) ? getShortAddress(slot.f_block) : "N/A"}</p>
 
-                    <p className='w-[10%] text-center'>{slot.f_attestations}</p>
+                    <p className='w-[10%] text-center'>{(slot?.f_attestations === 0) ? "-" : slot.f_attestations}</p>
 
-                    <p className='w-[15%] text-center'>{(slot.f_sync_bits * 100 / 512).toFixed(2)}%</p>
+                    <p className='w-[15%] text-center'>{(slot?.f_attestations === 0) ? '-' : `${(slot.f_sync_bits * 100 / 512).toFixed(2)}%`}</p>
 
-                    <p className='w-[10%] text-center'>{slot.f_deposits}</p>
+                    <p className='w-[10%] text-center'>{(slot?.f_attestations === 0) ? '-' : slot.f_deposits}</p>
 
-                    <p className='w-[10%] text-center'>{slot.f_proposer_slashings}/{slot.f_attester_slashings}</p>
+                    <p className='w-[10%] text-center'>{(slot?.f_attestations === 0) ? '-' : `${slot.f_proposer_slashings}/${slot.f_attester_slashings}`}</p>
 
-                    <p className='w-[10%] text-center'>{slot.f_voluntary_exits}</p>
+                    <p className='w-[10%] text-center'>{(slot.f_attestations === 0) ? '-' : slot.f_voluntary_exits}</p>
 
-                    <p className='w-[15%] text-center'>{slot.num_withdrawals} ({(slot.withdrawals / 10 ** 9).toLocaleString()} ETH)</p>
+                    <p className='w-[15%] text-center'>{(slot.f_attestations === 0) ? '-' : `${slot.num_withdrawals} (${(slot.withdrawals / 10 ** 9).toLocaleString()}) ETH`}</p>
                 </LargeTableRow>
             ))}
         </LargeTable>
@@ -211,14 +211,14 @@ const Slots = ({ slots, fetchingSlots }: Props) => {
                                 <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>
                                     Attestations:
                                 </p>
-                                <p>{slot.f_attestations}</p>
+                                <p>{(slot?.f_attestations === 0) ? "-" : slot.f_attestations}</p>
                             </div>
 
                             <div className='flex items-center justify-between'>
                                 <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>
                                     Sync Agg %:
                                 </p>
-                                <p>{(slot.f_sync_bits * 100 / 512).toFixed(2)}%</p>
+                                <p>{(slot?.f_attestations === 0) ? '-' : (slot.f_sync_bits * 100 / 512).toFixed(2)}%</p>
                             </div>
 
                             <div className='flex items-center justify-between'>
@@ -232,21 +232,21 @@ const Slots = ({ slots, fetchingSlots }: Props) => {
                                 <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>
                                     Slashing P / A:
                                 </p>
-                                <p>{slot.f_proposer_slashings}/{slot.f_attester_slashings}</p>
+                                <p>{(slot?.f_attestations === 0) ? '-' : `${slot.f_proposer_slashings}/${slot.f_attester_slashings}`}</p>
                             </div>
 
                             <div className='flex items-center justify-between'>
                                 <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>
                                     Exits:
                                 </p>
-                                <p>{slot.f_voluntary_exits}</p>
+                                <p>{(slot.f_attestations === 0) ? '-' : slot.f_voluntary_exits}</p>
                             </div>
 
                             <div className='flex items-center justify-between'>
                                 <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>
                                     Withdrawals:
                                 </p>
-                                <p>{slot.num_withdrawals}({(slot.withdrawals / 10 ** 9).toLocaleString()} ETH)</p>
+                                <p>{(slot.f_attestations === 0) ? '-' : slot.num_withdrawals}({(slot.withdrawals / 10 ** 9).toLocaleString()} ETH)</p>
                             </div>
                         </div>
                     </div>
