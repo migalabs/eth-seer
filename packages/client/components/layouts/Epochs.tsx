@@ -555,7 +555,7 @@ const Epochs = ({ epochs, blocksPerEpoch, showCalculatingEpochs, fetchingEpochs,
                                     tooltipContent={
                                         <>
                                             <span>Missing Source: {epoch.f_missing_source?.toLocaleString()}</span>
-                                            <span>Attestations: {epoch.f_num_active_vals?.toLocaleString()}</span>
+                                            <span>Attestating Validators: {epoch.f_num_active_vals?.toLocaleString()}</span>
                                         </>
                                     }
                                     widthTooltip={220}
@@ -573,7 +573,7 @@ const Epochs = ({ epochs, blocksPerEpoch, showCalculatingEpochs, fetchingEpochs,
                                     tooltipContent={
                                         <>
                                             <span>Missing Target: {epoch.f_missing_target?.toLocaleString()}</span>
-                                            <span>Attestations: {epoch.f_num_active_vals?.toLocaleString()}</span>
+                                            <span>Attestasting Validators: {epoch.f_num_active_vals?.toLocaleString()}</span>
                                         </>
                                     }
                                     widthTooltip={220}
@@ -591,7 +591,7 @@ const Epochs = ({ epochs, blocksPerEpoch, showCalculatingEpochs, fetchingEpochs,
                                     tooltipContent={
                                         <>
                                             <span>Missing Head: {epoch.f_missing_head?.toLocaleString()}</span>
-                                            <span>Attestations: {epoch.f_num_active_vals?.toLocaleString()}</span>
+                                            <span>Attesting Validators: {epoch.f_num_active_vals?.toLocaleString()}</span>
                                         </>
                                     }
                                     widthTooltip={220}
@@ -830,7 +830,7 @@ const Epochs = ({ epochs, blocksPerEpoch, showCalculatingEpochs, fetchingEpochs,
                             tooltipContent={
                                 <>
                                     <span>Missing Source: {epoch.f_missing_source?.toLocaleString()}</span>
-                                    <span>Attestations: {epoch.f_num_active_vals?.toLocaleString()}</span>
+                                    <span>Attesting Validators: {epoch.f_num_active_vals?.toLocaleString()}</span>
                                 </>
                             }
                             widthTooltip={220}
@@ -845,7 +845,7 @@ const Epochs = ({ epochs, blocksPerEpoch, showCalculatingEpochs, fetchingEpochs,
                             tooltipContent={
                                 <>
                                     <span>Missing Target: {epoch.f_missing_target?.toLocaleString()}</span>
-                                    <span>Attestations: {epoch.f_num_active_vals?.toLocaleString()}</span>
+                                    <span>Attesting Validators: {epoch.f_num_active_vals?.toLocaleString()}</span>
                                 </>
                             }
                             widthTooltip={220}
@@ -860,7 +860,7 @@ const Epochs = ({ epochs, blocksPerEpoch, showCalculatingEpochs, fetchingEpochs,
                             tooltipContent={
                                 <>
                                     <span>Missing Head: {epoch.f_missing_head?.toLocaleString()}</span>
-                                    <span>Attestations: {epoch.f_num_active_vals?.toLocaleString()}</span>
+                                    <span>Attesting Validators: {epoch.f_num_active_vals?.toLocaleString()}</span>
                                 </>
                             }
                             widthTooltip={220}
