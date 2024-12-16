@@ -24,16 +24,27 @@ type Props = {
     slashedVals: SlashedVal[];
 };
 
-const Age = (timestampDay: any) => {
+const Age = (timestampDay: any): string => {
     const slashedDate: any = new Date(timestampDay);
     const todaysDate:any = new Date();
     const difference = todaysDate - slashedDate;
-    const Hours = Math.floor(difference / (1000 * 60 * 60));
-    const Days = Math.floor(Hours / 24);
-    const remainingHours = Hours % 24;
+    const seconds = Math.floor(difference / 1000);
+    const minutes = Math.floor(difference / (1000 * 60));
+    const hours = Math.floor(difference / (1000 * 60 * 60));
+    const days = Math.floor(hours / 24);
 
-    const age = `${Days} days ${remainingHours} hours ago`;
-    return age;
+    const remainingHours = hours % 24;
+    const remainingMinutes = minutes % 60;
+    const remainingSeconds = seconds % 60;
+
+    let age: string = `${days} days ${remainingHours} hours ago`;
+    if (days > 0) {
+        age = `${days} days ${remainingHours} hours ago`; 
+    } else if (hours > 0) {
+        age = `${hours} hours ${remainingMinutes} min ago`;
+    } else {
+        age = `${remainingMinutes} min ${remainingSeconds} seconds ago`; }
+   return age;
 }
 
 const SlashedVals = ({slashedVals}: Props) => {
@@ -73,7 +84,7 @@ const SlashedVals = ({slashedVals}: Props) => {
         showRowsWhileFetching={false}>
             <LargeTableHeader text='Slashed Validators' width='20%' />
             <LargeTableHeader text='Slashed by' width='20%' />
-            <LargeTableHeader text='Time' width='10%' />
+            <LargeTableHeader text='Time' width='12%' />
             <LargeTableHeader text='Reason' width='15%' />
             <LargeTableHeader text='Slot' width='15%' />
             <LargeTableHeader text='Epoch' width='15%' />
@@ -107,7 +118,7 @@ const SlashedVals = ({slashedVals}: Props) => {
                         </div>
                     </div>
 
-                    <div className='w-[10%] flex flex-col pt-2.5 pb-2.5'>
+                    <div className='w-[12%] flex flex-col pt-2.5 pb-2.5'>
                         <TooltipContainer>
                             <div>
                                 <p>{Age(blockGenesis + slashedVals.f_slot * 12000)}</p>
