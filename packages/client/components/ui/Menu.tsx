@@ -60,6 +60,10 @@ const Menu = () => {
                 name: 'Clients',
                 route: '/clients',
             },
+            {
+                name: 'Slashings',
+                route: '/slashed_validators'
+            },
         ],
         Networks:
             networks.length > 0
