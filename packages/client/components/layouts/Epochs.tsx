@@ -111,7 +111,7 @@ const Epochs = ({ epochs, blocksPerEpoch, showCalculatingEpochs, fetchingEpochs,
                     <p className='w-13 uppercase mx-auto text-center'>{calculatingText}</p>
                 </div>
 
-                <div className='w-[15%] pt-3.5 mb-5'>
+                <div className='w-[11%] pt-3.5 mb-5'>
                     <p className='uppercase text-center'>Blocks</p>
 
                     <ProgressTileBar
@@ -131,11 +131,11 @@ const Epochs = ({ epochs, blocksPerEpoch, showCalculatingEpochs, fetchingEpochs,
                     />
                 </div>
 
-                <div className='w-[32%]'>
+                <div className='w-[34%]'>
                     <p className='w-32 uppercase mx-auto text-start'>{calculatingText}</p>
                 </div>
 
-                <div className='w-[32%]'>
+                <div className='w-[22%]'>
                     <p className='w-32 uppercase mx-auto text-start'>{calculatingText}</p>
                 </div>
             </LargeTableRow>
