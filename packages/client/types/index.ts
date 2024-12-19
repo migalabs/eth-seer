@@ -164,3 +164,13 @@ export type FiltersSlot = {
     entities?: string[];
     clients?: string[];
 };
+
+export type SlashedVal = {
+    f_slashed_validator_index: number;
+    f_slashed_by_validator_index: number;
+    f_slashing_reason: string;
+    f_slot: number;
+    f_epoch: number;
+    f_slashed_validator_pool_name: string;
+    f_slashed_by_validator_pool_name: string;
+};
