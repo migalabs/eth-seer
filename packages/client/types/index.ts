@@ -78,7 +78,6 @@ export type Slot = {
     f_pool_name: string;
     f_val_idx: number;
     f_proposed: boolean;
-    f_block: string;
     f_attestations: number;
     f_sync_bits: number;
     f_deposits: number;

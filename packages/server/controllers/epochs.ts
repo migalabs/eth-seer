@@ -196,7 +196,6 @@ export const getSlotsByEpoch = async (req: Request, res: Response) => {
                             pd.f_proposer_slot AS f_proposer_slot,
                             pd.f_proposed AS f_proposed,
                             pk.f_pool_name AS f_pool_name,
-                            hd.f_block AS f_block,
                             bm.f_attestations AS f_attestations,
                             bm.f_sync_bits AS f_sync_bits,
                             bm.f_deposits AS f_deposits,
@@ -208,9 +207,7 @@ export const getSlotsByEpoch = async (req: Request, res: Response) => {
                         LEFT OUTER JOIN
                             t_eth2_pubkeys pk ON pd.f_val_idx = pk.f_val_idx
                         LEFT OUTER JOIN
-                            t_head_events hd ON CAST(pd.f_proposer_slot AS String) = CAST(hd.f_slot AS String)
-                        LEFT OUTER JOIN
-                            t_block_metrics bm ON CAST(pd.f_proposer_slot AS String) = CAST(bm.f_slot AS String)
+                            t_block_metrics bm ON pd.f_proposer_slot = bm.f_slot
                         WHERE
                             CAST((pd.f_proposer_slot / 32) AS UInt64) = ${id}
                         ORDER BY

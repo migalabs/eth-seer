@@ -67,7 +67,6 @@ const Slots = ({ slots, fetchingSlots }: Props) => {
             <LargeTableHeader text='Proposer' width='12%' />
             <LargeTableHeader text='Slot' width='12%' />
             <LargeTableHeader text='Time' width='10%' />
-            <LargeTableHeader text='Root Hash' width='15%' />
             <LargeTableHeader text='Att' width='10%' tooltipContent={
                     <TooltipResponsive
                         width={220}
@@ -139,8 +138,6 @@ const Slots = ({ slots, fetchingSlots }: Props) => {
                         </span>
                     </div>
 
-                    <p className='w-[15%] text-center'>{(slot.f_block) ? getShortAddress(slot.f_block) : "N/A"}</p>
-
                     <p className='w-[10%] text-center'>{(slot?.f_attestations === 0) ? "-" : slot.f_attestations}</p>
 
                     <p className='w-[15%] text-center'>{(slot?.f_attestations === 0) ? '-' : `${(slot.f_sync_bits * 100 / 512).toFixed(2)}%`}</p>
@@ -198,13 +195,6 @@ const Slots = ({ slots, fetchingSlots }: Props) => {
                                         ).toLocaleTimeString('ja-JP')}
                                     </p>
                                 </div>
-                            </div>
-
-                            <div className='flex items-center justify-between'>
-                                <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>
-                                    Root Hash:
-                                </p>
-                                <p>{(slot.f_block) ? getShortAddress(slot.f_block) : "N/A"}</p>
                             </div>
 
                             <div className='flex items-center justify-between'>
