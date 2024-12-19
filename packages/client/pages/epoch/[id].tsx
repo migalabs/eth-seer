@@ -278,41 +278,43 @@ const EpochComponent = ({ id, network }: Props) => {
               </div>
            )}
 
-           {id && (Number(id) > 74239 || network !== "mainnet")  && (
-              <div className='flex flex-col'>
-                  <p className='w-40 sm:w-60 text-[var(--black)] dark:text-[var(--white)]'>Voting Participation:</p>
-                  {epoch && epoch.f_epoch === undefined && (
-                      <p className='w-32 uppercase ml-10 mt-2 text-start'>{calculatingText}</p>
-                  )}
-                  <div className='pt-3 py-1 mx-auto md:mx-0'>
-                      {epoch && epoch.f_epoch !== undefined && (
-                          <ProgressSmoothBar
-                              title=''
-                              color='#343434'
-                              backgroundColor='#f5f5f5'
-                              width={300}
-                              percent={epoch.f_att_effective_balance_eth / epoch.f_total_effective_balance_eth || 0}
-                              tooltipColor='blue'
-                              tooltipContent={
-                                  <>
-                                      <span>Att. Balance: {epoch?.f_att_effective_balance_eth.toLocaleString()} ETH</span>
-                                      <span>Act. Balance: {epoch?.f_total_effective_balance_eth.toLocaleString()} ETH</span>
-                                  </>
-                              }
-                              widthTooltip={220}
-                          />
-                      )}
-                  </div>
-              </div>
-              <p className="text-xl font-semibold">Validator Overview</p>
-              <hr className="h-2"></hr>
-              <div className='flex flex-row items-center gap-x-5'>
-                      <p className='w-40 sm:w-60 text-[var(--black)] dark:text-[var(--white)]'>Active Validators:</p>
-                      <p className='text-[var(--black)] dark:text-[var(--white)]'>
-                          {epoch?.f_num_active_vals.toLocaleString()}
-                      </p>
-              </div>
-          )}
+            {id && (Number(id) > 74239 || network !== "mainnet") && (
+                <div>
+                    <div className='flex flex-col'>
+                        <p className='w-40 sm:w-60 text-[var(--black)] dark:text-[var(--white)]'>Voting Participation:</p>
+                        {epoch && epoch.f_epoch === undefined && (
+                            <p className='w-32 uppercase ml-10 mt-2 text-start'>{calculatingText}</p>
+                        )}
+                        <div className='pt-3 py-1 mx-auto md:mx-0'>
+                            {epoch && epoch.f_epoch !== undefined && (
+                                <ProgressSmoothBar
+                                    title=''
+                                    color='#343434'
+                                    backgroundColor='#f5f5f5'
+                                    width={300}
+                                    percent={epoch.f_att_effective_balance_eth / epoch.f_total_effective_balance_eth || 0}
+                                    tooltipColor='blue'
+                                    tooltipContent={
+                                        <>
+                                            <span>Att. Balance: {epoch?.f_att_effective_balance_eth.toLocaleString()} ETH</span>
+                                            <span>Act. Balance: {epoch?.f_total_effective_balance_eth.toLocaleString()} ETH</span>
+                                        </>
+                                    }
+                                    widthTooltip={220}
+                                />
+                            )}
+                        </div>
+                    </div>
+                    <p className="text-xl font-semibold">Validator Overview</p>
+                    <hr className="h-2"></hr>
+                    <div className='flex flex-row items-center gap-x-5'>
+                            <p className='w-40 sm:w-60 text-[var(--black)] dark:text-[var(--white)]'>Active Validators:</p>
+                            <p className='text-[var(--black)] dark:text-[var(--white)]'>
+                                {epoch?.f_num_active_vals.toLocaleString()}
+                            </p>
+                    </div>
+                </div>
+            )}
 
             <div className='flex flex-row items-center gap-x-5'>
                     <p className='w-40 sm:w-60 text-[var(--black)] dark:text-[var(--white)]'>Pending validators:</p>
