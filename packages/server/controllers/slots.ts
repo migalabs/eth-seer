@@ -79,37 +79,35 @@ export const getSlots = async (req: Request, res: Response) => {
             chClient.query({
                 query: `
                         SELECT
-                            pd.f_proposer_slot AS f_proposer_slot,
-                            pd.f_val_idx AS f_val_idx,
-                            pd.f_proposed AS f_proposed,
-                            pk.f_pool_name AS f_pool_name,
+                            bm.f_slot AS f_proposer_slot,
+                            bm.f_proposer_index AS f_val_idx,
+                            bm.f_proposed AS f_proposed,
                             bm.f_attestations AS f_attestations,
                             bm.f_sync_bits AS f_sync_bits,
                             bm.f_deposits AS f_deposits,
                             bm.f_attester_slashings AS f_attester_slashings,
                             bm.f_proposer_slashings AS f_proposer_slashings,
                             bm.f_voluntary_exits AS f_voluntary_exits,
+                            pk.f_pool_name AS f_pool_name,
                             COALESCE(SUM(w.f_amount), 0) AS withdrawals,
                             COALESCE(COUNT(w.f_slot), 0) AS num_withdrawals
                         FROM
-                            t_proposer_duties pd
+                            t_block_metrics bm
                         LEFT OUTER JOIN
-                            t_eth2_pubkeys pk ON pd.f_val_idx = pk.f_val_idx
+                            t_eth2_pubkeys pk ON bm.f_proposer_index = pk.f_val_idx
                         LEFT OUTER JOIN
-                            t_withdrawals w ON pd.f_proposer_slot = w.f_slot
+                            t_withdrawals w ON bm.f_slot = w.f_slot
                         LEFT OUTER JOIN
-                            t_orphans o ON pd.f_proposer_slot = o.f_slot
-                        LEFT OUTER JOIN
-                            t_block_metrics bm ON pd.f_proposer_slot = bm.f_slot
+                            t_orphans o ON bm.f_slot = o.f_slot
                         CROSS JOIN
                             t_genesis g
                         LEFT OUTER JOIN
-                            t_slot_client_guesses scg ON pd.f_proposer_slot = scg.f_slot
+                            t_slot_client_guesses scg ON bm.f_slot = scg.f_slot
                         ${where.length > 0 ? `WHERE ${where.join(' AND ')}` : ''}
                         GROUP BY
-                            pd.f_proposer_slot, pd.f_val_idx, pd.f_proposed, pk.f_pool_name, bm.f_attestations, bm.f_sync_bits, bm.f_deposits, bm.f_attester_slashings, bm.f_proposer_slashings, bm.f_voluntary_exits
+                            bm.f_slot, bm.f_proposer_index, bm.f_proposed, pk.f_pool_name, bm.f_attestations, bm.f_sync_bits, bm.f_deposits, bm.f_attester_slashings, bm.f_proposer_slashings, bm.f_voluntary_exits
                         ORDER BY
-                            pd.f_proposer_slot DESC
+                            bm.f_slot DESC
                         LIMIT ${Number(limit)}
                         OFFSET ${skip}
                     `,
