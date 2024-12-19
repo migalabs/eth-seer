@@ -192,26 +192,24 @@ export const getSlotsByEpoch = async (req: Request, res: Response) => {
             clickhouseClient.query({
                 query: `
                         SELECT
-                            pd.f_val_idx AS f_val_idx,
-                            pd.f_proposer_slot AS f_proposer_slot,
-                            pd.f_proposed AS f_proposed,
-                            pk.f_pool_name AS f_pool_name,
                             bm.f_attestations AS f_attestations,
                             bm.f_sync_bits AS f_sync_bits,
                             bm.f_deposits AS f_deposits,
                             bm.f_attester_slashings AS f_attester_slashings,
                             bm.f_proposer_slashings AS f_proposer_slashings,
-                            bm.f_voluntary_exits AS f_voluntary_exits
+                            bm.f_voluntary_exits AS f_voluntary_exits,
+                            bm.f_proposer_index AS f_val_idx,
+                            bm.f_slot AS f_proposer_slot,
+                            bm.f_proposed AS f_proposed, 
+                            pk.f_pool_name AS f_pool_name
                         FROM
-                            t_proposer_duties pd
+                            t_block_metrics bm
                         LEFT OUTER JOIN
-                            t_eth2_pubkeys pk ON pd.f_val_idx = pk.f_val_idx
-                        LEFT OUTER JOIN
-                            t_block_metrics bm ON pd.f_proposer_slot = bm.f_slot
+                            t_eth2_pubkeys pk ON bm.f_proposer_index = pk.f_val_idx
                         WHERE
-                            CAST((pd.f_proposer_slot / 32) AS UInt64) = ${id}
+                            bm.f_epoch = ${id}
                         ORDER BY
-                            pd.f_proposer_slot DESC
+                            bm.f_slot DESC
                     `,
                 format: 'JSONEachRow',
             }),
@@ -239,7 +237,7 @@ export const getSlotsByEpoch = async (req: Request, res: Response) => {
             return acc;
         }, {});
         const slotCount:any[] = Object.entries(withdrawalsCounts).map(([slot, data]) => ({ slot: parseInt(slot), count: data.count}));
-
+        console.log(slotsEpochResult);
         const slots = slotsEpochResult.map((slot: any) => ({
             ...slot,
             withdrawals: withdrawalsResult
