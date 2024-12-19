@@ -176,6 +176,28 @@ const EpochComponent = ({ id, network }: Props) => {
                 </p>
             </div>
 
+            <div className='flex flex-row items-center gap-x-5'>
+                    <p className='w-40 sm:w-60 text-[var(--black)] dark:text-[var(--white)]'>Attestations:</p>
+                    <p className='text-[var(--black)] dark:text-[var(--white)]'>
+                        {epoch?.f_num_att.toLocaleString()}
+                    </p>
+            </div>
+
+            <div className='flex flex-row items-center gap-x-5'>
+                    <p className='w-40 sm:w-60 text-[var(--black)] dark:text-[var(--white)]'>Deposits:</p>
+                    <p className='text-[var(--black)] dark:text-[var(--white)]'>
+                        {epoch?.f_deposits_num.toLocaleString()}
+                    </p>
+            </div>
+
+            <div className='flex flex-row items-center gap-x-5'>
+                <p className='w-40 sm:w-60 text-[var(--black)] dark:text-[var(--white)]'>Withdrawals:</p>
+                <p className='text-[var(--black)] dark:text-[var(--white)]'>
+                    {epoch?.f_withdrawals_num} ({((epoch?.withdrawals ?? 0) / 10 ** 9).toLocaleString()} ETH)
+                </p>
+            </div>
+
+
             <div className='flex flex-col sm:flex-row gap-x-5'>
                 <p className='w-40 sm:w-60 text-[var(--black)] dark:text-[var(--white)]'>Blocks (out of 32):</p>
                 <div className='flex justify-center gap-x-4 pt-3 md:pt-0'>
@@ -196,99 +218,130 @@ const EpochComponent = ({ id, network }: Props) => {
                 </div>
             </div>
 
+          {id && (Number(id) > 74239 || network !== "mainnet") && (
+              <div className='flex flex-col'>
+                  <p className='w-40 sm:w-60 text-[var(--black)] dark:text-[var(--white)]'>Attestation Accuracy:</p>
+                  {epoch && epoch.f_epoch === undefined && (
+                      <p className='w-32 uppercase  ml-10 mt-2 text-start'>{calculatingText}</p>
+                  )}
+                  {epoch && epoch.f_epoch !== undefined && (
+                      <div className='flex flex-col xl:flex-row font-medium items-center gap-2 md:gap-4 text-[12px] md:text-[14px] text-[var(--black)] dark:text-[var(--white)]'>
+                          <ProgressSmoothBar
+                              title='Source'
+                              color='#343434'
+                              backgroundColor='#f5f5f5'
+                              percent={1 - epoch.f_missing_source / epoch.f_num_att_vals}
+                              width={300}
+                              tooltipColor='blue'
+                              tooltipContent={
+                                  <>
+                                      <span>Missing Source: {epoch.f_missing_source?.toLocaleString()}</span>
+                                      <span>Attesting Validators: {epoch.f_num_att_vals?.toLocaleString()}</span>
+                                  </>
+                              }
+                              widthTooltip={220}
+                          />
+
+                          <ProgressSmoothBar
+                              title='Target'
+                              color='#343434'
+                              backgroundColor='#f5f5f5'
+                              percent={1 - epoch.f_missing_target / epoch.f_num_att_vals}
+                              width={300}
+                              tooltipColor='orange'
+                              tooltipContent={
+                                  <>
+                                      <span>Missing Target: {epoch.f_missing_target?.toLocaleString()}</span>
+                                      <span>Attesting Validators: {epoch.f_num_att_vals?.toLocaleString()}</span>
+                                  </>
+                              }
+                              widthTooltip={220}
+                          />
+
+                          <ProgressSmoothBar
+                              title='Head'
+                              color='#343434'
+                              backgroundColor='#f5f5f5'
+                              percent={1 - epoch.f_missing_head / epoch.f_num_att_vals}
+                              width={300}
+                              tooltipColor='purple'
+                              tooltipContent={
+                                  <>
+                                      <span>Missing Head: {epoch.f_missing_head?.toLocaleString()}</span>
+                                      <span>Attesting Validators: {epoch.f_num_att_vals?.toLocaleString()}</span>
+                                  </>
+                              }
+                              widthTooltip={220}
+                          />
+                      </div>
+                  )}
+              </div>
+           )}
+
             {id && (Number(id) > 74239 || network !== "mainnet") && (
-                <div className='flex flex-col'>
-                    <p className='w-40 sm:w-60 text-[var(--black)] dark:text-[var(--white)]'>Attestation Accuracy:</p>
-                    {epoch && epoch.f_epoch === undefined && (
-                        <p className='w-32 uppercase  ml-10 mt-2 text-start'>{calculatingText}</p>
-                    )}
-                    {epoch && epoch.f_epoch !== undefined && (
-                        <div className='flex flex-col xl:flex-row font-medium items-center gap-2 md:gap-4 text-[12px] md:text-[14px] text-[var(--black)] dark:text-[var(--white)]'>
-                            <ProgressSmoothBar
-                                title='Target'
-                                color='#343434'
-                                backgroundColor='#f5f5f5'
-                                percent={1 - epoch.f_missing_target / epoch.f_num_att_vals}
-                                width={300}
-                                tooltipColor='orange'
-                                tooltipContent={
-                                    <>
-                                        <span>Missing Target: {epoch.f_missing_target?.toLocaleString()}</span>
-                                        <span>Attestations: {epoch.f_num_att_vals?.toLocaleString()}</span>
-                                    </>
-                                }
-                                widthTooltip={220}
-                            />
-
-                            <ProgressSmoothBar
-                                title='Source'
-                                color='#343434'
-                                backgroundColor='#f5f5f5'
-                                percent={1 - epoch.f_missing_source / epoch.f_num_att_vals}
-                                width={300}
-                                tooltipColor='blue'
-                                tooltipContent={
-                                    <>
-                                        <span>Missing Source: {epoch.f_missing_source?.toLocaleString()}</span>
-                                        <span>Attestations: {epoch.f_num_att_vals?.toLocaleString()}</span>
-                                    </>
-                                }
-                                widthTooltip={220}
-                            />
-
-                            <ProgressSmoothBar
-                                title='Head'
-                                color='#343434'
-                                backgroundColor='#f5f5f5'
-                                percent={1 - epoch.f_missing_head / epoch.f_num_att_vals}
-                                width={300}
-                                tooltipColor='purple'
-                                tooltipContent={
-                                    <>
-                                        <span>Missing Head: {epoch.f_missing_head?.toLocaleString()}</span>
-                                        <span>Attestations: {epoch.f_num_att_vals?.toLocaleString()}</span>
-                                    </>
-                                }
-                                widthTooltip={220}
-                            />
-                        </div>
-                    )}
-                </div>
-            )}
-            
-            {id && (Number(id) > 74239 || network !== "mainnet")  && (
-                <div className='flex flex-col'>
-                    <p className='w-40 sm:w-60 text-[var(--black)] dark:text-[var(--white)]'>Voting Participation:</p>
-                    {epoch && epoch.f_epoch === undefined && (
-                        <p className='w-32 uppercase ml-10 mt-2 text-start'>{calculatingText}</p>
-                    )}
-                    <div className='pt-3 py-1 mx-auto md:mx-0'>
-                        {epoch && epoch.f_epoch !== undefined && (
-                            <ProgressSmoothBar
-                                title=''
-                                color='#343434'
-                                backgroundColor='#f5f5f5'
-                                width={300}
-                                percent={epoch.f_att_effective_balance_eth / epoch.f_total_effective_balance_eth || 0}
-                                tooltipColor='blue'
-                                tooltipContent={
-                                    <>
-                                        <span>Agg. Rewards: {epoch?.f_att_effective_balance_eth}</span>
-                                        <span>Max. Rewards: {epoch?.f_total_effective_balance_eth}</span>
-                                    </>
-                                }
-                                widthTooltip={220}
-                            />
+                <div>
+                    <div className='flex flex-col'>
+                        <p className='w-40 sm:w-60 text-[var(--black)] dark:text-[var(--white)]'>Voting Participation:</p>
+                        {epoch && epoch.f_epoch === undefined && (
+                            <p className='w-32 uppercase ml-10 mt-2 text-start'>{calculatingText}</p>
                         )}
+                        <div className='pt-3 py-1 mx-auto md:mx-0'>
+                            {epoch && epoch.f_epoch !== undefined && (
+                                <ProgressSmoothBar
+                                    title=''
+                                    color='#343434'
+                                    backgroundColor='#f5f5f5'
+                                    width={300}
+                                    percent={epoch.f_att_effective_balance_eth / epoch.f_total_effective_balance_eth || 0}
+                                    tooltipColor='blue'
+                                    tooltipContent={
+                                        <>
+                                            <span>Att. Balance: {epoch?.f_att_effective_balance_eth.toLocaleString()} ETH</span>
+                                            <span>Act. Balance: {epoch?.f_total_effective_balance_eth.toLocaleString()} ETH</span>
+                                        </>
+                                    }
+                                    widthTooltip={220}
+                                />
+                            )}
+                        </div>
+                    </div>
+                    <p className="text-xl font-semibold">Validator Overview</p>
+                    <hr className="h-2"></hr>
+                    <div className='flex flex-row items-center gap-x-5'>
+                            <p className='w-40 sm:w-60 text-[var(--black)] dark:text-[var(--white)]'>Active Validators:</p>
+                            <p className='text-[var(--black)] dark:text-[var(--white)]'>
+                                {epoch?.f_num_active_vals.toLocaleString()}
+                            </p>
                     </div>
                 </div>
             )}
 
             <div className='flex flex-row items-center gap-x-5'>
-                <p className='w-40 sm:w-60 text-[var(--black)] dark:text-[var(--white)]'>Withdrawals:</p>
-                <p className='text-[var(--black)] dark:text-[var(--white)]'>
-                    {((epoch?.withdrawals ?? 0) / 10 ** 9).toLocaleString()} ETH
-                </p>
+                    <p className='w-40 sm:w-60 text-[var(--black)] dark:text-[var(--white)]'>Pending validators:</p>
+                    <p className='text-[var(--black)] dark:text-[var(--white)]'>
+                        {epoch?.f_num_in_activation_vals.toLocaleString()}
+                    </p>
+            </div>
+
+            <div className='flex flex-row items-center gap-x-5'>
+                    <p className='w-40 sm:w-60 text-[var(--black)] dark:text-[var(--white)]'>Slashed Validators:</p>
+                    <p className='text-[var(--black)] dark:text-[var(--white)]'>
+                        {epoch?.f_num_slashed_vals.toLocaleString()}
+                    </p>
+            </div>
+
+            <div className='flex flex-row items-center gap-x-5'>
+                    <p className='w-40 sm:w-60 text-[var(--black)] dark:text-[var(--white)]'>Exited Validators:</p>
+                    <p className='text-[var(--black)] dark:text-[var(--white)]'>
+                        {epoch?.f_num_exited_vals.toLocaleString()}
+                    </p>
+            </div>
+
+            <div className='flex flex-row items-center gap-x-5'>
+                    <p className='w-40 sm:w-60 text-[var(--black)] dark:text-[var(--white)]'>Avg. Validator Balance:</p>
+                    <p className='text-[var(--black)] dark:text-[var(--white)]'>
+                        {((epoch?.f_total_balance_eth ?? 0) / (epoch?.f_num_active_vals ?? 0)).toFixed(2)} ETH
+                    </p>
             </div>
         </div>
     );
