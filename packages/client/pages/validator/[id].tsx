@@ -648,7 +648,12 @@ const ValidatorComponent = ({ id, network }: Props) => {
             {slashedVals.map((slashedVal, idx) => (
                 <SmallTableCard key={idx}>
 
-
+                    <div className='flex w-full items-center justify-between'>
+                        <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Epoch:</p>
+                        <div className=' md:hover:underline underline-offset-4 decoration-2 text-[var(--darkPurple)] dark:text-[var(--purple)]'>
+                            <LinkValidator validator={slashedVal.f_slashed_validator_index} mxAuto />
+                        </div>
+                    </div>
 
                     <div className='flex w-full items-center justify-between'>
                         <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Time:</p>
