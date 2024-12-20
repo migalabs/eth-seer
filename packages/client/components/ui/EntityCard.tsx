@@ -29,7 +29,7 @@ const EntityCard = ({ activeValidators, pool }: Props) => {
                 </div>
 
                 <div className='flex flex-col items-center md:items-start'>
-                    <span className='text-[14px] md:text-[16px] font-semibold uppercase text-center md:text-start md:max-w-[150px] break-all'>
+                    <span className='text-[12px] md:text-[16px] font-semibold uppercase text-center md:text-start md:w-[100%] break-all'>
                         {pool}
                     </span>
 
