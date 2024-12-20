@@ -596,7 +596,7 @@ const ValidatorComponent = ({ id, network }: Props) => {
 
     const getSlashedValidatorsLargeView = () => (
         <LargeTable minWidth={700} fullWidth noRowsText='No Slashed Validators' fetchingRows={loadingSlashedValidator}>
-            <LargeTableHeader text='Slot' />
+            <LargeTableHeader text='Slashed Validator' />
             <LargeTableHeader text='Time' />
             <LargeTableHeader text='Reason' />
             <LargeTableHeader text='Slot' />
@@ -649,7 +649,7 @@ const ValidatorComponent = ({ id, network }: Props) => {
                 <SmallTableCard key={idx}>
 
                     <div className='flex w-full items-center justify-between'>
-                        <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Epoch:</p>
+                        <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Slashed Validator:</p>
                         <div className=' md:hover:underline underline-offset-4 decoration-2 text-[var(--darkPurple)] dark:text-[var(--purple)]'>
                             <LinkValidator validator={slashedVal.f_slashed_validator_index} mxAuto />
                         </div>
