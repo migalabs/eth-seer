@@ -1,5 +1,10 @@
 import { Request, Response } from 'express';
 import { clickhouseClients } from '../config/db';
+import apicache from 'apicache';
+
+let cache = apicache.middleware;
+
+export const entityListCache = cache('1 hour');
 
 export const getEntityList = async (req: Request, res: Response) => {
     try {
