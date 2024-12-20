@@ -1,6 +1,7 @@
 export type Epoch = {
     f_epoch: number;
     f_slot: number;
+    f_num_att: number;
     f_num_att_vals: number;
     f_num_active_vals: number;
     f_att_effective_balance_eth: number;
@@ -8,6 +9,14 @@ export type Epoch = {
     f_missing_source: number;
     f_missing_target: number;
     f_missing_head: number;
+    f_withdrawals_num: number;
+    f_deposits_num: number;
+    f_new_proposer_slashings: number;
+    f_new_attester_slashings: number;
+    f_num_slashed_vals: number;
+    f_num_exited_vals: number;
+    f_num_in_activation_vals: number;
+    f_total_balance_eth: number;
     proposed_blocks: Array<number>;
     withdrawals?: number;
 };
@@ -69,8 +78,15 @@ export type Slot = {
     f_pool_name: string;
     f_val_idx: number;
     f_proposed: boolean;
+    f_attestations: number;
+    f_sync_bits: number;
+    f_deposits: number;
+    f_attester_slashings: number;
+    f_proposer_slashings: number;
+    f_voluntary_exits: number;
     f_epoch?: number;
     withdrawals: number;
+    num_withdrawals: number;
 };
 
 export type Withdrawal = {
@@ -147,4 +163,14 @@ export type FiltersSlot = {
     upperDate?: string;
     entities?: string[];
     clients?: string[];
+};
+
+export type SlashedVal = {
+    f_slashed_validator_index: number;
+    f_slashed_by_validator_index: number;
+    f_slashing_reason: string;
+    f_slot: number;
+    f_epoch: number;
+    f_slashed_validator_pool_name: string;
+    f_slashed_by_validator_pool_name: string;
 };
