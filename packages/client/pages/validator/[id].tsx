@@ -343,22 +343,6 @@ const ValidatorComponent = ({ id, network }: Props) => {
                 {validator && (
                     <div className='flex flex-col xl:flex-row items-center gap-x-4 gap-y-2 font-medium text-[14px]'>
                         <ProgressSmoothBar
-                            title='Target'
-                            color='var(--black)'
-                            backgroundColor='var(--white)'
-                            percent={1 - validator.count_missing_target / validator.count_attestations}
-                            width={300}
-                            tooltipColor='orange'
-                            tooltipContent={
-                                <>
-                                    <span>Missing Target: {validator.count_missing_target?.toLocaleString()}</span>
-                                    <span>Attestations: {validator.count_attestations?.toLocaleString()}</span>
-                                </>
-                            }
-                            widthTooltip={220}
-                        />
-
-                        <ProgressSmoothBar
                             title='Source'
                             color='var(--black)'
                             backgroundColor='var(--white)'
@@ -368,6 +352,22 @@ const ValidatorComponent = ({ id, network }: Props) => {
                             tooltipContent={
                                 <>
                                     <span>Missing Source: {validator.count_missing_source?.toLocaleString()}</span>
+                                    <span>Attestations: {validator.count_attestations?.toLocaleString()}</span>
+                                </>
+                            }
+                            widthTooltip={220}
+                        />
+
+                        <ProgressSmoothBar
+                            title='Target'
+                            color='var(--black)'
+                            backgroundColor='var(--white)'
+                            percent={1 - validator.count_missing_target / validator.count_attestations}
+                            width={300}
+                            tooltipColor='orange'
+                            tooltipContent={
+                                <>
+                                    <span>Missing Target: {validator.count_missing_target?.toLocaleString()}</span>
                                     <span>Attestations: {validator.count_attestations?.toLocaleString()}</span>
                                 </>
                             }

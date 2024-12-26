@@ -173,8 +173,8 @@ export const getCountActiveValidators = async (req: Request, res: Response) => {
                         COUNT(*) AS count_active_validators
                     FROM
                         t_validator_last_status vls
-                    LEFT OUTER JOIN
-                        t_status s ON (vls.f_status = s.f_id) AND (s.f_status = 'active')
+                    WHERE
+                        f_status = 1
                 `,
                 format: 'JSONEachRow',
             });
