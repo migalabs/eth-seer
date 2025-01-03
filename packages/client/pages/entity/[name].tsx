@@ -51,13 +51,14 @@ const EntityComponent = ({ name, network }: Props) => {
     const [entityHour, setEntityHour] = useState<Entity | null>(null);
     const [entityDay, setEntityDay] = useState<Entity | null>(null);
     const [entityWeek, setEntityWeek] = useState<Entity | null>(null);
+    const [entityMonth, setEntityMonth] = useState<Entity | null>(null);
     const [showInfoBox, setShowInfoBox] = useState(false);
     const [tabPageIndexEntityPerformance, setTabPageIndexEntityPerformance] = useState(0);
     const [loading, setLoading] = useState(true);
 
     // UseEffect
     useEffect(() => {
-        if ((!entityHour && !entityDay && !entityWeek) || entityRef.current !== name) {
+        if ((!entityHour && !entityDay && !entityWeek && !entityMonth) || entityRef.current !== name) {
             entityRef.current = name;
             getEntity();
         }
@@ -73,8 +74,9 @@ const EntityComponent = ({ name, network }: Props) => {
             const hour = 9;
             const day = 225;
             const week = 1575;
+            const month = 6750;
 
-            const [responseHour, responseDay, responseWeek] = await Promise.all([
+            const [responseHour, responseDay, responseWeek, responseMonth] = await Promise.all([
                 axiosClient.get(`/api/entities/${name.toLowerCase()}`, {
                     params: {
                         network,
@@ -93,11 +95,18 @@ const EntityComponent = ({ name, network }: Props) => {
                         numberEpochs: week,
                     },
                 }),
+                axiosClient.get(`/api/entities/${name.toLowerCase()}`, {
+                    params: {
+                        network,
+                        numberEpochs: month,
+                    },
+                }),
             ]);
 
             setEntityHour(responseHour.data.entity);
             setEntityDay(responseDay.data.entity);
             setEntityWeek(responseWeek.data.entity);
+            setEntityMonth(responseMonth.data.entity);
 
             if (responseHour.data.entity.aggregate_balance !== null) {
                 setShowInfoBox(false);
@@ -361,6 +370,13 @@ const EntityComponent = ({ name, network }: Props) => {
                                 setTabPageIndexEntityPerformance(2);
                             }}
                         />
+                        <TabHeader
+                            header='1 Month'
+                            isSelected={tabPageIndexEntityPerformance === 3}
+                            onClick={() => {
+                                setTabPageIndexEntityPerformance(3);
+                            }}
+                        />
                     </div>
 
                     <div
@@ -377,6 +393,7 @@ const EntityComponent = ({ name, network }: Props) => {
                                 {tabPageIndexEntityPerformance === 0 && getEntityPerformance(entityHour as Entity)}
                                 {tabPageIndexEntityPerformance === 1 && getEntityPerformance(entityDay as Entity)}
                                 {tabPageIndexEntityPerformance === 2 && getEntityPerformance(entityWeek as Entity)}
+                                {tabPageIndexEntityPerformance === 3 && getEntityPerformance(entityMonth as Entity)}
                             </div>
                         </div>
                     </div>
