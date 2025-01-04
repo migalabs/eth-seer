@@ -125,9 +125,9 @@ const EntityComponent = ({ name, network }: Props) => {
         return (
             <>
                 {/* Rewards */}
-                <div className='flex flex-col md:flex-row py-4 gap-y-2 md:gap-y-0 md:mb-0'>
-                    <p className='md:w-52 lg:w-50 text-[var(--black)] dark:text-[var(--white)]'>Rewards:</p>
-                    <div className='w-[300px] text-center font-normal'>
+                <div className='flex flex-col md:flex-row gap-y-2 md:gap-y-0 md:mb-0'>
+                    <p className='md:w-52 lg:w-50 my-auto text-[var(--black)] dark:text-[var(--white)]'>Rewards:</p>
+                    <div className='flex flex-col xl:flex-row items-center gap-x-4 gap-y-2 font-medium text-[14px]'>
                         {entity && (
                             <ProgressSmoothBar
                                 title=''
@@ -146,27 +146,28 @@ const EntityComponent = ({ name, network }: Props) => {
                                         <span>Max. Rewards: {entity?.aggregated_max_rewards}</span>
                                     </>
                                 }
+                                width={300}
                                 widthTooltip={220}
                             />
                         )}
                     </div>
                 </div>
 
-                <div className='flex flex-col md:flex-row py-4 gap-y-2 md:gap-y-0 md:mb-0'>
+                <div className='flex flex-col md:flex-row gap-y-2 md:gap-y-0 md:mb-0'>
                     <p className='md:w-52 lg:w-50 text-[var(--black)] dark:text-[var(--white)]'>
                         Sync committee participation:
                     </p>
-                    <p className='capitalize text-[var(--black)] dark:text-[var(--white)]'>
+                    <p className='font-medium capitalize text-[var(--black)] dark:text-[var(--white)] text-[14px] md:text-[16px] 2xs:mx-auto my-auto md:mx-0'>
                         {entity?.count_sync_committee} duties
                     </p>
                 </div>
 
                 {/* Attestation flags */}
                 <div className='flex flex-col lg:flex-row py-4 gap-y-2 md:gap-y-0 md:mb-0'>
-                    <p className='md:w-52 lg:w-50 text-[var(--black)] dark:text-[var(--white)]'>Attestation flags:</p>
+                    <p className='md:w-52 lg:w-50 my-auto text-[var(--black)] dark:text-[var(--white)]'>Attestation flags:</p>
 
                     {entity && (
-                        <div className='flex flex-col xl:flex-row items-center gap-x-4 gap-y-2 font-medium text-[12px] md:text-[14px] text-[var(--black)] dark:text-[var(--white)]'>
+                        <div className='flex flex-col xl:flex-row items-center gap-x-4 gap-y-2 font-medium text-[14px] text-[var(--black)] dark:text-[var(--white)]'>
                             <ProgressSmoothBar
                                 title='Source'
                                 color='var(--black)'
@@ -225,27 +226,23 @@ const EntityComponent = ({ name, network }: Props) => {
                 </div>
 
                 {/* Blocks Entity Performance */}
-                <div className='flex flex-col md:flex-row py-4 gap-y-2 md:gap-y-0 md:mb-0'>
-                    <p className='md:w-52 lg:w-50 text-[var(--black)] dark:text-[var(--white)]'>Blocks:</p>
+                <div className='2xs:flex flex-col 2xs:flex-row flex-wrap items-center justify-between md:justify-start'>
+                    <p className='md:w-52 lg:w-50 md:md-0 2xs:mr-4 text-[var(--black)] dark:text-[var(--white)]'>Blocks:</p>
 
-                    <div className='flex justify-center'>
-                        <div className='flex flex-col md:flex-row gap-x-4 gap-y-2'>
-                            <CardContent
-                                content={`Proposed: ${entity.proposed_blocks_performance}`}
-                                bg='var(--proposedGreen)'
-                                color='var(--white)'
-                                boxShadow='var(--boxShadowGreen)'
-                                width={200}
-                            />
+                    <div className='flex justify-center 2xs:gap-x-2 md:gap-x-5 2xs:my-2'>
+                        <CardContent
+                            content={`Proposed: ${entity.proposed_blocks_performance}`}
+                            bg='var(--proposedGreen)'
+                            color='var(--white)'
+                            boxShadow='var(--boxShadowGreen)'
+                        />
 
-                            <CardContent
-                                content={`Missed: ${entity.missed_blocks_performance}`}
-                                bg='var(--missedRed)'
-                                color='var(--white)'
-                                boxShadow='var(--boxShadowRed)'
-                                width={200}
-                            />
-                        </div>
+                        <CardContent
+                            content={`Missed: ${entity.missed_blocks_performance}`}
+                            bg='var(--missedRed)'
+                            color='var(--white)'
+                            boxShadow='var(--boxShadowRed)'
+                        />
                     </div>
                 </div>
             </>
@@ -279,11 +276,11 @@ const EntityComponent = ({ name, network }: Props) => {
                         }}
                     >
                         <div className='flex flex-col gap-y-8 text-[14px] md:text-[16px] font-medium mx-auto md:mx-0 text-[var(--darkGray)] dark:text-[var(--white)]'>
-                            <div className='flex flex-row flex-wrap items-center gap-x-5'>
-                                <p className='w-60 mb-2 text-[var(--black)] dark:text-[var(--white)]'>
+                            <div className='flex 2xs:flex-row items-center gap-x-5 2xs:justify-between'>
+                                <p className='md:w-60 mb-2 text-[var(--black)] dark:text-[var(--white)] 2xs:my-auto'>
                                     Aggregate Balance:
                                 </p>
-                                <p className='text-[var(--black)] dark:text-[var(--white)]'>
+                                <p className='text-[var(--black)] dark:text-[var(--white)] 2xs:w-[125px] md:w-[140px]'>
                                     {entityDay.aggregate_balance?.toLocaleString()} ETH
                                 </p>
                             </div>
@@ -291,20 +288,18 @@ const EntityComponent = ({ name, network }: Props) => {
                             {/* Blocks */}
                             <div className='flex flex-col lg:flex-row gap-x-5 gap-y-1'>
                                 <p className='w-44 sm:w-60 text-[var(--black)] dark:text-[var(--white)]'>Blocks:</p>
-                                <div className='flex flex-col lg:flex-row items-center gap-x-4 gap-y-2'>
+                                <div className='flex flex-col 2xs:flex-row items-center 2xs:gap-x-4 md:gap-x-4 gap-y-2 justify-center'>
                                     <CardContent
                                         content={`Proposed: ${entityDay.proposed_blocks.f_proposed?.toLocaleString()}`}
                                         bg='var(--proposedGreen)'
                                         color='var(--white)'
                                         boxShadow='var(--boxShadowGreen)'
-                                        width={200}
                                     />
                                     <CardContent
                                         content={`Missed: ${entityDay.proposed_blocks.f_missed?.toLocaleString()}`}
                                         bg='var(--missedRed)'
                                         color='var(--white)'
                                         boxShadow='var(--boxShadowRed)'
-                                        width={200}
                                     />
                                 </div>
                             </div>
@@ -313,34 +308,30 @@ const EntityComponent = ({ name, network }: Props) => {
                                 <p className='w-44 sm:w-60 mb-2 text-[var(--black)] dark:text-[var(--white)]'>
                                     Number of Validators:
                                 </p>
-                                <div className='flex flex-col xl:flex-row items-center gap-x-4 gap-y-2'>
+                                <div className='flex flex-col flex-wrap 2xs:flex-row items-center gap-x-4 gap-y-2 justify-center'>
                                     <CardContent
                                         content={`Deposited: ${entityDay.deposited?.toLocaleString()}`}
                                         bg='var(--depositedBlue)'
                                         color='var(--white)'
                                         boxShadow='var(--boxShadowBlue)'
-                                        width={200}
                                     />
                                     <CardContent
                                         content={`Active: ${entityDay.active?.toLocaleString()}`}
                                         bg='var(--proposedGreen)'
                                         color='var(--white)'
                                         boxShadow='var(--boxShadowGreen)'
-                                        width={200}
                                     />
                                     <CardContent
                                         content={`Slashed: ${entityDay.slashed?.toLocaleString()}`}
                                         bg='var(--missedRed)'
                                         color='var(--white)'
                                         boxShadow='var(--boxShadowRed)'
-                                        width={200}
                                     />
                                     <CardContent
                                         content={`Exited: ${entityDay.exited?.toLocaleString()}`}
                                         bg='var(--exitedPurple)'
                                         color='var(--white)'
                                         boxShadow='var(--boxShadowPurple)'
-                                        width={200}
                                     />
                                 </div>
                             </div>
@@ -348,7 +339,7 @@ const EntityComponent = ({ name, network }: Props) => {
                     </div>
 
                     {/* Time tabs */}
-                    <div className='flex flex-col md:flex-row gap-4'>
+                    <div className='flex flex-col 2xs:flex-row 2xs:gap-2 gap-4 2xs:justify-center sm:justify-start'>
                         <TabHeader
                             header='1 Hour'
                             isSelected={tabPageIndexEntityPerformance === 0}
@@ -380,21 +371,17 @@ const EntityComponent = ({ name, network }: Props) => {
                     </div>
 
                     <div
-                        className='flex rounded-md border-2 border-white text-[var(--darkGray)] dark:text-[var(--white)] bg-[var(--bgMainLightMode)] dark:bg-[var(--bgFairDarkMode)]'
+                        className='2xl:flex items-center p-6 justify-center rounded-md border-2 border-white text-[var(--darkGray)] dark:text-[var(--white)] bg-[var(--bgMainLightMode)] dark:bg-[var(--bgFairDarkMode)]'
                         style={{
                             boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
                         }}
                     >
-                        <div className='text-[14px] md:text-[16px] font-medium mx-auto text-[var(--darkGray)] dark:text-[var(--white)]'>
-                            <div>
-                                <div className='text-[18px] uppercase font-medium py-4 text-center'>
-                                    <p className='text-[var(--black)] dark:text-[var(--white)]'>Entity performance:</p>
-                                </div>
-                                {tabPageIndexEntityPerformance === 0 && getEntityPerformance(entityHour as Entity)}
-                                {tabPageIndexEntityPerformance === 1 && getEntityPerformance(entityDay as Entity)}
-                                {tabPageIndexEntityPerformance === 2 && getEntityPerformance(entityWeek as Entity)}
-                                {tabPageIndexEntityPerformance === 3 && getEntityPerformance(entityMonth as Entity)}
-                            </div>
+                        <div className='flex flex-col gap-y-6 text-[14px] font-medium md:text-[16px] text-[var(--darkGray)] dark:text-[var(--white)]'>
+                            <p className='text-[18px] uppercase font-medium md:py-4 2xs:py-2 text-center text-[var(--black)] dark:text-[var(--white)]'>Entity performance:</p>
+                            {tabPageIndexEntityPerformance === 0 && getEntityPerformance(entityHour as Entity)}
+                            {tabPageIndexEntityPerformance === 1 && getEntityPerformance(entityDay as Entity)}
+                            {tabPageIndexEntityPerformance === 2 && getEntityPerformance(entityWeek as Entity)}
+                            {tabPageIndexEntityPerformance === 3 && getEntityPerformance(entityMonth as Entity)}
                         </div>
                     </div>
                 </div>
