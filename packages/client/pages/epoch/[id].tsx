@@ -206,14 +206,12 @@ const EpochComponent = ({ id, network }: Props) => {
                         color='var(--white)'
                         bg='var(--proposedGreen)'
                         boxShadow='var(--boxShadowRed)'
-                        width={160}
                     />
                     <CardContent
                         content={`Missed: ${32 - Number(epoch?.proposed_blocks)}`}
                         color='var(--white)'
                         bg='var(--missedRed)'
                         boxShadow='var(--boxShadowRed)'
-                        width={160}
                     />
                 </div>
             </div>
