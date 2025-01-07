@@ -5,7 +5,8 @@ module.exports = {
     theme: {
         extend: {},
         screens: {
-            '2xs': '320px',
+            '3xs': '320px',
+            '2xs': '410px',
             xs: '512px',
             // => @media (min-width: 512px) { ... }
 
@@ -25,6 +26,7 @@ module.exports = {
             // => @media (min-width: 1536px) { ... }
         },
         fontSize: {
+            '3xs': ['0.525rem', { lineHeight: '0.75rem' }],
             '2xs': ['0.525rem', { lineHeight: '0.75rem' }],
             xs: ['0.75rem', { lineHeight: '1rem' }],
             sm: ['0.875rem', { lineHeight: '1.25rem' }],

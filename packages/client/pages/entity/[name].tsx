@@ -157,13 +157,13 @@ const EntityComponent = ({ name, network }: Props) => {
                     <p className='md:w-52 lg:w-50 text-[var(--black)] dark:text-[var(--white)]'>
                         Sync committee participation:
                     </p>
-                    <p className='font-medium capitalize text-[var(--black)] dark:text-[var(--white)] text-[14px] md:text-[16px] 2xs:mx-auto my-auto md:mx-0'>
+                    <p className='font-medium capitalize text-[var(--black)] dark:text-[var(--white)] text-[14px] md:text-[16px] 3xs:mx-auto my-auto md:mx-0'>
                         {entity?.count_sync_committee} duties
                     </p>
                 </div>
 
                 {/* Attestation flags */}
-                <div className='flex flex-col lg:flex-row py-4 gap-y-2 md:gap-y-0 md:mb-0'>
+                <div className='flex flex-col lg:flex-row gap-y-2 md:gap-y-0 md:mb-0'>
                     <p className='md:w-52 lg:w-50 my-auto text-[var(--black)] dark:text-[var(--white)]'>Attestation flags:</p>
 
                     {entity && (
@@ -226,10 +226,10 @@ const EntityComponent = ({ name, network }: Props) => {
                 </div>
 
                 {/* Blocks Entity Performance */}
-                <div className='2xs:flex flex-col 2xs:flex-row flex-wrap items-center justify-between md:justify-start'>
-                    <p className='md:w-52 lg:w-50 md:md-0 2xs:mr-4 text-[var(--black)] dark:text-[var(--white)]'>Blocks:</p>
+                <div className='3xs:flex flex-col 3xs:flex-row items-center justify-between md:justify-start'>
+                    <p className='md:w-52 lg:w-50 md:md-0 3xs:mr-4 text-[var(--black)] dark:text-[var(--white)]'>Blocks:</p>
 
-                    <div className='flex justify-center 2xs:gap-x-2 md:gap-x-5 2xs:my-2'>
+                    <div className='flex justify-center 3xs:gap-x-2 md:gap-x-5 3xs:my-2'>
                         <CardContent
                             content={`Proposed: ${entity.proposed_blocks_performance}`}
                             bg='var(--proposedGreen)'
@@ -276,19 +276,19 @@ const EntityComponent = ({ name, network }: Props) => {
                         }}
                     >
                         <div className='flex flex-col gap-y-8 text-[14px] md:text-[16px] font-medium mx-auto md:mx-0 text-[var(--darkGray)] dark:text-[var(--white)]'>
-                            <div className='flex 2xs:flex-row items-center gap-x-5 2xs:justify-between'>
-                                <p className='md:w-60 mb-2 text-[var(--black)] dark:text-[var(--white)] 2xs:my-auto'>
+                            <div className='flex 3xs:flex-row items-center 3xs:justify-between md:justify-start'>
+                                <p className='md:w-60 mb-2 my-auto text-[var(--black)] dark:text-[var(--white)] 3xs:my-auto'>
                                     Aggregate Balance:
                                 </p>
-                                <p className='text-[var(--black)] dark:text-[var(--white)] 2xs:w-[125px] md:w-[140px]'>
+                                <p className='text-[var(--black)] dark:text-[var(--white)] 3xs:w-[125px] md:w-[150px]'>
                                     {entityDay.aggregate_balance?.toLocaleString()} ETH
                                 </p>
                             </div>
 
                             {/* Blocks */}
-                            <div className='flex flex-col lg:flex-row gap-x-5 gap-y-1'>
-                                <p className='w-44 sm:w-60 text-[var(--black)] dark:text-[var(--white)]'>Blocks:</p>
-                                <div className='flex flex-col 2xs:flex-row items-center 2xs:gap-x-4 md:gap-x-4 gap-y-2 justify-center'>
+                            <div className='flex flex-col lg:flex-row gap-y-1'>
+                                <p className='w-44 sm:w-60 my-auto text-[var(--black)] dark:text-[var(--white)]'>Blocks:</p>
+                                <div className='flex flex-col 3xs:flex-row items-center 3xs:gap-x-4 md:gap-x-4 gap-y-2 justify-center'>
                                     <CardContent
                                         content={`Proposed: ${entityDay.proposed_blocks.f_proposed?.toLocaleString()}`}
                                         bg='var(--proposedGreen)'
@@ -304,11 +304,11 @@ const EntityComponent = ({ name, network }: Props) => {
                                 </div>
                             </div>
                             {/* Number of validators*/}
-                            <div className='flex flex-col gap-y-1 xs:gap-y-5'>
-                                <p className='w-44 sm:w-60 mb-2 text-[var(--black)] dark:text-[var(--white)]'>
+                            <div className='flex flex-col lg:flex-row gap-y-1 xs:gap-y-5'>
+                                <p className='w-44 sm:w-60 my-auto text-[var(--black)] dark:text-[var(--white)]'>
                                     Number of Validators:
                                 </p>
-                                <div className='flex flex-col flex-wrap 2xs:flex-row items-center gap-x-4 gap-y-2 justify-center'>
+                                <div className='flex flex-col flex-wrap 3xs:flex-row items-center gap-x-4 gap-y-2 justify-center'>
                                     <CardContent
                                         content={`Deposited: ${entityDay.deposited?.toLocaleString()}`}
                                         bg='var(--depositedBlue)'
@@ -339,7 +339,7 @@ const EntityComponent = ({ name, network }: Props) => {
                     </div>
 
                     {/* Time tabs */}
-                    <div className='flex flex-col 2xs:flex-row 2xs:gap-2 gap-4 2xs:justify-center sm:justify-start'>
+                    <div className='flex flex-col 3xs:flex-row 3xs:gap-2 gap-4 3xs:justify-center sm:justify-start'>
                         <TabHeader
                             header='1 Hour'
                             isSelected={tabPageIndexEntityPerformance === 0}
@@ -376,8 +376,8 @@ const EntityComponent = ({ name, network }: Props) => {
                             boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
                         }}
                     >
-                        <div className='flex flex-col gap-y-6 text-[14px] font-medium md:text-[16px] text-[var(--darkGray)] dark:text-[var(--white)]'>
-                            <p className='text-[18px] uppercase font-medium md:py-4 2xs:py-2 text-center text-[var(--black)] dark:text-[var(--white)]'>Entity performance:</p>
+                        <div className='flex flex-col md:gap-y-4 3xs:gap-y-4 text-[14px] font-medium md:text-[16px] text-[var(--darkGray)] dark:text-[var(--white)]'>
+                            <p className='text-[18px] uppercase font-medium md:py-4 3xs:py-2 text-center text-[var(--black)] dark:text-[var(--white)]'>Entity performance:</p>
                             {tabPageIndexEntityPerformance === 0 && getEntityPerformance(entityHour as Entity)}
                             {tabPageIndexEntityPerformance === 1 && getEntityPerformance(entityDay as Entity)}
                             {tabPageIndexEntityPerformance === 2 && getEntityPerformance(entityWeek as Entity)}

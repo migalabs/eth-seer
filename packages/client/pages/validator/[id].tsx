@@ -209,9 +209,9 @@ const ValidatorComponent = ({ id, network }: Props) => {
                         {validatorHour?.f_status && <ValidatorStatus status={validatorHour?.f_status} />}
                     </div>
 
-                    <div className='2xs:flex flex-col 2xs:flex-row gap-x-5 items-center justify-between md:justify-start'>
+                    <div className='3xs:flex flex-col 3xs:flex-row gap-x-5 items-center justify-between md:justify-start'>
                         <p className='md:w-52 lg:w-50 md:md-0'>Blocks:</p>
-                        <div className='flex justify-center 2xs:gap-x-2 md:gap-x-5'>
+                        <div className='flex justify-center 3xs:gap-x-2 md:gap-x-5'>
                             <CardContent
                                 content={`Proposed: ${getNumberProposedBlocks(proposedBlocks)}`}
                                 color='var(--white)'
@@ -233,7 +233,7 @@ const ValidatorComponent = ({ id, network }: Props) => {
                 </div>
             </div>
 
-            <div className='flex flex-col 2xs:flex-row 2xs:gap-2 md:gap-4 2xs:justify-center sm:justify-start'>
+            <div className='flex flex-col 3xs:flex-row 3xs:gap-2 md:gap-4 3xs:justify-center sm:justify-start'>
                 <TabHeader
                     header='1 Hour'
                     isSelected={tabPageIndexValidatorPerformance === 0}
@@ -271,7 +271,7 @@ const ValidatorComponent = ({ id, network }: Props) => {
                 }}
             >
                 <div className='flex flex-col gap-y-6 text-[14px] font-medium md:text-[16px] text-[var(--black)] dark:text-[var(--white)]'>
-                        <p className='text-[18px] uppercase font-medium md:py-4 2xs:py-2 text-center'>Validator performance:</p>
+                        <p className='text-[18px] uppercase font-medium md:py-4 3xs:py-2 text-center'>Validator performance:</p>
                         {tabPageIndexValidatorPerformance === 0 && getValidatorPerformance(validatorHour as Validator)}
                         {tabPageIndexValidatorPerformance === 1 && getValidatorPerformance(validatorDay as Validator)}
                         {tabPageIndexValidatorPerformance === 2 && getValidatorPerformance(validatorWeek as Validator)}
@@ -343,7 +343,7 @@ const ValidatorComponent = ({ id, network }: Props) => {
 
             <div className='flex flex-col md:flex-row gap-y-2 md:gap-y-0 md:mb-0'>
                 <p className='md:w-52 lg:w-50'>Sync committee participation:</p>
-                <p className='font-medium capitalize text-[14px] md:text-[16px] 2xs:mx-auto my-auto md:mx-0'>
+                <p className='font-medium capitalize text-[14px] md:text-[16px] 3xs:mx-auto my-auto md:mx-0'>
                     {validator?.count_missing_source} duties
                 </p>
             </div>
@@ -405,10 +405,10 @@ const ValidatorComponent = ({ id, network }: Props) => {
                 )}
             </div>
 
-            <div className='2xs:flex flex-col 2xs:flex-row items-center justify-between md:justify-start'>
+            <div className='3xs:flex flex-col 3xs:flex-row items-center justify-between md:justify-start'>
                 <p className='md:w-52 lg:w-50 md:md-0'>Blocks:</p>
 
-                <div className='flex justify-center 2xs:gap-x-2 md:gap-x-5 2xs:my-2'>
+                <div className='flex justify-center 3xs:gap-x-2 md:gap-x-5 3xs:my-2'>
                     <CardContent
                         content={`Proposed: ${validator.proposed_blocks_performance}`}
                         color='var(--white)'
@@ -593,7 +593,7 @@ const ValidatorComponent = ({ id, network }: Props) => {
 
                     {getContentValidator()}
 
-                    <div className='flex flex-col 2xs:flex-row 2xs:gap-2 md:gap-4 2xs:justify-center sm:justify-start'>
+                    <div className='flex flex-col 3xs:flex-row 3xs:gap-2 md:gap-4 3xs:justify-center sm:justify-start'>
                         <TabHeader header='Blocks' isSelected={tabPageIndex === 0} onClick={() => setTabPageIndex(0)} />
                         <TabHeader
                             header='Withdrawals'
