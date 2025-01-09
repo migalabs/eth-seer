@@ -226,10 +226,10 @@ const EntityComponent = ({ name, network }: Props) => {
                 </div>
 
                 {/* Blocks Entity Performance */}
-                <div className='3xs:flex flex-col 3xs:flex-row items-center justify-between md:justify-start'>
+                <div className='3xs:flex flex-col 3xs:flex-row items-center justify-between md:justify-start gap-x-1'>
                     <p className='md:w-52 lg:w-50 md:md-0 text-[var(--black)] dark:text-[var(--white)]'>Blocks:</p>
 
-                    <div className='flex justify-center 3xs:gap-x-2 md:gap-x-5 3xs:my-2'>
+                    <div className='flex justify-center 3xs:gap-x-2 md:gap-x-5 3xs:my-2 '>
                         <CardContent
                             content={`Proposed: ${entity.proposed_blocks_performance}`}
                             bg='var(--proposedGreen)'

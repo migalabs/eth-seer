@@ -405,7 +405,7 @@ const ValidatorComponent = ({ id, network }: Props) => {
                 )}
             </div>
 
-            <div className='3xs:flex flex-col 3xs:flex-row items-center justify-between md:justify-start'>
+            <div className='3xs:flex flex-col 3xs:flex-row items-center justify-between md:justify-start gap-x-1'>
                 <p className='md:w-52 lg:w-50 md:md-0'>Blocks:</p>
 
                 <div className='flex justify-center 3xs:gap-x-2 md:gap-x-5 3xs:my-2'>
