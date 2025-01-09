@@ -52,7 +52,7 @@ const TabHeader = ({ header, isSelected, onClick }: Props) => {
 
     return (
         <div
-            className='flex items-center justify-center border border-white py-4 px-8 rounded-md cursor-pointer shadow-md transition-all'
+            className='flex items-center justify-center border border-white 2xs:px-5 3xs:px-4 3xs:py-3 sm:py-4 sm:px-8 mt-4 rounded-md cursor-pointer shadow-md transition-all'
             style={hoverStyles}
             onClick={onClick}
             onMouseEnter={handleMouseEnter}

@@ -64,6 +64,7 @@ const ValidatorComponent = ({ id, network }: Props) => {
     const [validatorHour, setValidatorHour] = useState<Validator | null>(null);
     const [validatorDay, setValidatorDay] = useState<Validator | null>(null);
     const [validatorWeek, setValidatorWeek] = useState<Validator | null>(null);
+    const [validatorMonth, setValidatorMonth] = useState<Validator | null>(null);
     const [proposedBlocks, setProposedBlocks] = useState<Slot[]>([]);
     const [withdrawals, setWithdrawals] = useState<Withdrawal[]>([]);
     const [showInfoBox, setShowInfoBox] = useState(false);
@@ -93,8 +94,9 @@ const ValidatorComponent = ({ id, network }: Props) => {
             const hour = 9;
             const day = 225;
             const week = 1575;
+            const month = 6750;
 
-            const [responseHour, responseDay, responseWeek, genesisBlock] = await Promise.all([
+            const [responseHour, responseDay, responseWeek, responseMonth, genesisBlock] = await Promise.all([
                 axiosClient.get(`/api/validators/${id}`, {
                     params: {
                         network,
@@ -113,6 +115,12 @@ const ValidatorComponent = ({ id, network }: Props) => {
                         numberEpochs: week,
                     },
                 }),
+                axiosClient.get(`/api/validators/${id}`, {
+                    params: {
+                        network,
+                        numberEpochs: month,
+                    },
+                }),
                 axiosClient.get(`/api/networks/block/genesis`, {
                     params: {
                         network,
@@ -124,6 +132,7 @@ const ValidatorComponent = ({ id, network }: Props) => {
             setValidatorHour(responseHour.data.validator);
             setValidatorDay(responseDay.data.validator);
             setValidatorWeek(responseWeek.data.validator);
+            setValidatorMonth(responseMonth.data.validator);
 
             if (responseHour.data.validator) {
                 setShowInfoBox(false);
@@ -196,26 +205,24 @@ const ValidatorComponent = ({ id, network }: Props) => {
                     </div>
 
                     <div className='flex md:flex-row gap-x-5 justify-between md:justify-start '>
-                        <p className='md:w-52 lg:w-50 '>Current status:</p>
+                        <p className='md:w-52 lg:w-50 my-auto'>Current status:</p>
                         {validatorHour?.f_status && <ValidatorStatus status={validatorHour?.f_status} />}
                     </div>
 
-                    <div className='flex flex-col sm:flex-row gap-x-5'>
-                        <p className='md:w-52 lg:w-50 md:md-0 mb-2'>Blocks:</p>
-                        <div className='flex justify-center gap-x-5 '>
+                    <div className='3xs:flex flex-col 3xs:flex-row gap-x-5 items-center justify-between md:justify-start'>
+                        <p className='md:w-52 lg:w-50 md:md-0'>Blocks:</p>
+                        <div className='flex justify-center 3xs:gap-x-2 md:gap-x-5'>
                             <CardContent
                                 content={`Proposed: ${getNumberProposedBlocks(proposedBlocks)}`}
                                 color='var(--white)'
                                 bg='var(--proposedGreen)'
                                 boxShadow='var(--boxShadowGreen)'
-                                width={200}
                             />
                             <CardContent
-                                content={`Missed:  ${getNumberMissedBlocks(proposedBlocks)}`}
+                                content={`Missed: ${getNumberMissedBlocks(proposedBlocks)}`}
                                 color='var(--white)'
                                 bg='var(--missedRed)'
                                 boxShadow='var(--boxShadowRed)'
-                                width={200}
                             />
                         </div>
                     </div>
@@ -226,7 +233,7 @@ const ValidatorComponent = ({ id, network }: Props) => {
                 </div>
             </div>
 
-            <div className='flex flex-col md:flex-row gap-4 my-5'>
+            <div className='flex flex-col 3xs:flex-row 3xs:gap-2 md:gap-4 3xs:justify-center sm:justify-start'>
                 <TabHeader
                     header='1 Hour'
                     isSelected={tabPageIndexValidatorPerformance === 0}
@@ -248,23 +255,27 @@ const ValidatorComponent = ({ id, network }: Props) => {
                         setTabPageIndexValidatorPerformance(2);
                     }}
                 />
+                <TabHeader
+                    header='1 Month'
+                    isSelected={tabPageIndexValidatorPerformance === 3}
+                    onClick={() => {
+                        setTabPageIndexValidatorPerformance(3);
+                    }}
+                />
             </div>
 
             <div
-                className='flex items-center p-8 justify-center mx-auto rounded-md border-2 border-white text-[var(--black)] dark:text-[var(--white)] bg-[var(--bgMainLightMode)] dark:bg-[var(--bgFairDarkMode)] w-full'
+                className='2xl:flex items-center p-6 justify-center mx-auto rounded-md border-2 border-white text-[var(--black)] dark:text-[var(--white)] bg-[var(--bgMainLightMode)] dark:bg-[var(--bgFairDarkMode)] w-full'
                 style={{
                     boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
                 }}
             >
-                <div className='flex flex-col gap-y-2 text-[14px] font-medium md:text-[16px] text-[var(--black)] dark:text-[var(--white)]'>
-                    <div>
-                        <div>
-                            <p className='text-[18px] uppercase font-medium py-4 text-center'>Validator performance:</p>
-                        </div>
+                <div className='flex flex-col gap-y-6 text-[14px] font-medium md:text-[16px] text-[var(--black)] dark:text-[var(--white)]'>
+                        <p className='text-[18px] uppercase font-medium md:py-4 3xs:py-2 text-center'>Validator performance:</p>
                         {tabPageIndexValidatorPerformance === 0 && getValidatorPerformance(validatorHour as Validator)}
                         {tabPageIndexValidatorPerformance === 1 && getValidatorPerformance(validatorDay as Validator)}
                         {tabPageIndexValidatorPerformance === 2 && getValidatorPerformance(validatorWeek as Validator)}
-                    </div>
+                        {tabPageIndexValidatorPerformance === 3 && getValidatorPerformance(validatorMonth as Validator)}
                 </div>
             </div>
         </>
@@ -307,9 +318,9 @@ const ValidatorComponent = ({ id, network }: Props) => {
     //View validator performance table
     const getValidatorPerformance = (validator: Validator) => (
         <>
-            <div className='flex flex-col md:flex-row py-4 gap-y-2 md:gap-y-0 md:mb-0'>
-                <p className='md:w-52 lg:w-50'>Rewards:</p>
-                <div className='w-[300px] text-center'>
+            <div className='flex flex-col md:flex-row gap-y-2 md:gap-y-0 md:mb-0'>
+                <p className='md:w-52 lg:w-50 my-auto'>Rewards:</p>
+                <div className='flex flex-col xl:flex-row items-center gap-x-4 gap-y-2 font-medium text-[14px]'>
                     {validator && (
                         <ProgressSmoothBar
                             title=''
@@ -323,22 +334,23 @@ const ValidatorComponent = ({ id, network }: Props) => {
                                     <span>Max. Rewards: {validator?.aggregated_max_rewards}</span>
                                 </>
                             }
+                            width={300}
                             widthTooltip={220}
                         />
                     )}
                 </div>
             </div>
 
-            <div className='flex flex-col md:flex-row py-4 gap-y-2 md:gap-y-0 md:mb-0'>
+            <div className='flex flex-col md:flex-row gap-y-2 md:gap-y-0 md:mb-0'>
                 <p className='md:w-52 lg:w-50'>Sync committee participation:</p>
-                <p className='font-medium capitalize text-[14px] md:text-[16px]'>
+                <p className='font-medium capitalize text-[14px] md:text-[16px] 3xs:mx-auto my-auto md:mx-0'>
                     {validator?.count_missing_source} duties
                 </p>
             </div>
 
             {/* Attestation flags */}
-            <div className='flex flex-col lg:flex-row py-4 gap-y-2 md:gap-y-0 md:mb-0'>
-                <p className='md:w-52 lg:w-50'>Attestation flags:</p>
+            <div className='flex flex-col lg:flex-row gap-y-2 md:gap-y-0 md:mb-0'>
+                <p className='md:w-52 lg:w-50 my-auto'>Attestation flags:</p>
 
                 {validator && (
                     <div className='flex flex-col xl:flex-row items-center gap-x-4 gap-y-2 font-medium text-[14px]'>
@@ -393,27 +405,23 @@ const ValidatorComponent = ({ id, network }: Props) => {
                 )}
             </div>
 
-            <div className='flex flex-col md:flex-row py-4 gap-y-2 md:gap-y-0 md:mb-0'>
-                <p className='md:w-52 lg:w-50'>Blocks:</p>
+            <div className='3xs:flex flex-col 3xs:flex-row items-center justify-between md:justify-start gap-x-1'>
+                <p className='md:w-52 lg:w-50 md:md-0'>Blocks:</p>
 
-                <div className='flex justify-center'>
-                    <div className='flex flex-col md:flex-row gap-x-4 gap-y-2'>
-                        <CardContent
-                            content={`Proposed: ${validator.proposed_blocks_performance}`}
-                            color='var(--white)'
-                            bg='var(--proposedGreen)'
-                            boxShadow='var(--boxShadowGreen)'
-                            width={200}
-                        />
+                <div className='flex justify-center 3xs:gap-x-2 md:gap-x-5 3xs:my-2'>
+                    <CardContent
+                        content={`Proposed: ${validator.proposed_blocks_performance}`}
+                        color='var(--white)'
+                        bg='var(--proposedGreen)'
+                        boxShadow='var(--boxShadowGreen)'
+                    />
 
-                        <CardContent
-                            content={`Missed: ${validator.missed_blocks_performance}`}
-                            color='var(--white)'
-                            bg='var(--missedRed)'
-                            boxShadow='var(--boxShadowRed)'
-                            width={200}
-                        />
-                    </div>
+                    <CardContent
+                        content={`Missed: ${validator.missed_blocks_performance}`}
+                        color='var(--white)'
+                        bg='var(--missedRed)'
+                        boxShadow='var(--boxShadowRed)'
+                    />
                 </div>
             </div>
         </>
@@ -585,7 +593,7 @@ const ValidatorComponent = ({ id, network }: Props) => {
 
                     {getContentValidator()}
 
-                    <div className='flex flex-col md:flex-row gap-4'>
+                    <div className='flex flex-col 3xs:flex-row 3xs:gap-2 md:gap-4 3xs:justify-center sm:justify-start'>
                         <TabHeader header='Blocks' isSelected={tabPageIndex === 0} onClick={() => setTabPageIndex(0)} />
                         <TabHeader
                             header='Withdrawals'
