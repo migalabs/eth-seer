@@ -98,7 +98,7 @@ const LidoCSM = () => {
     const totalExited = operatorsStats.reduce((sum, operator) => sum + operator.exited, 0);
     const totalSlashed = operatorsStats.reduce((sum, operator) => sum + operator.slashed, 0);
 
-    const rewardsBar = (operator: Operator) => {
+    const rewardsBar = (operator: Operator, width: number) => {
         return (
             <ProgressSmoothBar
                 title=''
@@ -117,7 +117,7 @@ const LidoCSM = () => {
                         <span>Max. Rewards: {operator?.aggregated_max_rewards}</span>
                     </>
                 }
-                width={300}
+                width={width}
                 widthTooltip={220}
             />
         );
@@ -182,7 +182,7 @@ const LidoCSM = () => {
                     </p>
 
                     <div className='w-[25%] text-center flex justify-center'>
-                        {loadingRewards ? 'Loading...' : rewardsBar(rewards[operator.f_pool_name]) ?? 'N/A'}
+                        {loadingRewards ? 'Loading...' : rewardsBar(rewards[operator.f_pool_name], 300) ?? 'N/A'}
                     </div>
                 </LargeTableRow> 
             ))}
@@ -192,43 +192,41 @@ const LidoCSM = () => {
     const getOperatorsMobile = () => (
         <SmallTable noRowsText='No Operators' fetchingRows={loading}>
             {operators.map((operator: Operator) => (
-                <div key={operator.f_pool_name}>
-                    <SmallTableCard key={operator.f_pool_name}>
-                        <div className='flex w-full items-center justify-between'>
-                            <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>
-                                Operator
-                            </p>
-                            <LinkEntity entity={operator.f_pool_name} />
-                        </div>
+                <SmallTableCard key={operator.f_pool_name}>
+                    <div className='flex w-full items-center justify-between'>
+                        <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>
+                            Operator
+                        </p>
+                        <LinkEntity entity={operator.f_pool_name} />
+                    </div>
 
-                        <div className='flex w-full items-center justify-between'>
-                            <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>
-                                Balance
-                            </p>
-                            <p>
-                                {operator.aggregate_balance?.toLocaleString()} ETH
-                            </p>
-                        </div>
+                    <div className='flex w-full items-center justify-between'>
+                        <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>
+                            Balance
+                        </p>
+                        <p>
+                            {operator.aggregate_balance?.toLocaleString()} ETH
+                        </p>
+                    </div>
 
-                        <div className='flex w-full items-center justify-between'>
-                            <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>
-                                Number of Validators
-                            </p>
-                            <p className='text-[14px] font-medium ml-2'>
-                                {operator.act_number_validators}
-                            </p>
-                        </div>
+                    <div className='flex w-full items-center justify-between'>
+                        <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>
+                            Number of Validators
+                        </p>
+                        <p className='text-[14px] font-medium ml-2'>
+                            {operator.act_number_validators}
+                        </p>
+                    </div>
 
-                        <div className='flex w-full items-center justify-between'>
-                            <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>
-                                Rewards
-                            </p>
-                            <p className='text-[14px] font-medium 3xs'>
-                                {loadingRewards ? 'Loading...' : rewardsBar(rewards[operator.f_pool_name]) ?? 'N/A'}
-                            </p> 
-                        </div>
-                    </SmallTableCard>
-                </div>
+                    <div className='flex w-full items-center justify-between'>
+                        <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>
+                            Rewards
+                        </p>
+                        <p className='text-[14px] font-medium'>
+                            {loadingRewards ? 'Loading...' : rewardsBar(rewards[operator.f_pool_name], 250) ?? 'N/A'}
+                        </p> 
+                    </div>
+                </SmallTableCard>
             ))}
         </SmallTable>
     );
