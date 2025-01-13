@@ -26,6 +26,12 @@ interface Props {
     network: string;
 }
 
+function cleanOperatorName(entity: string | undefined) {
+    if (!entity)
+        return 'others';
+    return entity.replace('csm_', '').replace('_lido', '');
+}
+
 // Server Side Props
 export const getServerSideProps: GetServerSideProps = async context => {
     const name = context.params?.name;
@@ -41,6 +47,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
 };
 
 const EntityComponent = ({ name, network }: Props) => {
+    const cleanedName = cleanOperatorName(name);
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
 
@@ -252,10 +259,10 @@ const EntityComponent = ({ name, network }: Props) => {
     //OVERVIEW PAGE
     return (
         <Layout
-            title={`Entity Profile: ${name} - Ethereum Staking | EthSeer.io`}
-            description={`Explore the staking profile of ${name} on the Ethereum blockchain. View validator performance, total stakes, and more. Uncover staking insights with EthSeer.io.`}
+            title={`Entity Profile: ${cleanedName} - Ethereum Staking | EthSeer.io`}
+            description={`Explore the staking profile of ${cleanedName} on the Ethereum blockchain. View validator performance, total stakes, and more. Uncover staking insights with EthSeer.io.`}
         >
-            <Title className='uppercase'>{name}</Title>
+            <Title className='uppercase'>{cleanedName}</Title>
 
             {loading && (
                 <div className='mt-6'>

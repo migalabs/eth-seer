@@ -11,7 +11,14 @@ type Props = {
     mxAuto?: boolean;
 };
 
+function cleanOperatorName(entity: string | undefined) {
+    if (!entity)
+        return 'others';
+    return entity.replace('csm_', '').replace('_lido', '');
+}
+
 const LinkEntity = ({ entity, children, mxAuto }: Props) => {
+    const cleanedEntity = cleanOperatorName(entity);
     return (
         <NetworkLink
             href={`/entity/${entity || 'others'}`}
@@ -22,7 +29,7 @@ const LinkEntity = ({ entity, children, mxAuto }: Props) => {
         >
             {children ?? (
                 <>
-                    <p className='break-all'>{entity || 'Others'}</p>
+                    <p className='break-all'>{cleanedEntity}</p>
                     <LinkIcon />
                 </>
             )}

@@ -81,7 +81,7 @@ const Pagination = ({ currentPage, totalPages, fullWidth, onChangePage, onChange
                 <div className='hidden xs:block h-8 w-0.5 bg-[var(--black)] dark:bg-[var(--white)]'></div>
 
                 <select
-                    className='h-6 text-[14px] md:text-[16px] rounded-sm px-1 my-0.5'
+                    className='h-6 text-[14px] md:text-[16px] rounded-sm px-1 my-0.5 bg-transparent'
                     onChange={e => onChangeNumRows(Number(e.target.value))}
                 >
                     <option value={10}>10</option>
