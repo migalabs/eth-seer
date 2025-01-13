@@ -40,7 +40,8 @@ const LidoCSM = () => {
 
     const [operators, setOperators] = useState<Operator[]>([]);
     const [operatorsBalance, setOperatorsBalance] = useState<Operator[]>([]);
-    const [operatorsStats, setOperatorsStats] = useState<Operator[]>([]);
+    const [operatorsValidator, setOperatorsValidator] = useState<Operator[]>([]);
+    const [operatorsBlock, setOperatorsBlock] = useState<Operator[]>([]);
     const [operatorsCount, setOperatorsCount] = useState(0);
     const [rewards, setRewards] = useState<{ [key:string]: Operator }>({});
     const [loadingRewards, setLoadingRewards] = useState(false);
@@ -91,12 +92,12 @@ const LidoCSM = () => {
     }, [network]);
 
     const totalBalance = operatorsBalance.reduce((sum, operator) => sum + operator.aggregate_balance, 0);
-    const totalProposed = operatorsStats.reduce((sum, operator) => sum + operator.f_proposed, 0);
-    const totalMissed = operatorsStats.reduce((sum, operator) => sum + operator.f_missed, 0);
-    const totalDeposited = operatorsStats.reduce((sum, operator) => sum + operator.deposited, 0);
-    const totalActive = operatorsStats.reduce((sum, operator) => sum + operator.active, 0);
-    const totalExited = operatorsStats.reduce((sum, operator) => sum + operator.exited, 0);
-    const totalSlashed = operatorsStats.reduce((sum, operator) => sum + operator.slashed, 0);
+    const totalProposed = operatorsBlock.reduce((sum, operator) => sum + operator.f_proposed, 0);
+    const totalMissed = operatorsBlock.reduce((sum, operator) => sum + operator.f_missed, 0);
+    const totalDeposited = operatorsValidator.reduce((sum, operator) => sum + operator.deposited, 0);
+    const totalActive = operatorsValidator.reduce((sum, operator) => sum + operator.active, 0);
+    const totalExited = operatorsValidator.reduce((sum, operator) => sum + operator.exited, 0);
+    const totalSlashed = operatorsValidator.reduce((sum, operator) => sum + operator.slashed, 0);
 
     const rewardsBar = (operator: Operator, width: number) => {
         return (
@@ -140,7 +141,8 @@ const LidoCSM = () => {
 
             setOperators(response.data.operators);
             setOperatorsBalance(response.data.operatorsBalance);
-            setOperatorsStats(response.data.operatorsStats);
+            setOperatorsValidator(response.data.operatorsValidator);
+            setOperatorsBlock(response.data.operatorsBlock);
             setOperatorsCount(response.data.totalCount);
         } catch (error) {
             console.log(error);

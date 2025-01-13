@@ -9,7 +9,7 @@ export const getOperators = async (req: Request, res: Response) => {
 
         const skip = Number(page) * Number(limit);
 
-        const [operatorsBalanceResultSet, operatorsStatsResultSet, operatorsResultSet, countResultSet] = await Promise.all([
+        const [operatorsBalanceResultSet, operatorsValidatorResultSet, operatorsBlockResultSet, operatorsResultSet, countResultSet] = await Promise.all([
             chClient.query({
                 query: `
                         SELECT
@@ -32,18 +32,29 @@ export const getOperators = async (req: Request, res: Response) => {
                             COUNT(CASE vls.f_status WHEN 1 THEN 1 ELSE NULL END) AS active,
                             COUNT(CASE vls.f_status WHEN 2 THEN 1 ELSE NULL END) AS exited,
                             COUNT(CASE vls.f_status WHEN 3 THEN 1 ELSE NULL END) AS slashed,
-                            COUNT(CASE pd.f_proposed WHEN true THEN 1 ELSE NULL END) AS f_proposed,
-                            COUNT(CASE pd.f_proposed WHEN false THEN 1 ELSE NULL END) AS f_missed,
-                            SUM(vls.f_balance_eth) AS aggregate_balance,
                             pk.f_pool_name
                         FROM
                             t_validator_last_status vls
                         INNER JOIN
                             t_eth2_pubkeys pk ON (vls.f_val_idx = pk.f_val_idx)
-                        LEFT JOIN
-                            t_proposer_duties pd ON (vls.f_val_idx = pd.f_val_idx)
                         WHERE
-                            pk.f_pool_name LIKE 'csm_%_lido' AND pd.f_val_idx != 0
+                            pk.f_pool_name LIKE 'csm_%_lido'
+                        GROUP BY pk.f_pool_name
+                    `,
+                format: 'JSONEachRow',
+            }),
+            chClient.query({
+                query: `
+                        SELECT
+                            COUNT(CASE pd.f_proposed WHEN true THEN 1 ELSE NULL END) AS f_proposed,
+                            COUNT(CASE pd.f_proposed WHEN false THEN 1 ELSE NULL END) AS f_missed,
+                            pk.f_pool_name
+                        FROM
+                            t_eth2_pubkeys pk
+                        INNER JOIN
+                            t_proposer_duties pd ON (pk.f_val_idx = pd.f_val_idx)
+                        WHERE
+                            pk.f_pool_name LIKE 'csm_%_lido'
                         GROUP BY pk.f_pool_name
                     `,
                 format: 'JSONEachRow',
@@ -78,13 +89,15 @@ export const getOperators = async (req: Request, res: Response) => {
         ]);
 
         const operatorsBalanceResult = await operatorsBalanceResultSet.json();
-        const operatorsStatsResult = await operatorsStatsResultSet.json();
+        const operatorsValidatorResult = await operatorsValidatorResultSet.json();
+        const operatorsBlockResult = await operatorsBlockResultSet.json();
         const operatorsResult = await operatorsResultSet.json();
         const countResult = await countResultSet.json();
 
         res.json({
             operatorsBalance: operatorsBalanceResult,
-            operatorsStats: operatorsStatsResult,
+            operatorsValidator: operatorsValidatorResult,
+            operatorsBlock: operatorsBlockResult,
             operators: operatorsResult,
             totalCount: Number(countResult[0].count),
         });
