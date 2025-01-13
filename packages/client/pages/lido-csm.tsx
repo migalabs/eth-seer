@@ -238,7 +238,7 @@ const LidoCSM = () => {
                             </p>
                         </div>
                         <p className='text-[14px] font-medium'>
-                            {loadingRewards ? 'Loading...' : rewardsBar(rewards[operator.f_pool_name], 250) ?? 'N/A'}
+                            {loadingRewards ? 'Loading...' : rewardsBar(rewards[operator.f_pool_name], 160) ?? 'N/A'}
                         </p> 
                     </div>
                 </SmallTableCard>
