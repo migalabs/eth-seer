@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { clickhouseClients } from '../config/db';
 
-export const getOperators = async (req: Request, res: Response) => {
+export const getCsmOperators = async (req: Request, res: Response) => {
     try {
         const { network, page = 0, limit = 10 } = req.query;
 
@@ -72,7 +72,7 @@ export const getOperators = async (req: Request, res: Response) => {
                         WHERE
                             pk.f_pool_name LIKE 'csm_%_lido'
                         GROUP BY pk.f_pool_name
-                        ORDER BY aggregate_balance desc
+                        ORDER BY LENGTH(pk.f_pool_name), pk.f_pool_name
                         LIMIT ${Number(limit)}
                         OFFSET ${skip};
                     `,

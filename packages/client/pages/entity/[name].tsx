@@ -27,9 +27,14 @@ interface Props {
 }
 
 function cleanOperatorName(entity: string | undefined) {
-    if (!entity)
+    if (!entity) {
         return 'others';
-    return entity.replace('csm_', '').replace('_lido', '');
+    }
+
+    return entity
+        .replace('_', ' ')
+        .replace('_lido', '')
+        .replace(/([a-zA-Z])(\d)/g, '$1 $2');
 }
 
 // Server Side Props

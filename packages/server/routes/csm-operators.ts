@@ -2,8 +2,8 @@ import { Router } from 'express';
 import { query } from 'express-validator';
 
 import {
-    getOperators,
-} from '../controllers/operators';
+    getCsmOperators,
+} from '../controllers/csm-operators';
 
 import { checkFields } from '../middlewares/check-fields';
 import { existsNetwork } from '../helpers/network-validator';
@@ -14,6 +14,6 @@ router.get('/', [
     query('network').not().isEmpty(),
     query('network').custom(existsNetwork),
     checkFields,
-], getOperators);
+], getCsmOperators);
 
 export default router;

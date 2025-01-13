@@ -7,6 +7,8 @@ import axiosClient from '../config/axios';
 // Hooks
 import useLargeView from '../hooks/useLargeView';
 
+import Loader from '../components/ui/Loader';
+
 // Components
 import Layout from '../components/layouts/Layout';
 import LinkEntity from '../components/ui/LinkEntity';
@@ -48,6 +50,7 @@ const LidoCSM = () => {
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(0);
     const [numRowsQuery, setNumRowsQuery] = useState(0);
+    const [showInfoBox, setShowInfoBox] = useState(false);
 
     const { themeMode } = useContext(ThemeModeContext) ?? {};
 
@@ -131,7 +134,7 @@ const LidoCSM = () => {
             setCurrentPage(page);
             setNumRowsQuery(limit);
 
-            const response = await axiosClient.get('/api/operators', {
+            const response = await axiosClient.get('/api/csm-operators', {
                 params: {
                     network,
                     page,
@@ -144,6 +147,11 @@ const LidoCSM = () => {
             setOperatorsValidator(response.data.operatorsValidator);
             setOperatorsBlock(response.data.operatorsBlock);
             setOperatorsCount(response.data.totalCount);
+
+            if (response.data.operators.length > 0) {
+                setShowInfoBox(true);
+            } 
+
         } catch (error) {
             console.log(error);
         } finally {
@@ -169,7 +177,7 @@ const LidoCSM = () => {
             <LargeTableHeader text='Operator' />
             <LargeTableHeader text='Balance' />
             <LargeTableHeader text='Number of Validators' />
-            <LargeTableHeader text='Rewards' />
+            <LargeTableHeader text='Attestation Rewards (1 Month)' />
 
             {operators.map((operator: Operator) => (
                 <LargeTableRow key={operator.f_pool_name}>
@@ -221,9 +229,14 @@ const LidoCSM = () => {
                     </div>
 
                     <div className='flex w-full items-center justify-between'>
-                        <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>
-                            Rewards
-                        </p>
+                        <div>
+                            <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>
+                                Attestation Rewards
+                            </p>
+                            <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>
+                                (1 Month)
+                            </p>
+                        </div>
                         <p className='text-[14px] font-medium'>
                             {loadingRewards ? 'Loading...' : rewardsBar(rewards[operator.f_pool_name], 250) ?? 'N/A'}
                         </p> 
@@ -242,6 +255,13 @@ const LidoCSM = () => {
 
             <Title>Lido CSM</Title>
 
+            {loading && (
+                <div className='mt-6'>
+                    <Loader />
+                </div>
+            )}
+            
+            {showInfoBox &&
             <div className='flex flex-col gap-y-4 mx-auto w-11/12 md:w-10/12 mb-6'>
                 <div className='flex justify-end'>
                     <ShareMenu type='entity' />
@@ -315,7 +335,7 @@ const LidoCSM = () => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>}
 
             {operatorsCount > 0 && (
                 <div>
@@ -328,7 +348,7 @@ const LidoCSM = () => {
                 </div>
             )}
 
-            <>{isLargeView ? getOperatorsLargeView() : getOperatorsMobile()}</>
+            {!loading && <>{isLargeView ? getOperatorsLargeView() : getOperatorsMobile()}</>}
 
         </Layout>
     );
