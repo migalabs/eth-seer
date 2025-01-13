@@ -148,9 +148,7 @@ const LidoCSM = () => {
             setOperatorsBlock(response.data.operatorsBlock);
             setOperatorsCount(response.data.totalCount);
 
-            if (response.data.operators.length > 0) {
-                setShowInfoBox(true);
-            } 
+            setShowInfoBox(true);
 
         } catch (error) {
             console.log(error);
@@ -255,12 +253,6 @@ const LidoCSM = () => {
 
             <Title>Lido CSM</Title>
 
-            {loading && (
-                <div className='mt-6'>
-                    <Loader />
-                </div>
-            )}
-            
             {showInfoBox &&
             <div className='flex flex-col gap-y-4 mx-auto w-11/12 md:w-10/12 mb-6'>
                 <div className='flex justify-end'>
@@ -338,13 +330,19 @@ const LidoCSM = () => {
             </div>}
 
             {operatorsCount > 0 && (
-                <div>
+                <>
                     <Pagination
                         currentPage={currentPage}
                         totalPages={Math.ceil(operatorsCount / numRowsQuery)}
                         onChangePage={page => getOperators(page, numRowsQuery)}
                         onChangeNumRows={numRows => getOperators(0, numRows)}
                     />
+                </>
+            )}
+
+            {loading && (
+                <div className='mt-6'>
+                    <Loader />
                 </div>
             )}
 
