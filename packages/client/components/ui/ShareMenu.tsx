@@ -36,6 +36,8 @@ const ShareMenu = ({ type }: Props) => {
     const [copied, setCopied] = useState(false);
 
     const getShareUrl = (shareLink: string) => {
+        if (typeof window === 'undefined')
+            return '';
         const encodedUrl = window.location.href;
         const encodedTitle = `Check out this ${type} on Ethseer!`;
 

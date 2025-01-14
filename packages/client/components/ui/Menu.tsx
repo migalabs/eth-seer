@@ -60,6 +60,10 @@ const Menu = () => {
                 name: 'Clients',
                 route: '/clients',
             },
+            {
+                name: 'Lido CSM',
+                route: '/lido-csm',
+            },
         ],
         Networks:
             networks.length > 0
