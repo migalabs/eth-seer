@@ -174,7 +174,7 @@ const LidoCSM = () => {
         <LargeTable minWidth={700} noRowsText='No Operators' fetchingRows={loading}>
             <LargeTableHeader text='Operator' />
             <LargeTableHeader text='Balance' />
-            <LargeTableHeader text='Number of Validators' />
+            <LargeTableHeader text='Active Validators' />
             <LargeTableHeader text='Rewards (1 Month)' />
 
             {operators.map((operator: Operator) => (
@@ -219,7 +219,7 @@ const LidoCSM = () => {
 
                     <div className='flex w-full items-center justify-between'>
                         <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>
-                            Number of Validators
+                            Active Validators
                         </p>
                         <p className='text-[14px] font-medium ml-2'>
                             {operator.act_number_validators}
