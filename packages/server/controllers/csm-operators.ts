@@ -29,7 +29,7 @@ export const getCsmOperators = async (req: Request, res: Response) => {
                 query: `
                         SELECT
                             COUNT(CASE vls.f_status WHEN 0 THEN 1 ELSE NULL END) AS deposited,
-                            COUNT(CASE vls.f_status WHEN 1 THEN 1 ELSE NULL END) AS active,
+                            COUNT(CASE vls.f_status WHEN 1 THEN 1 ELSE NULL END) AS act_number_validators,
                             COUNT(CASE vls.f_status WHEN 2 THEN 1 ELSE NULL END) AS exited,
                             COUNT(CASE vls.f_status WHEN 3 THEN 1 ELSE NULL END) AS slashed,
                             pk.f_pool_name

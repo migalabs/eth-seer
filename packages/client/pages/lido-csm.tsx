@@ -98,7 +98,7 @@ const LidoCSM = () => {
     const totalProposed = operatorsBlock.reduce((sum, operator) => sum + operator.f_proposed, 0);
     const totalMissed = operatorsBlock.reduce((sum, operator) => sum + operator.f_missed, 0);
     const totalDeposited = operatorsValidator.reduce((sum, operator) => sum + operator.deposited, 0);
-    const totalActive = operatorsValidator.reduce((sum, operator) => sum + operator.active, 0);
+    const totalActive = operatorsValidator.reduce((sum, operator) => sum + Number(operator.act_number_validators), 0);
     const totalExited = operatorsValidator.reduce((sum, operator) => sum + operator.exited, 0);
     const totalSlashed = operatorsValidator.reduce((sum, operator) => sum + operator.slashed, 0);
 
@@ -175,7 +175,7 @@ const LidoCSM = () => {
             <LargeTableHeader text='Operator' />
             <LargeTableHeader text='Balance' />
             <LargeTableHeader text='Number of Validators' />
-            <LargeTableHeader text='Attestation Rewards (1 Month)' />
+            <LargeTableHeader text='Rewards (1 Month)' />
 
             {operators.map((operator: Operator) => (
                 <LargeTableRow key={operator.f_pool_name}>
@@ -229,7 +229,7 @@ const LidoCSM = () => {
                     <div className='flex w-full items-center justify-between'>
                         <div>
                             <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>
-                                Attestation Rewards
+                                Rewards
                             </p>
                             <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>
                                 (1 Month)
