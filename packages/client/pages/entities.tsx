@@ -40,23 +40,22 @@ const Entities = () => {
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [network]);
-
+    
     //Entities
     const getEntities = async () => {
         try {
             setLoading(true);
-
-            const response = await axiosClient.get('/api/entities', {
+            
+            const entityResponse = await axiosClient.get('/api/entities', {
                 params: {
                     network,
                 },
             });
 
-            setEntities(
-                response.data.entities.toSorted(
-                    (a: Entity, b: Entity) => Number(b.act_number_validators) - Number(a.act_number_validators)
-                )
-            );
+            setEntities(entityResponse.data.entities.toSorted(
+                (a: Entity, b: Entity) => Number(b.act_number_validators) - Number(a.act_number_validators)
+            ));
+
         } catch (error) {
             console.log(error);
         } finally {
