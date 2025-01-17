@@ -104,6 +104,18 @@ export const getEntities = async (req: Request, res: Response) => {
                         WHERE
                             NOT (pk.f_pool_name LIKE 'csm_%_lido')
                         GROUP BY pk.f_pool_name
+
+                        UNION ALL
+
+                        SELECT
+                            COUNT(CASE vls.f_status WHEN 1 THEN 1 ELSE null END) AS act_number_validators,
+                            'Lido CSM' AS f_pool_name
+                        FROM
+                            t_validator_last_status vls
+                        LEFT OUTER JOIN
+                            t_eth2_pubkeys pk ON (vls.f_val_idx = pk.f_val_idx)
+                        WHERE
+                            pk.f_pool_name LIKE 'csm_%_lido'
                     `,
                 format: 'JSONEachRow',
             }),

@@ -51,31 +51,10 @@ const Entities = () => {
                     network,
                 },
             });
-            
-            const operatorResponse = await axiosClient.get('/api/csm-operators', {
-                params: {
-                    network,
-                },
-            });
-            
-            const fetchedEntities = entityResponse.data.entities.toSorted(
-                (a: Entity, b: Entity) => Number(b.act_number_validators) - Number(a.act_number_validators)
-            );
 
-            setEntities(prevEntities => {
-                const updatedEntities: Entity[] = [...prevEntities, ...fetchedEntities];
-            
-                if (!updatedEntities.some(entity => entity.f_pool_name === 'Lido CSM')) {
-                    updatedEntities.push({
-                        f_pool_name: 'Lido CSM',
-                        act_number_validators: operatorResponse.data.operatorsValidator.reduce((sum : number, operator: Entity) => sum + Number(operator.act_number_validators), 0),
-                    });
-                }
-            
-                return updatedEntities.sort(
-                    (a: Entity, b: Entity) => Number(b.act_number_validators) - Number(a.act_number_validators)
-                );
-            });
+            setEntities(entityResponse.data.entities.toSorted(
+                (a: Entity, b: Entity) => Number(b.act_number_validators) - Number(a.act_number_validators)
+            ));
 
         } catch (error) {
             console.log(error);
