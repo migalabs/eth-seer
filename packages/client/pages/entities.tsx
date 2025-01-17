@@ -72,7 +72,7 @@ const Entities = () => {
                     });
                 }
             
-                return updatedEntities.toSorted(
+                return updatedEntities.sort(
                     (a: Entity, b: Entity) => Number(b.act_number_validators) - Number(a.act_number_validators)
                 );
             });
