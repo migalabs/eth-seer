@@ -101,6 +101,8 @@ export const getEntities = async (req: Request, res: Response) => {
                             t_validator_last_status vls
                         LEFT OUTER JOIN
                             t_eth2_pubkeys pk ON (vls.f_val_idx = pk.f_val_idx)
+                        WHERE
+                            NOT (pk.f_pool_name LIKE 'csm_%_lido')
                         GROUP BY pk.f_pool_name
                     `,
                 format: 'JSONEachRow',

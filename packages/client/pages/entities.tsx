@@ -40,23 +40,43 @@ const Entities = () => {
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [network]);
-
+    
     //Entities
     const getEntities = async () => {
         try {
             setLoading(true);
-
-            const response = await axiosClient.get('/api/entities', {
+            
+            const entityResponse = await axiosClient.get('/api/entities', {
                 params: {
                     network,
                 },
             });
-
-            setEntities(
-                response.data.entities.toSorted(
-                    (a: Entity, b: Entity) => Number(b.act_number_validators) - Number(a.act_number_validators)
-                )
+            
+            const operatorResponse = await axiosClient.get('/api/csm-operators', {
+                params: {
+                    network,
+                },
+            });
+            
+            const fetchedEntities = entityResponse.data.entities.toSorted(
+                (a: Entity, b: Entity) => Number(b.act_number_validators) - Number(a.act_number_validators)
             );
+
+            setEntities(prevEntities => {
+                const updatedEntities = [...prevEntities, ...fetchedEntities];
+            
+                if (!updatedEntities.some(entity => entity.f_pool_name === 'Lido CSM')) {
+                    updatedEntities.push({
+                        f_pool_name: 'Lido CSM',
+                        act_number_validators: operatorResponse.data.operatorsValidator.reduce((sum : number, operator: Entity) => sum + Number(operator.act_number_validators), 0),
+                    });
+                }
+            
+                return updatedEntities.toSorted(
+                    (a, b) => Number(b.act_number_validators) - Number(a.act_number_validators)
+                );
+            });
+
         } catch (error) {
             console.log(error);
         } finally {
