@@ -63,7 +63,7 @@ const Entities = () => {
             );
 
             setEntities(prevEntities => {
-                const updatedEntities = [...prevEntities, ...fetchedEntities];
+                const updatedEntities: Entity[] = [...prevEntities, ...fetchedEntities];
             
                 if (!updatedEntities.some(entity => entity.f_pool_name === 'Lido CSM')) {
                     updatedEntities.push({
@@ -73,7 +73,7 @@ const Entities = () => {
                 }
             
                 return updatedEntities.toSorted(
-                    (a, b) => Number(b.act_number_validators) - Number(a.act_number_validators)
+                    (a: Entity, b: Entity) => Number(b.act_number_validators) - Number(a.act_number_validators)
                 );
             });
 
