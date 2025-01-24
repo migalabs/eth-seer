@@ -6,7 +6,11 @@ module.exports = {
         extend: {},
         screens: {
             '3xs': '320px',
+            // => @media (min-width: 320px) { ... }
+
             '2xs': '410px',
+            // => @media (min-width: 410px) { ... }
+
             xs: '512px',
             // => @media (min-width: 512px) { ... }
 
@@ -15,6 +19,9 @@ module.exports = {
 
             md: '768px',
             // => @media (min-width: 768px) { ... }
+
+            ml: '912px',
+            // => @media (min-width: 912px) { ... }
 
             lg: '1024px',
             // => @media (min-width: 1024px) { ... }

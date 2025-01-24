@@ -228,7 +228,7 @@ const EntityComponent = ({ name, network }: Props) => {
                 </div>
 
                 {/* Attestation flags */}
-                {entity && (
+                {entity && !checkCsm && (
                     <div className='flex flex-col lg:flex-row gap-y-2 md:gap-y-0 md:mb-0'>
                         <p className='md:w-52 lg:w-50 my-auto text-[var(--black)] dark:text-[var(--white)]'>Attestation flags:</p>
 
@@ -293,7 +293,7 @@ const EntityComponent = ({ name, network }: Props) => {
                         <p className='text-[18px] md:w-[240px] my-auto text-[var(--black)] dark:text-[var(--white)] mx-auto'>
                             Correctness Comparison:
                         </p>
-                        <div className="md:h-[300px] 3xs:h-[200px] md:w-[700px] 3xs:w-[350px] 2xs:w-[400px] md:mx-auto 3xs:ml-[-40px]">
+                        <div className="ml:h-[400px] 3xs:h-[200px] xs:h-[300px] md:w-[600px] ml:w-[750px] lg:w-[850px] xl:w-[1100px] 3xs:w-[355px] 2xs:w-[415px] xs:w-[520px] xl:mx-auto 3xs:ml-[-54px] md:ml-[-40px]" >
                             <BarChartComponent
                                 data={[
                                     {name: 'Source', [cleanedName]: (1 - entity.count_missing_source / entity.count_expected_attestations), 'CSM': csmOperators?.missing_source, 'Overall Network': overallNetwork?.missing_source},
