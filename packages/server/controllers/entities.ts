@@ -8,7 +8,7 @@ export const getEntity = async (req: Request, res: Response) => {
 
         const chClient = clickhouseClients[network as string];
 
-        const [entityStatsResultSet, blocksProposedResultSet, entityPerformanceResultSet] = await Promise.all([
+        const queries = [
             chClient.query({
                 query: `
                         SELECT SUM(f_balance_eth) AS aggregate_balance,
@@ -58,11 +58,63 @@ export const getEntity = async (req: Request, res: Response) => {
                     `,
                 format: 'JSONEachRow',
             }),
-        ]);
+        ];
+        
+        if (name.includes('csm_')) {
+            queries.push(
+                chClient.query({
+                    query: `
+                            SELECT
+                                1 - SUM(f_missing_source) / SUM(f_num_att_vals) AS missing_source,
+                                1 - SUM(f_missing_target) / SUM(f_num_att_vals) AS missing_target,
+                                1 - SUM(f_missing_head) / SUM(f_num_att_vals) AS missing_head
+                            FROM (
+                                SELECT *
+                                FROM t_epoch_metrics_summary
+                                ORDER BY f_epoch DESC
+                                LIMIT ${Number(numberEpochs)}
+                            );
+                        `,
+                    format: 'JSONEachRow',
+                }),
+            );
+            queries.push(
+                chClient.query({
+                    query: `
+                            SELECT
+                                1 - SUM(count_missing_source) / SUM(number_active_vals) AS missing_source,
+                                1 - SUM(count_missing_target) / SUM(number_active_vals) AS missing_target,
+                                1 - SUM(count_missing_head) / SUM(number_active_vals) AS missing_head
+                            FROM (
+                                SELECT *
+                                FROM t_pool_summary
+                                WHERE f_pool_name LIKE 'csm_%'
+                                AND f_epoch >= (SELECT
+                                                    f_epoch - ${Number(numberEpochs)}
+                                                FROM
+                                                    t_pool_summary
+                                                ORDER BY f_epoch desc
+                                                LIMIT 1)
+                            );
+                        `,
+                    format: 'JSONEachRow',
+                }),
+            )
+        }
 
-        const entityStatsResult = await entityStatsResultSet.json();
-        const blocksProposedResult = await blocksProposedResultSet.json();
-        const entityPerformanceResult = await entityPerformanceResultSet.json();
+        const results = await Promise.all(queries.map((query) => query));
+
+        const entityStatsResult = await results[0].json();
+        const blocksProposedResult = await results[1].json();
+        const entityPerformanceResult = await results[2].json();
+        
+        let metricsOverallNetworkResult = [];
+        let metricsCsmOperatorsResult = [];
+
+        if (name.includes('csm_')) {
+            metricsOverallNetworkResult = await results[3].json();
+            metricsCsmOperatorsResult = await results[4].json();
+        }
 
         let entity = null;
 
@@ -76,6 +128,8 @@ export const getEntity = async (req: Request, res: Response) => {
 
         res.json({
             entity,
+            metricsOverallNetwork: metricsOverallNetworkResult[0] || null,
+            metricsCsmOperators: metricsCsmOperatorsResult[0] || null,
         });
     } catch (error) {
         console.log(error);

@@ -17,6 +17,8 @@ import Title from '../../components/ui/Title';
 import CardContent from '../../components/ui/CardContent';
 import ShareMenu from '../../components/ui/ShareMenu';
 
+import BarChartComponent from '../../components/ui/BarChart';
+
 // Types
 import { Entity } from '../../types';
 
@@ -26,6 +28,16 @@ interface Props {
     network: string;
 }
 
+type Metrics = {
+    missing_source: number;
+    missing_target: number;
+    missing_head: number;
+    count_active_vals: number;
+    count_missing_source: number;
+    count_missing_target: number;
+    count_missing_head: number;
+};
+
 function cleanOperatorName(entity: string | undefined) {
     if (!entity) {
         return 'others';
@@ -34,7 +46,9 @@ function cleanOperatorName(entity: string | undefined) {
     return entity
         .replace('_', ' ')
         .replace('_lido', '')
-        .replace(/([a-zA-Z])(\d)/g, '$1 $2');
+        .replace(/([a-zA-Z])(\d)/g, '$1 $2')
+        .replace('csm', 'CSM')
+        .replace(/\b\w/g, char => char.toUpperCase());
 }
 
 // Server Side Props
@@ -56,23 +70,33 @@ const EntityComponent = ({ name, network }: Props) => {
     // Theme Mode Context
     const { themeMode } = useContext(ThemeModeContext) ?? {};
 
-    // Refs
-    const entityRef = useRef('');
-
     // States
     const [entityHour, setEntityHour] = useState<Entity | null>(null);
+    const [metricsOverallNetworkHour, setMetricsOverallNetworkHour] = useState<Metrics | null>(null);
+    const [metricsCsmOperatorshour, setMetricsCsmOperatorshour] = useState<Metrics | null>(null);
     const [entityDay, setEntityDay] = useState<Entity | null>(null);
+    const [metricsOverallNetworkDay, setMetricsOverallNetworkDay] = useState<Metrics | null>(null);
+    const [metricsCsmOperatorsDay, setMetricsCsmOperatorsDay] = useState<Metrics | null>(null);
     const [entityWeek, setEntityWeek] = useState<Entity | null>(null);
+    const [metricsOverallNetworkWeek, setMetricsOverallNetworkWeek] = useState<Metrics | null>(null);
+    const [metricsCsmOperatorsWeek, setMetricsCsmOperatorsWeek] = useState<Metrics | null>(null);
     const [entityMonth, setEntityMonth] = useState<Entity | null>(null);
+    const [metricsOverallNetworkMonth, setMetricsOverallNetworkMonth] = useState<Metrics | null>(null);
+    const [metricsCsmOperatorsMonth, setMetricsCsmOperatorsMonth] = useState<Metrics | null>(null);
     const [showInfoBox, setShowInfoBox] = useState(false);
     const [tabPageIndexEntityPerformance, setTabPageIndexEntityPerformance] = useState(0);
+    const [checkCsm, setCheckCsm] = useState(false);
     const [loading, setLoading] = useState(true);
+    const getEntityCalled = useRef(false);
 
     // UseEffect
     useEffect(() => {
-        if ((!entityHour && !entityDay && !entityWeek && !entityMonth) || entityRef.current !== name) {
-            entityRef.current = name;
+        if (!getEntityCalled.current) {
+            getEntityCalled.current = true;
             getEntity();
+        }
+        if (name.includes('csm')) {
+            setCheckCsm(true);
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -116,9 +140,17 @@ const EntityComponent = ({ name, network }: Props) => {
             ]);
 
             setEntityHour(responseHour.data.entity);
+            setMetricsOverallNetworkHour(responseHour.data.metricsOverallNetwork);
+            setMetricsCsmOperatorshour(responseHour.data.metricsCsmOperators);
             setEntityDay(responseDay.data.entity);
+            setMetricsOverallNetworkDay(responseDay.data.metricsOverallNetwork);
+            setMetricsCsmOperatorsDay(responseDay.data.metricsCsmOperators);
             setEntityWeek(responseWeek.data.entity);
+            setMetricsOverallNetworkWeek(responseWeek.data.metricsOverallNetwork);
+            setMetricsCsmOperatorsWeek(responseWeek.data.metricsCsmOperators);
             setEntityMonth(responseMonth.data.entity);
+            setMetricsOverallNetworkMonth(responseMonth.data.metricsOverallNetwork);
+            setMetricsCsmOperatorsMonth(responseMonth.data.metricsCsmOperators);
 
             if (responseHour.data.entity.aggregate_balance !== null) {
                 setShowInfoBox(false);
@@ -133,7 +165,7 @@ const EntityComponent = ({ name, network }: Props) => {
     };
 
     // Container Entity Performance
-    const getEntityPerformance = (entity: Entity) => {
+    const getEntityPerformance = (entity: Entity, overallNetwork: Metrics, csmOperators: Metrics) => {
         return (
             <>
                 {/* Rewards */}
@@ -174,11 +206,32 @@ const EntityComponent = ({ name, network }: Props) => {
                     </p>
                 </div>
 
-                {/* Attestation flags */}
-                <div className='flex flex-col lg:flex-row gap-y-2 md:gap-y-0 md:mb-0'>
-                    <p className='md:w-52 lg:w-50 my-auto text-[var(--black)] dark:text-[var(--white)]'>Attestation flags:</p>
+                {/* Blocks Entity Performance */}
+                <div className='3xs:flex flex-col 3xs:flex-row items-center justify-between md:justify-start gap-x-1'>
+                    <p className='md:w-52 lg:w-50 md:md-0 text-[var(--black)] dark:text-[var(--white)]'>Blocks:</p>
 
-                    {entity && (
+                    <div className='flex justify-center 3xs:gap-x-2 md:gap-x-5 3xs:my-2 '>
+                        <CardContent
+                            content={`Proposed: ${entity.proposed_blocks_performance}`}
+                            bg='var(--proposedGreen)'
+                            color='var(--white)'
+                            boxShadow='var(--boxShadowGreen)'
+                        />
+
+                        <CardContent
+                            content={`Missed: ${entity.missed_blocks_performance}`}
+                            bg='var(--missedRed)'
+                            color='var(--white)'
+                            boxShadow='var(--boxShadowRed)'
+                        />
+                    </div>
+                </div>
+
+                {/* Attestation flags */}
+                {entity && !checkCsm && (
+                    <div className='flex flex-col lg:flex-row gap-y-2 md:gap-y-0 md:mb-0'>
+                        <p className='md:w-52 lg:w-50 my-auto text-[var(--black)] dark:text-[var(--white)]'>Attestation flags:</p>
+
                         <div className='flex flex-col xl:flex-row items-center gap-x-4 gap-y-2 font-medium text-[14px] text-[var(--black)] dark:text-[var(--white)]'>
                             <ProgressSmoothBar
                                 title='Source'
@@ -197,7 +250,6 @@ const EntityComponent = ({ name, network }: Props) => {
                                 }
                                 widthTooltip={220}
                             />
-
                             <ProgressSmoothBar
                                 title='Target'
                                 color='var(--black)'
@@ -234,29 +286,24 @@ const EntityComponent = ({ name, network }: Props) => {
                                 widthTooltip={220}
                             />
                         </div>
-                    )}
-                </div>
-
-                {/* Blocks Entity Performance */}
-                <div className='3xs:flex flex-col 3xs:flex-row items-center justify-between md:justify-start gap-x-1'>
-                    <p className='md:w-52 lg:w-50 md:md-0 text-[var(--black)] dark:text-[var(--white)]'>Blocks:</p>
-
-                    <div className='flex justify-center 3xs:gap-x-2 md:gap-x-5 3xs:my-2 '>
-                        <CardContent
-                            content={`Proposed: ${entity.proposed_blocks_performance}`}
-                            bg='var(--proposedGreen)'
-                            color='var(--white)'
-                            boxShadow='var(--boxShadowGreen)'
-                        />
-
-                        <CardContent
-                            content={`Missed: ${entity.missed_blocks_performance}`}
-                            bg='var(--missedRed)'
-                            color='var(--white)'
-                            boxShadow='var(--boxShadowRed)'
-                        />
                     </div>
-                </div>
+                )}
+                {checkCsm && csmOperators &&(
+                    <div className='lg:flex-row gap-y-2 md:gap-y-0 md:mb-0 mt-10'>
+                        <p className='text-[18px] md:w-[240px] my-auto text-[var(--black)] dark:text-[var(--white)] mx-auto'>
+                            Correctness Comparison:
+                        </p>
+                        <div className="ml:h-[400px] 3xs:h-[200px] xs:h-[300px] md:w-[600px] ml:w-[750px] lg:w-[850px] xl:w-[1100px] 3xs:w-[355px] 2xs:w-[415px] xs:w-[520px] xl:mx-auto 3xs:ml-[-54px] md:ml-[-40px]" >
+                            <BarChartComponent
+                                data={[
+                                    {name: 'Source', [cleanedName]: (1 - entity.count_missing_source / entity.count_expected_attestations), 'CSM': csmOperators?.missing_source, 'Overall Network': overallNetwork?.missing_source},
+                                    {name: 'Target', [cleanedName]: (1 - entity.count_missing_target / entity.count_expected_attestations), 'CSM': csmOperators?.missing_target, 'Overall Network': overallNetwork?.missing_target},
+                                    {name: 'Head', [cleanedName]: (1 - entity.count_missing_head / entity.count_expected_attestations), 'CSM': csmOperators?.missing_head, 'Overall Network': overallNetwork?.missing_head},
+                                ]}
+                            ></BarChartComponent>
+                        </div>
+                    </div>
+                )}
             </>
         );
     };
@@ -390,10 +437,10 @@ const EntityComponent = ({ name, network }: Props) => {
                     >
                         <div className='flex flex-col md:gap-y-4 3xs:gap-y-4 text-[14px] font-medium md:text-[16px] text-[var(--darkGray)] dark:text-[var(--white)]'>
                             <p className='text-[18px] uppercase font-medium md:py-4 3xs:py-2 text-center text-[var(--black)] dark:text-[var(--white)]'>Entity performance:</p>
-                            {tabPageIndexEntityPerformance === 0 && getEntityPerformance(entityHour as Entity)}
-                            {tabPageIndexEntityPerformance === 1 && getEntityPerformance(entityDay as Entity)}
-                            {tabPageIndexEntityPerformance === 2 && getEntityPerformance(entityWeek as Entity)}
-                            {tabPageIndexEntityPerformance === 3 && getEntityPerformance(entityMonth as Entity)}
+                            {tabPageIndexEntityPerformance === 0 && getEntityPerformance(entityHour as Entity, metricsOverallNetworkHour as Metrics, metricsCsmOperatorshour as Metrics)}
+                            {tabPageIndexEntityPerformance === 1 && getEntityPerformance(entityDay as Entity, metricsOverallNetworkDay as Metrics, metricsCsmOperatorsDay as Metrics)}
+                            {tabPageIndexEntityPerformance === 2 && getEntityPerformance(entityWeek as Entity, metricsOverallNetworkWeek as Metrics, metricsCsmOperatorsWeek as Metrics)}
+                            {tabPageIndexEntityPerformance === 3 && getEntityPerformance(entityMonth as Entity, metricsOverallNetworkMonth as Metrics, metricsCsmOperatorsMonth as Metrics)}
                         </div>
                     </div>
                 </div>
