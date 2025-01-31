@@ -45,23 +45,29 @@ const LidoCSM = () => {
     const [operatorsValidator, setOperatorsValidator] = useState<Operator[]>([]);
     const [operatorsBlock, setOperatorsBlock] = useState<Operator[]>([]);
     const [operatorsCount, setOperatorsCount] = useState(0);
-    const [rewards, setRewards] = useState<{ [key:string]: Operator }>({});
-    const [loadingRewards, setLoadingRewards] = useState(false);
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(0);
-    const [numRowsQuery, setNumRowsQuery] = useState(0);
+    const [numRowsQuery, setNumRowsQuery] = useState(10);
     const [showInfoBox, setShowInfoBox] = useState(false);
+    const [displayedOperators, setDisplayedOperators] = useState<Operator[]>([]);
 
     const { themeMode } = useContext(ThemeModeContext) ?? {};
 
     useEffect(() => {
         if (network) {
             setOperators([]);
-            getOperators(0, 10);
+            getOperators();
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [network]);
+
+    useEffect(() => {
+        const startIndex = currentPage * numRowsQuery;
+        const endIndex = startIndex + numRowsQuery;
+
+        setDisplayedOperators(operators.slice(startIndex, endIndex));
+    }, [currentPage, numRowsQuery, operators]);
 
     const totalBalance = operatorsBalance.reduce((sum, operator) => sum + operator.aggregate_balance, 0);
     const totalProposed = operatorsBlock.reduce((sum, operator) => sum + operator.f_proposed, 0);
@@ -98,22 +104,15 @@ const LidoCSM = () => {
         );
     }
 
-    const getOperators = async (page: number, limit: number) => {
+    const getOperators = async () => {
         try {
             setLoading(true);
 
-            setCurrentPage(page);
-            setNumRowsQuery(limit);
-
             const response = await axiosClient.get('/api/csm-operators', {
                 params: {
-                    network,
-                    page,
-                    limit,
+                    network
                 },
             });
-
-            console.log(response.data);
 
             setOperators(response.data.operators);
             setOperatorsBalance(response.data.operatorsBalance);
@@ -130,19 +129,6 @@ const LidoCSM = () => {
         }
     };
 
-    const month = 6750;
-
-    async function getOperatorRewards(name: string) {
-        const response = await axiosClient.get(`/api/entities/${name.toLowerCase()}`, {
-                params: {
-                    network,
-                    numberEpochs: month,
-                },
-            });
-        
-        return response.data.entity;
-    };
-
     const getOperatorsLargeView = () => (
         <LargeTable minWidth={700} noRowsText='No Operators' fetchingRows={loading}>
             <LargeTableHeader text='Operator' />
@@ -150,7 +136,7 @@ const LidoCSM = () => {
             <LargeTableHeader text='Active Validators' />
             <LargeTableHeader text='Rewards (1 Month)' />
 
-            {operators.map((operator: Operator) => (
+            {displayedOperators.map((operator: Operator) => (
                 <LargeTableRow key={operator.f_pool_name}>
                     <div className='w-[25%]'>
                         <LinkEntity entity={operator.f_pool_name} mxAuto />
@@ -307,8 +293,8 @@ const LidoCSM = () => {
                     <Pagination
                         currentPage={currentPage}
                         totalPages={Math.ceil(operatorsCount / numRowsQuery)}
-                        onChangePage={page => getOperators(page, numRowsQuery)}
-                        onChangeNumRows={numRows => getOperators(0, numRows)}
+                        onChangePage={page => setCurrentPage(page)}
+                        onChangeNumRows={numRows => setNumRowsQuery(numRows)}	
                     />
                 </>
             )}

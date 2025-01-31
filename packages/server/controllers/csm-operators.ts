@@ -9,11 +9,10 @@ interface OperatorReward {
 
 export const getCsmOperators = async (req: Request, res: Response) => {
     try {
-        const { network, page = 0, limit = 10 } = req.query;
+        const { network } = req.query;
 
         const chClient = clickhouseClients[network as string];
 
-        const skip = Number(page) * Number(limit);
 
         const [operatorsBalanceResultSet, operatorsValidatorResultSet, operatorsBlockResultSet, operatorsResultSet, countResultSet, operatorsRewardsResultSet] = await Promise.all([
             chClient.query({
@@ -79,8 +78,6 @@ export const getCsmOperators = async (req: Request, res: Response) => {
                             pk.f_pool_name LIKE 'csm_%_lido'
                         GROUP BY pk.f_pool_name
                         ORDER BY LENGTH(pk.f_pool_name), pk.f_pool_name
-                        LIMIT ${Number(limit)}
-                        OFFSET ${skip};
                     `,
                 format: 'JSONEachRow',
             }),
