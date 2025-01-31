@@ -151,6 +151,7 @@ const EntityComponent = ({ name, network }: Props) => {
             setEntityMonth(responseMonth.data.entity);
             setMetricsOverallNetworkMonth(responseMonth.data.metricsOverallNetwork);
             setMetricsCsmOperatorsMonth(responseMonth.data.metricsCsmOperators);
+            console.log(metricsOverallNetworkDay);
 
             if (responseHour.data.entity.aggregate_balance !== null) {
                 setShowInfoBox(false);
@@ -227,83 +228,24 @@ const EntityComponent = ({ name, network }: Props) => {
                     </div>
                 </div>
 
-                {/* Attestation flags */}
-                {entity && !checkCsm && (
-                    <div className='flex flex-col lg:flex-row gap-y-2 md:gap-y-0 md:mb-0'>
-                        <p className='md:w-52 lg:w-50 my-auto text-[var(--black)] dark:text-[var(--white)]'>Attestation flags:</p>
-
-                        <div className='flex flex-col xl:flex-row items-center gap-x-4 gap-y-2 font-medium text-[14px] text-[var(--black)] dark:text-[var(--white)]'>
-                            <ProgressSmoothBar
-                                title='Source'
-                                color='var(--black)'
-                                backgroundColor='var(--white)'
-                                percent={1 - entity.count_missing_source / entity.count_expected_attestations}
-                                width={300}
-                                tooltipColor='blue'
-                                tooltipContent={
-                                    <>
-                                        <span>Missing Source: {entity.count_missing_source?.toLocaleString()}</span>
-                                        <span>
-                                            Attestations: {entity.count_expected_attestations?.toLocaleString()}
-                                        </span>
-                                    </>
-                                }
-                                widthTooltip={220}
-                            />
-                            <ProgressSmoothBar
-                                title='Target'
-                                color='var(--black)'
-                                backgroundColor='var(--white)'
-                                percent={1 - entity.count_missing_target / entity.count_expected_attestations || 0}
-                                width={300}
-                                tooltipColor='orange'
-                                tooltipContent={
-                                    <>
-                                        <span>Missing Target: {entity.count_missing_target?.toLocaleString()}</span>
-                                        <span>
-                                            Attestations: {entity.count_expected_attestations?.toLocaleString()}
-                                        </span>
-                                    </>
-                                }
-                                widthTooltip={220}
-                            />
-
-                            <ProgressSmoothBar
-                                title='Head'
-                                color='var(--black)'
-                                backgroundColor='var(--white)'
-                                percent={1 - entity.count_missing_head / entity.count_expected_attestations}
-                                width={300}
-                                tooltipColor='purple'
-                                tooltipContent={
-                                    <>
-                                        <span>Missing Head: {entity.count_missing_head?.toLocaleString()}</span>
-                                        <span>
-                                            Attestations: {entity.count_expected_attestations?.toLocaleString()}
-                                        </span>
-                                    </>
-                                }
-                                widthTooltip={220}
-                            />
-                        </div>
+                <div className='lg:flex-row gap-y-2 md:gap-y-0 md:mb-0 mt-10'>
+                    <p className='text-[18px] md:w-[240px] my-auto text-[var(--black)] dark:text-[var(--white)] mx-auto'>
+                        Correctness Comparison:
+                    </p>
+                    <div className="ml:h-[400px] 3xs:h-[200px] xs:h-[300px] md:w-[600px] ml:w-[750px] lg:w-[850px] xl:w-[1100px] 3xs:w-[355px] 2xs:w-[415px] xs:w-[520px] xl:mx-auto 3xs:ml-[-54px] md:ml-[-40px]" >
+                        <BarChartComponent
+                            data={checkCsm ? [
+                                {name: 'Source', [cleanedName]: (1 - entity.count_missing_source / entity.count_expected_attestations), 'CSM': csmOperators?.missing_source, 'Overall Network': overallNetwork?.missing_source},
+                                {name: 'Target', [cleanedName]: (1 - entity.count_missing_target / entity.count_expected_attestations), 'CSM': csmOperators?.missing_target, 'Overall Network': overallNetwork?.missing_target},
+                                {name: 'Head', [cleanedName]: (1 - entity.count_missing_head / entity.count_expected_attestations), 'CSM': csmOperators?.missing_head, 'Overall Network': overallNetwork?.missing_head},
+                            ] : [
+                                {name: 'Source', [cleanedName]: (1 - entity.count_missing_source / entity.count_expected_attestations), 'Overall Network': overallNetwork?.missing_source},
+                                {name: 'Target', [cleanedName]: (1 - entity.count_missing_target / entity.count_expected_attestations), 'Overall Network': overallNetwork?.missing_target},
+                                {name: 'Head', [cleanedName]: (1 - entity.count_missing_head / entity.count_expected_attestations), 'Overall Network': overallNetwork?.missing_head},
+                            ]}
+                        ></BarChartComponent>
                     </div>
-                )}
-                {checkCsm && csmOperators &&(
-                    <div className='lg:flex-row gap-y-2 md:gap-y-0 md:mb-0 mt-10'>
-                        <p className='text-[18px] md:w-[240px] my-auto text-[var(--black)] dark:text-[var(--white)] mx-auto'>
-                            Correctness Comparison:
-                        </p>
-                        <div className="ml:h-[400px] 3xs:h-[200px] xs:h-[300px] md:w-[600px] ml:w-[750px] lg:w-[850px] xl:w-[1100px] 3xs:w-[355px] 2xs:w-[415px] xs:w-[520px] xl:mx-auto 3xs:ml-[-54px] md:ml-[-40px]" >
-                            <BarChartComponent
-                                data={[
-                                    {name: 'Source', [cleanedName]: (1 - entity.count_missing_source / entity.count_expected_attestations), 'CSM': csmOperators?.missing_source, 'Overall Network': overallNetwork?.missing_source},
-                                    {name: 'Target', [cleanedName]: (1 - entity.count_missing_target / entity.count_expected_attestations), 'CSM': csmOperators?.missing_target, 'Overall Network': overallNetwork?.missing_target},
-                                    {name: 'Head', [cleanedName]: (1 - entity.count_missing_head / entity.count_expected_attestations), 'CSM': csmOperators?.missing_head, 'Overall Network': overallNetwork?.missing_head},
-                                ]}
-                            ></BarChartComponent>
-                        </div>
-                    </div>
-                )}
+                </div>
             </>
         );
     };
@@ -436,7 +378,9 @@ const EntityComponent = ({ name, network }: Props) => {
                         }}
                     >
                         <div className='flex flex-col md:gap-y-4 3xs:gap-y-4 text-[14px] font-medium md:text-[16px] text-[var(--darkGray)] dark:text-[var(--white)]'>
-                            <p className='text-[18px] uppercase font-medium md:py-4 3xs:py-2 text-center text-[var(--black)] dark:text-[var(--white)]'>Entity performance:</p>
+                            <p className='text-[18px] uppercase font-medium md:py-4 3xs:py-2 text-center text-[var(--black)] dark:text-[var(--white)]'>
+                                Entity performance:
+                            </p>
                             {tabPageIndexEntityPerformance === 0 && getEntityPerformance(entityHour as Entity, metricsOverallNetworkHour as Metrics, metricsCsmOperatorshour as Metrics)}
                             {tabPageIndexEntityPerformance === 1 && getEntityPerformance(entityDay as Entity, metricsOverallNetworkDay as Metrics, metricsCsmOperatorsDay as Metrics)}
                             {tabPageIndexEntityPerformance === 2 && getEntityPerformance(entityWeek as Entity, metricsOverallNetworkWeek as Metrics, metricsCsmOperatorsWeek as Metrics)}
