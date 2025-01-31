@@ -55,39 +55,8 @@ const LidoCSM = () => {
     const { themeMode } = useContext(ThemeModeContext) ?? {};
 
     useEffect(() => {
-        const fetchRewards = async () => {
-            setLoadingRewards(true);
-
-            try {
-                const rewardsPromises = operators.map(async (operator) => {
-                    const rewardData = await getOperatorRewards(operator.f_pool_name);
-                    return {name: operator.f_pool_name, rewardData };
-                });
-
-                const resolvedRewards = await Promise.all(rewardsPromises);
-
-                const rewardsMap: { [key:string]: Operator } = {};
-                resolvedRewards.forEach(({ name, rewardData }) => {
-                    rewardsMap[name] = rewardData;
-                });
-
-                setRewards(rewardsMap);
-            } catch (error) {
-                console.log(error);
-            } finally {
-                setLoadingRewards(false);
-            }
-        };
-
-        fetchRewards();
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [operators]);
-
-    useEffect(() => {
         if (network) {
             setOperators([]);
-            setRewards({});
             getOperators(0, 10);
         }
 
@@ -103,6 +72,8 @@ const LidoCSM = () => {
     const totalSlashed = operatorsValidator.reduce((sum, operator) => sum + operator.slashed, 0);
 
     const rewardsBar = (operator: Operator, width: number) => {
+        if (!operator || operator?.aggregated_rewards === undefined || operator?.aggregated_max_rewards === undefined)
+            return <span>N/A</span>
         return (
             <ProgressSmoothBar
                 title=''
@@ -141,6 +112,8 @@ const LidoCSM = () => {
                     limit,
                 },
             });
+
+            console.log(response.data);
 
             setOperators(response.data.operators);
             setOperatorsBalance(response.data.operatorsBalance);
@@ -190,7 +163,7 @@ const LidoCSM = () => {
                     </p>
 
                     <div className='w-[25%] text-center flex justify-center'>
-                        {loadingRewards ? 'Loading...' : rewardsBar(rewards[operator.f_pool_name], 300) ?? 'N/A'}
+                        {rewardsBar(operator, 300) ?? 'N/A'}
                     </div>
                 </LargeTableRow> 
             ))}
@@ -236,7 +209,7 @@ const LidoCSM = () => {
                             </p>
                         </div>
                         <p className='text-[14px] font-medium'>
-                            {loadingRewards ? 'Loading...' : rewardsBar(rewards[operator.f_pool_name], 160) ?? 'N/A'}
+                            {rewardsBar(operator, 160) ?? 'N/A'}
                         </p> 
                     </div>
                 </SmallTableCard>

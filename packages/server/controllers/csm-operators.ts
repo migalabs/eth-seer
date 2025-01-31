@@ -1,6 +1,12 @@
 import { Request, Response } from 'express';
 import { clickhouseClients } from '../config/db';
 
+interface OperatorReward {
+    f_pool_name: string;
+    aggregated_rewards: number;
+    aggregated_max_rewards: number;
+}
+
 export const getCsmOperators = async (req: Request, res: Response) => {
     try {
         const { network, page = 0, limit = 10 } = req.query;
@@ -9,7 +15,7 @@ export const getCsmOperators = async (req: Request, res: Response) => {
 
         const skip = Number(page) * Number(limit);
 
-        const [operatorsBalanceResultSet, operatorsValidatorResultSet, operatorsBlockResultSet, operatorsResultSet, countResultSet] = await Promise.all([
+        const [operatorsBalanceResultSet, operatorsValidatorResultSet, operatorsBlockResultSet, operatorsResultSet, countResultSet, operatorsRewardsResultSet] = await Promise.all([
             chClient.query({
                 query: `
                         SELECT
@@ -86,19 +92,48 @@ export const getCsmOperators = async (req: Request, res: Response) => {
                     `,
                 format: 'JSONEachRow',
             }),
+            chClient.query({
+                query: `
+                    SELECT
+                        f_pool_name,
+                        SUM(toInt64(aggregated_rewards)) AS aggregated_rewards,
+                        SUM(aggregated_max_rewards) AS aggregated_max_rewards
+                    FROM (
+                        SELECT *
+                        FROM t_pool_summary
+                        WHERE f_pool_name LIKE 'csm_operator%_lido'
+                        AND f_epoch >= (SELECT MAX(f_epoch) - 6750 FROM t_pool_summary)
+                    ) AS subquery
+                    GROUP BY f_pool_name
+                `,
+                format: 'JSONEachRow',
+            }),
         ]);
 
         const operatorsBalanceResult = await operatorsBalanceResultSet.json();
         const operatorsValidatorResult = await operatorsValidatorResultSet.json();
         const operatorsBlockResult = await operatorsBlockResultSet.json();
-        const operatorsResult = await operatorsResultSet.json();
+        const operatorsResult: [] = await operatorsResultSet.json();
         const countResult = await countResultSet.json();
+        const operatorsRewardsResult: OperatorReward[] = await operatorsRewardsResultSet.json();
+
+        const operatorsRewards = operatorsResult.map((operator: any) => {
+            const rewards: OperatorReward = operatorsRewardsResult.find(
+                (reward: any) => reward.f_pool_name === operator.f_pool_name
+            );
+
+            return {
+                ...operator,
+                aggregated_rewards: rewards?.aggregated_rewards || 0,
+                aggregated_max_rewards: rewards?.aggregated_max_rewards || 0,
+            };
+        });
 
         res.json({
             operatorsBalance: operatorsBalanceResult,
             operatorsValidator: operatorsValidatorResult,
             operatorsBlock: operatorsBlockResult,
-            operators: operatorsResult,
+            operators: operatorsRewards,
             totalCount: Number(countResult[0].count),
         });
 
