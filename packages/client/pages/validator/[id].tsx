@@ -27,6 +27,8 @@ import CardContent from '../../components/ui/CardContent';
 import { LargeTable, LargeTableHeader, LargeTableRow, SmallTable, SmallTableCard } from '../../components/ui/Table';
 import ShareMenu from '../../components/ui/ShareMenu';
 
+import BarChartComponent from '../../components/ui/BarChart';
+
 // Types
 import { Validator, Slot, Withdrawal } from '../../types';
 
@@ -35,6 +37,16 @@ interface Props {
     id: number;
     network: string;
 }
+
+type Metrics = {
+    missing_source: number;
+    missing_target: number;
+    missing_head: number;
+    count_active_vals: number;
+    count_missing_source: number;
+    count_missing_target: number;
+    count_missing_head: number;
+};
 
 // Server Side Props
 export const getServerSideProps: GetServerSideProps = async context => {
@@ -74,6 +86,10 @@ const ValidatorComponent = ({ id, network }: Props) => {
     const [loadingProposedBlocks, setLoadingProposedBlocks] = useState(true);
     const [loadingWithdrawals, setLoadingWithdrawals] = useState(true);
     const [blockGenesis, setBlockGenesis] = useState(0);
+    const [metricsOverallNetworkHour, setMetricsOverallNetworkHour] = useState<Metrics | null>(null);
+    const [metricsOverallNetworkDay, setMetricsOverallNetworkDay] = useState<Metrics | null>(null);
+    const [metricsOverallNetworkWeek, setMetricsOverallNetworkWeek] = useState<Metrics | null>(null);
+    const [metricsOverallNetworkMonth, setMetricsOverallNetworkMonth] = useState<Metrics | null>(null);
 
     // UseEffect
     useEffect(() => {
@@ -133,6 +149,10 @@ const ValidatorComponent = ({ id, network }: Props) => {
             setValidatorDay(responseDay.data.validator);
             setValidatorWeek(responseWeek.data.validator);
             setValidatorMonth(responseMonth.data.validator);
+            setMetricsOverallNetworkHour(responseHour.data.metrics);
+            setMetricsOverallNetworkDay(responseDay.data.metrics);
+            setMetricsOverallNetworkWeek(responseWeek.data.metrics);
+            setMetricsOverallNetworkMonth(responseMonth.data.metrics);
 
             if (responseHour.data.validator) {
                 setShowInfoBox(false);
@@ -272,10 +292,10 @@ const ValidatorComponent = ({ id, network }: Props) => {
             >
                 <div className='flex flex-col gap-y-6 text-[14px] font-medium md:text-[16px] text-[var(--black)] dark:text-[var(--white)]'>
                         <p className='text-[18px] uppercase font-medium md:py-4 3xs:py-2 text-center'>Validator performance:</p>
-                        {tabPageIndexValidatorPerformance === 0 && getValidatorPerformance(validatorHour as Validator)}
-                        {tabPageIndexValidatorPerformance === 1 && getValidatorPerformance(validatorDay as Validator)}
-                        {tabPageIndexValidatorPerformance === 2 && getValidatorPerformance(validatorWeek as Validator)}
-                        {tabPageIndexValidatorPerformance === 3 && getValidatorPerformance(validatorMonth as Validator)}
+                        {tabPageIndexValidatorPerformance === 0 && getValidatorPerformance(validatorHour as Validator, metricsOverallNetworkHour as Metrics)}
+                        {tabPageIndexValidatorPerformance === 1 && getValidatorPerformance(validatorDay as Validator, metricsOverallNetworkDay as Metrics)}
+                        {tabPageIndexValidatorPerformance === 2 && getValidatorPerformance(validatorWeek as Validator, metricsOverallNetworkWeek as Metrics)}
+                        {tabPageIndexValidatorPerformance === 3 && getValidatorPerformance(validatorMonth as Validator, metricsOverallNetworkMonth as Metrics)}
                 </div>
             </div>
         </>
@@ -316,7 +336,7 @@ const ValidatorComponent = ({ id, network }: Props) => {
 
     //VALIDATOR PERFORMANCE TABLE
     //View validator performance table
-    const getValidatorPerformance = (validator: Validator) => (
+    const getValidatorPerformance = (validator: Validator, overallNetwork: Metrics) => (
         <>
             <div className='flex flex-col md:flex-row gap-y-2 md:gap-y-0 md:mb-0'>
                 <p className='md:w-52 lg:w-50 my-auto'>Rewards:</p>
@@ -350,60 +370,6 @@ const ValidatorComponent = ({ id, network }: Props) => {
 
             {/* Attestation flags */}
             <div className='flex flex-col lg:flex-row gap-y-2 md:gap-y-0 md:mb-0'>
-                <p className='md:w-52 lg:w-50 my-auto'>Attestation flags:</p>
-
-                {validator && (
-                    <div className='flex flex-col xl:flex-row items-center gap-x-4 gap-y-2 font-medium text-[14px]'>
-                        <ProgressSmoothBar
-                            title='Source'
-                            color='var(--black)'
-                            backgroundColor='var(--white)'
-                            percent={1 - validator.count_missing_source / validator.count_attestations}
-                            width={300}
-                            tooltipColor='blue'
-                            tooltipContent={
-                                <>
-                                    <span>Missing Source: {validator.count_missing_source?.toLocaleString()}</span>
-                                    <span>Attestations: {validator.count_attestations?.toLocaleString()}</span>
-                                </>
-                            }
-                            widthTooltip={220}
-                        />
-
-                        <ProgressSmoothBar
-                            title='Target'
-                            color='var(--black)'
-                            backgroundColor='var(--white)'
-                            percent={1 - validator.count_missing_target / validator.count_attestations}
-                            width={300}
-                            tooltipColor='orange'
-                            tooltipContent={
-                                <>
-                                    <span>Missing Target: {validator.count_missing_target?.toLocaleString()}</span>
-                                    <span>Attestations: {validator.count_attestations?.toLocaleString()}</span>
-                                </>
-                            }
-                            widthTooltip={220}
-                        />
-
-                        <ProgressSmoothBar
-                            title='Head'
-                            color='var(--black)'
-                            backgroundColor='var(--white)'
-                            percent={1 - validator.count_missing_head / validator.count_attestations}
-                            width={300}
-                            tooltipColor='purple'
-                            tooltipContent={
-                                <>
-                                    <span>Missing Head: {validator.count_missing_head?.toLocaleString()}</span>
-                                    <span>Attestations: {validator.count_attestations?.toLocaleString()}</span>
-                                </>
-                            }
-                            widthTooltip={220}
-                        />
-                    </div>
-                )}
-            </div>
 
             <div className='3xs:flex flex-col 3xs:flex-row items-center justify-between md:justify-start gap-x-1'>
                 <p className='md:w-52 lg:w-50 md:md-0'>Blocks:</p>
@@ -422,6 +388,74 @@ const ValidatorComponent = ({ id, network }: Props) => {
                         bg='var(--missedRed)'
                         boxShadow='var(--boxShadowRed)'
                     />
+                </div>
+            </div>
+            <p className='md:w-52 lg:w-50 my-auto'>Attestation flags:</p>
+
+            {validator && (
+                <div className='flex flex-col xl:flex-row items-center gap-x-4 gap-y-2 font-medium text-[14px]'>
+                    <ProgressSmoothBar
+                        title='Source'
+                        color='var(--black)'
+                        backgroundColor='var(--white)'
+                        percent={1 - validator.count_missing_source / validator.count_attestations}
+                        width={300}
+                        tooltipColor='blue'
+                        tooltipContent={
+                            <>
+                                <span>Missing Source: {validator.count_missing_source?.toLocaleString()}</span>
+                                <span>Attestations: {validator.count_attestations?.toLocaleString()}</span>
+                            </>
+                        }
+                        widthTooltip={220}
+                    />
+
+                    <ProgressSmoothBar
+                        title='Target'
+                        color='var(--black)'
+                        backgroundColor='var(--white)'
+                        percent={1 - validator.count_missing_target / validator.count_attestations}
+                        width={300}
+                        tooltipColor='orange'
+                        tooltipContent={
+                            <>
+                                <span>Missing Target: {validator.count_missing_target?.toLocaleString()}</span>
+                                <span>Attestations: {validator.count_attestations?.toLocaleString()}</span>
+                            </>
+                        }
+                        widthTooltip={220}
+                    />
+
+                    <ProgressSmoothBar
+                        title='Head'
+                        color='var(--black)'
+                        backgroundColor='var(--white)'
+                        percent={1 - validator.count_missing_head / validator.count_attestations}
+                        width={300}
+                        tooltipColor='purple'
+                        tooltipContent={
+                            <>
+                                <span>Missing Head: {validator.count_missing_head?.toLocaleString()}</span>
+                                <span>Attestations: {validator.count_attestations?.toLocaleString()}</span>
+                            </>
+                        }
+                        widthTooltip={220}
+                    />
+                </div>
+            )}
+            </div>
+            <div className='lg:flex-row gap-y-2 md:gap-y-0 md:mb-0 mt-10'>
+                <p className='text-[18px] md:w-[240px] my-auto text-[var(--black)] dark:text-[var(--white)] mx-auto'>
+                    Correctness Comparison:
+                </p>
+                <div className="ml:h-[400px] 3xs:h-[200px] xs:h-[300px] md:w-[600px] ml:w-[750px] lg:w-[850px] xl:w-[1100px] 3xs:w-[355px] 2xs:w-[415px] xs:w-[520px] xl:mx-auto 3xs:ml-[-54px] md:ml-[-40px]" >
+                    <BarChartComponent
+                        data={[
+                            {name: 'Source', [id]: (1 - validator.count_missing_source / validator.count_attestations), 'Overall Network': overallNetwork?.missing_source},
+                            {name: 'Target', [id]: (1 - validator.count_missing_target / validator.count_attestations), 'Overall Network': overallNetwork?.missing_target},
+                            {name: 'Head', [id]: (1 - validator.count_missing_head / validator.count_attestations), 'Overall Network': overallNetwork?.missing_head},
+                        ]}
+                    ></BarChartComponent>
                 </div>
             </div>
         </>
