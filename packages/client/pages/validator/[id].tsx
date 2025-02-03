@@ -31,6 +31,7 @@ import BarChartComponent from '../../components/ui/BarChart';
 
 // Types
 import { Validator, Slot, Withdrawal } from '../../types';
+import { log } from 'console';
 
 // Props
 interface Props {
@@ -149,10 +150,13 @@ const ValidatorComponent = ({ id, network }: Props) => {
             setValidatorDay(responseDay.data.validator);
             setValidatorWeek(responseWeek.data.validator);
             setValidatorMonth(responseMonth.data.validator);
-            setMetricsOverallNetworkHour(responseHour.data.metrics);
-            setMetricsOverallNetworkDay(responseDay.data.metrics);
-            setMetricsOverallNetworkWeek(responseWeek.data.metrics);
-            setMetricsOverallNetworkMonth(responseMonth.data.metrics);
+            setMetricsOverallNetworkHour(responseHour.data.metricsOverallNetwork);
+            setMetricsOverallNetworkDay(responseDay.data.metricsOverallNetwork);
+            setMetricsOverallNetworkWeek(responseWeek.data.metricsOverallNetwork);
+            setMetricsOverallNetworkMonth(responseMonth.data.metricsOverallNetwork);
+
+            console.log();
+            
 
             if (responseHour.data.validator) {
                 setShowInfoBox(false);
@@ -368,9 +372,6 @@ const ValidatorComponent = ({ id, network }: Props) => {
                 </p>
             </div>
 
-            {/* Attestation flags */}
-            <div className='flex flex-col lg:flex-row gap-y-2 md:gap-y-0 md:mb-0'>
-
             <div className='3xs:flex flex-col 3xs:flex-row items-center justify-between md:justify-start gap-x-1'>
                 <p className='md:w-52 lg:w-50 md:md-0'>Blocks:</p>
 
@@ -390,59 +391,62 @@ const ValidatorComponent = ({ id, network }: Props) => {
                     />
                 </div>
             </div>
-            <p className='md:w-52 lg:w-50 my-auto'>Attestation flags:</p>
 
-            {validator && (
-                <div className='flex flex-col xl:flex-row items-center gap-x-4 gap-y-2 font-medium text-[14px]'>
-                    <ProgressSmoothBar
-                        title='Source'
-                        color='var(--black)'
-                        backgroundColor='var(--white)'
-                        percent={1 - validator.count_missing_source / validator.count_attestations}
-                        width={300}
-                        tooltipColor='blue'
-                        tooltipContent={
-                            <>
-                                <span>Missing Source: {validator.count_missing_source?.toLocaleString()}</span>
-                                <span>Attestations: {validator.count_attestations?.toLocaleString()}</span>
-                            </>
-                        }
-                        widthTooltip={220}
-                    />
+            {/* Attestation flags */}
+            <div className='flex flex-col lg:flex-row gap-y-2 md:gap-y-0 md:mb-0'>
+                <p className='md:w-52 lg:w-50 my-auto'>Attestation flags:</p>
 
-                    <ProgressSmoothBar
-                        title='Target'
-                        color='var(--black)'
-                        backgroundColor='var(--white)'
-                        percent={1 - validator.count_missing_target / validator.count_attestations}
-                        width={300}
-                        tooltipColor='orange'
-                        tooltipContent={
-                            <>
-                                <span>Missing Target: {validator.count_missing_target?.toLocaleString()}</span>
-                                <span>Attestations: {validator.count_attestations?.toLocaleString()}</span>
-                            </>
-                        }
-                        widthTooltip={220}
-                    />
+                {validator && (
+                    <div className='flex flex-col xl:flex-row items-center gap-x-4 gap-y-2 font-medium text-[14px]'>
+                        <ProgressSmoothBar
+                            title='Source'
+                            color='var(--black)'
+                            backgroundColor='var(--white)'
+                            percent={1 - validator.count_missing_source / validator.count_attestations}
+                            width={300}
+                            tooltipColor='blue'
+                            tooltipContent={
+                                <>
+                                    <span>Missing Source: {validator.count_missing_source?.toLocaleString()}</span>
+                                    <span>Attestations: {validator.count_attestations?.toLocaleString()}</span>
+                                </>
+                            }
+                            widthTooltip={220}
+                        />
 
-                    <ProgressSmoothBar
-                        title='Head'
-                        color='var(--black)'
-                        backgroundColor='var(--white)'
-                        percent={1 - validator.count_missing_head / validator.count_attestations}
-                        width={300}
-                        tooltipColor='purple'
-                        tooltipContent={
-                            <>
-                                <span>Missing Head: {validator.count_missing_head?.toLocaleString()}</span>
-                                <span>Attestations: {validator.count_attestations?.toLocaleString()}</span>
-                            </>
-                        }
-                        widthTooltip={220}
-                    />
-                </div>
-            )}
+                        <ProgressSmoothBar
+                            title='Target'
+                            color='var(--black)'
+                            backgroundColor='var(--white)'
+                            percent={1 - validator.count_missing_target / validator.count_attestations}
+                            width={300}
+                            tooltipColor='orange'
+                            tooltipContent={
+                                <>
+                                    <span>Missing Target: {validator.count_missing_target?.toLocaleString()}</span>
+                                    <span>Attestations: {validator.count_attestations?.toLocaleString()}</span>
+                                </>
+                            }
+                            widthTooltip={220}
+                        />
+
+                        <ProgressSmoothBar
+                            title='Head'
+                            color='var(--black)'
+                            backgroundColor='var(--white)'
+                            percent={1 - validator.count_missing_head / validator.count_attestations}
+                            width={300}
+                            tooltipColor='purple'
+                            tooltipContent={
+                                <>
+                                    <span>Missing Head: {validator.count_missing_head?.toLocaleString()}</span>
+                                    <span>Attestations: {validator.count_attestations?.toLocaleString()}</span>
+                                </>
+                            }
+                            widthTooltip={220}
+                        />
+                    </div>
+                )}
             </div>
             <div className='lg:flex-row gap-y-2 md:gap-y-0 md:mb-0 mt-10'>
                 <p className='text-[18px] md:w-[240px] my-auto text-[var(--black)] dark:text-[var(--white)] mx-auto'>
