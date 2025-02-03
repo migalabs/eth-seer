@@ -31,7 +31,6 @@ import BarChartComponent from '../../components/ui/BarChart';
 
 // Types
 import { Validator, Slot, Withdrawal } from '../../types';
-import { log } from 'console';
 
 // Props
 interface Props {
