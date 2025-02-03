@@ -392,16 +392,16 @@ const ValidatorComponent = ({ id, network }: Props) => {
                 </div>
             </div>
 
-            <div className='lg:flex-row gap-y-2 md:gap-y-0 md:mb-0 mt-10'>
+            <div className='lg:flex-row md:gap-y-0 md:mb-0 mt-10'>
                 <p className='text-[18px] md:w-[240px] my-auto text-[var(--black)] dark:text-[var(--white)] mx-auto'>
                     Correctness Comparison:
                 </p>
                 <div className="ml:h-[400px] 3xs:h-[200px] xs:h-[300px] md:w-[600px] ml:w-[750px] lg:w-[850px] xl:w-[1100px] 3xs:w-[355px] 2xs:w-[415px] xs:w-[520px] xl:mx-auto 3xs:ml-[-54px] md:ml-[-40px]" >
                     <BarChartComponent
                         data={[
-                            {name: 'Source', [id]: (1 - validator.count_missing_source / validator.count_attestations), 'Overall Network': overallNetwork?.missing_source},
-                            {name: 'Target', [id]: (1 - validator.count_missing_target / validator.count_attestations), 'Overall Network': overallNetwork?.missing_target},
-                            {name: 'Head', [id]: (1 - validator.count_missing_head / validator.count_attestations), 'Overall Network': overallNetwork?.missing_head},
+                            {name: 'Source', ['Validator ' + id]: (1 - validator.count_missing_source / validator.count_attestations), 'Overall Network': overallNetwork?.missing_source},
+                            {name: 'Target', ['Validator ' + id]: (1 - validator.count_missing_target / validator.count_attestations), 'Overall Network': overallNetwork?.missing_target},
+                            {name: 'Head', ['Validator ' + id]: (1 - validator.count_missing_head / validator.count_attestations), 'Overall Network': overallNetwork?.missing_head},
                         ]}
                     ></BarChartComponent>
                 </div>
