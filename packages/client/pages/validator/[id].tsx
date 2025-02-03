@@ -113,30 +113,13 @@ const ValidatorComponent = ({ id, network }: Props) => {
             const week = 1575;
             const month = 6750;
 
-            const [responseHour, genesisBlock] = await Promise.all([
+            const [responseHour, responseDay, responseWeek, responseMonth, genesisBlock] = await Promise.all([
                 axiosClient.get(`/api/validators/${id}`, {
                     params: {
                         network,
                         numberEpochs: hour,
                     },
                 }),
-                axiosClient.get(`/api/networks/block/genesis`, {
-                    params: {
-                        network,
-                    },
-                }),
-            ]);
-
-            setBlockGenesis(genesisBlock.data.block_genesis);
-            setValidatorHour(responseHour.data.validator);
-            setMetricsOverallNetworkHour(responseHour.data.metricsOverallNetwork);
-            
-            if (responseHour.data.validator) {
-                setShowInfoBox(false);
-            } else {
-                setShowInfoBox(true);
-            }
-            const [responseDay, responseWeek, responseMonth] = await Promise.all([
                 axiosClient.get(`/api/validators/${id}`, {
                     params: {
                         network,
@@ -155,13 +138,29 @@ const ValidatorComponent = ({ id, network }: Props) => {
                         numberEpochs: month,
                     },
                 }),
+                axiosClient.get(`/api/networks/block/genesis`, {
+                    params: {
+                        network,
+                    },
+                }),
             ]);
+
+            setBlockGenesis(genesisBlock.data.block_genesis);
+            setValidatorHour(responseHour.data.validator);
             setValidatorDay(responseDay.data.validator);
             setValidatorWeek(responseWeek.data.validator);
             setValidatorMonth(responseMonth.data.validator);
+            setMetricsOverallNetworkHour(responseHour.data.metricsOverallNetwork);
             setMetricsOverallNetworkDay(responseDay.data.metricsOverallNetwork);
             setMetricsOverallNetworkWeek(responseWeek.data.metricsOverallNetwork);
             setMetricsOverallNetworkMonth(responseMonth.data.metricsOverallNetwork);
+
+            if (responseHour.data.validator) {
+                setShowInfoBox(false);
+            } else {
+                setShowInfoBox(true);
+            }
+
         } catch (error) {
             console.log(error);
             setShowInfoBox(true);
