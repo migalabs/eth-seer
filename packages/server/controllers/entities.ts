@@ -11,11 +11,13 @@ export const getEntity = async (req: Request, res: Response) => {
         const queries = [
             chClient.query({
                 query: `
-                        SELECT SUM(f_balance_eth) AS aggregate_balance,
+                        SELECT
+                            SUM(f_balance_eth) AS aggregate_balance,
                             COUNT(CASE vls.f_status WHEN 0 THEN 1 ELSE null END) AS deposited,
                             COUNT(CASE vls.f_status WHEN 1 THEN 1 ELSE null END) AS active,
                             COUNT(CASE vls.f_status WHEN 2 THEN 1 ELSE null END) AS exited,
-                            COUNT(CASE vls.f_status WHEN 3 THEN 1 ELSE null END) AS slashed
+                            COUNT(CASE vls.f_status WHEN 3 THEN 1 ELSE null END) AS slashed,
+                            SUM(f_activation_epoch) AS active_epoch
                         FROM
                             t_validator_last_status vls
                         INNER JOIN
@@ -97,6 +99,20 @@ export const getEntity = async (req: Request, res: Response) => {
                         `,
                     format: 'JSONEachRow',
                 }),
+            );
+            queries.push(
+                chClient.query({
+                    query: `
+                    SELECT
+                        SUM(count_attestations_included) / SUM(count_expected_attestations)
+                    FROM (
+                            SELECT *
+                            FROM t_pool_summary
+                            WHERE LOWER(f_pool_name) = '${name.toLowerCase()}'
+                            ORDER BY f_epoch DESC
+                            LIMIT ${Number(numberEpochs)}
+                            ) AS subquery;`
+                })
             )
         }
 
@@ -108,9 +124,11 @@ export const getEntity = async (req: Request, res: Response) => {
         const metricsOverallNetworkResult = await results[3].json();
         
         let metricsCsmOperatorsResult = [];
+        let participationRateResult = [];
 
         if (name.includes('csm_')) {
             metricsCsmOperatorsResult = await results[4].json();
+            participationRateResult = await results[5].json();
         }
 
         let entity = null;
@@ -127,6 +145,7 @@ export const getEntity = async (req: Request, res: Response) => {
             entity,
             metricsOverallNetwork: metricsOverallNetworkResult[0] || null,
             metricsCsmOperators: metricsCsmOperatorsResult[0] || null,
+            participationRate: participationRateResult[0] || null,
         });
     } catch (error) {
         console.log(error);
