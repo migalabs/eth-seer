@@ -104,7 +104,7 @@ export const getEntity = async (req: Request, res: Response) => {
                 chClient.query({
                     query: `
                     SELECT
-                        SUM(count_attestations_included) / SUM(count_expected_attestations)
+                        SUM(count_attestations_included) / SUM(count_expected_attestations) AS participation_rate
                     FROM (
                             SELECT *
                             FROM t_pool_summary
@@ -124,11 +124,11 @@ export const getEntity = async (req: Request, res: Response) => {
         const metricsOverallNetworkResult = await results[3].json();
         
         let metricsCsmOperatorsResult = [];
-        let participationRateResult = [];
+        let participationRateResult = {} as any;
 
         if (name.includes('csm_')) {
             metricsCsmOperatorsResult = await results[4].json();
-            participationRateResult = await results[5].json();
+            participationRateResult = await results[5].json();            
         }
 
         let entity = null;
@@ -145,7 +145,7 @@ export const getEntity = async (req: Request, res: Response) => {
             entity,
             metricsOverallNetwork: metricsOverallNetworkResult[0] || null,
             metricsCsmOperators: metricsCsmOperatorsResult[0] || null,
-            participationRate: participationRateResult[0] || null,
+            participationRate: participationRateResult.data[0]?.participation_rate || null,
         });
     } catch (error) {
         console.log(error);
