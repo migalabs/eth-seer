@@ -145,7 +145,7 @@ export const getEntity = async (req: Request, res: Response) => {
             entity,
             metricsOverallNetwork: metricsOverallNetworkResult[0] || null,
             metricsCsmOperators: metricsCsmOperatorsResult[0] || null,
-            participationRate: participationRateResult.data[0]?.participation_rate || null,
+            participationRate: participationRateResult?.data?.[0]?.participation_rate || null,
         });
     } catch (error) {
         console.log(error);
