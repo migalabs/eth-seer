@@ -241,7 +241,6 @@ const EntityComponent = ({ name, network }: Props) => {
 
                         <div className='flex flex-col xl:flex-row items-center gap-x-4 gap-y-2 font-medium text-[14px] text-[var(--black)] dark:text-[var(--white)]'>
                             <ProgressSmoothBar
-                                title='Participation Rate'
                                 color='var(--black)'
                                 backgroundColor='var(--white)'
                                 percent={partRate}
