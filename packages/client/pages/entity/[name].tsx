@@ -233,7 +233,9 @@ const EntityComponent = ({ name, network }: Props) => {
 
                 {/* Blocks Entity Performance */}
                 <div className='3xs:flex flex-col 3xs:flex-row items-center justify-between md:justify-start gap-x-1'>
-                    <p className='md:w-52 lg:w-50 md:md-0 text-[var(--black)] dark:text-[var(--white)]'>Blocks:</p>
+                    <p className='md:w-52 lg:w-50 md:md-0 text-[var(--black)] dark:text-[var(--white)]'>
+                        Blocks:
+                    </p>
 
                     <div className='flex justify-center 3xs:gap-x-2 md:gap-x-5 3xs:my-2 '>
                         <CardContent
@@ -251,20 +253,6 @@ const EntityComponent = ({ name, network }: Props) => {
                         />
                     </div>
                 </div>
-                <div className='lg:flex-row gap-y-2 md:gap-y-0 md:mb-0'>
-                    <p className='text-[18px] md:w-[290px] my-auto text-[var(--black)] dark:text-[var(--white)] mx-auto'>
-                        Participation Rate Comparison:
-                    </p>
-                    <div className="3xs:h-[250px] xs:h-[300px] md:w-[400px] 3xs:w-[315px] xs:w-[520px] 3xs:mx-auto xl:mx-auto 3xs:ml-[-25px]" >
-                        <BarChartComponent
-                            data={checkCsm ? [
-                                {name: '', [cleanedName]: partRate, 'CSM': partRateCsm, 'Overall Network': partRateOverall},
-                            ] : [
-                                {name: '', [cleanedName]: (1 - entity.count_missing_source / entity.count_expected_attestations), 'Overall Network': overallNetwork?.missing_source},
-                            ]}
-                        ></BarChartComponent>
-                    </div>
-                </div>
 
                 <div className='lg:flex-row gap-y-2 md:gap-y-0 md:mb-0'>
                     <p className='text-[18px] md:w-[240px] my-auto text-[var(--black)] dark:text-[var(--white)] mx-auto'>
@@ -280,6 +268,21 @@ const EntityComponent = ({ name, network }: Props) => {
                                 {name: 'Source', [cleanedName]: (1 - entity.count_missing_source / entity.count_expected_attestations), 'Overall Network': overallNetwork?.missing_source},
                                 {name: 'Target', [cleanedName]: (1 - entity.count_missing_target / entity.count_expected_attestations), 'Overall Network': overallNetwork?.missing_target},
                                 {name: 'Head', [cleanedName]: (1 - entity.count_missing_head / entity.count_expected_attestations), 'Overall Network': overallNetwork?.missing_head},
+                            ]}
+                        ></BarChartComponent>
+                    </div>
+                </div>
+
+                <div className='lg:flex-row gap-y-2 md:gap-y-0 md:mb-0'>
+                    <p className='text-[18px] md:w-[290px] my-auto text-[var(--black)] dark:text-[var(--white)] mx-auto'>
+                        Participation Rate Comparison:
+                    </p>
+                    <div className="3xs:h-[250px] xs:h-[300px] md:w-[400px] 3xs:w-[315px] xs:w-[520px] 3xs:mx-auto xl:mx-auto 3xs:ml-[-25px]" >
+                        <BarChartComponent
+                            data={checkCsm ? [
+                                {name: '', [cleanedName]: partRate, 'CSM': partRateCsm, 'Overall Network': partRateOverall},
+                            ] : [
+                                {name: '', [cleanedName]: (1 - entity.count_missing_source / entity.count_expected_attestations), 'Overall Network': overallNetwork?.missing_source},
                             ]}
                         ></BarChartComponent>
                     </div>
@@ -315,9 +318,6 @@ const EntityComponent = ({ name, network }: Props) => {
                         }}
                     >
                         <div className='flex flex-col gap-y-8 text-[14px] md:text-[16px] font-medium mx-auto md:mx-0 text-[var(--darkGray)] dark:text-[var(--white)]'>
-                            <p className='text-[18px] uppercase font-medium text-center text-[var(--black)] dark:text-[var(--white)]'>
-                                All-Time Overview
-                            </p>
                             <div className='flex 3xs:flex-row items-center 3xs:justify-between md:justify-start'>
                                 <p className='md:w-60 mb-2 my-auto text-[var(--black)] dark:text-[var(--white)] 3xs:my-auto'>
                                     Aggregate Balance:
@@ -329,7 +329,7 @@ const EntityComponent = ({ name, network }: Props) => {
 
                             {/* Blocks */}
                             <div className='flex flex-col lg:flex-row gap-y-1'>
-                                <p className='w-44 sm:w-60 my-auto text-[var(--black)] dark:text-[var(--white)]'>Blocks:</p>
+                                <p className='w-44 sm:w-60 my-auto text-[var(--black)] dark:text-[var(--white)]'>Blocks(All-time):</p>
                                 <div className='flex flex-col 3xs:flex-row items-center 3xs:gap-x-4 md:gap-x-4 gap-y-2 justify-center'>
                                     <CardContent
                                         content={`Proposed: ${entityDay.proposed_blocks.f_proposed?.toLocaleString()}`}
