@@ -68,7 +68,7 @@ export const getValidatorById = async (req: Request, res: Response) => {
 
         const chClient = clickhouseClients[network as string];
 
-        const [ validatorStatsResultSet, validatorPerformanceResultSet ] = 
+        const [ validatorStatsResultSet, validatorPerformanceResultSet, overallNetworkResultSet ] = 
             await Promise.all([
                 chClient.query({
                     query: `
@@ -132,10 +132,26 @@ export const getValidatorById = async (req: Request, res: Response) => {
                     `,
                     format: 'JSONEachRow',
                 }),
+                chClient.query({
+                    query: `
+                            SELECT
+                                1 - SUM(f_missing_source) / SUM(f_num_att_vals) AS missing_source,
+                                1 - SUM(f_missing_target) / SUM(f_num_att_vals) AS missing_target,
+                                1 - SUM(f_missing_head) / SUM(f_num_att_vals) AS missing_head
+                            FROM (
+                                SELECT *
+                                FROM t_epoch_metrics_summary
+                                ORDER BY f_epoch DESC
+                                LIMIT ${Number(numberEpochs)}
+                            );
+                    `,
+                    format: 'JSONEachRow',
+                }),
             ]);
 
         const validatorStatsResult = await validatorStatsResultSet.json();
         const validatorPerformanceResult = await validatorPerformanceResultSet.json();
+        const overallNetworkResult = await overallNetworkResultSet.json();
         
         let validator = null;
 
@@ -147,7 +163,8 @@ export const getValidatorById = async (req: Request, res: Response) => {
         }
 
         res.json({
-            validator
+            validator,
+            metricsOverallNetwork: overallNetworkResult[0],
         });
 
     } catch (error) {

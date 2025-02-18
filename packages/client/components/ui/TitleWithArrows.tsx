@@ -51,7 +51,7 @@ const TitleWithArrows = ({ type, value }: Props) => {
             {getArrow('left')}
 
             <Title className='capitalize' removeMarginTop>
-                {type} {!Number.isNaN(value) && value.toLocaleString()}
+                {type} {!Number.isNaN(value) && value.toLocaleString("en-US")}
             </Title>
 
             {getArrow('right')}
