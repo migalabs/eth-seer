@@ -16,8 +16,7 @@ export const getEntity = async (req: Request, res: Response) => {
                             COUNT(CASE vls.f_status WHEN 0 THEN 1 ELSE null END) AS deposited,
                             COUNT(CASE vls.f_status WHEN 1 THEN 1 ELSE null END) AS active,
                             COUNT(CASE vls.f_status WHEN 2 THEN 1 ELSE null END) AS exited,
-                            COUNT(CASE vls.f_status WHEN 3 THEN 1 ELSE null END) AS slashed,
-                            SUM(f_activation_epoch) AS active_epoch
+                            COUNT(CASE vls.f_status WHEN 3 THEN 1 ELSE null END) AS slashed
                         FROM
                             t_validator_last_status vls
                         INNER JOIN
@@ -75,8 +74,42 @@ export const getEntity = async (req: Request, res: Response) => {
                     `,
                 format: 'JSONEachRow',
             }),
+            chClient.query({
+                query: `
+                        SELECT
+                            SUM(count_attestations_included) / SUM(count_expected_attestations) AS participation_rate
+                        FROM
+                            t_pool_summary
+                        WHERE
+                            LOWER(f_pool_name) = '${name.toLowerCase()}'
+                                AND
+                            f_epoch >= (
+                                SELECT
+                                    max(f_epoch)
+                                FROM
+                                    t_epoch_metrics_summary
+                                ) - ${Number(numberEpochs)}
+                    `,
+                format: 'JSONEachRow',
+            }),
+            chClient.query({
+                query: `
+                        SELECT
+                            SUM(f_num_att_vals) / SUM(f_num_active_vals) AS participation_rate
+                        FROM
+                            t_epoch_metrics_summary
+                        WHERE
+                            f_epoch >= (
+                                SELECT
+                                    max(f_epoch)
+                                FROM
+                                    t_epoch_metrics_summary
+                                ) - ${Number(numberEpochs)}
+                    `,
+                format: 'JSONEachRow',
+            }),
         ];
-        
+
         if (name.includes('csm_')) {
             queries.push(
                 chClient.query({
@@ -105,48 +138,17 @@ export const getEntity = async (req: Request, res: Response) => {
                     query: `
                             SELECT
                                 SUM(count_attestations_included) / SUM(count_expected_attestations) AS participation_rate
-                            FROM (
-                                    SELECT *
-                                    FROM t_pool_summary
-                                    WHERE LOWER(f_pool_name) = '${name.toLowerCase()}'
-                                    ORDER BY f_epoch DESC
-                                    LIMIT ${Number(numberEpochs)}
-                                    ) AS subquery;
-                        `,
-                    format: 'JSONEachRow',
-                })
-            );
-            queries.push(
-                chClient.query({
-                    query: `
-                            SELECT
-                                SUM(count_attestations_included) / SUM(count_expected_attestations) AS participation_rate
-                            FROM (
-                                    SELECT *
-                                    FROM t_pool_summary
-                                    WHERE LOWER(f_pool_name)  LIKE 'csm_%'
-                                        AND f_epoch >= (SELECT
-                                                            f_epoch - ${Number(numberEpochs)}
-                                                        FROM
-                                                            t_pool_summary
-                                                        ORDER BY f_epoch desc
-                                                        LIMIT 1)
-                                    ) AS subquery;
-                        `,
-                    format: 'JSONEachRow',
-                })
-            );
-            queries.push(
-                chClient.query({
-                    query: `
-                            SELECT
-                                SUM(f_num_att_vals) / SUM(f_num_active_vals) AS participation_rate
-                            FROM (
-                                    SELECT *
-                                    FROM t_epoch_metrics_summary
-                                    ORDER BY f_epoch DESC
-                                    LIMIT ${Number(numberEpochs)}
-                                    ) AS subquery;
+                            FROM
+                                t_pool_summary
+                            WHERE
+                                LOWER(f_pool_name)  LIKE 'csm_%'
+                                    AND
+                                f_epoch >= (
+                                    SELECT
+                                        max(f_epoch)
+                                    FROM
+                                        t_epoch_metrics_summary
+                                    ) - ${Number(numberEpochs)}
                         `,
                     format: 'JSONEachRow',
                 })
@@ -159,21 +161,15 @@ export const getEntity = async (req: Request, res: Response) => {
         const blocksProposedResult = await results[1].json();
         const entityPerformanceResult = await results[2].json();
         const metricsOverallNetworkResult = await results[3].json();
+        const participationRateResult = await results[4].json();
+        const participationRateOverallResult = await results[5].json();
         
         let metricsCsmOperatorsResult = [];
-        let participationRateResult = {} as any;
         let participationRateCsmResult = {} as any;
-        let participationRateOverallResult = {} as any;
         if (name.includes('csm_')) {
-            metricsCsmOperatorsResult = await results[4].json();
-            participationRateResult = await results[5].json();
-            participationRateCsmResult = await results[6].json();
-            participationRateOverallResult = await results[7].json();
+            metricsCsmOperatorsResult = await results[6].json();
+            participationRateCsmResult = await results[7].json();
         }
-        console.log('PR:', participationRateResult?.[0]?.participation_rate);
-        console.log('PR CSM:', participationRateCsmResult?.[0]?.participation_rate);
-        console.log('PR Overall:', participationRateOverallResult?.[0]?.participation_rate);
-        
 
         let entity = null;
 
