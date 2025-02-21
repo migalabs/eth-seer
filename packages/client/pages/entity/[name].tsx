@@ -367,7 +367,7 @@ const EntityComponent = ({ name, network }: Props) => {
 
     // Small View
     const getValidatorsMobile = () => (
-        <SmallTable noRowsText='No Validators' fetchingRows={validatorsLoading}>
+        <SmallTable noRowsText='No Validators' fetchingRows={validatorsLoading && !loading}>
             {validators.map((validator: Validator) => (
                 <SmallTableCard key={validator.f_val_idx}>
                     <div className='flex w-full items-center justify-between'>
