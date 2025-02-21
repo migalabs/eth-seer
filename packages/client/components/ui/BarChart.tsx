@@ -6,9 +6,10 @@ interface Props {
     data: Record<string, any>[];
     width?: number;
     height?: number;
+    legend?: boolean;
 }
 
-const BarChartComponent: React.FC<Props> = ({ data, width, height }) => {
+const BarChartComponent: React.FC<Props> = ({ data, width, height, legend = true }) => {
     const barKeys = data[0] ? Object.keys(data[0]).filter(key => key !== 'name') : [];
     const { themeMode } = useContext(ThemeModeContext) ?? {};
     const minValue = Math.min(...data.flatMap(item => barKeys.map(key => item[key]))); 
@@ -66,9 +67,9 @@ const BarChartComponent: React.FC<Props> = ({ data, width, height }) => {
                     cursor={themeMode?.darkMode ? { fill: 'var(--bgDarkMode)' } : { fill: 'var(--bgBar)' }}
                     contentStyle={themeMode?.darkMode ? { backgroundColor: 'var(--bgDarkMode)', color: 'var(--white)' } : { backgroundColor: 'var(--white)', color: 'var(--black)' }}
                 />
-                <Legend
-                    wrapperStyle={smallScreen ? { fontSize: '10px', margin: '0 auto', display: 'block', width: '100%' } : { fontSize: '14px' }}
-                />
+                {legend && <Legend
+                    wrapperStyle={smallScreen ? { fontSize: '10px', margin: '0 0', display: 'block', width: '100%' } : { fontSize: '14px' }}
+                />}
                 {barKeys.map((key, index) => (
                     <Bar
                         key={key}
@@ -78,12 +79,12 @@ const BarChartComponent: React.FC<Props> = ({ data, width, height }) => {
                     >
                         <LabelList
                             dataKey={key}
-                            position={smallScreen ? 'top' : 'middle'}
+                            position={'middle'}
                             offset={2}
                             style={{
-                                fill: !themeMode?.darkMode && smallScreen ? 'var(--black)' : 'var(--white)'
+                                fill: themeMode?.darkMode ? 'var(--black)' : 'var(--white)'
                                 }}
-                            className='3xs:text-[8px] 2xs:text-[9px] md:text-[13px] ml:text-[16px]'
+                            className='3xs:text-[12px] md:text-[13px] ml:text-[16px]'
                             formatter={(value: number) => `${(value * 100).toFixed(1)}%`}
                         />
                     </Bar>

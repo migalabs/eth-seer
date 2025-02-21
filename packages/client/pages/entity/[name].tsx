@@ -239,6 +239,68 @@ const EntityComponent = ({ name, network }: Props) => {
         }
     };
 
+    const getCorrectnessComparisonMobile = (entity: Entity, overallNetwork: Metrics, csmOperators: Metrics) => {
+        return (
+            <div className='lg:flex-row gap-y-2 md:gap-y-0 md:mb-0'>
+                <p className='text-[18px] 3xs:w-[240px] my-auto text-[var(--black)] dark:text-[var(--white)] mx-auto'>
+                    Correctness Comparison:
+                </p>
+                <div className="3xs:h-[200px] lg:h-[300px] 3xs:w-[250px] 3xs:mx-auto" >
+                    <BarChartComponent
+                        data={checkCsm ? [
+                            {name: 'Source', [cleanedName]: (1 - entity.count_missing_source / entity.count_expected_attestations), 'CSM': csmOperators?.missing_source, 'Overall Network': overallNetwork?.missing_source},
+                        ] : [
+                            {name: 'Source', [cleanedName]: (1 - entity.count_missing_source / entity.count_expected_attestations), 'Overall Network': overallNetwork?.missing_source},
+                        ]}
+                        legend={false}
+                    ></BarChartComponent>
+                </div>
+                <div className="3xs:h-[200px] lg:h-[300px] 3xs:w-[250px] 3xs:mx-auto" >
+                    <BarChartComponent
+                        data={checkCsm ? [
+                            {name: 'Target', [cleanedName]: (1 - entity.count_missing_target / entity.count_expected_attestations), 'CSM': csmOperators?.missing_target, 'Overall Network': overallNetwork?.missing_target},
+                        ] : [
+                            {name: 'Target', [cleanedName]: (1 - entity.count_missing_target / entity.count_expected_attestations), 'Overall Network': overallNetwork?.missing_target},
+                        ]}
+                        legend={false}
+                    ></BarChartComponent>
+                </div>
+                <div className="3xs:h-[220px] lg:h-[300px] 3xs:w-[250px] 3xs:mx-auto" >
+                    <BarChartComponent
+                        data={checkCsm ? [
+                            {name: 'Head', [cleanedName]: (1 - entity.count_missing_head / entity.count_expected_attestations), 'CSM': csmOperators?.missing_head, 'Overall Network': overallNetwork?.missing_head},
+                        ] : [
+                            {name: 'Head', [cleanedName]: (1 - entity.count_missing_head / entity.count_expected_attestations), 'Overall Network': overallNetwork?.missing_head},
+                        ]}
+                        legend={true}
+                    ></BarChartComponent>
+                </div>
+            </div>
+        )
+    }
+
+    const getCorrectnessComparisonLargeView = (entity: Entity, overallNetwork: Metrics, csmOperators: Metrics) => {
+        return (
+            <div className='lg:flex-row gap-y-2 md:gap-y-0 md:mb-0'>
+                <p className='text-[18px] md:w-[240px] my-auto text-[var(--black)] dark:text-[var(--white)] mx-auto'>
+                    Correctness Comparison:
+                </p>
+                <div className="3xs:h-[200px] xs:h-[300px] md:w-[600px] ml:w-[750px] lg:w-[850px] xl:w-[1100px] 3xs:w-[355px] 2xs:w-[415px] xs:w-[520px] xl:mx-auto 3xs:ml-[-54px] md:ml-[-40px]" >
+                    <BarChartComponent
+                        data={checkCsm ? [
+                            {name: 'Source', [cleanedName]: (1 - entity.count_missing_source / entity.count_expected_attestations), 'CSM': csmOperators?.missing_source, 'Overall Network': overallNetwork?.missing_source},
+                            {name: 'Target', [cleanedName]: (1 - entity.count_missing_target / entity.count_expected_attestations), 'CSM': csmOperators?.missing_target, 'Overall Network': overallNetwork?.missing_target},
+                            {name: 'Head', [cleanedName]: (1 - entity.count_missing_head / entity.count_expected_attestations), 'CSM': csmOperators?.missing_head, 'Overall Network': overallNetwork?.missing_head},
+                        ] : [
+                            {name: 'Source', [cleanedName]: (1 - entity.count_missing_source / entity.count_expected_attestations), 'Overall Network': overallNetwork?.missing_source},
+                            {name: 'Target', [cleanedName]: (1 - entity.count_missing_target / entity.count_expected_attestations), 'Overall Network': overallNetwork?.missing_target},
+                            {name: 'Head', [cleanedName]: (1 - entity.count_missing_head / entity.count_expected_attestations), 'Overall Network': overallNetwork?.missing_head},
+                        ]}
+                    ></BarChartComponent>
+                </div>
+            </div>
+        );
+    }
 
     // Container Entity Performance
     const getEntityPerformance = (entity: Entity, overallNetwork: Metrics, csmOperators: Metrics, partRate: any, partRateCsm: any, partRateOverall: any) => {
@@ -305,30 +367,14 @@ const EntityComponent = ({ name, network }: Props) => {
                     </div>
                 </div>
 
-                <div className='lg:flex-row gap-y-2 md:gap-y-0 md:mb-0'>
-                    <p className='text-[18px] md:w-[240px] my-auto text-[var(--black)] dark:text-[var(--white)] mx-auto'>
-                        Correctness Comparison:
-                    </p>
-                    <div className="3xs:h-[200px] xs:h-[300px] md:w-[600px] ml:w-[750px] lg:w-[850px] xl:w-[1100px] 3xs:w-[355px] 2xs:w-[415px] xs:w-[520px] xl:mx-auto 3xs:ml-[-54px] md:ml-[-40px]" >
-                        <BarChartComponent
-                            data={checkCsm ? [
-                                {name: 'Source', [cleanedName]: (1 - entity.count_missing_source / entity.count_expected_attestations), 'CSM': csmOperators?.missing_source, 'Overall Network': overallNetwork?.missing_source},
-                                {name: 'Target', [cleanedName]: (1 - entity.count_missing_target / entity.count_expected_attestations), 'CSM': csmOperators?.missing_target, 'Overall Network': overallNetwork?.missing_target},
-                                {name: 'Head', [cleanedName]: (1 - entity.count_missing_head / entity.count_expected_attestations), 'CSM': csmOperators?.missing_head, 'Overall Network': overallNetwork?.missing_head},
-                            ] : [
-                                {name: 'Source', [cleanedName]: (1 - entity.count_missing_source / entity.count_expected_attestations), 'Overall Network': overallNetwork?.missing_source},
-                                {name: 'Target', [cleanedName]: (1 - entity.count_missing_target / entity.count_expected_attestations), 'Overall Network': overallNetwork?.missing_target},
-                                {name: 'Head', [cleanedName]: (1 - entity.count_missing_head / entity.count_expected_attestations), 'Overall Network': overallNetwork?.missing_head},
-                            ]}
-                        ></BarChartComponent>
-                    </div>
-                </div>
+                {isLargeView ? getCorrectnessComparisonLargeView(entity, overallNetwork, csmOperators)
+                            : getCorrectnessComparisonMobile(entity, overallNetwork, csmOperators)}
 
                 <div className='lg:flex-row gap-y-2 md:gap-y-0 md:mb-0'>
-                    <p className='text-[18px] md:w-[290px] my-auto text-[var(--black)] dark:text-[var(--white)] mx-auto'>
+                    <p className='text-[18px] 3xs:w-[290px] my-auto text-[var(--black)] dark:text-[var(--white)] mx-auto'>
                         Participation Rate Comparison:
                     </p>
-                    <div className="3xs:h-[250px] xs:h-[300px] md:w-[400px] 3xs:w-[315px] xs:w-[520px] 3xs:mx-auto xl:mx-auto 3xs:ml-[-25px]" >
+                    <div className="3xs:h-[220px] lg:h-[300px] 3xs:w-[250px] 3xs:mx-auto xl:mx-auto lg:ml-[-25px]" >
                         <BarChartComponent
                             data={checkCsm ? [
                                 {name: '', [cleanedName]: partRate, 'CSM': partRateCsm, 'Overall Network': partRateOverall},
