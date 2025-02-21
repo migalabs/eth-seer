@@ -344,6 +344,8 @@ export const getValidatorsByPool = async (req: Request, res: Response) => {
                             t_status s ON vls.f_status = s.f_id
                         WHERE
                             pk.f_pool_name = '${pool}'
+                        ORDER BY
+                            vls.f_val_idx
                         LIMIT ${Number(limit)}
                         OFFSET ${skip}
                     `,
