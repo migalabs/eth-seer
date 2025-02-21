@@ -66,7 +66,9 @@ const BarChartComponent: React.FC<Props> = ({ data, width, height }) => {
                     cursor={themeMode?.darkMode ? { fill: 'var(--bgDarkMode)' } : { fill: 'var(--bgBar)' }}
                     contentStyle={themeMode?.darkMode ? { backgroundColor: 'var(--bgDarkMode)', color: 'var(--white)' } : { backgroundColor: 'var(--white)', color: 'var(--black)' }}
                 />
-                <Legend />
+                <Legend
+                    wrapperStyle={smallScreen ? { fontSize: '10px', margin: '0 auto', display: 'block', width: '100%' } : { fontSize: '14px' }}
+                />
                 {barKeys.map((key, index) => (
                     <Bar
                         key={key}

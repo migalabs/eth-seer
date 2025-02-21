@@ -11,7 +11,8 @@ export const getEntity = async (req: Request, res: Response) => {
         const queries = [
             chClient.query({
                 query: `
-                        SELECT SUM(f_balance_eth) AS aggregate_balance,
+                        SELECT
+                            SUM(f_balance_eth) AS aggregate_balance,
                             COUNT(CASE vls.f_status WHEN 0 THEN 1 ELSE null END) AS deposited,
                             COUNT(CASE vls.f_status WHEN 1 THEN 1 ELSE null END) AS active,
                             COUNT(CASE vls.f_status WHEN 2 THEN 1 ELSE null END) AS exited,
@@ -73,8 +74,42 @@ export const getEntity = async (req: Request, res: Response) => {
                     `,
                 format: 'JSONEachRow',
             }),
+            chClient.query({
+                query: `
+                        SELECT
+                            SUM(count_attestations_included) / SUM(count_expected_attestations) AS participation_rate
+                        FROM
+                            t_pool_summary
+                        WHERE
+                            LOWER(f_pool_name) = '${name.toLowerCase()}'
+                                AND
+                            f_epoch >= (
+                                SELECT
+                                    max(f_epoch)
+                                FROM
+                                    t_epoch_metrics_summary
+                                ) - ${Number(numberEpochs)}
+                    `,
+                format: 'JSONEachRow',
+            }),
+            chClient.query({
+                query: `
+                        SELECT
+                            SUM(f_num_att_vals) / SUM(f_num_active_vals) AS participation_rate
+                        FROM
+                            t_epoch_metrics_summary
+                        WHERE
+                            f_epoch >= (
+                                SELECT
+                                    max(f_epoch)
+                                FROM
+                                    t_epoch_metrics_summary
+                                ) - ${Number(numberEpochs)}
+                    `,
+                format: 'JSONEachRow',
+            }),
         ];
-        
+
         if (name.includes('csm_')) {
             queries.push(
                 chClient.query({
@@ -97,7 +132,27 @@ export const getEntity = async (req: Request, res: Response) => {
                         `,
                     format: 'JSONEachRow',
                 }),
-            )
+            );
+            queries.push(
+                chClient.query({
+                    query: `
+                            SELECT
+                                SUM(count_attestations_included) / SUM(count_expected_attestations) AS participation_rate
+                            FROM
+                                t_pool_summary
+                            WHERE
+                                LOWER(f_pool_name)  LIKE 'csm_%'
+                                    AND
+                                f_epoch >= (
+                                    SELECT
+                                        max(f_epoch)
+                                    FROM
+                                        t_epoch_metrics_summary
+                                    ) - ${Number(numberEpochs)}
+                        `,
+                    format: 'JSONEachRow',
+                })
+            );
         }
 
         const results = await Promise.all(queries.map((query) => query));
@@ -106,11 +161,14 @@ export const getEntity = async (req: Request, res: Response) => {
         const blocksProposedResult = await results[1].json();
         const entityPerformanceResult = await results[2].json();
         const metricsOverallNetworkResult = await results[3].json();
+        const participationRateResult = await results[4].json();
+        const participationRateOverallResult = await results[5].json();
         
         let metricsCsmOperatorsResult = [];
-
+        let participationRateCsmResult = {} as any;
         if (name.includes('csm_')) {
-            metricsCsmOperatorsResult = await results[4].json();
+            metricsCsmOperatorsResult = await results[6].json();
+            participationRateCsmResult = await results[7].json();
         }
 
         let entity = null;
@@ -127,6 +185,9 @@ export const getEntity = async (req: Request, res: Response) => {
             entity,
             metricsOverallNetwork: metricsOverallNetworkResult[0] || null,
             metricsCsmOperators: metricsCsmOperatorsResult[0] || null,
+            participationRate: participationRateResult?.[0]?.participation_rate || null,
+            participationRateCsm: participationRateCsmResult?.[0]?.participation_rate || null,
+            participationRateOverall: participationRateOverallResult?.[0]?.participation_rate || null,
         });
     } catch (error) {
         console.log(error);

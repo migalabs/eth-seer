@@ -74,20 +74,32 @@ const EntityComponent = ({ name, network }: Props) => {
     const [entityHour, setEntityHour] = useState<Entity | null>(null);
     const [metricsOverallNetworkHour, setMetricsOverallNetworkHour] = useState<Metrics | null>(null);
     const [metricsCsmOperatorshour, setMetricsCsmOperatorshour] = useState<Metrics | null>(null);
+    const [partRateHour, setPartRateHour] = useState<number | null>(null);
     const [entityDay, setEntityDay] = useState<Entity | null>(null);
     const [metricsOverallNetworkDay, setMetricsOverallNetworkDay] = useState<Metrics | null>(null);
     const [metricsCsmOperatorsDay, setMetricsCsmOperatorsDay] = useState<Metrics | null>(null);
+    const [partRateDay, setPartRateDay] = useState<number | null>(null);
     const [entityWeek, setEntityWeek] = useState<Entity | null>(null);
     const [metricsOverallNetworkWeek, setMetricsOverallNetworkWeek] = useState<Metrics | null>(null);
     const [metricsCsmOperatorsWeek, setMetricsCsmOperatorsWeek] = useState<Metrics | null>(null);
+    const [partRateWeek, setPartRateWeek] = useState<number | null>(null);
     const [entityMonth, setEntityMonth] = useState<Entity | null>(null);
     const [metricsOverallNetworkMonth, setMetricsOverallNetworkMonth] = useState<Metrics | null>(null);
     const [metricsCsmOperatorsMonth, setMetricsCsmOperatorsMonth] = useState<Metrics | null>(null);
+    const [partRateMonth, setPartRateMonth] = useState<number | null>(null);
     const [showInfoBox, setShowInfoBox] = useState(false);
     const [tabPageIndexEntityPerformance, setTabPageIndexEntityPerformance] = useState(0);
     const [checkCsm, setCheckCsm] = useState(false);
     const [loading, setLoading] = useState(true);
     const getEntityCalled = useRef(false);
+    const [partRateCsmHour, setPartRateCsmHour] = useState<number | null>(null);
+    const [partRateCsmDay, setPartRateCsmDay] = useState<number | null>(null);
+    const [partRateCsmWeek, setPartRateCsmWeek] = useState<number | null>(null);
+    const [partRateCsmMonth, setPartRateCsmMonth] = useState<number | null>(null);
+    const [partRateOverallHour, setPartRateOverallHour] = useState<number | null>(null);
+    const [partRateOverallDay, setPartRateOverallDay] = useState<number | null>(null);
+    const [partRateOverallWeek, setPartRateOverallWeek] = useState<number | null>(null);
+    const [partRateOverallMonth, setPartRateOverallMonth] = useState<number | null>(null);
 
     // UseEffect
     useEffect(() => {
@@ -142,16 +154,28 @@ const EntityComponent = ({ name, network }: Props) => {
             setEntityHour(responseHour.data.entity);
             setMetricsOverallNetworkHour(responseHour.data.metricsOverallNetwork);
             setMetricsCsmOperatorshour(responseHour.data.metricsCsmOperators);
+            setPartRateHour(responseHour.data.participationRate);
+            
             setEntityDay(responseDay.data.entity);
             setMetricsOverallNetworkDay(responseDay.data.metricsOverallNetwork);
             setMetricsCsmOperatorsDay(responseDay.data.metricsCsmOperators);
+            setPartRateDay(responseDay.data.participationRate);
             setEntityWeek(responseWeek.data.entity);
             setMetricsOverallNetworkWeek(responseWeek.data.metricsOverallNetwork);
             setMetricsCsmOperatorsWeek(responseWeek.data.metricsCsmOperators);
+            setPartRateWeek(responseWeek.data.participationRate);
             setEntityMonth(responseMonth.data.entity);
             setMetricsOverallNetworkMonth(responseMonth.data.metricsOverallNetwork);
             setMetricsCsmOperatorsMonth(responseMonth.data.metricsCsmOperators);
-            console.log(metricsOverallNetworkDay);
+            setPartRateMonth(responseMonth.data.participationRate);
+            setPartRateCsmHour(responseHour.data.participationRateCsm);
+            setPartRateCsmDay(responseDay.data.participationRateCsm);
+            setPartRateCsmWeek(responseWeek.data.participationRateCsm);
+            setPartRateCsmMonth(responseMonth.data.participationRateCsm);
+            setPartRateOverallHour(responseHour.data.participationRateOverall);
+            setPartRateOverallDay(responseDay.data.participationRateOverall);
+            setPartRateOverallWeek(responseWeek.data.participationRateOverall);
+            setPartRateOverallMonth(responseMonth.data.participationRateOverall);
 
             if (responseHour.data.entity.aggregate_balance !== null) {
                 setShowInfoBox(false);
@@ -166,7 +190,7 @@ const EntityComponent = ({ name, network }: Props) => {
     };
 
     // Container Entity Performance
-    const getEntityPerformance = (entity: Entity, overallNetwork: Metrics, csmOperators: Metrics) => {
+    const getEntityPerformance = (entity: Entity, overallNetwork: Metrics, csmOperators: Metrics, partRate: any, partRateCsm: any, partRateOverall: any) => {
         return (
             <>
                 {/* Rewards */}
@@ -209,7 +233,9 @@ const EntityComponent = ({ name, network }: Props) => {
 
                 {/* Blocks Entity Performance */}
                 <div className='3xs:flex flex-col 3xs:flex-row items-center justify-between md:justify-start gap-x-1'>
-                    <p className='md:w-52 lg:w-50 md:md-0 text-[var(--black)] dark:text-[var(--white)]'>Blocks:</p>
+                    <p className='md:w-52 lg:w-50 md:md-0 text-[var(--black)] dark:text-[var(--white)]'>
+                        Blocks:
+                    </p>
 
                     <div className='flex justify-center 3xs:gap-x-2 md:gap-x-5 3xs:my-2 '>
                         <CardContent
@@ -228,11 +254,11 @@ const EntityComponent = ({ name, network }: Props) => {
                     </div>
                 </div>
 
-                <div className='lg:flex-row gap-y-2 md:gap-y-0 md:mb-0 mt-10'>
+                <div className='lg:flex-row gap-y-2 md:gap-y-0 md:mb-0'>
                     <p className='text-[18px] md:w-[240px] my-auto text-[var(--black)] dark:text-[var(--white)] mx-auto'>
                         Correctness Comparison:
                     </p>
-                    <div className="ml:h-[400px] 3xs:h-[200px] xs:h-[300px] md:w-[600px] ml:w-[750px] lg:w-[850px] xl:w-[1100px] 3xs:w-[355px] 2xs:w-[415px] xs:w-[520px] xl:mx-auto 3xs:ml-[-54px] md:ml-[-40px]" >
+                    <div className="3xs:h-[200px] xs:h-[300px] md:w-[600px] ml:w-[750px] lg:w-[850px] xl:w-[1100px] 3xs:w-[355px] 2xs:w-[415px] xs:w-[520px] xl:mx-auto 3xs:ml-[-54px] md:ml-[-40px]" >
                         <BarChartComponent
                             data={checkCsm ? [
                                 {name: 'Source', [cleanedName]: (1 - entity.count_missing_source / entity.count_expected_attestations), 'CSM': csmOperators?.missing_source, 'Overall Network': overallNetwork?.missing_source},
@@ -242,6 +268,21 @@ const EntityComponent = ({ name, network }: Props) => {
                                 {name: 'Source', [cleanedName]: (1 - entity.count_missing_source / entity.count_expected_attestations), 'Overall Network': overallNetwork?.missing_source},
                                 {name: 'Target', [cleanedName]: (1 - entity.count_missing_target / entity.count_expected_attestations), 'Overall Network': overallNetwork?.missing_target},
                                 {name: 'Head', [cleanedName]: (1 - entity.count_missing_head / entity.count_expected_attestations), 'Overall Network': overallNetwork?.missing_head},
+                            ]}
+                        ></BarChartComponent>
+                    </div>
+                </div>
+
+                <div className='lg:flex-row gap-y-2 md:gap-y-0 md:mb-0'>
+                    <p className='text-[18px] md:w-[290px] my-auto text-[var(--black)] dark:text-[var(--white)] mx-auto'>
+                        Participation Rate Comparison:
+                    </p>
+                    <div className="3xs:h-[250px] xs:h-[300px] md:w-[400px] 3xs:w-[315px] xs:w-[520px] 3xs:mx-auto xl:mx-auto 3xs:ml-[-25px]" >
+                        <BarChartComponent
+                            data={checkCsm ? [
+                                {name: '', [cleanedName]: partRate, 'CSM': partRateCsm, 'Overall Network': partRateOverall},
+                            ] : [
+                                {name: '', [cleanedName]: (1 - entity.count_missing_source / entity.count_expected_attestations), 'Overall Network': overallNetwork?.missing_source},
                             ]}
                         ></BarChartComponent>
                     </div>
@@ -288,7 +329,7 @@ const EntityComponent = ({ name, network }: Props) => {
 
                             {/* Blocks */}
                             <div className='flex flex-col lg:flex-row gap-y-1'>
-                                <p className='w-44 sm:w-60 my-auto text-[var(--black)] dark:text-[var(--white)]'>Blocks:</p>
+                                <p className='w-44 sm:w-60 my-auto text-[var(--black)] dark:text-[var(--white)]'>Blocks(All-time):</p>
                                 <div className='flex flex-col 3xs:flex-row items-center 3xs:gap-x-4 md:gap-x-4 gap-y-2 justify-center'>
                                     <CardContent
                                         content={`Proposed: ${entityDay.proposed_blocks.f_proposed?.toLocaleString()}`}
@@ -379,12 +420,12 @@ const EntityComponent = ({ name, network }: Props) => {
                     >
                         <div className='flex flex-col md:gap-y-4 3xs:gap-y-4 text-[14px] font-medium md:text-[16px] text-[var(--darkGray)] dark:text-[var(--white)]'>
                             <p className='text-[18px] uppercase font-medium md:py-4 3xs:py-2 text-center text-[var(--black)] dark:text-[var(--white)]'>
-                                Entity performance:
+                                Entity performance
                             </p>
-                            {tabPageIndexEntityPerformance === 0 && getEntityPerformance(entityHour as Entity, metricsOverallNetworkHour as Metrics, metricsCsmOperatorshour as Metrics)}
-                            {tabPageIndexEntityPerformance === 1 && getEntityPerformance(entityDay as Entity, metricsOverallNetworkDay as Metrics, metricsCsmOperatorsDay as Metrics)}
-                            {tabPageIndexEntityPerformance === 2 && getEntityPerformance(entityWeek as Entity, metricsOverallNetworkWeek as Metrics, metricsCsmOperatorsWeek as Metrics)}
-                            {tabPageIndexEntityPerformance === 3 && getEntityPerformance(entityMonth as Entity, metricsOverallNetworkMonth as Metrics, metricsCsmOperatorsMonth as Metrics)}
+                            {tabPageIndexEntityPerformance === 0 && getEntityPerformance(entityHour as Entity, metricsOverallNetworkHour as Metrics, metricsCsmOperatorshour as Metrics, partRateHour, partRateCsmHour, partRateOverallHour)}
+                            {tabPageIndexEntityPerformance === 1 && getEntityPerformance(entityDay as Entity, metricsOverallNetworkDay as Metrics, metricsCsmOperatorsDay as Metrics, partRateDay, partRateCsmDay, partRateOverallDay)}
+                            {tabPageIndexEntityPerformance === 2 && getEntityPerformance(entityWeek as Entity, metricsOverallNetworkWeek as Metrics, metricsCsmOperatorsWeek as Metrics, partRateWeek, partRateCsmWeek, partRateOverallWeek)}
+                            {tabPageIndexEntityPerformance === 3 && getEntityPerformance(entityMonth as Entity, metricsOverallNetworkMonth as Metrics, metricsCsmOperatorsMonth as Metrics, partRateMonth, partRateCsmMonth, partRateOverallMonth)}
                         </div>
                     </div>
                 </div>
