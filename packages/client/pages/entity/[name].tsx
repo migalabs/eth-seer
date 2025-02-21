@@ -344,10 +344,9 @@ const EntityComponent = ({ name, network }: Props) => {
 
     // Large View
     const getValidatorsLargeView = () => (
-        <LargeTable minWidth={700} noRowsText='No Validators' fetchingRows={validatorsLoading}>
+        <LargeTable minWidth={700} noRowsText='No Validators' fetchingRows={validatorsLoading && !loading}>
             <LargeTableHeader text='Validator' />
             <LargeTableHeader text='Balance' />
-            {/* <LargeTableHeader text='Entity' /> */}
             <LargeTableHeader text='Status' />
 
             {validators.map((validator: Validator) => (
@@ -357,10 +356,6 @@ const EntityComponent = ({ name, network }: Props) => {
                     </div>
 
                     <p className='w-[25%] text-center'>{validator.f_balance_eth} ETH</p>
-
-                    {/* <div className='w-[25%]'>
-                        <LinkEntity entity={validator.f_pool_name} mxAuto />
-                    </div> */}
 
                     <div className='flex justify-center w-[25%]'>
                         <ValidatorStatus status={validator.f_status} />
@@ -384,11 +379,6 @@ const EntityComponent = ({ name, network }: Props) => {
                         <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Balance</p>
                         <p>{validator.f_balance_eth} ETH</p>
                     </div>
-
-                    {/* <div className='flex w-full items-center justify-between'>
-                        <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Entity</p>
-                        <LinkEntity entity={validator.f_pool_name} />
-                    </div> */}
 
                     <div className='flex w-full items-center justify-between'>
                         <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Status</p>
