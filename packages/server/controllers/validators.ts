@@ -316,3 +316,64 @@ export const getWithdrawalsByValidator = async (req: Request, res: Response) => 
         });
     }
 };
+
+export const getValidatorsByPool = async (req: Request, res: Response) => {
+    try{
+        const pool = req.params.name;
+        const { network, page = 0, limit = 10 } = req.query;
+
+        const chClient = clickhouseClients[network as string];
+
+        const skip = Number(page) * Number(limit);
+
+        const  [validatorsResultSet, countResultSet ] =
+            await Promise.all([
+                chClient.query({
+                    query: `
+                        SELECT
+                            vls.f_val_idx AS f_val_idx,
+                            vls.f_epoch AS f_epoch,
+                            vls.f_balance_eth AS f_balance_eth,
+                            pk.f_pool_name AS f_pool_name,
+                            s.f_status AS f_status
+                        FROM
+                            t_validator_last_status vls
+                        LEFT OUTER JOIN
+                            t_eth2_pubkeys pk ON vls.f_val_idx = pk.f_val_idx
+                        LEFT OUTER JOIN
+                            t_status s ON vls.f_status = s.f_id
+                        WHERE
+                            pk.f_pool_name = '${pool}'
+                        LIMIT ${Number(limit)}
+                        OFFSET ${skip}
+                    `,
+                    format: 'JSONEachRow',
+                }),
+                chClient.query({
+                    query: `
+                        SELECT COUNT(*) AS count
+                        FROM
+                            t_validator_last_status vls
+                        LEFT OUTER JOIN
+                            t_eth2_pubkeys pk ON vls.f_val_idx = pk.f_val_idx
+                        WHERE
+                            pk.f_pool_name = '${pool}'
+                    `,
+                    format: 'JSONEachRow',
+                }),
+            ])
+        
+        const validators = await validatorsResultSet.json();
+        const countResult = await countResultSet.json();
+
+        res.json({
+            validators: validators,
+            totalCount: Number(countResult[0].count),
+        });
+    }catch(error){
+        console.log(error);
+        return res.status(500).json({
+            msg: 'An error occurred on the server'
+        });
+    }
+};
