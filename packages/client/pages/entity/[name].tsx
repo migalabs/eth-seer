@@ -285,7 +285,7 @@ const EntityComponent = ({ name, network }: Props) => {
                 <p className='text-[18px] md:w-[240px] my-auto text-[var(--black)] dark:text-[var(--white)] mx-auto'>
                     Correctness Comparison:
                 </p>
-                <div className="3xs:h-[200px] xs:h-[300px] md:w-[600px] ml:w-[750px] lg:w-[850px] xl:w-[1100px] 3xs:w-[355px] 2xs:w-[415px] xs:w-[520px] xl:mx-auto 3xs:ml-[-54px] md:ml-[-40px]" >
+                <div className="3xs:h-[200px] xs:h-[300px] lg:w-[850px] xl:w-[1100px] 3xs:w-[355px] 2xs:w-[415px] xs:w-[520px] xl:mx-auto 3xs:ml-[-54px] md:ml-[-40px]" >
                     <BarChartComponent
                         data={checkCsm ? [
                             {name: 'Source', [cleanedName]: (1 - entity.count_missing_source / entity.count_expected_attestations), 'CSM': csmOperators?.missing_source, 'Overall Network': overallNetwork?.missing_source},
@@ -374,7 +374,7 @@ const EntityComponent = ({ name, network }: Props) => {
                     <p className='text-[18px] 3xs:w-[290px] my-auto text-[var(--black)] dark:text-[var(--white)] mx-auto'>
                         Participation Rate Comparison:
                     </p>
-                    <div className="3xs:h-[220px] lg:h-[300px] 3xs:w-[250px] 3xs:mx-auto xl:mx-auto lg:ml-[-25px]" >
+                    <div className="3xs:h-[220px] lg:h-[300px] 3xs:w-[250px] lg:w-[400px] 3xs:mx-auto xl:mx-auto lg:ml-[-25px]" >
                         <BarChartComponent
                             data={checkCsm ? [
                                 {name: '', [cleanedName]: partRate, 'CSM': partRateCsm, 'Overall Network': partRateOverall},

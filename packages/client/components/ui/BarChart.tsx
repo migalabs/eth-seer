@@ -56,7 +56,6 @@ const BarChartComponent: React.FC<Props> = ({ data, width, height, legend = true
                         fontSize: smallScreen ? '10px' : '14px',
                     }}
                     domain={[yMin, 1]}
-                    padding={{top: smallScreen ? 12 : 0}}
                     ticks={[0.5, 0.65, 0.8, 0.9, 1]}
                     overlineThickness={0}
                 />
