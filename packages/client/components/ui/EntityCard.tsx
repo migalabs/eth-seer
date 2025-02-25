@@ -39,7 +39,7 @@ const EntityCard = ({ activeValidators, pool }: Props) => {
 
                 <div className='flex flex-col items-center md:items-start'>
                     <span className='text-[12px] md:text-[16px] font-semibold uppercase text-center md:text-start md:w-[100%] break-all'>
-                        {pool}
+                        {pool.replace('_', ' ')}
                     </span>
 
                     <span className='font-light text-[14px] md:text-[16px]'>
