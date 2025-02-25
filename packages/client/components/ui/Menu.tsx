@@ -11,13 +11,17 @@ import axiosClient from '../../config/axios';
 const Menu = () => {
     // States
     const [isOpen, setIsOpen] = useState(false);
-    const [networks, setNetworks] = useState([]);
+    const [networks, setNetworks] = useState<string[]>([]);
+    const [currentNetwork, setCurrentNetwork] = useState<string | null>(null);
 
+    
     useEffect(() => {
         if (networks.length === 0) {
             getNetworks();
         }
-
+        const network = new URLSearchParams(window.location.search).get('network');
+        setCurrentNetwork(network);
+        
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -60,19 +64,23 @@ const Menu = () => {
                 name: 'Clients',
                 route: '/clients',
             },
-            {
-                name: 'Lido CSM',
-                route: '/lido-csm',
-            },
+            ...(currentNetwork?.includes('mainnet')
+                ? [
+                    {
+                        name: 'Lido CSM',
+                        route: '/lido-csm',
+                    },
+                ]
+                : []),
         ],
         Networks:
             networks.length > 0
                 ? networks.map((network: string) => {
-                      return {
-                          name: network.charAt(0).toUpperCase() + network.slice(1),
-                          route: `/?network=${network}`,
-                      };
-                  })
+                    return {
+                        name: network.charAt(0).toUpperCase() + network.slice(1),
+                        route: `/?network=${network}`,
+                    };
+                })
                 : [],
     };
 
