@@ -15,8 +15,8 @@ export const getEntity = async (req: Request, res: Response) => {
                             SUM(f_balance_eth) AS aggregate_balance,
                             COUNT(CASE vls.f_status WHEN 0 THEN 1 ELSE null END) AS deposited,
                             COUNT(CASE vls.f_status WHEN 1 THEN 1 ELSE null END) AS active,
-                            COUNT(CASE vls.f_status WHEN 2 THEN 1 ELSE null END) AS slashed,
-                            COUNT(CASE vls.f_status WHEN 3 THEN 1 ELSE null END) AS exited
+                            COUNT(CASE vls.f_status WHEN 2 THEN 1 ELSE null END) AS exited,
+                            COUNT(CASE vls.f_status WHEN 3 THEN 1 ELSE null END) AS slashed
                         FROM
                             t_validator_last_status vls
                         INNER JOIN
