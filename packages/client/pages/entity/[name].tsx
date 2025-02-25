@@ -574,7 +574,7 @@ const EntityComponent = ({ name, network }: Props) => {
                 </div>
             )}
 
-            <Title className='mb-5 font-medium' removeMarginTop>{cleanedName}'s Validators</Title>
+            <Title className='mb-5 font-medium' removeMarginTop>{cleanedName}&apos;s Validators</Title>
 
             {validatorsCount > 0 && (
                 <Pagination
