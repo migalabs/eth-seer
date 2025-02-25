@@ -64,6 +64,10 @@ const Menu = () => {
                 name: 'Clients',
                 route: '/clients',
             },
+            {
+                name: 'Slashings',
+                route: '/slashed_validators',
+            },
             ...(currentNetwork?.includes('mainnet')
                 ? [
                     {
