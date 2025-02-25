@@ -265,7 +265,7 @@ const EntityComponent = ({ name, network }: Props) => {
                         legend={false}
                     ></BarChartComponent>
                 </div>
-                <div className="3xs:h-[220px] lg:h-[300px] 3xs:w-[250px] 3xs:mx-auto" >
+                <div className="3xs:h-[230px] lg:h-[300px] 3xs:w-[250px] 3xs:mx-auto" >
                     <BarChartComponent
                         data={checkCsm ? [
                             {name: 'Head', [cleanedName]: (1 - entity.count_missing_head / entity.count_expected_attestations), 'CSM': csmOperators?.missing_head, 'Overall Network': overallNetwork?.missing_head},
