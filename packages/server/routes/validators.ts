@@ -7,6 +7,7 @@ import {
     getCountActiveValidators,
     getProposedBlocksByValidator,
     getWithdrawalsByValidator,
+    getValidatorsByPool,
 } from '../controllers/validators';
 
 import { checkFields } from '../middlewares/check-fields';
@@ -46,5 +47,11 @@ router.get('/:id/withdrawals', [
     query('network').custom(existsNetwork),
     checkFields,
 ], getWithdrawalsByValidator);
+
+router.get('/pool/:name', [
+    query('network').not().isEmpty(),
+    query('network').custom(existsNetwork),
+    checkFields,
+], getValidatorsByPool);
 
 export default router;

@@ -7,6 +7,9 @@ import axiosClient from '../../config/axios';
 // Contexts
 import ThemeModeContext from '../../contexts/theme-mode/ThemeModeContext';
 
+// Hooks
+import useLargeView from '../../hooks/useLargeView';
+
 // Components
 import Layout from '../../components/layouts/Layout';
 import InfoBox from '../../components/layouts/InfoBox';
@@ -16,11 +19,16 @@ import TabHeader from '../../components/ui/TabHeader';
 import Title from '../../components/ui/Title';
 import CardContent from '../../components/ui/CardContent';
 import ShareMenu from '../../components/ui/ShareMenu';
+import { LargeTable, LargeTableHeader, LargeTableRow, SmallTable, SmallTableCard } from '../../components/ui/Table';
+import LinkValidator from '../../components/ui/LinkValidator';
+import ValidatorStatus from '../../components/ui/ValidatorStatus';
 
 import BarChartComponent from '../../components/ui/BarChart';
 
 // Types
-import { Entity } from '../../types';
+import { Entity, Validator } from '../../types';
+
+import Pagination from '../../components/ui/Pagination';
 
 // Props
 interface Props {
@@ -72,21 +80,22 @@ const EntityComponent = ({ name, network }: Props) => {
 
     // States
     const [entityHour, setEntityHour] = useState<Entity | null>(null);
-    const [metricsOverallNetworkHour, setMetricsOverallNetworkHour] = useState<Metrics | null>(null);
-    const [metricsCsmOperatorshour, setMetricsCsmOperatorshour] = useState<Metrics | null>(null);
-    const [partRateHour, setPartRateHour] = useState<number | null>(null);
     const [entityDay, setEntityDay] = useState<Entity | null>(null);
-    const [metricsOverallNetworkDay, setMetricsOverallNetworkDay] = useState<Metrics | null>(null);
-    const [metricsCsmOperatorsDay, setMetricsCsmOperatorsDay] = useState<Metrics | null>(null);
-    const [partRateDay, setPartRateDay] = useState<number | null>(null);
     const [entityWeek, setEntityWeek] = useState<Entity | null>(null);
-    const [metricsOverallNetworkWeek, setMetricsOverallNetworkWeek] = useState<Metrics | null>(null);
-    const [metricsCsmOperatorsWeek, setMetricsCsmOperatorsWeek] = useState<Metrics | null>(null);
-    const [partRateWeek, setPartRateWeek] = useState<number | null>(null);
     const [entityMonth, setEntityMonth] = useState<Entity | null>(null);
+    const [metricsOverallNetworkHour, setMetricsOverallNetworkHour] = useState<Metrics | null>(null);
+    const [metricsOverallNetworkDay, setMetricsOverallNetworkDay] = useState<Metrics | null>(null);
+    const [metricsOverallNetworkWeek, setMetricsOverallNetworkWeek] = useState<Metrics | null>(null);
     const [metricsOverallNetworkMonth, setMetricsOverallNetworkMonth] = useState<Metrics | null>(null);
+    const [metricsCsmOperatorshour, setMetricsCsmOperatorshour] = useState<Metrics | null>(null);
+    const [metricsCsmOperatorsDay, setMetricsCsmOperatorsDay] = useState<Metrics | null>(null);
+    const [metricsCsmOperatorsWeek, setMetricsCsmOperatorsWeek] = useState<Metrics | null>(null);
     const [metricsCsmOperatorsMonth, setMetricsCsmOperatorsMonth] = useState<Metrics | null>(null);
+    const [partRateHour, setPartRateHour] = useState<number | null>(null);
+    const [partRateDay, setPartRateDay] = useState<number | null>(null);
+    const [partRateWeek, setPartRateWeek] = useState<number | null>(null);
     const [partRateMonth, setPartRateMonth] = useState<number | null>(null);
+
     const [showInfoBox, setShowInfoBox] = useState(false);
     const [tabPageIndexEntityPerformance, setTabPageIndexEntityPerformance] = useState(0);
     const [checkCsm, setCheckCsm] = useState(false);
@@ -101,6 +110,14 @@ const EntityComponent = ({ name, network }: Props) => {
     const [partRateOverallWeek, setPartRateOverallWeek] = useState<number | null>(null);
     const [partRateOverallMonth, setPartRateOverallMonth] = useState<number | null>(null);
 
+    const [validators, setValidators] = useState<Validator[]>([]);
+    const [validatorsCount, setValidatorsCount] = useState(0);
+    const [validatorsLoading, setValidatorsLoading] = useState(true);
+    const isLargeView = useLargeView();
+
+    const [currentPage, setCurrentPage] = useState(0);
+    const [numRowsQuery, setNumRowsQuery] = useState(0);
+
     // UseEffect
     useEffect(() => {
         if (!getEntityCalled.current) {
@@ -113,6 +130,14 @@ const EntityComponent = ({ name, network }: Props) => {
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [name]);
+
+    useEffect(() => {
+        if (network && validators.length === 0) {
+            getValidators(0, 10);
+        }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [network]);
 
     //Entity
     const getEntity = async () => {
@@ -152,21 +177,20 @@ const EntityComponent = ({ name, network }: Props) => {
             ]);
 
             setEntityHour(responseHour.data.entity);
-            setMetricsOverallNetworkHour(responseHour.data.metricsOverallNetwork);
-            setMetricsCsmOperatorshour(responseHour.data.metricsCsmOperators);
-            setPartRateHour(responseHour.data.participationRate);
-            
             setEntityDay(responseDay.data.entity);
-            setMetricsOverallNetworkDay(responseDay.data.metricsOverallNetwork);
-            setMetricsCsmOperatorsDay(responseDay.data.metricsCsmOperators);
-            setPartRateDay(responseDay.data.participationRate);
             setEntityWeek(responseWeek.data.entity);
-            setMetricsOverallNetworkWeek(responseWeek.data.metricsOverallNetwork);
-            setMetricsCsmOperatorsWeek(responseWeek.data.metricsCsmOperators);
-            setPartRateWeek(responseWeek.data.participationRate);
             setEntityMonth(responseMonth.data.entity);
+            setMetricsOverallNetworkHour(responseHour.data.metricsOverallNetwork);
+            setMetricsOverallNetworkDay(responseDay.data.metricsOverallNetwork);
+            setMetricsOverallNetworkWeek(responseWeek.data.metricsOverallNetwork);
             setMetricsOverallNetworkMonth(responseMonth.data.metricsOverallNetwork);
+            setMetricsCsmOperatorshour(responseHour.data.metricsCsmOperators);
+            setMetricsCsmOperatorsDay(responseDay.data.metricsCsmOperators);
+            setMetricsCsmOperatorsWeek(responseWeek.data.metricsCsmOperators);
             setMetricsCsmOperatorsMonth(responseMonth.data.metricsCsmOperators);
+            setPartRateHour(responseHour.data.participationRate);
+            setPartRateDay(responseDay.data.participationRate);
+            setPartRateWeek(responseWeek.data.participationRate);
             setPartRateMonth(responseMonth.data.participationRate);
             setPartRateCsmHour(responseHour.data.participationRateCsm);
             setPartRateCsmDay(responseDay.data.participationRateCsm);
@@ -188,6 +212,33 @@ const EntityComponent = ({ name, network }: Props) => {
             setLoading(false);
         }
     };
+
+    const getValidators = async (page: number, limit: number) => {
+        try {
+            setValidatorsLoading(true);
+
+            setCurrentPage(page);
+            setNumRowsQuery(limit);
+
+            const response = await axiosClient.get(`/api/validators/pool/${name}`, {
+                params: {
+                    network,
+                    page,
+                    limit,
+                },
+            });
+
+            setValidators(response.data.validators);
+            setValidatorsCount(response.data.totalCount);
+            console.log(validatorsCount);
+            
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setValidatorsLoading(false);
+        }
+    };
+
 
     // Container Entity Performance
     const getEntityPerformance = (entity: Entity, overallNetwork: Metrics, csmOperators: Metrics, partRate: any, partRateCsm: any, partRateOverall: any) => {
@@ -291,6 +342,53 @@ const EntityComponent = ({ name, network }: Props) => {
         );
     };
 
+    // Large View
+    const getValidatorsLargeView = () => (
+        <LargeTable minWidth={700} noRowsText='No Validators' fetchingRows={validatorsLoading && !loading}>
+            <LargeTableHeader text='Validator' />
+            <LargeTableHeader text='Balance' />
+            <LargeTableHeader text='Status' />
+
+            {validators.map((validator: Validator) => (
+                <LargeTableRow key={validator.f_val_idx}>
+                    <div className='w-[25%]'>
+                        <LinkValidator validator={validator.f_val_idx} mxAuto />
+                    </div>
+
+                    <p className='w-[25%] text-center'>{validator.f_balance_eth} ETH</p>
+
+                    <div className='flex justify-center w-[25%]'>
+                        <ValidatorStatus status={validator.f_status} />
+                    </div>
+                </LargeTableRow>
+            ))}
+        </LargeTable>
+    );
+
+    // Small View
+    const getValidatorsMobile = () => (
+        <SmallTable noRowsText='No Validators' fetchingRows={validatorsLoading && !loading}>
+            {validators.map((validator: Validator) => (
+                <SmallTableCard key={validator.f_val_idx}>
+                    <div className='flex w-full items-center justify-between'>
+                        <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Validator</p>
+                        <LinkValidator validator={validator.f_val_idx} />
+                    </div>
+
+                    <div className='flex w-full items-center justify-between'>
+                        <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Balance</p>
+                        <p>{validator.f_balance_eth} ETH</p>
+                    </div>
+
+                    <div className='flex w-full items-center justify-between'>
+                        <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Status</p>
+                        <ValidatorStatus status={validator.f_status} />
+                    </div>
+                </SmallTableCard>
+            ))}
+        </SmallTable>
+    );
+
     //OVERVIEW PAGE
     return (
         <Layout
@@ -379,7 +477,6 @@ const EntityComponent = ({ name, network }: Props) => {
                             </div>
                         </div>
                     </div>
-
                     {/* Time tabs */}
                     <div className='flex flex-col 3xs:flex-row 3xs:gap-2 gap-4 3xs:justify-center sm:justify-start'>
                         <TabHeader
@@ -413,7 +510,7 @@ const EntityComponent = ({ name, network }: Props) => {
                     </div>
 
                     <div
-                        className='2xl:flex items-center p-6 justify-center rounded-md border-2 border-white text-[var(--darkGray)] dark:text-[var(--white)] bg-[var(--bgMainLightMode)] dark:bg-[var(--bgFairDarkMode)]'
+                        className='2xl:flex items-center p-6 justify-center rounded-md border-2 border-white mb-5 text-[var(--darkGray)] dark:text-[var(--white)] bg-[var(--bgMainLightMode)] dark:bg-[var(--bgFairDarkMode)]'
                         style={{
                             boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
                         }}
@@ -430,6 +527,17 @@ const EntityComponent = ({ name, network }: Props) => {
                     </div>
                 </div>
             )}
+
+            {validatorsCount > 0 && (
+                <Pagination
+                    currentPage={currentPage}
+                    totalPages={Math.ceil(validatorsCount / numRowsQuery)}
+                    onChangePage={page => getValidators(page, numRowsQuery)}
+                    onChangeNumRows={numRows => getValidators(0, numRows)}
+                />
+            )}
+
+            <>{isLargeView ? getValidatorsLargeView() : getValidatorsMobile()}</>
 
             {showInfoBox && <InfoBox text="Entity doesn't exist yet" />}
         </Layout>
