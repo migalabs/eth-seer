@@ -53,6 +53,10 @@ const Menu = () => {
                 route: '/validators',
             },
             {
+                name: 'Slashings',
+                route: '/slashed_validators',
+            },
+            {
                 name: 'Blocks',
                 route: '/blocks',
             },
@@ -63,10 +67,6 @@ const Menu = () => {
             {
                 name: 'Clients',
                 route: '/clients',
-            },
-            {
-                name: 'Slashings',
-                route: '/slashed_validators',
             },
             ...(currentNetwork?.includes('mainnet')
                 ? [
