@@ -119,7 +119,7 @@ const Entities = () => {
             <div className='grid grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 w-11/12 md:w-10/12 gap-3 mx-auto mt-4'>
                 {entities.length > 0 &&
                     entities
-                    .filter(pool => Number(pool.act_number_validators) >= 100)
+                    .filter(pool => Number(pool.act_number_validators) >= 100 && pool.f_pool_name !== '')
                     .map(pool => (
                         <EntityCard
                             key={pool.f_pool_name}
