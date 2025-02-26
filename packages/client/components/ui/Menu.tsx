@@ -53,6 +53,10 @@ const Menu = () => {
                 route: '/validators',
             },
             {
+                name: 'Slashings',
+                route: '/slashed_validators',
+            },
+            {
                 name: 'Blocks',
                 route: '/blocks',
             },
