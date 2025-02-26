@@ -367,23 +367,25 @@ const EntityComponent = ({ name, network }: Props) => {
                     </div>
                 </div>
 
-                {isLargeView ? getCorrectnessComparisonLargeView(entity, overallNetwork, csmOperators)
-                            : getCorrectnessComparisonMobile(entity, overallNetwork, csmOperators)}
+                {entityDay?.active ? isLargeView ? getCorrectnessComparisonLargeView(entity, overallNetwork, csmOperators)
+                            : getCorrectnessComparisonMobile(entity, overallNetwork, csmOperators) : null}
 
-                <div className='lg:flex-row gap-y-2 md:gap-y-0 md:mb-0'>
-                    <p className='text-[18px] 3xs:w-[290px] my-auto text-[var(--black)] dark:text-[var(--white)] mx-auto'>
-                        Participation Rate Comparison:
-                    </p>
-                    <div className="3xs:h-[220px] lg:h-[300px] 3xs:w-[250px] lg:w-[400px] 3xs:mx-auto xl:mx-auto lg:ml-[-25px]" >
-                        <BarChartComponent
-                            data={checkCsm ? [
-                                {name: '', [cleanedName]: partRate, 'CSM': partRateCsm, 'Overall Network': partRateOverall},
-                            ] : [
-                                {name: '', [cleanedName]: (1 - entity.count_missing_source / entity.count_expected_attestations), 'Overall Network': overallNetwork?.missing_source},
-                            ]}
-                        ></BarChartComponent>
+                {entityDay?.active ?
+                    <div className='lg:flex-row gap-y-2 md:gap-y-0 md:mb-0'>
+                        <p className='text-[18px] 3xs:w-[290px] my-auto text-[var(--black)] dark:text-[var(--white)] mx-auto'>
+                            Participation Rate Comparison:
+                        </p>
+                        <div className="3xs:h-[220px] lg:h-[300px] 3xs:w-[250px] lg:w-[400px] 3xs:mx-auto xl:mx-auto lg:ml-[-25px]" >
+                            <BarChartComponent
+                                data={checkCsm ? [
+                                    {name: '', [cleanedName]: partRate, 'CSM': partRateCsm, 'Overall Network': partRateOverall},
+                                ] : [
+                                    {name: '', [cleanedName]: (1 - entity.count_missing_source / entity.count_expected_attestations), 'Overall Network': overallNetwork?.missing_source},
+                                ]}
+                            ></BarChartComponent>
+                        </div>
                     </div>
-                </div>
+                : null}
             </>
         );
     };
