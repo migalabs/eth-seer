@@ -118,6 +118,8 @@ const EntityComponent = ({ name, network }: Props) => {
     const [currentPage, setCurrentPage] = useState(0);
     const [numRowsQuery, setNumRowsQuery] = useState(0);
 
+    const [checkActiveValidator, setCheckActiveValidator] = useState(false);
+
     // UseEffect
     useEffect(() => {
         if (!getEntityCalled.current) {
@@ -205,6 +207,10 @@ const EntityComponent = ({ name, network }: Props) => {
                 setShowInfoBox(false);
             } else {
                 setShowInfoBox(true);
+            }
+
+            if (responseDay.data.entity.active) {
+                setCheckActiveValidator(true);
             }
         } catch (error) {
             console.log(error);
@@ -367,25 +373,23 @@ const EntityComponent = ({ name, network }: Props) => {
                     </div>
                 </div>
 
-                {entityDay?.active ? isLargeView ? getCorrectnessComparisonLargeView(entity, overallNetwork, csmOperators)
-                            : getCorrectnessComparisonMobile(entity, overallNetwork, csmOperators) : null}
+                {isLargeView ? getCorrectnessComparisonLargeView(entity, overallNetwork, csmOperators)
+                            : getCorrectnessComparisonMobile(entity, overallNetwork, csmOperators)}
 
-                {entityDay?.active ?
-                    <div className='lg:flex-row gap-y-2 md:gap-y-0 md:mb-0'>
-                        <p className='text-[18px] 3xs:w-[290px] my-auto text-[var(--black)] dark:text-[var(--white)] mx-auto'>
-                            Participation Rate Comparison:
-                        </p>
-                        <div className="3xs:h-[220px] lg:h-[300px] 3xs:w-[250px] lg:w-[400px] 3xs:mx-auto xl:mx-auto lg:ml-[-25px]" >
-                            <BarChartComponent
-                                data={checkCsm ? [
-                                    {name: '', [cleanedName]: partRate, 'CSM': partRateCsm, 'Overall Network': partRateOverall},
-                                ] : [
-                                    {name: '', [cleanedName]: (1 - entity.count_missing_source / entity.count_expected_attestations), 'Overall Network': overallNetwork?.missing_source},
-                                ]}
-                            ></BarChartComponent>
-                        </div>
+                <div className='lg:flex-row gap-y-2 md:gap-y-0 md:mb-0'>
+                    <p className='text-[18px] 3xs:w-[290px] my-auto text-[var(--black)] dark:text-[var(--white)] mx-auto'>
+                        Participation Rate Comparison:
+                    </p>
+                    <div className="3xs:h-[220px] lg:h-[300px] 3xs:w-[250px] lg:w-[400px] 3xs:mx-auto xl:mx-auto lg:ml-[-25px]" >
+                        <BarChartComponent
+                            data={checkCsm ? [
+                                {name: '', [cleanedName]: partRate, 'CSM': partRateCsm, 'Overall Network': partRateOverall},
+                            ] : [
+                                {name: '', [cleanedName]: (1 - entity.count_missing_source / entity.count_expected_attestations), 'Overall Network': overallNetwork?.missing_source},
+                            ]}
+                        ></BarChartComponent>
                     </div>
-                : null}
+                </div>
             </>
         );
     };
@@ -526,6 +530,7 @@ const EntityComponent = ({ name, network }: Props) => {
                         </div>
                     </div>
                     {/* Time tabs */}
+                    {checkActiveValidator &&
                     <div className='flex flex-col 3xs:flex-row 3xs:gap-2 gap-4 3xs:justify-center sm:justify-start'>
                         <TabHeader
                             header='1 Hour'
@@ -555,8 +560,9 @@ const EntityComponent = ({ name, network }: Props) => {
                                 setTabPageIndexEntityPerformance(3);
                             }}
                         />
-                    </div>
+                    </div>}
 
+                    {checkActiveValidator &&
                     <div
                         className='2xl:flex items-center p-6 justify-center rounded-md border-2 border-white mb-5 text-[var(--darkGray)] dark:text-[var(--white)] bg-[var(--bgMainLightMode)] dark:bg-[var(--bgFairDarkMode)]'
                         style={{
@@ -572,11 +578,16 @@ const EntityComponent = ({ name, network }: Props) => {
                             {tabPageIndexEntityPerformance === 2 && getEntityPerformance(entityWeek as Entity, metricsOverallNetworkWeek as Metrics, metricsCsmOperatorsWeek as Metrics, partRateWeek, partRateCsmWeek, partRateOverallWeek)}
                             {tabPageIndexEntityPerformance === 3 && getEntityPerformance(entityMonth as Entity, metricsOverallNetworkMonth as Metrics, metricsCsmOperatorsMonth as Metrics, partRateMonth, partRateCsmMonth, partRateOverallMonth)}
                         </div>
-                    </div>
+                    </div>}
                 </div>
             )}
 
-            <Title className='mb-5 font-medium' removeMarginTop>{cleanedName}&apos;s Validators</Title>
+            <Title
+                className={`mb-5 font-medium ${checkActiveValidator ? '' : 'xl:mt-5'}`}
+                removeMarginTop={checkActiveValidator}
+            >
+                {cleanedName}&apos;s Validators
+            </Title>
 
             {validatorsCount > 0 && (
                 <Pagination
