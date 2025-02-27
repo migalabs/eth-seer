@@ -40,23 +40,22 @@ const Entities = () => {
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [network]);
-
+    
     //Entities
     const getEntities = async () => {
         try {
             setLoading(true);
-
-            const response = await axiosClient.get('/api/entities', {
+            
+            const entityResponse = await axiosClient.get('/api/entities', {
                 params: {
                     network,
                 },
             });
 
-            setEntities(
-                response.data.entities.toSorted(
-                    (a: Entity, b: Entity) => Number(b.act_number_validators) - Number(a.act_number_validators)
-                )
-            );
+            setEntities(entityResponse.data.entities.toSorted(
+                (a: Entity, b: Entity) => Number(b.act_number_validators) - Number(a.act_number_validators)
+            ));
+
         } catch (error) {
             console.log(error);
         } finally {
@@ -119,7 +118,9 @@ const Entities = () => {
 
             <div className='grid grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 w-11/12 md:w-10/12 gap-3 mx-auto mt-4'>
                 {entities.length > 0 &&
-                    entities.map(pool => (
+                    entities
+                    .filter(pool => Number(pool.act_number_validators) >= 100 && pool.f_pool_name !== '')
+                    .map(pool => (
                         <EntityCard
                             key={pool.f_pool_name}
                             activeValidators={Number(pool.act_number_validators)}

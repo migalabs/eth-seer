@@ -8,10 +8,11 @@ export const getEntity = async (req: Request, res: Response) => {
 
         const chClient = clickhouseClients[network as string];
 
-        const [entityStatsResultSet, blocksProposedResultSet, entityPerformanceResultSet] = await Promise.all([
+        const queries = [
             chClient.query({
                 query: `
-                        SELECT SUM(f_balance_eth) AS aggregate_balance,
+                        SELECT
+                            SUM(f_balance_eth) AS aggregate_balance,
                             COUNT(CASE vls.f_status WHEN 0 THEN 1 ELSE null END) AS deposited,
                             COUNT(CASE vls.f_status WHEN 1 THEN 1 ELSE null END) AS active,
                             COUNT(CASE vls.f_status WHEN 2 THEN 1 ELSE null END) AS exited,
@@ -38,31 +39,131 @@ export const getEntity = async (req: Request, res: Response) => {
             chClient.query({
                 query: `
                         SELECT
-                            SUM(toInt64(aggregated_rewards)) AS aggregated_rewards,
-                            SUM(aggregated_max_rewards) AS aggregated_max_rewards,
-                            SUM(count_sync_committee) AS count_sync_committee,
-                            SUM(count_missing_source) AS count_missing_source,
-                            SUM(count_missing_target) AS count_missing_target,
-                            SUM(count_missing_head) AS count_missing_head,
-                            SUM(count_expected_attestations) AS count_expected_attestations,
-                            SUM(proposed_blocks_performance) AS proposed_blocks_performance,
-                            SUM(missed_blocks_performance) AS missed_blocks_performance,
-                            SUM(number_active_vals) AS number_active_vals
-                        FROM (
-                            SELECT *
-                            FROM t_pool_summary
-                            WHERE LOWER(f_pool_name) = '${name.toLowerCase()}'
-                            ORDER BY f_epoch DESC
-                            LIMIT ${Number(numberEpochs)}
-                        ) AS subquery;
+                            *,
+                            count_attestations_included / count_expected_attestations AS participation_rate
+                        FROM
+                        (
+                            SELECT
+                                SUM(toInt64(aggregated_rewards)) AS aggregated_rewards,
+                                SUM(aggregated_max_rewards) AS aggregated_max_rewards,
+                                SUM(count_sync_committee) AS count_sync_committee,
+                                SUM(count_missing_source) AS count_missing_source,
+                                SUM(count_missing_target) AS count_missing_target,
+                                SUM(count_missing_head) AS count_missing_head,
+                                SUM(count_expected_attestations) AS count_expected_attestations,
+                                SUM(proposed_blocks_performance) AS proposed_blocks_performance,
+                                SUM(missed_blocks_performance) AS missed_blocks_performance,
+                                SUM(number_active_vals) AS number_active_vals,
+                                SUM(count_attestations_included) AS count_attestations_included
+                            FROM
+                                t_pool_summary
+                            WHERE
+                                LOWER(f_pool_name) = '${name.toLowerCase()}'
+                                AND f_epoch >= (
+                                    SELECT max(f_epoch)
+                                    FROM t_epoch_metrics_summary
+                                ) - ${Number(numberEpochs)}
+                        )
+
                     `,
                 format: 'JSONEachRow',
             }),
-        ]);
+            chClient.query({
+                query: `
+                        SELECT
+                            1 - SUM(f_missing_source) / SUM(f_num_att_vals) AS missing_source,
+                            1 - SUM(f_missing_target) / SUM(f_num_att_vals) AS missing_target,
+                            1 - SUM(f_missing_head) / SUM(f_num_att_vals) AS missing_head
+                        FROM (
+                            SELECT *
+                            FROM t_epoch_metrics_summary
+                            WHERE f_epoch >= (
+                                        SELECT
+                                            max(f_epoch)
+                                        FROM
+                                            t_epoch_metrics_summary
+                                        ) - ${Number(numberEpochs)}
+                        );
+                    `,
+                format: 'JSONEachRow',
+            }),
+            chClient.query({
+                query: `
+                        SELECT
+                            SUM(f_num_att_vals) / SUM(f_num_active_vals) AS participation_rate
+                        FROM
+                            t_epoch_metrics_summary
+                        WHERE
+                            f_epoch >= (
+                                SELECT
+                                    max(f_epoch)
+                                FROM
+                                    t_epoch_metrics_summary
+                                ) - ${Number(numberEpochs)}
+                    `,
+                format: 'JSONEachRow',
+            }),
+        ];
 
-        const entityStatsResult = await entityStatsResultSet.json();
-        const blocksProposedResult = await blocksProposedResultSet.json();
-        const entityPerformanceResult = await entityPerformanceResultSet.json();
+        if (name.includes('csm_')) {
+            queries.push(
+                chClient.query({
+                    query: `
+                            SELECT
+                                1 - SUM(count_missing_source) / SUM(number_active_vals) AS missing_source,
+                                1 - SUM(count_missing_target) / SUM(number_active_vals) AS missing_target,
+                                1 - SUM(count_missing_head) / SUM(number_active_vals) AS missing_head
+                            FROM (
+                                SELECT *
+                                FROM t_pool_summary
+                                WHERE f_pool_name LIKE 'csm_%'
+                                AND f_epoch >= (SELECT
+                                                    f_epoch - ${Number(numberEpochs)}
+                                                FROM
+                                                    t_pool_summary
+                                                ORDER BY f_epoch desc
+                                                LIMIT 1)
+                            );
+                        `,
+                    format: 'JSONEachRow',
+                }),
+            );
+            queries.push(
+                chClient.query({
+                    query: `
+                            SELECT
+                                SUM(count_attestations_included) / SUM(count_expected_attestations) AS participation_rate
+                            FROM
+                                t_pool_summary
+                            WHERE
+                                LOWER(f_pool_name)  LIKE 'csm_%'
+                                    AND
+                                f_epoch >= (
+                                    SELECT
+                                        max(f_epoch)
+                                    FROM
+                                        t_epoch_metrics_summary
+                                    ) - ${Number(numberEpochs)}
+                        `,
+                    format: 'JSONEachRow',
+                })
+            );
+        }
+
+        const results = await Promise.all(queries.map((query) => query));
+
+        const entityStatsResult = await results[0].json();
+        const blocksProposedResult = await results[1].json();
+        const entityPerformanceResult = await results[2].json();
+        const metricsOverallNetworkResult = await results[3].json();
+        const participationRateOverallResult = await results[4].json();
+        
+        let metricsCsmOperatorsResult = [];
+        let participationRateCsmResult = {} as any;
+        if (name.includes('csm_')) {
+            metricsCsmOperatorsResult = await results[5].json();
+            participationRateCsmResult = await results[6].json();
+        }
 
         let entity = null;
 
@@ -76,6 +177,10 @@ export const getEntity = async (req: Request, res: Response) => {
 
         res.json({
             entity,
+            metricsOverallNetwork: metricsOverallNetworkResult[0] || null,
+            metricsCsmOperators: metricsCsmOperatorsResult[0] || null,
+            participationRateCsm: participationRateCsmResult?.[0]?.participation_rate || null,
+            participationRateOverall: participationRateOverallResult?.[0]?.participation_rate || null,
         });
     } catch (error) {
         console.log(error);
@@ -101,7 +206,21 @@ export const getEntities = async (req: Request, res: Response) => {
                             t_validator_last_status vls
                         LEFT OUTER JOIN
                             t_eth2_pubkeys pk ON (vls.f_val_idx = pk.f_val_idx)
+                        WHERE
+                            NOT (pk.f_pool_name LIKE 'csm_%_lido')
                         GROUP BY pk.f_pool_name
+
+                        UNION ALL
+
+                        SELECT
+                            COUNT(CASE vls.f_status WHEN 1 THEN 1 ELSE null END) AS act_number_validators,
+                            'Lido CSM' AS f_pool_name
+                        FROM
+                            t_validator_last_status vls
+                        LEFT OUTER JOIN
+                            t_eth2_pubkeys pk ON (vls.f_val_idx = pk.f_val_idx)
+                        WHERE
+                            pk.f_pool_name LIKE 'csm_%_lido'
                     `,
                 format: 'JSONEachRow',
             }),

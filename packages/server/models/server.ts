@@ -11,6 +11,7 @@ import networksRoutes from '../routes/networks';
 import transactionsRoutes from '../routes/transactions';
 import entitiesListRoutes from '../routes/entitiesList'
 import slashedValidatorsRoutes from '../routes/slashedValidators';
+import csmOperatorsRoutes from '../routes/csm-operators';
 
 class Server {
 
@@ -27,6 +28,7 @@ class Server {
         transactions: '/api/transactions',
         entitiesList: '/api/entitiesList',
         slashedValidators: '/api/slashedValidators',
+        csmOperators: '/api/csm-operators',
     };
     private callsVerbose: boolean;
 
@@ -77,6 +79,7 @@ class Server {
         this.app.use(this.paths.transactions, transactionsRoutes);
         this.app.use(this.paths.entitiesList, entitiesListRoutes);
         this.app.use(this.paths.slashedValidators, slashedValidatorsRoutes);
+        this.app.use(this.paths.csmOperators, csmOperatorsRoutes);
     }
 
     listen() {

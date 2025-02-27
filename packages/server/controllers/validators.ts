@@ -7,7 +7,17 @@ export const getValidators = async (req: Request, res: Response) => {
         
         const { network, page = 0, limit = 10 } = req.query;
 
+        if (!network){
+            console.error("Network is missing")
+            return res.status(400).json({ msg: "Network parameter is required" })
+        }
+
         const chClient = clickhouseClients[network as string];
+
+        if (!chClient){
+            console.error(`No ClickHouse client found for network: ${network}`)
+            return res.status(400).json({ msg: `Invalid network: ${network}` })
+        }
 
         const skip = Number(page) * Number(limit);
 
@@ -45,15 +55,27 @@ export const getValidators = async (req: Request, res: Response) => {
         const validatorsResult = await validatorsResultSet.json();
         const countResult = await countResultSet.json();
 
+        if (!Array.isArray(countResult) || countResult.length === 0 || !countResult[0].count){
+            console.error("Count result is undefined or in an unexpected format:", countResult);
+            throw new Error("Failed to fetch the total count of validators")
+        }
+
         res.json({
             validators: validatorsResult,
             totalCount: Number(countResult[0].count),
         });
 
     } catch (error) {
-        console.log(error);
-        return res.status(500).json({
-            msg: 'An error occurred on the server'
+        console.error("Error in getValidators:", {
+            message: error.message,
+            stack: error.stack,
+            request: {
+                query: req.query,
+            },
+        });
+        res.status(500).json({
+            msg: 'An error occurred on the server',
+            error: error.message,
         });
     }
 };
@@ -68,7 +90,7 @@ export const getValidatorById = async (req: Request, res: Response) => {
 
         const chClient = clickhouseClients[network as string];
 
-        const [ validatorStatsResultSet, validatorPerformanceResultSet ] = 
+        const [ validatorStatsResultSet, validatorPerformanceResultSet, overallNetworkResultSet ] = 
             await Promise.all([
                 chClient.query({
                     query: `
@@ -132,10 +154,26 @@ export const getValidatorById = async (req: Request, res: Response) => {
                     `,
                     format: 'JSONEachRow',
                 }),
+                chClient.query({
+                    query: `
+                            SELECT
+                                1 - SUM(f_missing_source) / SUM(f_num_att_vals) AS missing_source,
+                                1 - SUM(f_missing_target) / SUM(f_num_att_vals) AS missing_target,
+                                1 - SUM(f_missing_head) / SUM(f_num_att_vals) AS missing_head
+                            FROM (
+                                SELECT *
+                                FROM t_epoch_metrics_summary
+                                ORDER BY f_epoch DESC
+                                LIMIT ${Number(numberEpochs)}
+                            );
+                    `,
+                    format: 'JSONEachRow',
+                }),
             ]);
 
         const validatorStatsResult = await validatorStatsResultSet.json();
         const validatorPerformanceResult = await validatorPerformanceResultSet.json();
+        const overallNetworkResult = await overallNetworkResultSet.json();
         
         let validator = null;
 
@@ -147,7 +185,8 @@ export const getValidatorById = async (req: Request, res: Response) => {
         }
 
         res.json({
-            validator
+            validator,
+            metricsOverallNetwork: overallNetworkResult[0],
         });
 
     } catch (error) {
@@ -271,6 +310,69 @@ export const getWithdrawalsByValidator = async (req: Request, res: Response) => 
         });
 
     } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            msg: 'An error occurred on the server'
+        });
+    }
+};
+
+export const getValidatorsByPool = async (req: Request, res: Response) => {
+    try{
+        const pool = req.params.name;
+        const { network, page = 0, limit = 10 } = req.query;
+
+        const chClient = clickhouseClients[network as string];
+
+        const skip = Number(page) * Number(limit);
+
+        const  [validatorsResultSet, countResultSet ] =
+            await Promise.all([
+                chClient.query({
+                    query: `
+                        SELECT
+                            vls.f_val_idx AS f_val_idx,
+                            vls.f_epoch AS f_epoch,
+                            vls.f_balance_eth AS f_balance_eth,
+                            pk.f_pool_name AS f_pool_name,
+                            s.f_status AS f_status
+                        FROM
+                            t_validator_last_status vls
+                        LEFT OUTER JOIN
+                            t_eth2_pubkeys pk ON vls.f_val_idx = pk.f_val_idx
+                        LEFT OUTER JOIN
+                            t_status s ON vls.f_status = s.f_id
+                        WHERE
+                            pk.f_pool_name = '${pool}'
+                        ORDER BY
+                            vls.f_val_idx
+                        LIMIT ${Number(limit)}
+                        OFFSET ${skip}
+                    `,
+                    format: 'JSONEachRow',
+                }),
+                chClient.query({
+                    query: `
+                        SELECT COUNT(*) AS count
+                        FROM
+                            t_validator_last_status vls
+                        LEFT OUTER JOIN
+                            t_eth2_pubkeys pk ON vls.f_val_idx = pk.f_val_idx
+                        WHERE
+                            pk.f_pool_name = '${pool}'
+                    `,
+                    format: 'JSONEachRow',
+                }),
+            ])
+        
+        const validators = await validatorsResultSet.json();
+        const countResult = await countResultSet.json();
+
+        res.json({
+            validators: validators,
+            totalCount: Number(countResult[0].count),
+        });
+    }catch(error){
         console.log(error);
         return res.status(500).json({
             msg: 'An error occurred on the server'

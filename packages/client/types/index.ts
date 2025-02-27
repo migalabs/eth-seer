@@ -134,6 +134,7 @@ export type Entity = {
     count_expected_attestations: number;
     proposed_blocks_performance: number;
     missed_blocks_performance: number;
+    participation_rate: number;
 };
 
 export type Range<T> = {
