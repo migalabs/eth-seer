@@ -26,6 +26,8 @@ export const getSlashedVals = async (req: Request, res: Response) => {
                             t_eth2_pubkeys pk ON f_slashed_validator_index = pk.f_val_idx
                         LEFT OUTER JOIN
                             t_eth2_pubkeys pk_by ON f_slashed_by_validator_index = pk_by.f_val_idx
+                        WHERE
+                            f_valid = true
                         ORDER BY
                             f_epoch DESC
                         LIMIT ${Number(limit)}
@@ -39,6 +41,8 @@ export const getSlashedVals = async (req: Request, res: Response) => {
                             COUNT(*) AS count
                         FROM
                             t_slashings
+                        WHERE
+                            f_valid = true
                     `,
                 format: 'JSONEachRow',
             }),
