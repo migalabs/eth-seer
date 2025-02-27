@@ -23,12 +23,12 @@ const ValidatorStatus = ({ status }: Props) => {
             setColor('var(--white)');
             setBackgroundColor('var(--missedRed)');
             setBoxShadow('var(--boxShadowRed)');
-        } else if (status === 'exit') {
+        } else if (status === 'exited') {
             setText('exited');
             setColor('var(--white)');
             setBackgroundColor('var(--exitedPurple)');
             setBoxShadow('var(--boxShadowPurple)');
-        } else if (status === 'in queue to activation') {
+        } else if (status === 'in_activation_queue') {
             setText('deposited');
             setColor('var(--white)');
             setBackgroundColor('var(--depositedBlue)');

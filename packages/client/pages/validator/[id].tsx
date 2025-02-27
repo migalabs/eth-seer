@@ -90,6 +90,7 @@ const ValidatorComponent = ({ id, network }: Props) => {
     const [metricsOverallNetworkDay, setMetricsOverallNetworkDay] = useState<Metrics | null>(null);
     const [metricsOverallNetworkWeek, setMetricsOverallNetworkWeek] = useState<Metrics | null>(null);
     const [metricsOverallNetworkMonth, setMetricsOverallNetworkMonth] = useState<Metrics | null>(null);
+    const [checkInactiveValidator, setCheckInactiveValidator] = useState(false);
 
     // UseEffect
     useEffect(() => {
@@ -158,6 +159,10 @@ const ValidatorComponent = ({ id, network }: Props) => {
                 setShowInfoBox(false);
             } else {
                 setShowInfoBox(true);
+            }
+
+            if (responseHour.data.validator?.f_status === 'exited' || responseHour.data.validator?.f_status === 'in_activation_queue') {
+                setCheckInactiveValidator(true);
             }
 
         } catch (error) {
@@ -254,6 +259,7 @@ const ValidatorComponent = ({ id, network }: Props) => {
                 </div>
             </div>
 
+            {!checkInactiveValidator &&
             <div className='flex flex-col 3xs:flex-row 3xs:gap-2 md:gap-4 3xs:justify-center sm:justify-start'>
                 <TabHeader
                     header='1 Hour'
@@ -283,8 +289,9 @@ const ValidatorComponent = ({ id, network }: Props) => {
                         setTabPageIndexValidatorPerformance(3);
                     }}
                 />
-            </div>
+            </div>}
 
+            {!checkInactiveValidator &&
             <div
                 className='2xl:flex items-center p-6 justify-center mx-auto rounded-md border-2 border-white text-[var(--black)] dark:text-[var(--white)] bg-[var(--bgMainLightMode)] dark:bg-[var(--bgFairDarkMode)] w-full'
                 style={{
@@ -298,7 +305,7 @@ const ValidatorComponent = ({ id, network }: Props) => {
                         {tabPageIndexValidatorPerformance === 2 && getValidatorPerformance(validatorWeek as Validator, metricsOverallNetworkWeek as Metrics)}
                         {tabPageIndexValidatorPerformance === 3 && getValidatorPerformance(validatorMonth as Validator, metricsOverallNetworkMonth as Metrics)}
                 </div>
-            </div>
+            </div>}
         </>
     );
 

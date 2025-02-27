@@ -39,23 +39,32 @@ export const getEntity = async (req: Request, res: Response) => {
             chClient.query({
                 query: `
                         SELECT
-                            SUM(toInt64(aggregated_rewards)) AS aggregated_rewards,
-                            SUM(aggregated_max_rewards) AS aggregated_max_rewards,
-                            SUM(count_sync_committee) AS count_sync_committee,
-                            SUM(count_missing_source) AS count_missing_source,
-                            SUM(count_missing_target) AS count_missing_target,
-                            SUM(count_missing_head) AS count_missing_head,
-                            SUM(count_expected_attestations) AS count_expected_attestations,
-                            SUM(proposed_blocks_performance) AS proposed_blocks_performance,
-                            SUM(missed_blocks_performance) AS missed_blocks_performance,
-                            SUM(number_active_vals) AS number_active_vals
-                        FROM (
-                            SELECT *
-                            FROM t_pool_summary
-                            WHERE LOWER(f_pool_name) = '${name.toLowerCase()}'
-                            ORDER BY f_epoch DESC
-                            LIMIT ${Number(numberEpochs)}
-                        ) AS subquery;
+                            *,
+                            count_attestations_included / count_expected_attestations AS participation_rate
+                        FROM
+                        (
+                            SELECT
+                                SUM(toInt64(aggregated_rewards)) AS aggregated_rewards,
+                                SUM(aggregated_max_rewards) AS aggregated_max_rewards,
+                                SUM(count_sync_committee) AS count_sync_committee,
+                                SUM(count_missing_source) AS count_missing_source,
+                                SUM(count_missing_target) AS count_missing_target,
+                                SUM(count_missing_head) AS count_missing_head,
+                                SUM(count_expected_attestations) AS count_expected_attestations,
+                                SUM(proposed_blocks_performance) AS proposed_blocks_performance,
+                                SUM(missed_blocks_performance) AS missed_blocks_performance,
+                                SUM(number_active_vals) AS number_active_vals,
+                                SUM(count_attestations_included) AS count_attestations_included
+                            FROM
+                                t_pool_summary
+                            WHERE
+                                LOWER(f_pool_name) = '${name.toLowerCase()}'
+                                AND f_epoch >= (
+                                    SELECT max(f_epoch)
+                                    FROM t_epoch_metrics_summary
+                                ) - ${Number(numberEpochs)}
+                        )
+
                     `,
                 format: 'JSONEachRow',
             }),
@@ -68,27 +77,13 @@ export const getEntity = async (req: Request, res: Response) => {
                         FROM (
                             SELECT *
                             FROM t_epoch_metrics_summary
-                            ORDER BY f_epoch DESC
-                            LIMIT ${Number(numberEpochs)}
+                            WHERE f_epoch >= (
+                                        SELECT
+                                            max(f_epoch)
+                                        FROM
+                                            t_epoch_metrics_summary
+                                        ) - ${Number(numberEpochs)}
                         );
-                    `,
-                format: 'JSONEachRow',
-            }),
-            chClient.query({
-                query: `
-                        SELECT
-                            SUM(count_attestations_included) / SUM(count_expected_attestations) AS participation_rate
-                        FROM
-                            t_pool_summary
-                        WHERE
-                            LOWER(f_pool_name) = '${name.toLowerCase()}'
-                                AND
-                            f_epoch >= (
-                                SELECT
-                                    max(f_epoch)
-                                FROM
-                                    t_epoch_metrics_summary
-                                ) - ${Number(numberEpochs)}
                     `,
                 format: 'JSONEachRow',
             }),
@@ -161,14 +156,13 @@ export const getEntity = async (req: Request, res: Response) => {
         const blocksProposedResult = await results[1].json();
         const entityPerformanceResult = await results[2].json();
         const metricsOverallNetworkResult = await results[3].json();
-        const participationRateResult = await results[4].json();
-        const participationRateOverallResult = await results[5].json();
+        const participationRateOverallResult = await results[4].json();
         
         let metricsCsmOperatorsResult = [];
         let participationRateCsmResult = {} as any;
         if (name.includes('csm_')) {
-            metricsCsmOperatorsResult = await results[6].json();
-            participationRateCsmResult = await results[7].json();
+            metricsCsmOperatorsResult = await results[5].json();
+            participationRateCsmResult = await results[6].json();
         }
 
         let entity = null;
@@ -185,7 +179,6 @@ export const getEntity = async (req: Request, res: Response) => {
             entity,
             metricsOverallNetwork: metricsOverallNetworkResult[0] || null,
             metricsCsmOperators: metricsCsmOperatorsResult[0] || null,
-            participationRate: participationRateResult?.[0]?.participation_rate || null,
             participationRateCsm: participationRateCsmResult?.[0]?.participation_rate || null,
             participationRateOverall: participationRateOverallResult?.[0]?.participation_rate || null,
         });
