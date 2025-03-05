@@ -20,6 +20,8 @@ import ShareMenu from '../components/ui/ShareMenu';
 import CardContent from '../components/ui/CardContent';
 import ThemeModeContext from '../contexts/theme-mode/ThemeModeContext';
 
+import BarChartComponent from '../components/ui/BarChart';
+
 type Operator = {
     f_pool_name: string;
     aggregate_balance: number;
@@ -32,6 +34,16 @@ type Operator = {
     f_missed: number;
     aggregated_rewards: number;
     aggregated_max_rewards: number;
+};
+
+type Metrics = {
+    missing_source: number;
+    missing_target: number;
+    missing_head: number;
+    count_active_vals: number;
+    count_missing_source: number;
+    count_missing_target: number;
+    count_missing_head: number;
 };
 
 const LidoCSM = () => {
@@ -50,6 +62,10 @@ const LidoCSM = () => {
     const [numRowsQuery, setNumRowsQuery] = useState(10);
     const [showInfoBox, setShowInfoBox] = useState(false);
     const [displayedOperators, setDisplayedOperators] = useState<Operator[]>([]);
+    const [lidoParticipationRate, setLidoParticipationRate] = useState(0);
+    const [overallNetParticipationRate, setOverallNetParticipationRate] = useState(0);
+    const [lidoMetrics, setLidoMetrics] = useState<Metrics | null>(null);
+    const [overallNetMetrics, setOverallNetMetrics] = useState<Metrics | null>(null);
 
     const { themeMode } = useContext(ThemeModeContext) ?? {};
 
@@ -119,6 +135,10 @@ const LidoCSM = () => {
             setOperatorsValidator(response.data.operatorsValidator);
             setOperatorsBlock(response.data.operatorsBlock);
             setOperatorsCount(response.data.totalCount);
+            setLidoParticipationRate(response.data.lidoParticipationRate);
+            setOverallNetParticipationRate(response.data.overallNetParticipationRate);
+            setLidoMetrics(response.data.lidoMetrics);
+            setOverallNetMetrics(response.data.overallNetMetrics);
 
             setShowInfoBox(true);
 
@@ -203,6 +223,153 @@ const LidoCSM = () => {
         </SmallTable>
     );
 
+    const getCorrectnessComparisonMobile = () => {
+        return (
+            <div className='lg:flex-row gap-y-2 md:gap-y-0 md:mb-0 mt-6'>
+                <p className='text-[18px] 3xs:w-[240px] my-auto text-[var(--black)] dark:text-[var(--white)] mx-auto'>
+                    Correctness Comparison:
+                </p>
+                <div className="3xs:h-[200px] lg:h-[300px] 3xs:w-[250px] 3xs:mx-auto text-[12px]" >
+                    <BarChartComponent
+                        data={[
+                            {name: 'Source', 'CSM': lidoMetrics?.missing_source, 'Overall Network': overallNetMetrics?.missing_source},
+                        ]}
+                        legend={false}
+                    ></BarChartComponent>
+                </div>
+                <div className="3xs:h-[200px] lg:h-[300px] 3xs:w-[250px] 3xs:mx-auto" >
+                    <BarChartComponent
+                        data={[
+                            {name: 'Target', 'CSM': lidoMetrics?.missing_target, 'Overall Network': overallNetMetrics?.missing_target},
+                        ]}
+                        legend={false}
+                    ></BarChartComponent>
+                </div>
+                <div className="3xs:h-[230px] lg:h-[300px] 3xs:w-[250px] 3xs:mx-auto" >
+                    <BarChartComponent
+                        data={[
+                            {name: 'Head', 'CSM': lidoMetrics?.missing_head, 'Overall Network': overallNetMetrics?.missing_head},
+                        ]}
+                        legend={true}
+                    ></BarChartComponent>
+                </div>
+            </div>
+        )
+    }
+
+    const getCorrectnessComparisonLargeView = () => {
+        return (
+            <div className='lg:flex-row gap-y-2 md:gap-y-0 md:mb-0 mt-6'>
+                <p className='text-[18px] md:w-[240px] my-auto text-[var(--black)] dark:text-[var(--white)] mx-auto'>
+                    Correctness Comparison:
+                </p>
+                <div className="3xs:h-[200px] xs:h-[300px] lg:w-[850px] xl:w-[1100px] 3xs:w-[355px] 2xs:w-[415px] xs:w-[520px] xl:mx-auto 3xs:ml-[-54px] md:ml-[-40px]" >
+                    <BarChartComponent
+                        data={[
+                            {name: 'Source', 'CSM': lidoMetrics?.missing_source, 'Overall Network': overallNetMetrics?.missing_source},
+                            {name: 'Target', 'CSM': lidoMetrics?.missing_target, 'Overall Network': overallNetMetrics?.missing_target},
+                            {name: 'Head', 'CSM': lidoMetrics?.missing_head, 'Overall Network': overallNetMetrics?.missing_head},
+                        ]}
+                    ></BarChartComponent>
+                </div>
+            </div>
+        );
+    }
+
+    const getParticipationRateComparison = () => (
+        <div className='lg:flex-row gap-y-2 md:gap-y-0 md:mb-0 mt-6'>
+            <p className='text-[18px] 3xs:w-[290px] my-auto text-[var(--black)] dark:text-[var(--white)] mx-auto'>
+                Participation Rate Comparison:
+            </p>
+            <div className="3xs:h-[220px] lg:h-[300px] 3xs:w-[250px] lg:w-[400px] 3xs:mx-auto xl:mx-auto lg:ml-[-25px]" >
+                <BarChartComponent
+                    data={[
+                        {name: '', 'CSM': lidoParticipationRate, 'Overall Network': overallNetParticipationRate},
+                    ]}
+                ></BarChartComponent>
+            </div>
+        </div>
+    );
+
+    const getLidoCSMStats = () => (
+        <div className='flex flex-col gap-y-4 mx-auto w-11/12 md:w-10/12 mb-6'>
+            <div className='flex justify-end'>
+                <ShareMenu type='entity' />
+            </div>
+
+            <div
+                className='p-6 md:px-20 md:py-10 rounded-md gap-x-5 border-2 border-white text-[var(--darkGray)] dark:text-[var(--white)] bg-[var(--bgMainLightMode)] dark:bg-[var(--bgFairDarkMode)]'
+                style={{
+                    boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
+                }}
+            >
+                <div className='flex flex-col gap-y-8 text-[14px] md:text-[16px] font-medium mx-auto md:mx-0 text-[var(--darkGray)] dark:text-[var(--white)]'>
+                    <div className='flex 3xs:flex-row items-center 3xs:justify-between md:justify-start'>
+                        <p className='md:w-60 mb-2 my-auto text-[var(--black)] dark:text-[var(--white)] 3xs:my-auto'>
+                            Aggregate Balance:
+                        </p>
+                        <p className='text-[var(--black)] dark:text-[var(--white)] 3xs:w-[125px] md:w-[150px]'>
+                            {totalBalance?.toLocaleString()} ETH
+                        </p>
+                    </div>
+
+                    {/* Blocks */}
+                    <div className='flex flex-col lg:flex-row gap-y-1'>
+                        <p className='w-44 sm:w-60 my-auto text-[var(--black)] dark:text-[var(--white)]'>Blocks:</p>
+                        <div className='flex flex-col 3xs:flex-row items-center 3xs:gap-x-4 md:gap-x-4 gap-y-2 justify-center'>
+                            <CardContent
+                                content={`Proposed: ${totalProposed?.toLocaleString()}`}
+                                bg='var(--proposedGreen)'
+                                color='var(--white)'
+                                boxShadow='var(--boxShadowGreen)'
+                            />
+                            <CardContent
+                                content={`Missed: ${totalMissed?.toLocaleString()}`}
+                                bg='var(--missedRed)'
+                                color='var(--white)'
+                                boxShadow='var(--boxShadowRed)'
+                            />
+                        </div>
+                    </div>
+                    {/* Number of validators*/}
+                    <div className='flex flex-col lg:flex-row gap-y-1 xs:gap-y-5'>
+                        <p className='w-44 sm:w-60 my-auto text-[var(--black)] dark:text-[var(--white)]'>
+                            Number of Validators:
+                        </p>
+                        <div className='flex flex-col flex-wrap 3xs:flex-row items-center gap-x-4 gap-y-2 justify-center'>
+                            <CardContent
+                                content={`Deposited: ${totalDeposited?.toLocaleString()}`}
+                                bg='var(--depositedBlue)'
+                                color='var(--white)'
+                                boxShadow='var(--boxShadowBlue)'
+                            />
+                            <CardContent
+                                content={`Active: ${totalActive?.toLocaleString()}`}
+                                bg='var(--proposedGreen)'
+                                color='var(--white)'
+                                boxShadow='var(--boxShadowGreen)'
+                            />
+                            <CardContent
+                                content={`Slashed: ${totalSlashed?.toLocaleString()}`}
+                                bg='var(--missedRed)'
+                                color='var(--white)'
+                                boxShadow='var(--boxShadowRed)'
+                            />
+                            <CardContent
+                                content={`Exited: ${totalExited?.toLocaleString()}`}
+                                bg='var(--exitedPurple)'
+                                color='var(--white)'
+                                boxShadow='var(--boxShadowPurple)'
+                            />
+                        </div>
+                    </div>
+                </div>
+                {isLargeView ? getCorrectnessComparisonLargeView() : getCorrectnessComparisonMobile()}
+                {getParticipationRateComparison()}
+            </div>
+        </div>
+    );
+
     return (
         <Layout
             title='Lido CSM - EthSeer.io'
@@ -212,81 +379,7 @@ const LidoCSM = () => {
 
             <Title>Lido CSM</Title>
 
-            {showInfoBox &&
-            <div className='flex flex-col gap-y-4 mx-auto w-11/12 md:w-10/12 mb-6'>
-                <div className='flex justify-end'>
-                    <ShareMenu type='entity' />
-                </div>
-
-                <div
-                    className='flex p-6 md:px-20 md:py-10 rounded-md gap-x-5 border-2 border-white text-[var(--darkGray)] dark:text-[var(--white)] bg-[var(--bgMainLightMode)] dark:bg-[var(--bgFairDarkMode)]'
-                    style={{
-                        boxShadow: themeMode?.darkMode ? 'var(--boxShadowCardDark)' : 'var(--boxShadowCardLight)',
-                    }}
-                >
-                    <div className='flex flex-col gap-y-8 text-[14px] md:text-[16px] font-medium mx-auto md:mx-0 text-[var(--darkGray)] dark:text-[var(--white)]'>
-                        <div className='flex 3xs:flex-row items-center 3xs:justify-between md:justify-start'>
-                            <p className='md:w-60 mb-2 my-auto text-[var(--black)] dark:text-[var(--white)] 3xs:my-auto'>
-                                Aggregate Balance:
-                            </p>
-                            <p className='text-[var(--black)] dark:text-[var(--white)] 3xs:w-[125px] md:w-[150px]'>
-                                {totalBalance?.toLocaleString()} ETH
-                            </p>
-                        </div>
-
-                        {/* Blocks */}
-                        <div className='flex flex-col lg:flex-row gap-y-1'>
-                            <p className='w-44 sm:w-60 my-auto text-[var(--black)] dark:text-[var(--white)]'>Blocks:</p>
-                            <div className='flex flex-col 3xs:flex-row items-center 3xs:gap-x-4 md:gap-x-4 gap-y-2 justify-center'>
-                                <CardContent
-                                    content={`Proposed: ${totalProposed?.toLocaleString()}`}
-                                    bg='var(--proposedGreen)'
-                                    color='var(--white)'
-                                    boxShadow='var(--boxShadowGreen)'
-                                />
-                                <CardContent
-                                    content={`Missed: ${totalMissed?.toLocaleString()}`}
-                                    bg='var(--missedRed)'
-                                    color='var(--white)'
-                                    boxShadow='var(--boxShadowRed)'
-                                />
-                            </div>
-                        </div>
-                        {/* Number of validators*/}
-                        <div className='flex flex-col lg:flex-row gap-y-1 xs:gap-y-5'>
-                            <p className='w-44 sm:w-60 my-auto text-[var(--black)] dark:text-[var(--white)]'>
-                                Number of Validators:
-                            </p>
-                            <div className='flex flex-col flex-wrap 3xs:flex-row items-center gap-x-4 gap-y-2 justify-center'>
-                                <CardContent
-                                    content={`Deposited: ${totalDeposited?.toLocaleString()}`}
-                                    bg='var(--depositedBlue)'
-                                    color='var(--white)'
-                                    boxShadow='var(--boxShadowBlue)'
-                                />
-                                <CardContent
-                                    content={`Active: ${totalActive?.toLocaleString()}`}
-                                    bg='var(--proposedGreen)'
-                                    color='var(--white)'
-                                    boxShadow='var(--boxShadowGreen)'
-                                />
-                                <CardContent
-                                    content={`Slashed: ${totalSlashed?.toLocaleString()}`}
-                                    bg='var(--missedRed)'
-                                    color='var(--white)'
-                                    boxShadow='var(--boxShadowRed)'
-                                />
-                                <CardContent
-                                    content={`Exited: ${totalExited?.toLocaleString()}`}
-                                    bg='var(--exitedPurple)'
-                                    color='var(--white)'
-                                    boxShadow='var(--boxShadowPurple)'
-                                />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>}
+            {showInfoBox && getLidoCSMStats()}
 
             {operatorsCount > 0 && (
                 <>
