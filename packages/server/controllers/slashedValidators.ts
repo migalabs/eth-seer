@@ -62,3 +62,42 @@ export const getSlashedVals = async (req: Request, res: Response) => {
         });
     }
 };
+
+export const getSlashedValsById = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+        const { network } = req.query;
+
+        const clickhouseClient = clickhouseClients[network as string];
+
+        const [slashedValidatorResultSet] = await Promise.all([
+            clickhouseClient.query({
+                query: `
+                        SELECT
+                            f_slashed_validator_index,
+                            f_slashing_reason,
+                            f_slot,
+                            f_epoch,
+                        FROM
+                            t_slashings
+                        WHERE
+                            f_slashed_by_validator_index = ${id}
+                        ORDER BY
+                            f_epoch DESC
+                    `,
+                format: 'JSONEachRow',
+            })
+        ]);
+
+        const slashedValidatorResult: any[] = await slashedValidatorResultSet.json();
+
+        res.json({
+            slashedValidatorResult,
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            msg: 'An error occurred on the server',
+        });
+    }
+};

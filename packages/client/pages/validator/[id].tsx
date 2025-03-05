@@ -30,7 +30,12 @@ import ShareMenu from '../../components/ui/ShareMenu';
 import BarChartComponent from '../../components/ui/BarChart';
 
 // Types
-import { Validator, Slot, Withdrawal } from '../../types';
+import { Validator, Slot, Withdrawal, SlashedVal } from '../../types';
+import LinkValidator from '../../components/ui/LinkValidator';
+import { getShortAddress } from '../../helpers/addressHelper';
+import { getTimeAgo } from '../../helpers/timeHelper';
+import TooltipContainer from '../../components/ui/TooltipContainer';
+import TooltipResponsive from '../../components/ui/TooltipResponsive';
 
 // Props
 interface Props {
@@ -79,12 +84,14 @@ const ValidatorComponent = ({ id, network }: Props) => {
     const [validatorMonth, setValidatorMonth] = useState<Validator | null>(null);
     const [proposedBlocks, setProposedBlocks] = useState<Slot[]>([]);
     const [withdrawals, setWithdrawals] = useState<Withdrawal[]>([]);
+    const [slashedVals, setSlashedValidator] = useState<SlashedVal[]>([]);
     const [showInfoBox, setShowInfoBox] = useState(false);
     const [tabPageIndex, setTabPageIndex] = useState(0);
     const [tabPageIndexValidatorPerformance, setTabPageIndexValidatorPerformance] = useState(0);
     const [loadingValidator, setLoadingValidator] = useState(true);
     const [loadingProposedBlocks, setLoadingProposedBlocks] = useState(true);
     const [loadingWithdrawals, setLoadingWithdrawals] = useState(true);
+    const [loadingSlashedValidator, setLoadingSlashedValidator] = useState(true);
     const [blockGenesis, setBlockGenesis] = useState(0);
     const [metricsOverallNetworkHour, setMetricsOverallNetworkHour] = useState<Metrics | null>(null);
     const [metricsOverallNetworkDay, setMetricsOverallNetworkDay] = useState<Metrics | null>(null);
@@ -99,6 +106,7 @@ const ValidatorComponent = ({ id, network }: Props) => {
             getValidator();
             getProposedBlocks();
             getWithdrawals();
+            getSlashedValidatorById();
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -206,6 +214,24 @@ const ValidatorComponent = ({ id, network }: Props) => {
             console.log(error);
         } finally {
             setLoadingWithdrawals(false);
+        }
+    };
+
+    const getSlashedValidatorById = async () => {
+        try {
+            setLoadingSlashedValidator(true);
+
+            const response = await axiosClient.get(`/api/slashedValidators/${id}`, {
+                params: {
+                    network,
+                },
+            });
+
+            setSlashedValidator(response.data.slashedValidatorResult);
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setLoadingSlashedValidator(false);
         }
     };
 
@@ -338,6 +364,16 @@ const ValidatorComponent = ({ id, network }: Props) => {
                     );
                 } else {
                     return isLargeView ? getWithdrawalsLargeView() : getWithdrawalsSmallView();
+                }
+            case 2:
+                if (loadingSlashedValidator) {
+                    return (
+                        <div className='mt-6'>
+                            <Loader />
+                        </div>
+                    );
+                } else {
+                    return isLargeView ? getSlashedValidatorsLargeView() : getSlashedValidatorSmallView();
                 }
         }
     };
@@ -552,6 +588,107 @@ const ValidatorComponent = ({ id, network }: Props) => {
         </SmallTable>
     );
 
+    const getSlashedValidatorsLargeView = () => (
+        <LargeTable minWidth={700} fullWidth noRowsText='No Slashed Validators' fetchingRows={loadingSlashedValidator}>
+            <LargeTableHeader text='Slashed Validator' />
+            <LargeTableHeader text='Time' />
+            <LargeTableHeader text='Reason' />
+            <LargeTableHeader text='Slot' />
+            <LargeTableHeader text='Epoch' />
+
+            {slashedVals.map((slashedVal, idx) => (
+                <LargeTableRow key={idx}>
+                    <div className="w-[20%]  flex justify-center items-center ">
+                        <LinkValidator validator={slashedVal.f_slashed_validator_index} />
+                    </div>
+                    
+                    <div className='w-[20%]'>
+                        <TooltipContainer>
+                            <div>
+                                <p>{getTimeAgo(blockGenesis + slashedVal.f_slot * 12000)}</p>
+                            </div>
+                            <TooltipResponsive
+                            width={120}
+                            content={
+                                <>
+                                    <p>{new Date(blockGenesis + slashedVal.f_slot * 12000).toLocaleDateString('ja-JP')}</p>
+                                    <p>{new Date(blockGenesis + slashedVal.f_slot * 12000).toLocaleTimeString('ja-JP')}</p>
+                                </>
+                            }
+                            top='34px'
+                            />
+                        </TooltipContainer>
+                    </div>
+
+                    <p className='w-[20%]'>
+                        {slashedVal.f_slashing_reason.split(/(?=[A-Z])/).join(" ")}
+                    </p>
+
+                    <div className='w-[20%]'>
+                        <LinkSlot slot={slashedVal.f_slot} mxAuto />
+                    </div>
+                    
+                    <div className='w-[20%]'>
+                        <LinkEpoch epoch={slashedVal.f_epoch} mxAuto />
+                    </div>
+                </LargeTableRow>
+            ))}
+        </LargeTable>
+    );
+
+    // Slashed Validators Small View
+    const getSlashedValidatorSmallView = () => (
+        <SmallTable fullWidth noRowsText='No Slashed Validators' fetchingRows={loadingSlashedValidator}>
+            {slashedVals.map((slashedVal, idx) => (
+                <SmallTableCard key={idx}>
+
+                    <div className='flex w-full items-center justify-between'>
+                        <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Slashed Validator:</p>
+                        <div className=' md:hover:underline underline-offset-4 decoration-2 text-[var(--darkPurple)] dark:text-[var(--purple)]'>
+                            <LinkValidator validator={slashedVal.f_slashed_validator_index} mxAuto />
+                        </div>
+                    </div>
+
+                    <div className='flex w-full items-center justify-between'>
+                        <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Time:</p>
+                        <div className='flex flex-col text-end'>
+                            <TooltipContainer>
+                                <div>
+                                    <p>{getTimeAgo(blockGenesis + slashedVal.f_slot * 12000)}</p>
+                                </div>
+                                <TooltipResponsive
+                                width={120}
+                                content={
+                                    <>
+                                        <p>{new Date(blockGenesis + slashedVal.f_slot * 12000).toLocaleDateString('ja-JP')}</p>
+                                        <p>{new Date(blockGenesis + slashedVal.f_slot * 12000).toLocaleTimeString('ja-JP')}</p>
+                                    </>
+                                }
+                                top='34px'
+                                />
+                            </TooltipContainer>
+                        </div>
+                    </div>
+
+                    <div className='flex w-full items-center justify-between'>
+                        <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Reason:</p>
+                        <p>{slashedVal.f_slashing_reason.split(/(?=[A-Z])/).join(" ")}</p>
+                    </div>
+
+                    <div className='flex w-full items-center justify-between'>
+                        <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Slot:</p>
+                        <LinkSlot slot={slashedVal.f_slot} />
+                    </div>
+
+                    <div className='flex w-full items-center justify-between'>
+                        <p className='font-semibold text-[var(--darkGray)] dark:text-[var(--white)]'>Epoch:</p>
+                        <LinkEpoch epoch={slashedVal.f_epoch} />
+                    </div>
+                </SmallTableCard>
+            ))}
+        </SmallTable>
+    );
+
     //OVERVIEW PAGE
     //Overview validator page
     return (
@@ -585,6 +722,11 @@ const ValidatorComponent = ({ id, network }: Props) => {
                             header='Withdrawals'
                             isSelected={tabPageIndex === 1}
                             onClick={() => setTabPageIndex(1)}
+                        />
+                        <TabHeader
+                            header='Slashings'
+                            isSelected={tabPageIndex === 2}
+                            onClick={() => setTabPageIndex(2)}
                         />
                     </div>
 
