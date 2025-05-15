@@ -92,7 +92,9 @@ const ChainOverview = () => {
             </div>
 
             <div className='flex flex-col gap-y-4'>
-                {network === 'mainnet' && (
+                {
+                /* Disabled for now because blockprint is failing */
+                /* {network === 'mainnet' && (
                     <div className='flex justify-center md:justify-start pl-2'>
                         <Toggle
                             value={showClient}
@@ -102,7 +104,7 @@ const ChainOverview = () => {
                         />
                     </div>
                 )}
-
+ */}
                 <div className='flex justify-center space-x-4 md:space-x-5'>
                     {blocks &&
                         blocks.epochs &&

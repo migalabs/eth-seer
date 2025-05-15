@@ -232,7 +232,8 @@ const Slot = ({ id, network }: Props) => {
                     <Card title='Proposer' content={<LinkValidator validator={block?.f_proposer_index} />} />
                 )}
 
-                {existsBlock && network === 'mainnet' && <Card title='Client' text={block?.f_cl_client || '---'} />}
+                {/* Disabled for now because blockprint is failing */}
+                {/* {existsBlock && network === 'mainnet' && <Card title='Client' text={block?.f_cl_client || '---'} />} */}
 
                 {existsBlock && (
                     <Card
