@@ -47,7 +47,7 @@ const BarChartComponent: React.FC<Props> = ({ data, width, height, legend = true
                 />
                 <XAxis
                     dataKey='name' 
-                    style={themeMode?.darkMode ? { fill: 'var(--white)' } : { fill: 'var(--black)' }}
+                    style={themeMode?.darkMode ? { fill: 'var(--white)', fontSize: '10px' } : { fill: 'var(--black)', fontSize: '15px' }}
                 />
                 <YAxis
                     tickFormatter={(value) => `${(value * 100).toFixed(0)}%`}
