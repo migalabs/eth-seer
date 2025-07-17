@@ -1,17 +1,17 @@
-import { Request, Response } from 'express';
-import { clickhouseClients } from '../config/db';
+import { Request, Response } from "express";
+import { clickhouseClients } from "../config/db";
 
 export const getSlashedVals = async (req: Request, res: Response) => {
-    try {
-        const { network, page = 0, limit = 10 } = req.query;
+  try {
+    const { network, page = 0, limit = 10 } = req.query;
 
-        const chClient = clickhouseClients[network as string];
+    const chClient = clickhouseClients[network as string];
 
-        const skip = Number(page) * Number(limit);
+    const offset = Number(page) * Number(limit);
 
-        const [slashedValidatorResultSet, countResultSet] = await Promise.all([
-            chClient.query({
-                query: `
+    const [slashedValidatorResultSet, countResultSet] = await Promise.all([
+      chClient.query({
+        query: `
                         SELECT
                             sl.f_slashed_validator_index AS f_slashed_validator_index,
                             sl.f_slashed_by_validator_index AS f_slashed_by_validator_index,
@@ -30,13 +30,14 @@ export const getSlashedVals = async (req: Request, res: Response) => {
                             f_valid = true
                         ORDER BY
                             f_epoch DESC
-                        LIMIT ${Number(limit)}
-                        OFFSET ${skip}
+                        LIMIT {limit: Int64}
+                        OFFSET {offset: Int64}
                     `,
-                format: 'JSONEachRow',
-            }),
-            chClient.query({
-                query: `
+        query_params: { limit: Number(limit), offset },
+        format: "JSONEachRow",
+      }),
+      chClient.query({
+        query: `
                         SELECT
                             COUNT(*) AS count
                         FROM
@@ -44,21 +45,22 @@ export const getSlashedVals = async (req: Request, res: Response) => {
                         WHERE
                             f_valid = true
                     `,
-                format: 'JSONEachRow',
-            }),
-        ]);
+        format: "JSONEachRow",
+      }),
+    ]);
 
-        const slashedValidatorResult: any[] = await slashedValidatorResultSet.json();
-        const countResult: any[] = await countResultSet.json();
+    const slashedValidatorResult: any[] =
+      await slashedValidatorResultSet.json();
+    const countResult: any[] = await countResultSet.json();
 
-        res.json({
-            slashedValidator: slashedValidatorResult,
-            totalCount: Number(countResult[0].count),
-        });
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json({
-            msg: 'An error occurred on the server',
-        });
-    }
+    res.json({
+      slashedValidator: slashedValidatorResult,
+      totalCount: Number(countResult[0].count),
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      msg: "An error occurred on the server",
+    });
+  }
 };
