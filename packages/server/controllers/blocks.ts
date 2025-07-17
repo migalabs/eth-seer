@@ -34,10 +34,10 @@ export const getBlocks = async (req: Request, res: Response) => {
       }),
       chClient.query({
         query: `
-                        SELECT COUNT(*) AS count
-                        FROM t_block_metrics
-                        WHERE f_el_block_number <> 0
-                    `,
+              SELECT COUNT(*) AS count
+              FROM t_block_metrics
+              WHERE f_el_block_number <> 0
+          `,
         format: "JSONEachRow",
       }),
     ]);
