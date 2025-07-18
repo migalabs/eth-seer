@@ -23,6 +23,7 @@ export const getSlots = async (req: Request, res: Response) => {
         const offset = Number(page) * Number(limit);
 
         const where: string[] = [];
+        const params: Record<string, any> = {};
 
         if (status && typeof status === "string") {
             if (status.toLowerCase() === "proposed") {
@@ -35,58 +36,59 @@ export const getSlots = async (req: Request, res: Response) => {
         }
 
         if (epoch) {
-            where.push(`(pd.f_proposer_slot >= ${Number(epoch) * 32}) AND
-                        (pd.f_proposer_slot < ${(Number(epoch) + 1) * 32})`);
+            where.push(`(pd.f_proposer_slot >= {epoch: Int64}) AND
+                        (pd.f_proposer_slot < {epoch1: Int64})`);
+            params.epoch = Number(epoch) * 32;
+            params.epoch1 = (Number(epoch) + 1) * 32;
         }
 
         if (lowerEpoch) {
-            where.push(`(pd.f_proposer_slot >= ${Number(lowerEpoch) * 32})`);
+            where.push(`(pd.f_proposer_slot >= {lowerEpoch: Int64})`);
+            params.lowerEpoch = Number(lowerEpoch) * 32;
         }
 
         if (upperEpoch) {
-            where.push(
-                `(pd.f_proposer_slot < ${(Number(upperEpoch) + 1) * 32})`
-            );
+            where.push(`(pd.f_proposer_slot < {upperEpoch: Int64})`);
+            params.upperEpoch = (Number(upperEpoch) + 1) * 32;
         }
 
         if (validator) {
-            where.push(`(pd.f_val_idx = ${Number(validator)})`);
+            where.push(`(pd.f_val_idx = {validator: Int64})`);
+            params.validator = Number(validator);
         }
 
         if (lowerDate) {
             const minTime = new Date(lowerDate as string).getTime();
             where.push(
-                `((g.f_genesis_time + pd.f_proposer_slot * 12) * 1000 >= ${minTime})`
+                `((g.f_genesis_time + pd.f_proposer_slot * 12) * 1000 >= {minTime: Int64})`
             );
+            params.minTime = minTime;
         }
 
         if (upperDate) {
             const maxTime = new Date(upperDate as string).getTime();
             where.push(
-                `((g.f_genesis_time + pd.f_proposer_slot * 12) * 1000 < ${maxTime})`
+                `((g.f_genesis_time + pd.f_proposer_slot * 12) * 1000 < {maxTime: Int64})`
             );
+            params.maxTime = maxTime;
         }
 
         if (entities && Array.isArray(entities) && entities.length > 0) {
             const entitiesArray = entities
-                .map((x) =>
-                    typeof x === "string" ? `'${x.toLowerCase()}'` : ""
-                )
+                .map((x) => (typeof x === "string" ? x.toLowerCase() : ""))
                 .filter((x) => x !== "");
-            where.push(`(pk.f_pool_name IN (${entitiesArray.join(",")}))`);
+            where.push(`(pk.f_pool_name IN ({entities:Array(String)}))`);
+            params.entities = entitiesArray;
         }
 
         if (clients && Array.isArray(clients) && clients.length > 0) {
             const clientsArray = clients
-                .map((x) =>
-                    typeof x === "string" ? `'${x.toLowerCase()}'` : ""
-                )
+                .map((x) => (typeof x === "string" ? x.toLowerCase() : ""))
                 .filter((x) => x !== "");
             where.push(
-                `(LOWER(scg.f_best_guess_single) IN (${clientsArray.join(
-                    ","
-                )}))`
+                `(LOWER(scg.f_best_guess_single) IN ({clients:Array(String)}))`
             );
+            params.clients = clientsArray;
         }
 
         const [slotsResultSet, countResultSet] = await Promise.all([
@@ -129,7 +131,7 @@ export const getSlots = async (req: Request, res: Response) => {
                         LIMIT {limit: Int64}
                         OFFSET {offset: Int64}
                     `,
-                query_params: { limit: Number(limit), offset },
+                query_params: { limit: Number(limit), offset, ...params },
                 format: "JSONEachRow",
             }),
             chClient.query({
@@ -152,6 +154,7 @@ export const getSlots = async (req: Request, res: Response) => {
                                 : ""
                         }
                     `,
+                query_params: { ...params },
                 format: "JSONEachRow",
             }),
         ]);
