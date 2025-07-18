@@ -1,5 +1,5 @@
-import { Request, Response } from 'express';
-import { clickhouseClients } from '../config/db';
+import { Request, Response } from "express";
+import { clickhouseClients } from "../config/db";
 
 export const getSlots = async (req: Request, res: Response) => {
     try {
@@ -20,17 +20,17 @@ export const getSlots = async (req: Request, res: Response) => {
 
         const chClient = clickhouseClients[network as string];
 
-        const skip = Number(page) * Number(limit);
+        const offset = Number(page) * Number(limit);
 
         const where: string[] = [];
 
-        if (status && typeof status === 'string') {
-            if (status.toLowerCase() === 'proposed') {
-                where.push('(pd.f_proposed = true) AND (o.f_slot IS NULL)');
-            } else if (status.toLowerCase() === 'missed') {
-                where.push('(pd.f_proposed = false) AND (o.f_slot IS NULL)');
-            } else if (status.toLowerCase() === 'orphan') {
-                where.push('(o.f_slot IS NOT NULL)');
+        if (status && typeof status === "string") {
+            if (status.toLowerCase() === "proposed") {
+                where.push("(pd.f_proposed = true) AND (o.f_slot IS NULL)");
+            } else if (status.toLowerCase() === "missed") {
+                where.push("(pd.f_proposed = false) AND (o.f_slot IS NULL)");
+            } else if (status.toLowerCase() === "orphan") {
+                where.push("(o.f_slot IS NOT NULL)");
             }
         }
 
@@ -44,7 +44,9 @@ export const getSlots = async (req: Request, res: Response) => {
         }
 
         if (upperEpoch) {
-            where.push(`(pd.f_proposer_slot < ${(Number(upperEpoch) + 1) * 32})`);
+            where.push(
+                `(pd.f_proposer_slot < ${(Number(upperEpoch) + 1) * 32})`
+            );
         }
 
         if (validator) {
@@ -53,26 +55,38 @@ export const getSlots = async (req: Request, res: Response) => {
 
         if (lowerDate) {
             const minTime = new Date(lowerDate as string).getTime();
-            where.push(`((g.f_genesis_time + pd.f_proposer_slot * 12) * 1000 >= ${minTime})`);
+            where.push(
+                `((g.f_genesis_time + pd.f_proposer_slot * 12) * 1000 >= ${minTime})`
+            );
         }
 
         if (upperDate) {
             const maxTime = new Date(upperDate as string).getTime();
-            where.push(`((g.f_genesis_time + pd.f_proposer_slot * 12) * 1000 < ${maxTime})`);
+            where.push(
+                `((g.f_genesis_time + pd.f_proposer_slot * 12) * 1000 < ${maxTime})`
+            );
         }
 
         if (entities && Array.isArray(entities) && entities.length > 0) {
             const entitiesArray = entities
-                .map(x => (typeof x === 'string' ? `'${x.toLowerCase()}'` : ''))
-                .filter(x => x !== '');
-            where.push(`(pk.f_pool_name IN (${entitiesArray.join(',')}))`);
+                .map((x) =>
+                    typeof x === "string" ? `'${x.toLowerCase()}'` : ""
+                )
+                .filter((x) => x !== "");
+            where.push(`(pk.f_pool_name IN (${entitiesArray.join(",")}))`);
         }
 
         if (clients && Array.isArray(clients) && clients.length > 0) {
             const clientsArray = clients
-                .map(x => (typeof x === 'string' ? `'${x.toLowerCase()}'` : ''))
-                .filter(x => x !== '');
-            where.push(`(LOWER(scg.f_best_guess_single) IN (${clientsArray.join(',')}))`);
+                .map((x) =>
+                    typeof x === "string" ? `'${x.toLowerCase()}'` : ""
+                )
+                .filter((x) => x !== "");
+            where.push(
+                `(LOWER(scg.f_best_guess_single) IN (${clientsArray.join(
+                    ","
+                )}))`
+            );
         }
 
         const [slotsResultSet, countResultSet] = await Promise.all([
@@ -103,15 +117,20 @@ export const getSlots = async (req: Request, res: Response) => {
                             t_genesis g
                         LEFT OUTER JOIN
                             t_slot_client_guesses scg ON bm.f_slot = scg.f_slot
-                        ${where.length > 0 ? `WHERE ${where.join(' AND ')}` : ''}
+                        ${
+                            where.length > 0
+                                ? `WHERE ${where.join(" AND ")}`
+                                : ""
+                        }
                         GROUP BY
                             bm.f_slot, bm.f_proposer_index, bm.f_proposed, pk.f_pool_name, bm.f_attestations, bm.f_sync_bits, bm.f_deposits, bm.f_attester_slashings, bm.f_proposer_slashings, bm.f_voluntary_exits
                         ORDER BY
                             bm.f_slot DESC
-                        LIMIT ${Number(limit)}
-                        OFFSET ${skip}
+                        LIMIT {limit: Int64}
+                        OFFSET {offset: Int64}
                     `,
-                format: 'JSONEachRow',
+                query_params: { limit: Number(limit), offset },
+                format: "JSONEachRow",
             }),
             chClient.query({
                 query: `
@@ -127,9 +146,13 @@ export const getSlots = async (req: Request, res: Response) => {
                             t_genesis g
                         LEFT OUTER JOIN
                             t_slot_client_guesses scg ON pd.f_proposer_slot = scg.f_slot
-                        ${where.length > 0 ? `WHERE ${where.join(' AND ')}` : ''}
+                        ${
+                            where.length > 0
+                                ? `WHERE ${where.join(" AND ")}`
+                                : ""
+                        }
                     `,
-                format: 'JSONEachRow',
+                format: "JSONEachRow",
             }),
         ]);
 
@@ -143,7 +166,7 @@ export const getSlots = async (req: Request, res: Response) => {
     } catch (error) {
         console.log(error);
         return res.status(500).json({
-            msg: 'An error occurred on the server',
+            msg: "An error occurred on the server",
         });
     }
 };
@@ -154,7 +177,7 @@ export const getBlocks = async (req: Request, res: Response) => {
 
         const chClient = clickhouseClients[network as string];
 
-        const skip = Number(page) * Number(limit);
+        const offset = Number(page) * Number(limit);
 
         if (Number(page) > 0) {
             const blocksResultSet = await chClient.query({
@@ -174,10 +197,11 @@ export const getBlocks = async (req: Request, res: Response) => {
                         t_slot_client_guesses scg ON pd.f_proposer_slot = scg.f_slot
                     ORDER BY
                         pd.f_proposer_slot DESC
-                    LIMIT ${Number(limit)}
-                    OFFSET ${skip}
+                    LIMIT {limit: Int64}
+                    OFFSET {offset: Int64}
                 `,
-                format: 'JSONEachRow',
+                query_params: { limit: Number(limit), offset },
+                format: "JSONEachRow",
             });
 
             const blocksResult: any[] = await blocksResultSet.json();
@@ -186,9 +210,10 @@ export const getBlocks = async (req: Request, res: Response) => {
                 blocks: blocksResult,
             });
         } else {
-            const [actualBlocksResultSet, finalBlocksResultSet] = await Promise.all([
-                chClient.query({
-                    query: `
+            const [actualBlocksResultSet, finalBlocksResultSet] =
+                await Promise.all([
+                    chClient.query({
+                        query: `
                             SELECT
                                 CAST((pd.f_proposer_slot / 32) AS UInt64) AS f_epoch,
                                 pd.f_proposer_slot AS f_slot,
@@ -204,13 +229,14 @@ export const getBlocks = async (req: Request, res: Response) => {
                                 t_slot_client_guesses scg ON pd.f_proposer_slot = scg.f_slot
                             ORDER BY
                                 pd.f_proposer_slot DESC
-                            LIMIT ${Number(limit)}
-                            OFFSET ${skip}
+                                LIMIT {limit: Int64}
+                                OFFSET {offset: Int64}
                         `,
-                    format: 'JSONEachRow',
-                }),
-                chClient.query({
-                    query: `
+                        query_params: { limit: Number(limit), offset },
+                        format: "JSONEachRow",
+                    }),
+                    chClient.query({
+                        query: `
                             SELECT
                                 bm.f_epoch,
                                 bm.f_slot AS f_slot,
@@ -235,14 +261,18 @@ export const getBlocks = async (req: Request, res: Response) => {
                             ORDER BY
                                 bm.f_slot DESC
                         `,
-                    format: 'JSONEachRow',
-                }),
-            ]);
+                        format: "JSONEachRow",
+                    }),
+                ]);
 
-            const actualBlocksResult: any[] = await actualBlocksResultSet.json();
+            const actualBlocksResult: any[] =
+                await actualBlocksResultSet.json();
             const finalBlocksResult: any[] = await finalBlocksResultSet.json();
 
-            let arrayEpochs: any[] = [...actualBlocksResult, ...finalBlocksResult];
+            let arrayEpochs: any[] = [
+                ...actualBlocksResult,
+                ...finalBlocksResult,
+            ];
 
             res.json({
                 blocks: arrayEpochs,
@@ -251,7 +281,7 @@ export const getBlocks = async (req: Request, res: Response) => {
     } catch (error) {
         console.log(error);
         return res.status(500).json({
-            msg: 'An error occurred on the server',
+            msg: "An error occurred on the server",
         });
     }
 };
@@ -294,9 +324,10 @@ export const getSlotById = async (req: Request, res: Response) => {
                         LEFT OUTER JOIN
                             t_slot_client_guesses scg ON bm.f_slot = scg.f_slot
                         WHERE
-                            bm.f_slot = ${id}
+                            bm.f_slot = {id: Int64}
                     `,
-                format: 'JSONEachRow',
+                query_params: { id },
+                format: "JSONEachRow",
             }),
             chClient.query({
                 query: `
@@ -305,14 +336,16 @@ export const getSlotById = async (req: Request, res: Response) => {
                         FROM
                             t_proposer_duties
                         WHERE
-                            f_proposer_slot = ${id}
+                            f_proposer_slot = {id: Int64}
                     `,
-                format: 'JSONEachRow',
+                query_params: { id },
+                format: "JSONEachRow",
             }),
         ]);
 
         const blockResult: any[] = await blockResultSet.json();
-        const proposerDutiesResult: any[] = await proposerDutiesResultSet.json();
+        const proposerDutiesResult: any[] =
+            await proposerDutiesResultSet.json();
 
         if (blockResult.length > 0) {
             if (proposerDutiesResult.length > 0) {
@@ -328,7 +361,7 @@ export const getSlotById = async (req: Request, res: Response) => {
     } catch (error) {
         console.log(error);
         return res.status(500).json({
-            msg: 'An error occurred on the server',
+            msg: "An error occurred on the server",
         });
     }
 };
@@ -338,7 +371,7 @@ export const getSlotsByGraffiti = async (req: Request, res: Response) => {
         const { search } = req.params;
         const { network, page = 0, limit = 10 } = req.query;
 
-        const skip = Number(page) * Number(limit);
+        const offset = Number(page) * Number(limit);
 
         const chClient = clickhouseClients[network as string];
 
@@ -359,10 +392,11 @@ export const getSlotsByGraffiti = async (req: Request, res: Response) => {
                     bm.f_graffiti LIKE '%${search}%'
                 ORDER BY
                     bm.f_slot DESC
-                LIMIT ${Number(limit)}
-                OFFSET ${skip}
+                LIMIT {limit: Int64}
+                OFFSET {offset: Int64}
             `,
-            format: 'JSONEachRow',
+            query_params: { limit, offset },
+            format: "JSONEachRow",
         });
 
         const blocksResult: any[] = await blocksResultSet.json();
@@ -373,7 +407,7 @@ export const getSlotsByGraffiti = async (req: Request, res: Response) => {
     } catch (error) {
         console.log(error);
         return res.status(500).json({
-            msg: 'An error occurred on the server',
+            msg: "An error occurred on the server",
         });
     }
 };
@@ -394,9 +428,10 @@ export const getWithdrawalsBySlot = async (req: Request, res: Response) => {
                 FROM
                     t_withdrawals
                 WHERE
-                    f_slot = ${id}
+                    f_slot = {id: Int64}
             `,
-            format: 'JSONEachRow',
+            query_params: { id },
+            format: "JSONEachRow",
         });
 
         const withdrawalsResult: any[] = await withdrawalsResultSet.json();
@@ -407,7 +442,7 @@ export const getWithdrawalsBySlot = async (req: Request, res: Response) => {
     } catch (error) {
         console.log(error);
         return res.status(500).json({
-            msg: 'An error occurred on the server',
+            msg: "An error occurred on the server",
         });
     }
 };
@@ -419,9 +454,9 @@ export const listenSlotNotification = async (req: Request, res: Response) => {
         const chClient = clickhouseClients[network as string];
 
         res.writeHead(200, {
-            'Content-Type': 'text/event-stream',
-            'Cache-Control': 'no-cache',
-            Connection: 'keep-alive',
+            "Content-Type": "text/event-stream",
+            "Cache-Control": "no-cache",
+            Connection: "keep-alive",
         });
 
         const blockGenesisResultSet = await chClient.query({
@@ -430,7 +465,7 @@ export const listenSlotNotification = async (req: Request, res: Response) => {
                 FROM t_genesis
                 LIMIT 1
             `,
-            format: 'JSONEachRow',
+            format: "JSONEachRow",
         });
 
         const blockGenesisResult = await blockGenesisResultSet.json();
@@ -444,7 +479,9 @@ export const listenSlotNotification = async (req: Request, res: Response) => {
 
         do {
             if (latestSlotInserted > 0) {
-                await new Promise(resolve => setTimeout(resolve, currentTimeout));
+                await new Promise((resolve) =>
+                    setTimeout(resolve, currentTimeout)
+                );
                 currentTimeout *= 1.5;
             }
 
@@ -458,22 +495,23 @@ export const listenSlotNotification = async (req: Request, res: Response) => {
                             f_slot DESC
                         LIMIT 1
                     `,
-                format: 'JSONEachRow',
+                format: "JSONEachRow",
             });
 
             const latestBlockResult: any[] = await latestBlockResultSet.json();
 
-            latestSlotInserted = latestBlockResult.length > 0 ? latestBlockResult[0].f_slot : 0;
+            latestSlotInserted =
+                latestBlockResult.length > 0 ? latestBlockResult[0].f_slot : 0;
         } while (latestSlotInserted < nextSlot);
 
-        res.write('event: new_slot\n');
+        res.write("event: new_slot\n");
         res.write(`data: Slot = ${latestSlotInserted}`);
-        res.write('\n\n');
+        res.write("\n\n");
         res.end();
     } catch (error) {
         console.log(error);
         return res.status(500).json({
-            msg: 'An error occurred on the server',
+            msg: "An error occurred on the server",
         });
     }
 };
