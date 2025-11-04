@@ -1,3 +1,7 @@
+# THIS REPOSITORY IS NOW ARCHIVED
+
+MigaLabs has stopped working on EthSeer to focus on the development of [migalabs.io](https://www.migalabs.io/). We would like to thank all of the contributors throughout the years that made EthSeer possible.
+
 # Introduction
   
 <img src="packages/client/public/static/images/readme/ethseer_logo.png">
